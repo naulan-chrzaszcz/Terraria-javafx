@@ -9,8 +9,7 @@ import java.io.IOException;
 
 public class Terraria extends javafx.application.Application
 {
-    //TODO  effet de profondeur dans la terre
-
+    // TODO:  effet de profondeur dans la terre
     private String titleWindow = "Terraria-Like!";
     private int widthWindow = 1280;
     private int heightWindow = 720;
@@ -27,7 +26,5 @@ public class Terraria extends javafx.application.Application
         stage.show();
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+    public static void main(String[] args) { launch(); }
 }
