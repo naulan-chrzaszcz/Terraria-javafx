@@ -1,7 +1,7 @@
-package fr.sae.terraria.tiles;
+package fr.sae.terraria.blocks;
 
 
-public class Stone extends Tile
+public class Stone extends Block
 {
     /*
         TODO: Mettre en place un drop aléatoire de charbon

@@ -1,4 +1,4 @@
-package fr.sae.terraria.tiles;
+package fr.sae.terraria.blocks;
 
 public class TallGrass
 {
