@@ -1,6 +1,6 @@
 package fr.sae.terraria.tiles;
 
-public class Dirt
+public class Dirt extends Tile
 {
 
 }
