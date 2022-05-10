@@ -3,7 +3,9 @@ package fr.sae.terraria.modele.entities;
 
 public abstract class Entity
 {
+
     private int pv;
+    protected int[] offset;
     protected int x;
     protected int y;
     protected double velocity;
@@ -16,7 +18,9 @@ public abstract class Entity
         this.velocity =velocity;
     }
 
-    public Entity(double velocity){
+    public Entity(int x, int y, double velocity){
+        this.x = x;
+        this.y = y;
         this.velocity=velocity;
     }
 
