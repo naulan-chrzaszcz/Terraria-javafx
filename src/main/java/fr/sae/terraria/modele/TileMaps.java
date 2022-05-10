@@ -3,44 +3,62 @@ package fr.sae.terraria.modele;
 import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
+public class TileMaps
+{
+    private int[][] map;
+    private int w;
+    private int h;
 
-public class TileMaps {
-    private Map<Integer, List<Integer>> map;
-
-
-    public TileMaps(int w, int h) {
-        this.map = new HashMap<>();
-    }
 
     public void load(String path)
     {
+        int i = 0;
+        int j = 0;
+
         try (FileReader fileReader = new FileReader(path);
              JsonReader jsonReader = new JsonReader(fileReader)) {
-            // Demarrage de la lecture du fichier.
+
             jsonReader.beginObject();
-
-            while (jsonReader.hasNext()) {
-                String name = jsonReader.nextName();
-                map.put(Integer.parseInt(name), new ArrayList<>());
-
-                // Commence à lire la liste contenue dans la key
+            // Deduit la taille de la carte.
+            while (jsonReader.hasNext())
+            {
+                h++;
                 jsonReader.beginArray();
                 while (jsonReader.hasNext())
-                    map.get(Integer.parseInt(name)).add(jsonReader.nextInt());
+                    w++;
                 jsonReader.endArray();
             }
+            jsonReader.endObject();
 
+            map = new int[h][w];
+            // Ecrit la carte dans la mémoire.
+            jsonReader.beginObject();
+            while (jsonReader.hasNext())
+            {
+                jsonReader.beginArray();
+                while (jsonReader.hasNext()) {
+                    map[i][j] = jsonReader.nextInt();
+                    j++;
+                }
+                jsonReader.endArray();
+
+                j = 0;
+                i++;
+            }
             jsonReader.endObject();
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    public int getMaxHeight() { return map.size(); }
-    public int getMaxWidth() { return map.get(0).size(); }
-    public int getTile(int y, int x) { return map.get(y).get(x); }
+    public void clear()
+    {
+        for(int y = 0; y < getHeight(); y++)
+            continue;
+    }
+
+    public int getHeight() { return map.length; }
+    public int getWidth() { return map[0].length; }
+    public int getTile(int y, int x) { return map[y][x]; }
+    public void setTile(int tileIndex, int y, int x) { map[y][x] = tileIndex; }
 }
