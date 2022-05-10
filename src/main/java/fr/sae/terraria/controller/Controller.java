@@ -1,4 +1,4 @@
-package fr.sae.terraria;
+package fr.sae.terraria.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

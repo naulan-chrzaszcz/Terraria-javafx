@@ -1,4 +1,4 @@
-package fr.sae.terraria.entities;
+package fr.sae.terraria.modele.entities;
 
 public class Player extends Entity
 {

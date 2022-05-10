@@ -1,4 +1,4 @@
-package fr.sae.terraria.blocks;
+package fr.sae.terraria.modele.blocks;
 
 
 public class Stone extends Block

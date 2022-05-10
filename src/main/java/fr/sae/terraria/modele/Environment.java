@@ -1,4 +1,4 @@
-package fr.sae.terraria;
+package fr.sae.terraria.modele;
 
 
 public class Environment
