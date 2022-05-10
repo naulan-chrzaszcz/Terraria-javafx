@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.sae.terraria.controller.Controller">
@@ -9,7 +10,7 @@
    <center>
       <Pane>
          <children>
-            <TilePane fx:id="gamePane" minHeight="256.0" maxHeight="256.0" minWidth="465.0" maxWidth="465.0"/>
+            <Pane fx:id="gamePane" minHeight="256.0" maxHeight="256.0" minWidth="465.0" maxWidth="465.0" style="-fx-background-color: #84cced"/>
          </children>
       </Pane>
    </center>
