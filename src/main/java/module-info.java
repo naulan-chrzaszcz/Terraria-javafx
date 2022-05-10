@@ -1,6 +1,7 @@
 module fr.sae.terraria {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.google.gson;
 
 
     opens fr.sae.terraria to javafx.fxml;
