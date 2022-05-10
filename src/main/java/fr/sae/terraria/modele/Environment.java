@@ -14,7 +14,7 @@ public class Environment
     public Environment()
     {
         entities = new ArrayList<>();
-        player = new Player(0,0,20,5);
+        player = new Player(0,0,20,1);
     }
 
 

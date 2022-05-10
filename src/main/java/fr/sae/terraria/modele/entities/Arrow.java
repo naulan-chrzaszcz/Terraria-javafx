@@ -9,7 +9,7 @@ public class Arrow extends Entity
 
     @Override
     public void updates() {
-        this.x += this.offset[0] * this.velocity;
-        this.y += this.offset[1] * this.velocity;
+        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        this.setY(this.y.get() + this.offset[1] * this.velocity);
     }
 }

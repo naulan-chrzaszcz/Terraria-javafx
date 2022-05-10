@@ -5,12 +5,10 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Scale;
 
@@ -22,15 +20,28 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable
 {
+    @FXML
+    private Pane gamePane;
+    @FXML
+    private HBox title;
+    @FXML
+    private Pane screen;
+    @FXML
+    private BorderPane root;
+
     private TileMaps tiles;
     private Environment environment;
-    @FXML
-    Pane gamePane;
-    @FXML
-    HBox title;
-    @FXML
-    Pane screen;
 
+
+    public Controller(Stage primaryStage)
+    {
+        primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+            // TODO: Pas propre tous ca zebi
+            if (key.getCode() == KeyCode.D)
+                environment.getPlayer().moveRight();
+            key.consume();
+        });
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,9 +60,6 @@ public class Controller implements Initializable
         Image rock = new Image(Terraria.class.getResourceAsStream("tiles/rock-fill.png"));
         Image sky = new Image(Terraria.class.getResourceAsStream("tiles/floor-top.png"));
 
-
-        System.out.println(tiles.getHeight());
-        System.out.println(tiles.getWidth());
         for (int y = 0; y < tiles.getHeight() ; y++){
             for (int x = 0 ; x < tiles.getWidth() ; x++){
                 int tile = tiles.getTile(y,x);
@@ -59,10 +67,7 @@ public class Controller implements Initializable
                 tileView.setX(x*16);
                 tileView.setY(y*16);
 
-                switch (tile){
-                    case 0:
-
-                        break;
+                switch (tile) {
                     case 1:
                         tileView.setImage(rock);
                         break;
@@ -77,5 +82,22 @@ public class Controller implements Initializable
         a.setTranslateX(environment.getPlayer().getX()*16);
         a.setTranslateY(environment.getPlayer().getY()*30);
         gamePane.getChildren().add(a);
+
+        gameLoop();
+    }
+
+    private void gameLoop()
+    {
+        int tick = 0;
+
+        Timeline loop = new Timeline();
+        loop.setCycleCount(Timeline.INDEFINITE);
+
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
+            this.environment.getPlayer().updates();
+        }));
+
+        loop.getKeyFrames().add(keyFrame);
+        loop.play();
     }
 }

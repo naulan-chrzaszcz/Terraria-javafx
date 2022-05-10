@@ -1,5 +1,7 @@
 package fr.sae.terraria;
 
+import fr.sae.terraria.controller.Controller;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -7,7 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class Terraria extends javafx.application.Application
+public class Terraria extends Application
 {
     // TODO:  effet de profondeur dans la terre
     private String titleWindow = "Terraria-Like";
