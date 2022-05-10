@@ -8,4 +8,7 @@ public class TallGrass
               (Optionnel) Faire que l'herbe au passage du joueur provoque un bruitage
               (Optionnel) Faire une animation lorsque le joueur passe dedans
      */
+    public TallGrass(){
+
+    }
 }
