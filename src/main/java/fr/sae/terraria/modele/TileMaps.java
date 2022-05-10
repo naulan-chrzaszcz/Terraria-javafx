@@ -2,7 +2,11 @@ package fr.sae.terraria.modele;
 
 import com.google.gson.stream.JsonReader;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.net.URI;
 
 import static fr.sae.terraria.modele.TilesIndex.SKY;
 
@@ -16,29 +20,44 @@ public class TileMaps
 
     public void load(String path)
     {
+        boolean widthSave = false;
         int i = 0;
         int j = 0;
 
         try (FileReader fileReader = new FileReader(path);
-             JsonReader jsonReader = new JsonReader(fileReader)) {
-
+             JsonReader jsonReader = new JsonReader(fileReader))
+        {
             jsonReader.beginObject();
             // Deduit la taille de la carte.
             while (jsonReader.hasNext())
             {
                 h++;
+
+                jsonReader.nextName();
+
                 jsonReader.beginArray();
-                while (jsonReader.hasNext())
-                    w++;
+                while (jsonReader.hasNext()) {
+                    jsonReader.nextInt();
+                    if (!widthSave) w++;
+                }
                 jsonReader.endArray();
+
+                widthSave = true;
             }
             jsonReader.endObject();
+        } catch (Exception e) { e.printStackTrace(); }
 
+
+        try (FileReader fileReader = new FileReader(path);
+             JsonReader jsonReader = new JsonReader(fileReader))
+        {
             map = new int[h][w];
             // Ecrit la carte dans la mémoire.
             jsonReader.beginObject();
             while (jsonReader.hasNext())
             {
+                jsonReader.nextName();
+
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()) {
                     map[i][j] = jsonReader.nextInt();
