@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.TilePane?>
+<BorderPane>
+    <top>
+        <HBox></HBox>
+    </top>
+    <center>
+        <Pane>
+            <TilePane maxWidth="436" maxHeight="230"></TilePane>
+        </Pane>
+    </center>
+</BorderPane>

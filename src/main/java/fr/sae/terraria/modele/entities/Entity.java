@@ -10,4 +10,9 @@ public class Entity
     {
         this.pv=pv;
     }
+
+    public Entity(){}
+
 }
+
+
