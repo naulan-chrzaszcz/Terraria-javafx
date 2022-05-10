@@ -53,11 +53,29 @@ public class TileMaps
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    public int[][] copy()
+    {
+        int[][] mapCopy = new int[map.length][map[0].length];
+
+        for (int i = 0; i < this.map.length; i++)
+            for (int j = 0; j < this.map[i].length; j++)
+                mapCopy[i][j] = this.map[i][j];
+
+        return mapCopy;
+    }
+
     public void clear()
     {
         for (int y = 0; y < getHeight(); y++)
             for (int x = 0; x < getWidth(); x++)
                 map[y][x] = SKY;
+    }
+
+    public void fill(int tileIndex)
+    {
+        for (int y = 0; y < getHeight(); y++)
+            for (int x = 0; x < getWidth(); x++)
+                map[y][x] = tileIndex;
     }
 
     public int getHeight() { return map.length; }
