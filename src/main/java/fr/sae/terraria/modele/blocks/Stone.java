@@ -11,4 +11,7 @@ public class Stone extends Block
              (Optionnel) Faire un bruitage lorsque le joueur le casse
              (Optionnel) Faire des particules de pierre lorsque on est en train de le casser
     */
+    public Stone(){
+
+    }
 }

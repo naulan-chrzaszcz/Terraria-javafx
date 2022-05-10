@@ -1,7 +1,9 @@
 package fr.sae.terraria.modele.tools;
 
 
-public class Pickaxe
+public class Pickaxe extends Tool
 {
+    public Pickaxe(){
 
+    }
 }
