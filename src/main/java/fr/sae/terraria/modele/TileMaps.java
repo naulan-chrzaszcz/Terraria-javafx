@@ -4,6 +4,8 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
 
+import static fr.sae.terraria.modele.TilesIndex.SKY;
+
 
 public class TileMaps
 {
@@ -53,8 +55,9 @@ public class TileMaps
 
     public void clear()
     {
-        for(int y = 0; y < getHeight(); y++)
-            continue;
+        for (int y = 0; y < getHeight(); y++)
+            for (int x = 0; x < getWidth(); x++)
+                map[y][x] = SKY;
     }
 
     public int getHeight() { return map.length; }
