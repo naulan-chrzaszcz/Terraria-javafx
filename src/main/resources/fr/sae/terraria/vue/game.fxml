@@ -9,7 +9,7 @@
    <center>
       <Pane>
          <children>
-            <TilePane fx:id="gamePane" minHeight="256.0" maxHeight="256.0" minWidth="480.0" maxWidth="480.0"/>
+            <TilePane fx:id="gamePane" minHeight="256.0" maxHeight="256.0" minWidth="465.0" maxWidth="465.0"/>
          </children>
       </Pane>
    </center>
