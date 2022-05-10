@@ -1,13 +1,16 @@
 package fr.sae.terraria.modele.entities;
 
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public abstract class Entity
 {
 
     private int pv;
     protected int[] offset;
-    protected int x;
-    protected int y;
+    protected DoubleProperty x;
+    protected DoubleProperty y;
     protected double velocity;
 
     public Entity(int x, int y, int pv, double velocity)
@@ -32,6 +35,7 @@ public abstract class Entity
     public double getY() { return y.get(); }
     public int getPv() { return pv; }
     public double getVelocity() { return velocity; }
+
 
     public void setPv(int pv) { this.pv = pv; }
     public void setVelocity(double velocity) { this.velocity = velocity; }

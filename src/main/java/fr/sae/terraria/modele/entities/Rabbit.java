@@ -7,8 +7,8 @@ public class Rabbit extends Entity{
         super(x, y , pv, velocity);
     }
     public void updates(){
-        this.x += this.offset[0] * this.velocity;
-        this.y += this.offset[1] * this.velocity;
+        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        this.setY(this.y.get() + this.offset[1] * this.velocity);
 
         if(frame == 4){ frame=0; }//TODO faire les frame
     }

@@ -3,17 +3,23 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.transform.Scale;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 
-import java.io.File;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -79,8 +85,10 @@ public class Controller implements Initializable
             }
         }
         Circle a = new Circle(5);
-        a.setTranslateX(environment.getPlayer().getX()*16);
-        a.setTranslateY(environment.getPlayer().getY()*30);
+
+        a.translateXProperty().bind(environment.getPlayer().getXProperty());
+        a.translateYProperty().bind(environment.getPlayer().getYProperty());
+
         gamePane.getChildren().add(a);
 
         gameLoop();

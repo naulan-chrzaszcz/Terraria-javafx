@@ -22,6 +22,8 @@ public class Terraria extends Application
     {
         // TODO: Commencer par le menu
         FXMLLoader fxmlLoader = new FXMLLoader(Terraria.class.getResource("vue/game.fxml"));
+        Controller ctrl = new Controller(stage);
+        fxmlLoader.setController(ctrl);
         Scene scene = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
 
         stage.setTitle(this.titleWindow);
