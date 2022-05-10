@@ -19,7 +19,7 @@ public class Terraria extends javafx.application.Application
     public void start(Stage stage) throws IOException
     {
         // TODO: Commencer par le menu
-        FXMLLoader fxmlLoader = new FXMLLoader(Terraria.class.getResource("game.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Terraria.class.getResource("vue/game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
 
         stage.setTitle(this.titleWindow);
