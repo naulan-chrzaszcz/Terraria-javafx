@@ -2,11 +2,7 @@ package fr.sae.terraria.modele;
 
 import com.google.gson.stream.JsonReader;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.InputStream;
-import java.net.URI;
 
 import static fr.sae.terraria.modele.TilesIndex.SKY;
 
@@ -18,6 +14,12 @@ public class TileMaps
     private int h;
 
 
+    /**
+     * Compte la taille de la carte et ensuite la charge dans
+     *  la variable map
+     *
+     *  @param path Le chemin depuis le root (src)
+     */
     public void load(String path)
     {
         boolean widthSave = false;
@@ -72,6 +74,12 @@ public class TileMaps
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    /**
+     * Crée une variable de la même taille que la carte couramment utilisé
+     *  La copie et renvoie la variable qui a copié la carte du jeu
+     *
+     * @return Un tableau 2D qui contient la carte qui est utilisé dans le jeu.
+     */
     public int[][] copy()
     {
         int[][] mapCopy = new int[map.length][map[0].length];
@@ -96,6 +104,7 @@ public class TileMaps
             for (int x = 0; x < getWidth(); x++)
                 map[y][x] = tileIndex;
     }
+
 
     public int getHeight() { return map.length; }
     public int getWidth() { return map[0].length; }
