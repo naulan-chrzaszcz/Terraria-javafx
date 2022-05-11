@@ -62,9 +62,9 @@ public class Controller implements Initializable
 
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
-        Image dirt = new Image(Terraria.class.getResourceAsStream("tiles/dirt-left.png"));
-        Image rock = new Image(Terraria.class.getResourceAsStream("tiles/rock-fill.png"));
-        Image sky = new Image(Terraria.class.getResourceAsStream("tiles/floor-top.png"));
+        Image dirt = new Image(Terraria.class.getResourceAsStream("tiles/dirt-left.png"),16,16,false,false);
+        Image rock = new Image(Terraria.class.getResourceAsStream("tiles/rock-fill.png"),16,16,false,false);
+        Image sky = new Image(Terraria.class.getResourceAsStream("tiles/floor-top.png"),16,16,false,false);
 
         for (int y = 0; y < tiles.getHeight() ; y++){
             for (int x = 0 ; x < tiles.getWidth() ; x++){
