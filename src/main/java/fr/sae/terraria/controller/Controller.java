@@ -119,18 +119,7 @@ public class Controller implements Initializable
         loop.setCycleCount(Timeline.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
-            int countKeys[] = new int[1];
-            keysInput.forEach((key, value) -> {
-                if (key == D && value)
-                    environment.getPlayer().moveRight();
-                if (key == Q && value)
-                    environment.getPlayer().moveLeft();
-
-                if (!value)
-                    countKeys[0]++;
-                if (countKeys[0] == keysInput.size())
-                    environment.getPlayer().idle();
-            });
+            eventInput();
             this.environment.getPlayer().updates();
 
             ticks++;
@@ -138,5 +127,19 @@ public class Controller implements Initializable
 
         loop.getKeyFrames().add(keyFrame);
         loop.play();
+    }
+    public void eventInput(){
+        int countKeys[] = new int[1];
+        keysInput.forEach((key, value) -> {
+            if (key == D && value)
+                environment.getPlayer().moveRight();
+            if (key == Q && value)
+                environment.getPlayer().moveLeft();
+
+            if (!value)
+                countKeys[0]++;
+            if (countKeys[0] == keysInput.size())
+                environment.getPlayer().idle();
+        });
     }
 }
