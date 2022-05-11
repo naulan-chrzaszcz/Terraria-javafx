@@ -2,6 +2,7 @@ package fr.sae.terraria.controller;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -18,6 +19,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import java.net.URL;
@@ -25,6 +28,8 @@ import java.net.URL;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+
+import static javafx.scene.input.KeyCode.*;
 
 
 public class Controller implements Initializable
@@ -37,6 +42,7 @@ public class Controller implements Initializable
     private Pane display;
 
     private Environment environment;
+    private Map<KeyCode, Boolean> keysInput = new HashMap<>();
     private TileMaps tiles;
 
     private int ticks = 0;
@@ -45,18 +51,14 @@ public class Controller implements Initializable
     public Controller(Stage primaryStage)
     {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            switch (key.getCode()) {
-                case D:
-                    environment.getPlayer().moveRight();
-                    break;
-                case Q:
-                    environment.getPlayer().moveLeft();
-                    break;
-            }
+            keysInput.put(key.getCode(), true);
             key.consume();
         });
 
-        primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> environment.getPlayer().idle() );
+        primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
+            keysInput.put(key.getCode(), false);
+            key.consume();
+        });
     }
 
     @Override
@@ -117,6 +119,18 @@ public class Controller implements Initializable
         loop.setCycleCount(Timeline.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
+            int countKeys[] = new int[1];
+            keysInput.forEach((key, value) -> {
+                if (key == D && value)
+                    environment.getPlayer().moveRight();
+                if (key == Q && value)
+                    environment.getPlayer().moveLeft();
+
+                if (!value)
+                    countKeys[0]++;
+                if (countKeys[0] == keysInput.size())
+                    environment.getPlayer().idle();
+            });
             this.environment.getPlayer().updates();
 
             ticks++;
