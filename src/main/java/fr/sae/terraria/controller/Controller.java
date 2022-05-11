@@ -1,45 +1,43 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import static javafx.scene.input.KeyCode.*;
-import java.io.File;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
+
 import java.util.ResourceBundle;
+
+import java.net.URL;
+
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
 
 
 public class Controller implements Initializable
 {
     @FXML
-    private HBox title;
-    @FXML
     private BorderPane root;
+    @FXML
+    private HBox title;
     @FXML
     private Pane display;
 
-    private TileMaps tiles;
     private Environment environment;
+    private TileMaps tiles;
 
     private int ticks = 0;
 
@@ -47,7 +45,7 @@ public class Controller implements Initializable
     public Controller(Stage primaryStage)
     {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            switch (key.getCode()){
+            switch (key.getCode()) {
                 case D:
                     environment.getPlayer().moveRight();
                     break;
@@ -57,9 +55,8 @@ public class Controller implements Initializable
             }
             key.consume();
         });
-        primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
-            environment.getPlayer().idle();
-        });
+
+        primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> environment.getPlayer().idle() );
     }
 
     @Override
@@ -67,12 +64,6 @@ public class Controller implements Initializable
     {
         environment = new Environment();
         tiles = new TileMaps();
-
-        // Scalling
-        Scale s = new Scale();
-        s.setX(2.76);
-        s.setY(2.42);
-        // gamePane.getTransforms().add(s);
 
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
@@ -94,8 +85,8 @@ public class Controller implements Initializable
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
         Image rock = new Image(rockPath, tileWidth, tileHeight, false, false);
 
-        for (int y = 0; y < tiles.getHeight() ; y++){
-            for (int x = 0 ; x < tiles.getWidth() ; x++){
+        for (int y = 0; y < tiles.getHeight() ; y++)
+            for (int x = 0 ; x < tiles.getWidth() ; x++) {
                 ImageView tileView = new ImageView();
                 tileView.setX(x*tileWidth);
                 tileView.setY(y*tileHeight);
@@ -111,12 +102,10 @@ public class Controller implements Initializable
 
                 display.getChildren().add(tileView);
             }
-        }
-        Circle a = new Circle(5);
 
+        Circle a = new Circle(5);
         a.translateXProperty().bind(environment.getPlayer().getXProperty());
         a.translateYProperty().bind(environment.getPlayer().getYProperty());
-
         display.getChildren().add(a);
 
         gameLoop();
