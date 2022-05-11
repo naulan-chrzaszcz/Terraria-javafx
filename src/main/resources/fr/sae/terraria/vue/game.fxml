@@ -10,20 +10,11 @@
             xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <HBox fx:id="title"
-            prefHeight="100.0"
-            prefWidth="200.0"
-            BorderPane.alignment="CENTER" />
+            prefHeight="50.0"
+            BorderPane.alignment="CENTER"/>
    </top>
 
    <center>
-      <Pane fx:id="screen">
-         <children>
-            <Pane fx:id="gamePane"
-                  minHeight="256.0" minWidth="465.0"
-                  maxHeight="256.0" maxWidth="465.0"
-
-                  style="-fx-background-color: #84cced"/>
-         </children>
-      </Pane>
+      <Pane fx:id="display"/>
    </center>
 </BorderPane>
