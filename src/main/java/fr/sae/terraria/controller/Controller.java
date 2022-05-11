@@ -47,10 +47,12 @@ public class Controller implements Initializable
     public Controller(Stage primaryStage)
     {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
+            environment.getPlayer().idle();
             // TODO: Pas propre tous ca zebi
             if (key.getCode() == KeyCode.D)
                 environment.getPlayer().moveRight();
             key.consume();
+
         });
     }
 

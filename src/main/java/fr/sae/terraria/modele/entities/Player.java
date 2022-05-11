@@ -20,6 +20,8 @@ public class Player extends Entity
         this.offset[1] = -1;
     }
 
+    public void idle(){ this.offset[0] = 0; this.offset[1] =0;}
+
     public void updates(){
         this.setX(this.x.get() + this.offset[0] * this.velocity);
         this.setY(this.y.get() + this.offset[1] * this.velocity);
@@ -28,6 +30,8 @@ public class Player extends Entity
             frame = 0;
         } //TODO faire les frame
     }
+
+
 
 
 
