@@ -90,7 +90,7 @@ public class Controller implements Initializable
             for (int x = 0 ; x < tiles.getWidth() ; x++){
                 ImageView tileView = new ImageView();
                 tileView.setX(x*16);
-                tileView.setY(x*16);
+                tileView.setY(y*16);
 
                 switch (tiles.getTile(y,x)) {
                     case 1:
