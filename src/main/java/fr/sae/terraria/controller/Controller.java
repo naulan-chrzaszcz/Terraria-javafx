@@ -20,7 +20,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import static javafx.scene.input.KeyCode.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,11 +47,15 @@ public class Controller implements Initializable
     public Controller(Stage primaryStage)
     {
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            // TODO: Pas propre tous ca zebi
-            if (key.getCode() == KeyCode.D)
-                environment.getPlayer().moveRight();
+            switch (key.getCode()){
+                case D:
+                    environment.getPlayer().moveRight();
+                    break;
+                case Q:
+                    environment.getPlayer().moveLeft();
+                    break;
+            }
             key.consume();
-
         });
         primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
             environment.getPlayer().idle();
