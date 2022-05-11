@@ -16,9 +16,7 @@ public class Player extends Entity
         this.offset[0] = 1;
     }
 
-    public void moveLeft() {
-        this.offset[1] = -1;
-    }
+    public void moveLeft() { this.offset[0] = -1; }
 
     public void idle(){ this.offset[0] = 0; this.offset[1] =0;}
 
