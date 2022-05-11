@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane fx:id="root"
+            maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="720" prefWidth="1280"
+            xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <HBox fx:id="title" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <HBox fx:id="title"
+            prefHeight="100.0"
+            prefWidth="200.0"
+            BorderPane.alignment="CENTER" />
    </top>
+
    <center>
       <Pane fx:id="screen">
          <children>
-            <Pane fx:id="gamePane" minHeight="256.0" maxHeight="256.0" minWidth="465.0" maxWidth="465.0" style="-fx-background-color: #84cced"/>
+            <Pane fx:id="gamePane"
+                  minHeight="256.0" minWidth="465.0"
+                  maxHeight="256.0" maxWidth="465.0"
+
+                  style="-fx-background-color: #84cced"/>
          </children>
       </Pane>
    </center>

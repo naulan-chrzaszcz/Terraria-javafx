@@ -6,7 +6,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+
+import java.net.URL;
 
 
 public class Terraria extends Application
@@ -17,11 +20,15 @@ public class Terraria extends Application
     private int heightWindow = 720;
 
 
-    @Override
+    public static void main(String[] args) { launch(); }
+
     public void start(Stage stage) throws IOException
     {
-        // TODO: Commencer par le menu
-        FXMLLoader fxmlLoader = new FXMLLoader(Terraria.class.getResource("vue/game.fxml"));
+        /* TODO: Commencer par le menu */
+        URL url = Terraria.class.getResource("res*");
+        
+        File f = new File("src/main/resources/fr/sae/terraria/vue/game.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(f.toURI().toURL());
         Controller ctrl = new Controller(stage);
         fxmlLoader.setController(ctrl);
         Scene scene = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
@@ -29,8 +36,7 @@ public class Terraria extends Application
         stage.setTitle(this.titleWindow);
         stage.setResizable(false);
         stage.setScene(scene);
+
         stage.show();
     }
-
-    public static void main(String[] args) { launch(); }
 }
