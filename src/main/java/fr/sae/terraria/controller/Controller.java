@@ -21,6 +21,10 @@ import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -65,16 +69,28 @@ public class Controller implements Initializable
         // gamePane.getTransforms().add(s);
 
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
+
+        // TODO pour le scale.
         int tileDefaultSize = 16;
         double tileWidth =  tileDefaultSize;
 
-        Image dirt = new Image(Terraria.class.getResourceAsStream("tiles/dirt-left.png"),16,16,false,false);
-        Image rock = new Image(Terraria.class.getResourceAsStream("tiles/rock-fill.png"),16,16,false,false);
-        Image sky = new Image(Terraria.class.getResourceAsStream("tiles/floor-top.png"),16,16,false,false);
+        InputStream dirtPath = Terraria.class.getResourceAsStream("tiles/dirt-left.png");
+        if (dirtPath == null) try {
+            dirtPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/dirt-left.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        Image dirt = new Image(dirtPath,16,16,false,false);
+
+        InputStream rockPath = Terraria.class.getResourceAsStream("tiles/rock-fill.png");
+        if (rockPath == null) try {
+            rockPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-fill.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        Image rock = new Image(rockPath,16,16,false,false);
 
         for (int y = 0; y < tiles.getHeight() ; y++){
             for (int x = 0 ; x < tiles.getWidth() ; x++){
                 ImageView tileView = new ImageView();
+                tileView.setX(x*16);
+                tileView.setY(x*16);
 
                 switch (tiles.getTile(y,x)) {
                     case 1:

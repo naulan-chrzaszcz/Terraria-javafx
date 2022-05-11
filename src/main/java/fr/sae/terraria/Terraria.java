@@ -25,14 +25,15 @@ public class Terraria extends Application
     public void start(Stage stage) throws IOException
     {
         /* TODO: Commencer par le menu */
-        URL url = Terraria.class.getResource("res*");
+        URL pathFxml = Terraria.class.getResource("vue/game.fxml");
+        if (pathFxml == null)
+            pathFxml = new File("src/main/resources/fr/sae/terraria/vue/game.fxml").toURI().toURL();
         
-        File f = new File("src/main/resources/fr/sae/terraria/vue/game.fxml");
-        FXMLLoader fxmlLoader = new FXMLLoader(f.toURI().toURL());
+        FXMLLoader fxmlLoader = new FXMLLoader(pathFxml);
         Controller ctrl = new Controller(stage);
         fxmlLoader.setController(ctrl);
         Scene scene = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
-
+        
         stage.setTitle(this.titleWindow);
         stage.setResizable(false);
         stage.setScene(scene);
