@@ -68,24 +68,23 @@ public class Controller implements Initializable
 
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
-        // TODO pour le scale.
         int tileDefaultSize = 16;
         double scaleY = (root.getPrefHeight()-title.getPrefHeight()) / 256;
         double scaleX = (root.getPrefWidth() / 465);
-        double tileHeight = tileDefaultSize*(scaleY);
-        double tileWidth = tileDefaultSize*(scaleX);
+        int tileHeight = (int) (tileDefaultSize*(scaleY));
+        int tileWidth = (int) (tileDefaultSize*(scaleX));
 
         InputStream dirtPath = Terraria.class.getResourceAsStream("tiles/dirt-left.png");
         if (dirtPath == null) try {
             dirtPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/dirt-left.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image dirt = new Image(dirtPath,tileWidth,tileHeight,false,false);
+        Image dirt = new Image(dirtPath, tileWidth, tileHeight, false, false);
 
         InputStream rockPath = Terraria.class.getResourceAsStream("tiles/rock-fill.png");
         if (rockPath == null) try {
             rockPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-fill.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image rock = new Image(rockPath,tileWidth,tileHeight,false,false);
+        Image rock = new Image(rockPath, tileWidth, tileHeight, false, false);
 
         for (int y = 0; y < tiles.getHeight() ; y++){
             for (int x = 0 ; x < tiles.getWidth() ; x++){
