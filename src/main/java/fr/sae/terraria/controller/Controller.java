@@ -2,10 +2,11 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.Entity;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -107,41 +108,50 @@ public class Controller implements Initializable
                 switch (tiles.getTile(y,x))
                 {
                     case TileMaps.STONE:
-                        Stone rockSprite = new Stone(x*tileWidth.get(), y*tileHeight.get());
-                        rockSprite.setImage(stoneImg);
-                        environment.getEntities().add(rockSprite);
+                        Stone stoneSprite = new Stone(x*tileWidth.get(), y*tileHeight.get());
+                        stoneSprite.setRect((int) stoneImg.getWidth(), (int) stoneImg.getHeight());
+                        display.getChildren().add(createImageView(stoneSprite, stoneImg));
+                        environment.getEntities().add(stoneSprite);
                         break;
                     case TileMaps.DIRT:
                         Dirt dirtSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-                        dirtSprite.setImage(dirtImg);
+                        dirtSprite.setRect((int) dirtImg.getWidth(), (int) dirtImg.getHeight());
+                        display.getChildren().add(createImageView(dirtSprite, dirtImg));
                         environment.getEntities().add(dirtSprite);
                         break;
                     case TileMaps.FLOOR_TOP:
                         Dirt floorTopSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-                        floorTopSprite.setImage(floorTopImg);
+                        floorTopSprite.setRect((int) floorTopImg.getWidth(), (int) floorTopImg.getHeight());
+                        display.getChildren().add(createImageView(floorTopSprite, floorTopImg));
                         environment.getEntities().add(floorTopSprite);
                         break;
                     case TileMaps.FLOOR_LEFT:
                         Dirt floorLeftSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-                        floorLeftSprite.setImage(floorLeftImg);
+                        floorLeftSprite.setRect((int) floorLeftImg.getWidth(), (int) floorLeftImg.getHeight());
+                        display.getChildren().add(createImageView(floorLeftSprite, floorLeftImg));
                         environment.getEntities().add(floorLeftSprite);
                         break;
                     case TileMaps.FLOOR_RIGHT:
                         Dirt floorRightSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-                        floorRightSprite.setImage(floorRightImg);
+                        floorRightSprite.setRect((int) floorRightImg.getWidth(), (int) floorRightImg.getHeight());
+                        display.getChildren().add(createImageView(floorRightSprite, floorRightImg));
                         environment.getEntities().add(floorRightSprite);
                         break;
                 }
 
-        for (Entity entity : environment.getEntities())
-            display.getChildren().add(entity.getImageView());
+        ImageView playerImgView = new ImageView(new Image(playerPath, tileWidth.get(), tileHeight.get()*2, false, false));
+        environment.getPlayer().setRect((int) playerImgView.getFitWidth(), (int) playerImgView.getFitHeight());
+        playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
+        playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
+        display.getChildren().add(playerImgView);
+    }
 
-        InputStream playerPath = Terraria.class.getResourceAsStream("tiles/rock-bottom.png");
-        if (playerPath == null) try {
-            playerPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-bottom.png");
-        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        environment.getPlayer().setImage(new Image(playerPath, tileWidth.get(), tileHeight.get(), false, false));
-        display.getChildren().add(environment.getPlayer().getImageView());
+    private ImageView createImageView(Entity entity, Image img)
+    {
+        ImageView imageView = new ImageView(img);
+        imageView.translateXProperty().bind(entity.getXProperty());
+        imageView.translateYProperty().bind(entity.getYProperty());
 
+        return imageView;
     }
 }
