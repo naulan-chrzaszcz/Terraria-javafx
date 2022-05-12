@@ -5,6 +5,7 @@
 <?import java.net.URL?>
 
 
+<?import javafx.scene.text.Text?>
 <BorderPane fx:id="root"
             minHeight="-Infinity" maxHeight="-Infinity"
             minWidth="-Infinity" maxWidth="-Infinity"
@@ -19,7 +20,11 @@
       <HBox fx:id="title"
             id="textArea"
             prefHeight="50.0"
-            BorderPane.alignment="CENTER"/>
+            BorderPane.alignment="CENTER">
+         <children>
+            <Text>Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago</Text>
+         </children>
+      </HBox>
    </top>
 
    <center>
