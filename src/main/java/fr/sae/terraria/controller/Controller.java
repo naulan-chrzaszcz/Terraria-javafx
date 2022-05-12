@@ -103,6 +103,11 @@ public class Controller implements Initializable
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
         Image dirtImg = new Image(dirtPath, tileWidth.get(), tileHeight.get(), false, false);
 
+        InputStream playerPath = Terraria.class.getResourceAsStream("sprites/player/player_idle.png");
+        if (playerPath == null) try {
+            playerPath = new FileInputStream("src/main/resources/fr/sae/terraria/sprites/player/player_idle.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+
         for (int y = 0; y < tiles.getHeight() ; y++)
             for (int x = 0 ; x < tiles.getWidth() ; x++)
                 switch (tiles.getTile(y,x))

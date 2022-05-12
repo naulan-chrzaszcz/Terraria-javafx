@@ -28,8 +28,7 @@ public abstract class Entity
 
     public DoubleProperty getXProperty() { return x; }
     public DoubleProperty getYProperty(){ return y; }
-    public ImageView getImageView() { return imgView; }
-    public Rectangle getRect() { return rect; }
+    public Rect getRect() { return rect; }
     public double getX() { return x.get(); }
     public double getY() { return y.get(); }
     public int getPv() { return pv; }
