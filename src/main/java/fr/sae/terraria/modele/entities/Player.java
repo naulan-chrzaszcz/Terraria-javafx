@@ -3,7 +3,6 @@ package fr.sae.terraria.modele.entities;
 
 public class Player extends Entity
 {
-
     private double frame; // TODO faire une animation
 
 

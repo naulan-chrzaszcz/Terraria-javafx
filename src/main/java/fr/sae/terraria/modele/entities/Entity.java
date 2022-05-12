@@ -1,11 +1,11 @@
 package fr.sae.terraria.modele.entities;
 
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
+
 
 public abstract class Entity
 {
@@ -55,6 +55,9 @@ public abstract class Entity
         this.rect.widthProperty().bind(img.widthProperty());
 
         this.imgView = new ImageView(img);
+        this.imgView.setPreserveRatio(false);
+        this.imgView.setSmooth(false);
+        this.imgView.setCache(false);
         this.imgView.translateXProperty().bind(this.x);
         this.imgView.translateYProperty().bind(this.y);
     }

@@ -19,10 +19,11 @@
    <top>
       <HBox fx:id="title"
             id="textArea"
-            prefHeight="50.0"
+            prefHeight="25.0" prefWidth="1280"
             BorderPane.alignment="CENTER">
          <children>
-            <Text>Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago</Text>
+            <Text id="text"
+                  text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago"/>
          </children>
       </HBox>
    </top>

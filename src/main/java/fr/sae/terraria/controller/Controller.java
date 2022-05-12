@@ -1,5 +1,8 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
@@ -9,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.animation.KeyFrame;
@@ -47,7 +49,6 @@ public class Controller implements Initializable
     private IntegerProperty tileHeight = new SimpleIntegerProperty();
 
     private Environment environment;
-    private Map<KeyCode, Boolean> keysInput = new HashMap<>();
     private TileMaps tiles;
 
     private int ticks = 0;
@@ -55,57 +56,94 @@ public class Controller implements Initializable
 
     public Controller(Stage primaryStage)
     {
+        environment = new Environment();
+        tiles = new TileMaps();
+
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            keysInput.put(key.getCode(), true);
+            environment.getKeysInput().put(key.getCode(), true);
             key.consume();
         });
 
         primaryStage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
-            keysInput.put(key.getCode(), false);
+            environment.getKeysInput().put(key.getCode(), false);
             key.consume();
         });
+
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue()-title.getPrefHeight()) / 256))));
+        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue() / 465)))));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        environment = new Environment();
-        tiles = new TileMaps();
-
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         tileHeight.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefHeight()-title.getPrefHeight()) / 256)));
         tileWidth.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefWidth() / 465))));
 
-        InputStream dirtPath = Terraria.class.getResourceAsStream("tiles/dirt-left.png");
-        if (dirtPath == null) try {
-            dirtPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/dirt-left.png");
+        InputStream floorTopPath = Terraria.class.getResourceAsStream("tiles/floor-top.png");
+        if (floorTopPath == null) try {
+            floorTopPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/floor-top.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image dirt = new Image(dirtPath, tileWidth.get(), tileHeight.get(), false, false);
+        Image floorTopImg = new Image(floorTopPath, tileWidth.get(), tileHeight.get(), false, false);
 
-        InputStream rockPath = Terraria.class.getResourceAsStream("tiles/rock-fill.png");
-        if (rockPath == null) try {
-            rockPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-fill.png");
+        InputStream floorLeftPath = Terraria.class.getResourceAsStream("tiles/floor-left.png");
+        if (floorLeftPath == null) try {
+            floorLeftPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/floor-left.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image rock = new Image(rockPath, tileWidth.get(), tileHeight.get(), false, false);
+        Image floorLeftImg = new Image(floorLeftPath, tileWidth.get(), tileHeight.get(), false, false);
+
+        InputStream floorRightPath = Terraria.class.getResourceAsStream("tiles/floor-right.png");
+        if (floorRightPath == null) try {
+            floorRightPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/floor-right.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        Image floorRightImg = new Image(floorRightPath, tileWidth.get(), tileHeight.get(), false, false);
+
+        InputStream stonePath = Terraria.class.getResourceAsStream("tiles/rock-fill.png");
+        if (stonePath == null) try {
+            stonePath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-fill.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        Image stoneImg = new Image(stonePath, tileWidth.get(), tileHeight.get(), false, false);
+
+        InputStream dirtPath = Terraria.class.getResourceAsStream("tiles/dirt-top.png");
+        if (dirtPath == null) try {
+            dirtPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/dirt-top.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        Image dirtImg = new Image(dirtPath, tileWidth.get(), tileHeight.get(), false, false);
 
         for (int y = 0; y < tiles.getHeight() ; y++)
-            for (int x = 0 ; x < tiles.getWidth() ; x++) {
-                ImageView tileView = new ImageView();
-                tileView.setX(x*tileWidth.get());
-                tileView.setY(y*tileHeight.get());
-
-                switch (tiles.getTile(y,x)) {
+            for (int x = 0 ; x < tiles.getWidth() ; x++)
+                switch (tiles.getTile(y,x))
+                {
                     case 1:
-                        tileView.setImage(rock);
+                        Stone rockSprite = new Stone(x*tileWidth.get(), y*tileHeight.get());
+                        rockSprite.setImage(stoneImg);
+                        environment.getEntities().add(rockSprite);
                         break;
                     case 2:
-                        tileView.setImage(dirt);
+                        Dirt dirtSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
+                        dirtSprite.setImage(dirtImg);
+                        environment.getEntities().add(dirtSprite);
+                        break;
+                    case 3:
+                        Dirt floorTopSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
+                        floorTopSprite.setImage(floorTopImg);
+                        environment.getEntities().add(floorTopSprite);
+                        break;
+                    case 4:
+                        Dirt floorLeftSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
+                        floorLeftSprite.setImage(floorLeftImg);
+                        environment.getEntities().add(floorLeftSprite);
+                        break;
+                    case 5:
+                        Dirt floorRightSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
+                        floorRightSprite.setImage(floorRightImg);
+                        environment.getEntities().add(floorRightSprite);
                         break;
                 }
 
-                display.getChildren().add(tileView);
-            }
+        for (Entity entity : environment.getEntities())
+            display.getChildren().add(entity.getImageView());
 
         InputStream playerPath = Terraria.class.getResourceAsStream("tiles/rock-bottom.png");
         if (playerPath == null) try {
@@ -114,38 +152,5 @@ public class Controller implements Initializable
         environment.getPlayer().setImage(new Image(playerPath, tileWidth.get(), tileHeight.get(), false, false));
         display.getChildren().add(environment.getPlayer().getImageView());
 
-        gameLoop();
-    }
-
-    private void gameLoop()
-    {
-        Timeline loop = new Timeline();
-        loop.setCycleCount(Timeline.INDEFINITE);
-
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
-            eventInput();
-            this.environment.getPlayer().updates();
-
-            ticks++;
-        }));
-
-        loop.getKeyFrames().add(keyFrame);
-        loop.play();
-    }
-
-    public void eventInput()
-    {
-        int countKeys[] = new int[1];
-        keysInput.forEach((key, value) -> {
-            if (key == D && value)
-                environment.getPlayer().moveRight();
-            if (key == Q && value)
-                environment.getPlayer().moveLeft();
-
-            if (!value)
-                countKeys[0]++;
-            if (countKeys[0] == keysInput.size())
-                environment.getPlayer().idle();
-        });
     }
 }

@@ -25,6 +25,7 @@ public class Terraria extends Application
     public void start(Stage stage) throws IOException
     {
         /* TODO: Commencer par le menu */
+
         URL pathFxml = Terraria.class.getResource("vue/game.fxml");
         if (pathFxml == null)
             pathFxml = new File("src/main/resources/fr/sae/terraria/vue/game.fxml").toURI().toURL();
@@ -37,6 +38,7 @@ public class Terraria extends Application
         stage.setTitle(this.titleWindow);
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.sizeToScene();
 
         stage.show();
     }
