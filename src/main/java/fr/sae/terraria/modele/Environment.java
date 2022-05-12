@@ -14,7 +14,7 @@ public class Environment
     {
         entities = new ArrayList<>();
 
-        player = new Player(0,0);
+        player = new Player(0,0, 3, 1);
         player.setPv(20);
         player.setVelocity(2);
 

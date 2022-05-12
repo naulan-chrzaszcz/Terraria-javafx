@@ -3,11 +3,17 @@
 <?import javafx.scene.layout.*?>
 
 
+<?import java.net.URL?>
 <BorderPane fx:id="root"
             maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
+   <stylesheets>
+      <URL value="@./game.css"/>
+   </stylesheets>
+
+
    <top>
       <HBox fx:id="title"
             prefHeight="50.0"
@@ -15,6 +21,7 @@
    </top>
 
    <center>
-      <Pane fx:id="display"/>
+      <Pane fx:id="display"
+            id="display"/>
    </center>
 </BorderPane>
