@@ -2,11 +2,12 @@
 
 <?import javafx.scene.layout.*?>
 
-
 <?import java.net.URL?>
+
+
 <BorderPane fx:id="root"
-            maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity"
+            minHeight="-Infinity" maxHeight="-Infinity"
+            minWidth="-Infinity" maxWidth="-Infinity"
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
@@ -16,12 +17,13 @@
 
    <top>
       <HBox fx:id="title"
+            id="textArea"
             prefHeight="50.0"
             BorderPane.alignment="CENTER"/>
    </top>
 
    <center>
       <Pane fx:id="display"
-            id="display"/>
+            id="sky"/>
    </center>
 </BorderPane>

@@ -1,3 +1,10 @@
-#display {
+#sky
+{
     -fx-background-color: #87CEEB;
+}
+
+#textArea
+{
+    -fx-background-color: black;
+    -fx-font-family: Impact;
 }
