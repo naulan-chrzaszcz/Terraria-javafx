@@ -6,10 +6,11 @@ public class Player extends Entity
     private double frame;// TODO faire une animation
 
 
-    public Player(int x, int y, int pv, double velocity){
-        super(x, y, pv, velocity);
-        this.offset = new int[2];
-        this.frame=1;
+    public Player(int x, int y)
+    {
+        super(x, y);
+
+        this.frame = 1;
     }
 
     public void moveRight() {

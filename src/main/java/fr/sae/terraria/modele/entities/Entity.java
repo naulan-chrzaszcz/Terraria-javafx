@@ -17,11 +17,11 @@ public abstract class Entity
     protected DoubleProperty y;
 
     protected int[] offset;
-    private int pv;
-    protected double velocity;
+    protected int pv = 3;
+    protected double velocity = 1;
 
 
-    public Entity(int x, int y, int pv, double velocity)
+    public Entity(int x, int y)
     {
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
@@ -30,14 +30,7 @@ public abstract class Entity
         rect.translateXProperty().bind(this.x);
         rect.translateYProperty().bind(this.y);
 
-        this.pv=pv;
-        this.velocity =velocity;
-    }
-
-    public Entity(int x, int y, double velocity){
-        this.x = new SimpleDoubleProperty(x);
-        this.y = new SimpleDoubleProperty(y);
-        this.velocity=velocity;
+        this.offset = new int[2];
     }
 
     public abstract void updates();
@@ -50,7 +43,6 @@ public abstract class Entity
     public double getY() { return y.get(); }
     public int getPv() { return pv; }
     public double getVelocity() { return velocity; }
-
 
     public void setPv(int pv) { this.pv = pv; }
     public void setVelocity(double velocity) { this.velocity = velocity; }
