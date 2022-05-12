@@ -6,16 +6,11 @@ import fr.sae.terraria.modele.entities.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -23,8 +18,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import java.net.URL;
@@ -32,8 +25,6 @@ import java.net.URL;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-
-import static javafx.scene.input.KeyCode.*;
 
 
 public class Controller implements Initializable
@@ -115,27 +106,27 @@ public class Controller implements Initializable
             for (int x = 0 ; x < tiles.getWidth() ; x++)
                 switch (tiles.getTile(y,x))
                 {
-                    case 1:
+                    case TileMaps.STONE:
                         Stone rockSprite = new Stone(x*tileWidth.get(), y*tileHeight.get());
                         rockSprite.setImage(stoneImg);
                         environment.getEntities().add(rockSprite);
                         break;
-                    case 2:
+                    case TileMaps.DIRT:
                         Dirt dirtSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
                         dirtSprite.setImage(dirtImg);
                         environment.getEntities().add(dirtSprite);
                         break;
-                    case 3:
+                    case TileMaps.FLOOR_TOP:
                         Dirt floorTopSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
                         floorTopSprite.setImage(floorTopImg);
                         environment.getEntities().add(floorTopSprite);
                         break;
-                    case 4:
+                    case TileMaps.FLOOR_LEFT:
                         Dirt floorLeftSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
                         floorLeftSprite.setImage(floorLeftImg);
                         environment.getEntities().add(floorLeftSprite);
                         break;
-                    case 5:
+                    case TileMaps.FLOOR_RIGHT:
                         Dirt floorRightSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
                         floorRightSprite.setImage(floorRightImg);
                         environment.getEntities().add(floorRightSprite);

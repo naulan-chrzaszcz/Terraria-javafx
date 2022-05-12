@@ -32,16 +32,4 @@ public class Player extends Entity
             frame = 0;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 }

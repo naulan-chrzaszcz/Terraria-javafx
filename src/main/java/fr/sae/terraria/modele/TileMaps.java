@@ -4,12 +4,16 @@ import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
 
-import static fr.sae.terraria.modele.TilesIndex.SKY;
-
 
 public class TileMaps
 {
     public final static int tileDefaultSize = 16;
+    public final static int SKY = 0;
+    public final static int STONE = 1;
+    public final static int DIRT = 2;
+    public final static int FLOOR_TOP = 3;
+    public final static int FLOOR_LEFT = 4;
+    public final static int FLOOR_RIGHT = 5;
 
     private int[][] map;
     private int w;
