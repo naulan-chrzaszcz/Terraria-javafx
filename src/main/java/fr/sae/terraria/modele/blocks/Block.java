@@ -1,6 +1,6 @@
 package fr.sae.terraria.modele.blocks;
 
-import fr.sae.terraria.modele.entities.Entity;
+import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public abstract class Block extends Entity

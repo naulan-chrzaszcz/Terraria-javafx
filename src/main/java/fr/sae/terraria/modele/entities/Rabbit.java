@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities;
 
 
+import fr.sae.terraria.modele.entities.entity.Entity;
+
 public class Rabbit extends Entity
 {
     private int frame;
@@ -21,6 +23,8 @@ public class Rabbit extends Entity
         if(frame == 4) {
             frame = 0;
         }//TODO faire les frame
+
+        this.rect.update(x.get(), y.get());
     }
 
 }
