@@ -1,5 +1,7 @@
 package fr.sae.terraria.controller;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -41,6 +43,9 @@ public class Controller implements Initializable
     @FXML
     private Pane display;
 
+    private IntegerProperty tileWidth = new SimpleIntegerProperty();
+    private IntegerProperty tileHeight = new SimpleIntegerProperty();
+
     private Environment environment;
     private Map<KeyCode, Boolean> keysInput = new HashMap<>();
     private TileMaps tiles;
@@ -69,29 +74,26 @@ public class Controller implements Initializable
 
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
-        int tileDefaultSize = 16;
-        double scaleY = (root.getPrefHeight()-title.getPrefHeight()) / 256;
-        double scaleX = (root.getPrefWidth() / 465);
-        int tileHeight = (int) (tileDefaultSize*(scaleY));
-        int tileWidth = (int) (tileDefaultSize*(scaleX));
+        tileHeight.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefHeight()-title.getPrefHeight()) / 256)));
+        tileWidth.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefWidth() / 465))));
 
         InputStream dirtPath = Terraria.class.getResourceAsStream("tiles/dirt-left.png");
         if (dirtPath == null) try {
             dirtPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/dirt-left.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image dirt = new Image(dirtPath, tileWidth, tileHeight, false, false);
+        Image dirt = new Image(dirtPath, tileWidth.get(), tileHeight.get(), false, false);
 
         InputStream rockPath = Terraria.class.getResourceAsStream("tiles/rock-fill.png");
         if (rockPath == null) try {
             rockPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-fill.png");
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
-        Image rock = new Image(rockPath, tileWidth, tileHeight, false, false);
+        Image rock = new Image(rockPath, tileWidth.get(), tileHeight.get(), false, false);
 
         for (int y = 0; y < tiles.getHeight() ; y++)
             for (int x = 0 ; x < tiles.getWidth() ; x++) {
                 ImageView tileView = new ImageView();
-                tileView.setX(x*tileWidth);
-                tileView.setY(y*tileHeight);
+                tileView.setX(x*tileWidth.get());
+                tileView.setY(y*tileHeight.get());
 
                 switch (tiles.getTile(y,x)) {
                     case 1:
@@ -105,10 +107,12 @@ public class Controller implements Initializable
                 display.getChildren().add(tileView);
             }
 
-        Circle a = new Circle(5);
-        a.translateXProperty().bind(environment.getPlayer().getXProperty());
-        a.translateYProperty().bind(environment.getPlayer().getYProperty());
-        display.getChildren().add(a);
+        InputStream playerPath = Terraria.class.getResourceAsStream("tiles/rock-bottom.png");
+        if (playerPath == null) try {
+            playerPath = new FileInputStream("src/main/resources/fr/sae/terraria/tiles/rock-bottom.png");
+        } catch (FileNotFoundException e) { throw new RuntimeException(e); }
+        environment.getPlayer().setImage(new Image(playerPath, tileWidth.get(), tileHeight.get(), false, false));
+        display.getChildren().add(environment.getPlayer().getImageView());
 
         gameLoop();
     }
@@ -128,7 +132,9 @@ public class Controller implements Initializable
         loop.getKeyFrames().add(keyFrame);
         loop.play();
     }
-    public void eventInput(){
+
+    public void eventInput()
+    {
         int countKeys[] = new int[1];
         keysInput.forEach((key, value) -> {
             if (key == D && value)

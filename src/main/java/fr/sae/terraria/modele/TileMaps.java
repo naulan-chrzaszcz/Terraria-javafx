@@ -9,6 +9,8 @@ import static fr.sae.terraria.modele.TilesIndex.SKY;
 
 public class TileMaps
 {
+    public static int tileDefaultSize = 16;
+
     private int[][] map;
     private int w;
     private int h;

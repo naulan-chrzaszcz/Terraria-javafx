@@ -1,9 +1,9 @@
 package fr.sae.terraria.modele;
 
-
 import fr.sae.terraria.modele.entities.*;
-
+import javafx.beans.property.IntegerProperty;
 import java.util.ArrayList;
+
 
 public class Environment
 {
@@ -14,6 +14,7 @@ public class Environment
     public Environment()
     {
         entities = new ArrayList<>();
+
         player = new Player(0,0,20,3);
     }
 
