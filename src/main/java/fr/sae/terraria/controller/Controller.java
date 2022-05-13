@@ -155,12 +155,13 @@ public class Controller implements Initializable
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
         display.getChildren().add(playerImgView);
 
-
+        /*
         Rectangle rec = new Rectangle(environment.getPlayer().getX(),environment.getPlayer().getY(),environment.getPlayer().getRect().get().getWidth(),environment.getPlayer().getRect().get().getHeight());
         rec.translateXProperty().bind(environment.getPlayer().getXProperty());
         rec.translateYProperty().bind(environment.getPlayer().getYProperty());
         rec.setFill(Color.DARKCYAN);
         display.getChildren().add(rec);
+         */
     }
 
     private ImageView createImageView(Entity entity, Image img)
