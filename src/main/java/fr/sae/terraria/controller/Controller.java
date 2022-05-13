@@ -148,7 +148,7 @@ public class Controller implements Initializable
                         break;
                 }
 
-        Image playerImg = new Image(playerPath, tileWidth.get(), tileHeight.get()*2, false, false);
+        Image playerImg = new Image(playerPath, (int) (tileWidth.get()/1.25), (int) (tileHeight.get()*2/1.25), false, false);
         ImageView playerImgView = new ImageView(playerImg);
         environment.getPlayer().setRect((int) playerImg.getWidth(), (int) playerImg.getHeight());
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
