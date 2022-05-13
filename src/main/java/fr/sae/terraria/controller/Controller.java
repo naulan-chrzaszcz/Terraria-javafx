@@ -48,7 +48,7 @@ public class Controller implements Initializable
 
     public Controller(Stage primaryStage)
     {
-        environment = new Environment();
+
         tiles = new TileMaps();
 
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
@@ -72,6 +72,7 @@ public class Controller implements Initializable
 
         tileHeight.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefHeight()-title.getPrefHeight()) / 256)));
         tileWidth.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefWidth() / 465))));
+        environment = new Environment(tiles.getWidth()*tileWidth.get(),tiles.getHeight()*tileHeight.get(),tileWidth.get(),tileHeight.get());
 
         InputStream floorTopPath = Terraria.class.getResourceAsStream("tiles/floor-top.png");
         if (floorTopPath == null) try {
