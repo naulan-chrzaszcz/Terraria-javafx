@@ -11,6 +11,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -145,11 +148,19 @@ public class Controller implements Initializable
                         break;
                 }
 
-        ImageView playerImgView = new ImageView(new Image(playerPath, tileWidth.get(), tileHeight.get()*2, false, false));
-        environment.getPlayer().setRect((int) playerImgView.getFitWidth(), (int) playerImgView.getFitHeight());
+        Image playerImg = new Image(playerPath, tileWidth.get(), tileHeight.get()*2, false, false);
+        ImageView playerImgView = new ImageView(playerImg);
+        environment.getPlayer().setRect((int) playerImg.getWidth(), (int) playerImg.getHeight());
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
         display.getChildren().add(playerImgView);
+
+
+        Rectangle rec = new Rectangle(environment.getPlayer().getX(),environment.getPlayer().getY(),environment.getPlayer().getRect().get().getWidth(),environment.getPlayer().getRect().get().getHeight());
+        rec.translateXProperty().bind(environment.getPlayer().getXProperty());
+        rec.translateYProperty().bind(environment.getPlayer().getYProperty());
+        rec.setFill(Color.DARKCYAN);
+        display.getChildren().add(rec);
     }
 
     private ImageView createImageView(Entity entity, Image img)

@@ -36,7 +36,7 @@ public class Environment
 
         player = new Player(0,0, 3, 1);
         player.setPv(20);
-        player.setVelocity(2);
+        player.setVelocity(5);
 
         gameLoop();
     }
@@ -71,14 +71,14 @@ public class Environment
                 player.setFall(true);
 
             if (player.getFall())
-                player.setY(player.getY() + 2);
+                player.setY(player.getY() +1);
 
             getPlayer().updates();
             if (player.getX() < 0){
                 player.setX(0.0);
             }
-            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.8)){
-                player.setX(elementsSize[0]-(elementsSize[2]*1.8));
+            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92)){
+                player.setX(elementsSize[0]-(elementsSize[2]*1.92));
             }
             ticks++;
         }));
