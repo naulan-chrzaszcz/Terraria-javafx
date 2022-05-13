@@ -1,7 +1,7 @@
 package fr.sae.terraria.modele.entities.entity;
 
-
 import javafx.geometry.Rectangle2D;
+
 
 public class Rect
 {
@@ -20,6 +20,11 @@ public class Rect
     }
 
     public void update(double x, double y) { this.rect = new Rectangle2D(x, y, width, height); }
+
+    public Rectangle2D collideRect(Rect rect)
+    {
+        return (this.rect.intersects(rect.get())) ? rect.get() : null;
+    }
 
     public Rectangle2D get() { return this.rect; }
 }

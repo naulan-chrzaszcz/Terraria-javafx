@@ -8,5 +8,8 @@ public class Dirt extends Block
         super(x, y);
     }
 
-    public void updates() {}
+    public void updates()
+    {
+        this.rect.update(x.get(), y.get());
+    }
 }

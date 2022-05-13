@@ -17,7 +17,8 @@ public class Stone extends Block
     }
 
     @Override
-    public void updates() {
-
+    public void updates()
+    {
+        this.rect.update(x.get(), y.get());
     }
 }
