@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.modele.entities.*;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.input.KeyCode;

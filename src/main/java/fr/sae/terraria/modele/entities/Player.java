@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities;
 
 
+import fr.sae.terraria.modele.entities.entity.Entity;
+
 public class Player extends Entity
 {
     private double frame; // TODO faire une animation
@@ -31,5 +33,7 @@ public class Player extends Entity
         if(frame == 4) {
             frame = 0;
         }
+
+        this.rect.update(x.get(), y.get());
     }
 }
