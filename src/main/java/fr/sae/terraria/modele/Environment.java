@@ -2,8 +2,10 @@ package fr.sae.terraria.modele;
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
@@ -46,6 +48,29 @@ public class Environment
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             eventInput();
+
+            player.setFall(false);
+
+            int countBlocks = 0;
+            for (Entity e : entities)
+            {
+                Rectangle2D rectEntity = player.getRect().collideRect(e.getRect());
+                if (rectEntity != null) {
+                    System.out.println(player.getRect().collideRect(e.getRect()));
+                    if (player.getRect().get().getMinY() - e.getRect().get().getMinY() < 0)
+                        player.setY(e.getRect().get().getMinY());
+                }
+
+                if (rectEntity == null)
+                    countBlocks++;
+            }
+
+            if (countBlocks == entities.size())
+                player.setFall(true);
+
+            if (player.getFall())
+                player.setY(player.getY() + 2);
+
             getPlayer().updates();
             if (player.getX() < 0){
                 player.setX(0.0);

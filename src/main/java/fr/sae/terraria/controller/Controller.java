@@ -48,9 +48,8 @@ public class Controller implements Initializable
 
     public Controller(Stage primaryStage)
     {
-
+        environment = new Environment();
         tiles = new TileMaps();
-
 
         primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             environment.getKeysInput().put(key.getCode(), true);
@@ -71,10 +70,8 @@ public class Controller implements Initializable
     {
         tiles.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
-
         tileHeight.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefHeight()-title.getPrefHeight()) / 256)));
         tileWidth.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefWidth() / 465))));
-        environment = new Environment(tiles.getWidth()*tileWidth.get(),tiles.getHeight()*tileHeight.get(),tileWidth.get(),tileHeight.get());
 
         InputStream floorTopPath = Terraria.class.getResourceAsStream("tiles/floor-top.png");
         if (floorTopPath == null) try {
@@ -148,7 +145,6 @@ public class Controller implements Initializable
                 }
 
         ImageView playerImgView = new ImageView(new Image(playerPath, tileWidth.get(), tileHeight.get()*2, false, false));
-        System.out.println(tileWidth.get());
         environment.getPlayer().setRect((int) playerImgView.getFitWidth(), (int) playerImgView.getFitHeight());
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());

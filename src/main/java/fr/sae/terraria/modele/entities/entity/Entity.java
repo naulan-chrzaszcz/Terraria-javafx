@@ -14,6 +14,7 @@ public abstract class Entity
     protected int[] offset;
     protected int pv = 3;
     protected double velocity = 1;
+    protected boolean fall = false;
 
 
     public Entity(int x, int y)
@@ -33,12 +34,14 @@ public abstract class Entity
     public double getY() { return y.get(); }
     public int getPv() { return pv; }
     public double getVelocity() { return velocity; }
+    public boolean getFall() { return fall; }
 
     public void setPv(int pv) { this.pv = pv; }
     public void setVelocity(double velocity) { this.velocity = velocity; }
     public void setX(double x) { this.x.setValue(x); }
     public void setY(double y) { this.y.setValue(y); }
     public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
+    public void setFall(boolean v) { fall = v; }
 }
 
 
