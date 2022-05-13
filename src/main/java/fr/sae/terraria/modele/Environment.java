@@ -20,12 +20,16 @@ public class Environment
     private Player player;
     private ArrayList<Entity> entities;
     private Map<KeyCode, Boolean> keysInput = new HashMap<>();
+    private int[] elementsSize;
 
     private int ticks = 0;
 
 
-    public Environment()
+
+
+    public Environment(int widthGame, int heightGame, int widthPlayer,int heightPlayer)
     {
+        elementsSize = new int[]{widthGame,heightGame,widthPlayer,heightPlayer};
         entities = new ArrayList<>();
 
         player = new Player(0,0, 3, 1);
@@ -43,7 +47,12 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             eventInput();
             getPlayer().updates();
-
+            if (player.getX() < 0){
+                player.setX(0.0);
+            }
+            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.8)){
+                player.setX(elementsSize[0]-(elementsSize[2]*1.8));
+            }
             ticks++;
         }));
 
