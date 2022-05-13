@@ -57,8 +57,10 @@ public class Environment
                 Rectangle2D rectEntity = player.getRect().collideRect(e.getRect());
                 if (rectEntity != null) {
                     System.out.println(player.getRect().collideRect(e.getRect()));
-                    if (player.getRect().get().getMinY() - e.getRect().get().getMinY() < 0)
+                    if (Math.abs(player.getRect().get().getMinY() - e.getRect().get().getMinY()) < 8)
                         player.setY(e.getRect().get().getMinY());
+                    if (Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 8)
+                        player.setX(e.getRect().get().getMinX());
                 }
 
                 if (rectEntity == null)
