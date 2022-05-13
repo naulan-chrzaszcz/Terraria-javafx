@@ -1,0 +1,17 @@
+#sky
+{
+    -fx-background-color: #87CEEB;
+}
+
+#textArea
+{
+    -fx-background-color: black;
+    -fx-font-family: Impact;
+    -fx-alignment: center;
+}
+
+#text
+{
+    -fx-fill: white;
+    -fx-font-size: 23px;
+}
