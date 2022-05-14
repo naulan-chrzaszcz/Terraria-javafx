@@ -94,8 +94,8 @@ public class Environment
             if (key == Q && Boolean.TRUE.equals(value)) getPlayer().moveLeft();
             if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value)) {
                 getPlayer().jump(timeJump, yInit);
-                timeJump += .001;
-            } else { yInitGetted = false; }
+                timeJump += .25;
+            } else if ((key == Z || key == SPACE) && Boolean.FALSE.equals(value)) { yInitGetted = false; }
 
             if (Boolean.FALSE.equals(value))            countKeys[0]++;
             if (countKeys[0] == keysInput.size())       getPlayer().idle();

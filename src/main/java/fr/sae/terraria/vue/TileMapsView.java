@@ -16,6 +16,8 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 
 public class TileMapsView
