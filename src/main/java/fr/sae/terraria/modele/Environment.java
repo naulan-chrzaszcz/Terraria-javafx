@@ -30,14 +30,18 @@ public class Environment
     private final Player player;
 
     private final int[] elementsSize;
+    private int widthTile;
+    private int heightTile;
     private int ticks = 0;
 
 
-    public Environment(TileMaps tileMaps, int widthGame, int heightGame, int widthPlayer,int heightPlayer)
+    public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)
     {
         this.tileMaps = tileMaps;
 
-        elementsSize = new int[] {widthGame, heightGame, widthPlayer, heightPlayer};
+        this.widthTile = widthTile;
+        this.heightTile = heightTile;
+        elementsSize = new int[] {widthTile*tileMaps.getWidth(), heightTile*tileMaps.getWidth(), widthPlayer, heightPlayer};
         keysInput = new HashMap<>();
         entities = new ArrayList<>();
 
@@ -56,8 +60,9 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             eventInput();
 
-            int tileUnderFootstepX = (((int) (player.getX())+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
-            int tileUnderFootstepY = (((int) (player.getY())+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
+            int tileUnderFootstepX = (((int) (player.getX()/widthTile)+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
+            int tileUnderFootstepY = (((int) (player.getY()/heightTile)+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
+            System.out.println("x: " + tileUnderFootstepX + " | y: " + tileUnderFootstepY);
             System.out.println(tileMaps.getTile(tileUnderFootstepX, tileUnderFootstepY));
 
             player.setX(100);
