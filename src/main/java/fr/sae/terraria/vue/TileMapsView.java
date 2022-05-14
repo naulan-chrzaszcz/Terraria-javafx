@@ -85,11 +85,9 @@ public class TileMapsView
 
     public Image loadAnImage(String path)
     {
-        String srcPath = "src/main/resources/fr/sae/terraria/";
-
         InputStream pathImg = Terraria.class.getResourceAsStream(path);
         if (pathImg == null) try {
-            pathImg = new FileInputStream(srcPath + path);
+            pathImg = new FileInputStream(Terraria.srcPath + path);
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
 
         return new Image(pathImg, tileWidth.get(), tileHeight.get(), false, false);

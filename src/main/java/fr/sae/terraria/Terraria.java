@@ -14,10 +14,12 @@ import java.net.URL;
 
 public class Terraria extends Application
 {
+    public static final String srcPath = "src/main/resources/fr/sae/terraria/";
+
     // TODO:  effet de profondeur dans la terre
-    private String titleWindow = "Terraria-Like";
-    private int widthWindow = 1280;
-    private int heightWindow = 720;
+    private final String titleWindow = "Terraria-Like";
+    private final int widthWindow = 1280;
+    private final int heightWindow = 720;
 
 
     public static void main(String[] args) { launch(); }
@@ -28,7 +30,7 @@ public class Terraria extends Application
 
         URL pathFxml = Terraria.class.getResource("vue/game.fxml");
         if (pathFxml == null)
-            pathFxml = new File("src/main/resources/fr/sae/terraria/vue/game.fxml").toURI().toURL();
+            pathFxml = new File(this.srcPath + "vue/game.fxml").toURI().toURL();
         
         FXMLLoader fxmlLoader = new FXMLLoader(pathFxml);
         Controller ctrl = new Controller(stage);
