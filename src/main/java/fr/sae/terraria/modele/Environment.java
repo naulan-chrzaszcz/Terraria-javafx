@@ -36,7 +36,7 @@ public class Environment
 
         player = new Player(0,0, 3, 1);
         player.setPv(20);
-        player.setVelocity(2);
+        player.setVelocity(5);
 
         gameLoop();
     }
@@ -57,9 +57,13 @@ public class Environment
                 Rectangle2D rectEntity = player.getRect().collideRect(e.getRect());
                 if (rectEntity != null) {
                     System.out.println(player.getRect().collideRect(e.getRect()));
-                    if (Math.abs(player.getRect().get().getMinY() - e.getRect().get().getMinY()) < 8)
+                    if (Math.abs(player.getRect().get().getMinY() - e.getRect().get().getMinY()) < 5)
                         player.setY(e.getRect().get().getMinY());
-                    if (Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 8)
+                    if (player.getFall() && Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 5)
+                        player.setX(e.getRect().get().getMinX());
+                    if (!player.getFall() &&
+                        player.getRect().get().getMinY() != e.getRect().get().getMinY() &&
+                        Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 5)
                         player.setX(e.getRect().get().getMinX());
                 }
 
@@ -71,14 +75,14 @@ public class Environment
                 player.setFall(true);
 
             if (player.getFall())
-                player.setY(player.getY() + 2);
+                player.setY(player.getY() +2);
 
             getPlayer().updates();
             if (player.getX() < 0){
                 player.setX(0.0);
             }
-            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.8)){
-                player.setX(elementsSize[0]-(elementsSize[2]*1.8));
+            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92)){
+                player.setX(elementsSize[0]-(elementsSize[2]*1.92));
             }
             ticks++;
         }));
