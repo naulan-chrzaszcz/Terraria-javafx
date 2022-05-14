@@ -26,14 +26,17 @@ public class Environment
     private final Map<KeyCode, Boolean> keysInput;
     private final ArrayList<Entity> entities;
 
+    private final TileMaps tileMaps;
     private final Player player;
 
     private final int[] elementsSize;
     private int ticks = 0;
 
 
-    public Environment(int widthGame, int heightGame, int widthPlayer,int heightPlayer)
+    public Environment(TileMaps tileMaps, int widthGame, int heightGame, int widthPlayer,int heightPlayer)
     {
+        this.tileMaps = tileMaps;
+
         elementsSize = new int[] {widthGame, heightGame, widthPlayer, heightPlayer};
         keysInput = new HashMap<>();
         entities = new ArrayList<>();
@@ -53,32 +56,12 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             eventInput();
 
-            player.setFall(false);
+            int tileUnderFootstepX = (((int) (player.getX())+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
+            int tileUnderFootstepY = (((int) (player.getY())+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
+            System.out.println(tileMaps.getTile(tileUnderFootstepX, tileUnderFootstepY));
 
-            int countBlocks = 0;
-            for (Entity e : entities)
-            {
-                Rectangle2D rectEntity = player.getRect().collideRect(e.getRect());
-                if (rectEntity != null) {
-                    if (Math.abs(player.getRect().get().getMinY() - e.getRect().get().getMinY()) < 5)
-                        player.setY(e.getRect().get().getMinY());
-                    if (player.getFall() && Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 5)
-                        player.setX(e.getRect().get().getMinX());
-                    if (!player.getFall() &&
-                        player.getRect().get().getMinY() != e.getRect().get().getMinY() &&
-                        Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 5)
-                        player.setX(e.getRect().get().getMinX());
-                }
-
-                if (rectEntity == null)
-                    countBlocks++;
-            }
-
-            if (countBlocks == entities.size())
-                player.setFall(true);
-
-            if (player.getFall())
-                player.setY(player.getY() +2);
+            player.setX(100);
+            player.setY(500);
 
             this.worldLimit();
             ticks++;

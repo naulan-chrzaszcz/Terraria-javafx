@@ -68,7 +68,7 @@ public class Controller implements Initializable
 
         int widthGame = this.tileMaps.getWidth()*tileWidth.get();
         int heightGame = this.tileMaps.getHeight()*tileHeight.get();
-        this.environment = new Environment(widthGame, heightGame, this.tileWidth.get(), this.tileHeight.get());
+        this.environment = new Environment(tileMaps, widthGame, heightGame, this.tileWidth.get(), this.tileHeight.get());
 
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);
