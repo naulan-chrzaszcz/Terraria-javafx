@@ -19,17 +19,19 @@ import static javafx.scene.input.KeyCode.Q;
 
 public class Environment
 {
-    private Player player;
+    private Map<KeyCode, Boolean> keysInput;
     private ArrayList<Entity> entities;
-    private Map<KeyCode, Boolean> keysInput = new HashMap<>();
-    private int[] elementsSize;
 
+    private Player player;
+
+    private int[] elementsSize;
     private int ticks = 0;
 
 
     public Environment(int widthGame, int heightGame, int widthPlayer,int heightPlayer)
     {
-        elementsSize = new int[]{widthGame,heightGame,widthPlayer,heightPlayer};
+        elementsSize = new int[] {widthGame, heightGame, widthPlayer, heightPlayer};
+        keysInput = new HashMap<>();
         entities = new ArrayList<>();
 
         player = new Player(0,0);
