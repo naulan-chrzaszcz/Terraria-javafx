@@ -66,9 +66,7 @@ public class Controller implements Initializable
         this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / 256)));
         this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / 465))));
 
-        int widthGame = this.tileMaps.getWidth()*tileWidth.get();
-        int heightGame = this.tileMaps.getHeight()*tileHeight.get();
-        this.environment = new Environment(widthGame, heightGame, this.tileWidth.get(), this.tileHeight.get());
+        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get(), this.tileWidth.get(), this.tileHeight.get());
 
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);

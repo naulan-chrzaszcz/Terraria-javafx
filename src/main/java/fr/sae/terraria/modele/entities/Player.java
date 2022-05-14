@@ -5,6 +5,8 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 
 public class Player extends Entity
 {
+    private double prevX;
+    private double prevY;
     private double frame = 0; // TODO faire une animation
 
 
@@ -23,8 +25,16 @@ public class Player extends Entity
     /** Permet de ne plus faire bouger le joueur */
     public void idle() { this.offset[0] = 0; this.offset[1] =0;}
 
+    public void rollback()
+    {
+        setX(prevX);
+        setY(prevY);
+    }
+
     public void updates()
     {
+        this.prevX = x.get();
+        this.prevY = y.get();
         // Applique les déplacements selon les valeurs de l'offset
         this.setX(this.x.get() + this.offset[0] * this.velocity);
         this.setY(this.y.get() + this.offset[1] * this.velocity);
