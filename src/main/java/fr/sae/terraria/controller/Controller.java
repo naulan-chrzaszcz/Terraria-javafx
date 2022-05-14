@@ -21,6 +21,9 @@ import fr.sae.terraria.modele.TileMaps;
 
 public class Controller implements Initializable
 {
+    private final static int displayRenderingWidth = 465;
+    private final static int displayRenderingHeight = 256;
+
     @FXML
     private BorderPane root;
     @FXML
@@ -54,17 +57,19 @@ public class Controller implements Initializable
             key.consume();
         });
 
-        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue()-title.getPrefHeight()) / 256))));
-        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue() / 465)))));
+        // La taille des tiles apres le scalling
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue()-title.getPrefHeight()) / displayRenderingHeight))));
+        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.tileDefaultSize*((newV.intValue() / displayRenderingWidth)))));
     }
 
-    @Override
     public void initialize(URL location, ResourceBundle resources)
     {
         tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
+        // La taille des tiles apres le scalling
         tileHeight.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefHeight()-title.getPrefHeight()) / 256)));
         tileWidth.setValue((int) (TileMaps.tileDefaultSize*((root.getPrefWidth() / 465))));
+
         environment = new Environment(tileMaps.getWidth()*tileWidth.get(), tileMaps.getHeight()*tileHeight.get(),tileWidth.get(),tileHeight.get());
 
         tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);

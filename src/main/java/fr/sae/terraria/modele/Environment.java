@@ -27,14 +27,12 @@ public class Environment
     private int ticks = 0;
 
 
-
-
     public Environment(int widthGame, int heightGame, int widthPlayer,int heightPlayer)
     {
         elementsSize = new int[]{widthGame,heightGame,widthPlayer,heightPlayer};
         entities = new ArrayList<>();
 
-        player = new Player(0,0, 3, 1);
+        player = new Player(0,0);
         player.setPv(20);
         player.setVelocity(5);
 

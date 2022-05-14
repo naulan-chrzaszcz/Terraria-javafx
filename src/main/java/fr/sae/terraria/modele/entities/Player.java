@@ -8,7 +8,7 @@ public class Player extends Entity
     private double frame; // TODO faire une animation
 
 
-    public Player(int x, int y, int pv, int velocity)
+    public Player(int x, int y)
     {
         super(x, y);
 
