@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -48,6 +49,8 @@ public class Environment
         player = new Player(0,0);
         player.setVelocity(5);
         player.setPv(20);
+        player.setX(widthTile);
+        player.setY(8*heightTile);
 
         gameLoop();
     }
@@ -58,20 +61,15 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
-            eventInput();
+            this.collide();
+            this.eventInput();
 
-            int tileUnderFootstepX = (((int) (player.getX()/widthTile)+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
-            int tileUnderFootstepY = (((int) (player.getY()/heightTile)+TileMaps.TILE_DEFAULT_SIZE/2)%TileMaps.TILE_DEFAULT_SIZE)+1;
-            System.out.println("x: " + tileUnderFootstepX + " | y: " + tileUnderFootstepY);
-            System.out.println(tileMaps.getTile(tileUnderFootstepX, tileUnderFootstepY));
-
-            player.setX(100);
-            player.setY(500);
-
+            if (this.getPlayer().getFall())
+                this.getPlayer().setY(getPlayer().getY() + 2);
             this.worldLimit();
-            ticks++;
 
-            getPlayer().updates();
+            this.ticks++;
+            this.getPlayer().updates();
         }));
 
         loop.getKeyFrames().add(keyFrame);
@@ -89,6 +87,25 @@ public class Environment
             if (Boolean.FALSE.equals(value))            countKeys[0]++;
             if (countKeys[0] == keysInput.size())       getPlayer().idle();
         });
+    }
+
+    private void collide()
+    {
+        int tileX = (int) (this.player.getX()/widthTile);
+        int tileY = (int) (this.player.getY()/heightTile);
+        int tileUnderFootstep = this.tileMaps.getTile(tileX, tileY+1);
+
+        for (Entity e : entities)
+            if (this.player.getRect().collideRect(e.getRect()) != null)
+            {
+                int tileLeft = this.tileMaps.getTile(tileX, tileY);
+                int tileRight = this.tileMaps.getTile(tileX+1, tileY);
+
+                if (tileLeft != 0 || tileRight !=0)
+                    getPlayer().rollback();
+            }
+
+        getPlayer().setFall(tileUnderFootstep == 0);
     }
 
     /** Evite que le joueur sort de la carte. */
