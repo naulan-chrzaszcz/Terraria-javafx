@@ -15,11 +15,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static javafx.scene.input.KeyCode.D;
-import static javafx.scene.input.KeyCode.Q;
-
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
+
+import static javafx.scene.input.KeyCode.*;
 
 
 public class Environment
@@ -34,6 +33,10 @@ public class Environment
     private int widthTile;
     private int heightTile;
     private int ticks = 0;
+
+    boolean yInitGetted = false;
+    double yInit = 0;
+    int timeJump = 0;
 
 
     public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)
@@ -83,6 +86,10 @@ public class Environment
         keysInput.forEach((key, value) -> {
             if (key == D && Boolean.TRUE.equals(value)) getPlayer().moveRight();
             if (key == Q && Boolean.TRUE.equals(value)) getPlayer().moveLeft();
+            if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value)) {
+                getPlayer().jump(timeJump, yInit);
+                timeJump += .001;
+            } else { yInitGetted = false; }
 
             if (Boolean.FALSE.equals(value))            countKeys[0]++;
             if (countKeys[0] == keysInput.size())       getPlayer().idle();
@@ -101,10 +108,12 @@ public class Environment
                 int tileLeft = this.tileMaps.getTile(tileX, tileY);
                 int tileRight = this.tileMaps.getTile(tileX+1, tileY);
 
-                if (tileLeft != 0 || tileRight !=0)
+                // Revient en arriere
+                if (tileLeft != 0 || tileRight != 0)
                     getPlayer().rollback();
             }
 
+        // Tombe vers le bas
         getPlayer().setFall(tileUnderFootstep == 0);
     }
 
