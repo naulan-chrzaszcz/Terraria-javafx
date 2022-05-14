@@ -1,20 +1,24 @@
 package fr.sae.terraria.modele;
 
-import com.google.gson.stream.JsonReader;
-
 import java.io.FileReader;
+
+import java.util.Arrays;
+
+import com.google.gson.stream.JsonReader;
 
 
 public class TileMaps
 {
-    public final static int tileDefaultSize = 16;
-    public final static int SKY = 0;
-    public final static int STONE = 1;
-    public final static int DIRT = 2;
-    public final static int FLOOR_TOP = 3;
-    public final static int FLOOR_LEFT = 4;
-    public final static int FLOOR_RIGHT = 5;
+    // Constantes
+    public static final int TILE_DEFAULT_SIZE = 16;
+    public static final int SKY = 0;
+    public static final int STONE = 1;
+    public static final int DIRT = 2;
+    public static final int FLOOR_TOP = 3;
+    public static final int FLOOR_LEFT = 4;
+    public static final int FLOOR_RIGHT = 5;
 
+    // Qui concerne la carte
     private int[][] maps;
     private int w;
     private int h;
@@ -36,7 +40,7 @@ public class TileMaps
              JsonReader jsonReader = new JsonReader(fileReader))
         {
             jsonReader.beginObject();
-            // Deduit la taille de la carte.
+            // Déduit la taille de la carte.
             while (jsonReader.hasNext())
             {
                 h++;
@@ -91,8 +95,7 @@ public class TileMaps
         int[][] mapCopy = new int[maps.length][maps[0].length];
 
         for (int i = 0; i < this.maps.length; i++)
-            for (int j = 0; j < this.maps[i].length; j++)
-                mapCopy[i][j] = this.maps[i][j];
+            mapCopy[i] = Arrays.copyOf(maps[i], maps[i].length);
 
         return mapCopy;
     }
@@ -114,7 +117,7 @@ public class TileMaps
 
     public int getHeight() { return maps.length; }
     public int getWidth() { return maps[0].length; }
-    public int getTile(int y, int x) { return maps[y][x]; }
+    public int getTile(int x, int y) { return maps[y][x]; }
 
     public void setTile(int tileIndex, int y, int x) { maps[y][x] = tileIndex; }
 }

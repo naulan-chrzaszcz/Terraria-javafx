@@ -6,18 +6,25 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public abstract class Entity
 {
-    protected Rect rect;
-
+    // Property variables
     protected DoubleProperty x;
     protected DoubleProperty y;
 
-    protected int[] offset;
-    protected int pv = 3;
+    protected Rect rect = null;         // Permet d'avoir une hitbox
+
+    protected boolean fall = false;     // Savoir si le joueur est dans le vide
     protected double velocity = 1;
-    protected boolean fall = false;
+    // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
+    protected double pv = 3;    // 0 >= pv && 5 >= pv
+    // Permet de savoir dans quelle direction se dirige le joueur.
+    protected int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
 
 
-    public Entity(int x, int y)
+    /**
+     * @param x La localisation de l'entité a l'horizontal
+     * @param y La localisation de l'entité a la verticale
+     */
+    protected Entity(int x, int y)
     {
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
@@ -25,6 +32,10 @@ public abstract class Entity
         this.offset = new int[2];
     }
 
+    /**
+     * Permet de mettre à jour les valeurs qui concerne l'entité
+     *   et qui doit rester au sain de l'objet
+     */
     public abstract void updates();
 
     public DoubleProperty getXProperty() { return x; }
@@ -32,7 +43,7 @@ public abstract class Entity
     public Rect getRect() { return rect; }
     public double getX() { return x.get(); }
     public double getY() { return y.get(); }
-    public int getPv() { return pv; }
+    public double getPv() { return pv; }
     public double getVelocity() { return velocity; }
     public boolean getFall() { return fall; }
 

@@ -1,12 +1,13 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.entities.*;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.Rect;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+
 import javafx.geometry.Rectangle2D;
+
 import javafx.scene.input.KeyCode;
+
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -16,15 +17,18 @@ import java.util.Map;
 import static javafx.scene.input.KeyCode.D;
 import static javafx.scene.input.KeyCode.Q;
 
+import fr.sae.terraria.modele.entities.*;
+import fr.sae.terraria.modele.entities.entity.Entity;
+
 
 public class Environment
 {
-    private Map<KeyCode, Boolean> keysInput;
-    private ArrayList<Entity> entities;
+    private final Map<KeyCode, Boolean> keysInput;
+    private final ArrayList<Entity> entities;
 
-    private Player player;
+    private final Player player;
 
-    private int[] elementsSize;
+    private final int[] elementsSize;
     private int ticks = 0;
 
 
@@ -35,8 +39,8 @@ public class Environment
         entities = new ArrayList<>();
 
         player = new Player(0,0);
-        player.setPv(20);
         player.setVelocity(5);
+        player.setPv(20);
 
         gameLoop();
     }
@@ -44,7 +48,7 @@ public class Environment
     private void gameLoop()
     {
         Timeline loop = new Timeline();
-        loop.setCycleCount(Timeline.INDEFINITE);
+        loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             eventInput();
@@ -56,7 +60,6 @@ public class Environment
             {
                 Rectangle2D rectEntity = player.getRect().collideRect(e.getRect());
                 if (rectEntity != null) {
-                    System.out.println(player.getRect().collideRect(e.getRect()));
                     if (Math.abs(player.getRect().get().getMinY() - e.getRect().get().getMinY()) < 5)
                         player.setY(e.getRect().get().getMinY());
                     if (player.getFall() && Math.abs(player.getRect().get().getMinX() - e.getRect().get().getMinX()) < 5)
@@ -77,34 +80,36 @@ public class Environment
             if (player.getFall())
                 player.setY(player.getY() +2);
 
-            getPlayer().updates();
-            if (player.getX() < 0){
-                player.setX(0.0);
-            }
-            if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92)){
-                player.setX(elementsSize[0]-(elementsSize[2]*1.92));
-            }
+            this.worldLimit();
             ticks++;
+
+            getPlayer().updates();
         }));
 
         loop.getKeyFrames().add(keyFrame);
         loop.play();
     }
 
-    public void eventInput()
+    /** Lie les inputs au clavier à une ou des actions. */
+    private void eventInput()
     {
-        int countKeys[] = new int[1];
+        int[] countKeys = new int[1];   // Tableau de 1 de longueur pour qu'on y ait access dans le forEach
         keysInput.forEach((key, value) -> {
-            if (key == D && value)
-                getPlayer().moveRight();
-            if (key == Q && value)
-                getPlayer().moveLeft();
+            if (key == D && Boolean.TRUE.equals(value)) getPlayer().moveRight();
+            if (key == Q && Boolean.TRUE.equals(value)) getPlayer().moveLeft();
 
-            if (!value)
-                countKeys[0]++;
-            if (countKeys[0] == keysInput.size())
-                getPlayer().idle();
+            if (Boolean.FALSE.equals(value))            countKeys[0]++;
+            if (countKeys[0] == keysInput.size())       getPlayer().idle();
         });
+    }
+
+    /** Evite que le joueur sort de la carte. */
+    private void worldLimit()
+    {
+        if (player.getX() < 0)
+            player.setX(0.0);
+        if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92))
+            player.setX(elementsSize[0]-(elementsSize[2]*1.92));
     }
 
 
