@@ -35,8 +35,8 @@ public class Environment
     private int ticks = 0;
 
     boolean yInitGetted = false;
-    double yInit = 0;
-    int timeJump = 0;
+    double yInit = 0.0;
+    double timeJump = 0.0;
 
 
     public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)

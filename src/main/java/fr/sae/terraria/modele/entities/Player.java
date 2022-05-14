@@ -25,11 +25,10 @@ public class Player extends Entity
     /** Permet de ne plus faire bouger le joueur */
     public void idle() { this.offset[0] = 0; this.offset[1] =0; }
 
-    public void jump(int time, double yInit)
+    public void jump(double time, double yInit)
     {
-        this.y.setValue(-1/2 * 9.81 * (time*time) + Math.sin(90) * velocity*10 * time + yInit);
-        System.out.println(-1/2 * 9.81 * (time*time));
-        System.out.println(Math.sin(90)* (velocity*10) * time + yInit);
+//        this.setY(((time*time)-20*time)+ yInit);
+         this.setY((4.905 * (time*time)) + ((Math.sin(-90) * velocity*10) * time) + yInit);
     }
 
     public void rollback() { setX(prevX); setY(prevY); }
