@@ -84,6 +84,12 @@ public class Environment
     {
         int[] countKeys = new int[1];   // Tableau de 1 de longueur pour qu'on y ait access dans le forEach
         keysInput.forEach((key, value) -> {
+            if (!yInitGetted) {
+                this.timeJump = 0;
+                yInit = getPlayer().getY();
+                yInitGetted = true;
+            }
+
             if (key == D && Boolean.TRUE.equals(value)) getPlayer().moveRight();
             if (key == Q && Boolean.TRUE.equals(value)) getPlayer().moveLeft();
             if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value)) {
