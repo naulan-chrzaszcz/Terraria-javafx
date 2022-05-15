@@ -30,7 +30,7 @@ public class Terraria extends Application
 
         URL pathFxml = Terraria.class.getResource("vue/game.fxml");
         if (pathFxml == null)
-            pathFxml = new File(this.srcPath + "vue/game.fxml").toURI().toURL();
+            pathFxml = new File(srcPath + "vue/game.fxml").toURI().toURL();
         
         FXMLLoader fxmlLoader = new FXMLLoader(pathFxml);
         Controller ctrl = new Controller(stage);

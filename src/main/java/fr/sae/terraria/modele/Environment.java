@@ -1,11 +1,8 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-
-import javafx.geometry.Rectangle2D;
 
 import javafx.scene.input.KeyCode;
 
@@ -13,6 +10,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.sae.terraria.modele.entities.*;
@@ -24,7 +22,7 @@ import static javafx.scene.input.KeyCode.*;
 public class Environment
 {
     private final Map<KeyCode, Boolean> keysInput;
-    private final ArrayList<Entity> entities;
+    private final List<Entity> entities;
 
     private final TileMaps tileMaps;
     private final Player player;
@@ -33,10 +31,6 @@ public class Environment
     private int widthTile;
     private int heightTile;
     private int ticks = 0;
-
-    boolean yInitGetted = false;
-    double yInit = 0.0;
-    double timeJump = 0.0;
 
 
     public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)
@@ -64,11 +58,10 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
+            this.getPlayer().idle();     // Reset
             this.collide();
             this.eventInput();
 
-            if (this.getPlayer().getFall())
-                this.getPlayer().setY(getPlayer().getY() + 2);
             this.worldLimit();
 
             this.ticks++;
@@ -82,58 +75,51 @@ public class Environment
     /** Lie les inputs au clavier à une ou des actions. */
     private void eventInput()
     {
-        int[] countKeys = new int[1];   // Tableau de 1 de longueur pour qu'on y ait access dans le forEach
-        keysInput.forEach((key, value) -> {
-            if (!yInitGetted) {
-                this.timeJump = 0;
-                yInit = getPlayer().getY();
-                yInitGetted = true;
-            }
+        this.keysInput.forEach((key, value) -> {
+            if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value))
+                this.getPlayer().jump();
 
-            if (key == D && Boolean.TRUE.equals(value)) getPlayer().moveRight();
-            if (key == Q && Boolean.TRUE.equals(value)) getPlayer().moveLeft();
-            if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value)) {
-                getPlayer().jump(timeJump, yInit);
-                timeJump += .25;
-            } else if ((key == Z || key == SPACE) && Boolean.FALSE.equals(value)) { yInitGetted = false; }
-
-            if (Boolean.FALSE.equals(value))            countKeys[0]++;
-            if (countKeys[0] == keysInput.size())       getPlayer().idle();
+            if (key == D && Boolean.TRUE.equals(value))
+                this.getPlayer().moveRight();
+            if (key == Q && Boolean.TRUE.equals(value))
+                this.getPlayer().moveLeft();
         });
     }
 
     private void collide()
     {
-        int tileX = (int) (this.player.getX()/widthTile);
-        int tileY = (int) (this.player.getY()/heightTile);
-        int tileUnderFootstep = this.tileMaps.getTile(tileX, tileY+1);
+        int tileX =      (int) (this.player.getX()/widthTile);
+        int tileY =      (int) (this.player.getY()/heightTile);
+        int tileBottom = this.tileMaps.getTile(tileX, tileY+1);
+        int tileTop =    this.tileMaps.getTile(tileX, tileY-1);
 
-        for (Entity e : entities)
-            if (this.player.getRect().collideRect(e.getRect()) != null)
-            {
-                int tileLeft = this.tileMaps.getTile(tileX, tileY);
-                int tileRight = this.tileMaps.getTile(tileX+1, tileY);
+        for (Entity e : this.entities) if (this.player.getRect().collideRect(e.getRect()) != null)
+        {
+            int tileLeft =  this.tileMaps.getTile(tileX, tileY);
+            int tileRight = this.tileMaps.getTile(tileX+1, tileY);
 
-                // Revient en arriere
-                if (tileLeft != 0 || tileRight != 0)
-                    getPlayer().rollback();
-            }
+            // Revient en arriere
+            if (tileLeft != 0 || tileRight != 0)
+                this.getPlayer().rollback();
+        }
 
-        // Tombe vers le bas
-        getPlayer().setFall(tileUnderFootstep == 0);
+        if (tileBottom == 0)
+            this.getPlayer().fall();
+        if (tileTop != 0)
+            this.getPlayer().rollback();
     }
 
     /** Evite que le joueur sort de la carte. */
     private void worldLimit()
     {
         if (player.getX() < 0)
-            player.setX(0.0);
+            player.setX(.0);
         if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92))
             player.setX(elementsSize[0]-(elementsSize[2]*1.92));
     }
 
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-    public ArrayList<Entity> getEntities() { return entities; }
+    public List<Entity> getEntities() { return entities; }
     public Player getPlayer() { return player; }
 }
