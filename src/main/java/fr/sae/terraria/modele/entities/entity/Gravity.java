@@ -12,6 +12,7 @@ public class Gravity
     protected double speed = .3;
 
     // Depart initial
+    protected double flightTime;
     protected double degInit;
     protected double vInit;
     protected double xInit;
@@ -27,10 +28,14 @@ public class Gravity
             this.xInit = entity.getX();
             this.yInit = entity.getY();
             this.vInit = entity.getVelocity();
+            this.flightTime = (vInit*Math.sin(degInit) + Math.sqrt(Math.pow(vInit*Math.sin(degInit), 2) + 2*Gravity.VALUE*yInit))/Gravity.VALUE;
 
             return yInit;
         }
-        double traj = (4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * vInit) + yInit;
+        double traj = (4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * yTimer) + yInit;
+
+        if (this.flightTime/2 <= this.yTimer)
+            System.out.println("ehhiuhzihiehzi");
 
         this.xTimer += this.speed;
         this.yTimer += this.speed;
