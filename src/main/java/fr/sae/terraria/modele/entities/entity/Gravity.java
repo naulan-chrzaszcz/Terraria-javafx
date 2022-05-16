@@ -30,8 +30,10 @@ public class Gravity
 
             return yInit;
         }
-        double traj = (4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * vInit) + yInit;
-
+        double traj = (4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * yTimer) + yInit;
+        System.out.println(yTimer);
+        System.out.println(degInit);
+        System.out.println(vInit);
         this.xTimer += this.speed;
         this.yTimer += this.speed;
 
