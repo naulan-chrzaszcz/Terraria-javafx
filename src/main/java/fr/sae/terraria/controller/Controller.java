@@ -73,7 +73,7 @@ public class Controller implements Initializable
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);
         tileMapsView.displayPlayer();
-/*        for (Entity e : environment.getEntities()){
+        /*for (Entity e : environment.getEntities()){
             Rectangle rec = new Rectangle(tileWidth.get(),tileHeight.get());
             rec.translateXProperty().bind(e.getXProperty());
             rec.translateYProperty().bind(e.getYProperty());
@@ -89,12 +89,12 @@ public class Controller implements Initializable
     private void addKeysEventListener(Stage stage)
     {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            this.environment.getKeysInput().put(key.getCode(), true);
+            this.environment.getPlayer().getKeysInput().put(key.getCode(), true);
             key.consume();
         });
 
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
-            this.environment.getKeysInput().put(key.getCode(), false);
+            this.environment.getPlayer().getKeysInput().put(key.getCode(), false);
             key.consume();
         });
     }

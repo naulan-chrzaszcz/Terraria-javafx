@@ -21,7 +21,6 @@ import static javafx.scene.input.KeyCode.*;
 
 public class Environment
 {
-    private final Map<KeyCode, Boolean> keysInput;
     private final List<Entity> entities;
 
     private final TileMaps tileMaps;
@@ -40,7 +39,6 @@ public class Environment
         this.widthTile = widthTile;
         this.heightTile = heightTile;
         elementsSize = new int[] {widthTile*tileMaps.getWidth(), heightTile*tileMaps.getWidth(), widthPlayer, heightPlayer};
-        keysInput = new HashMap<>();
         entities = new ArrayList<>();
 
         player = new Player(0,0);
@@ -60,7 +58,6 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
             this.getPlayer().idle();     // Reset
             this.collide();
-            this.eventInput();
 
             this.worldLimit();
 
@@ -72,28 +69,15 @@ public class Environment
         loop.play();
     }
 
-    /** Lie les inputs au clavier à une ou des actions. */
-    private void eventInput()
-    {
-        this.keysInput.forEach((key, value) -> {
-            if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value))
-                this.getPlayer().jump();
-
-            if (key == D && Boolean.TRUE.equals(value))
-                this.getPlayer().moveRight();
-            if (key == Q && Boolean.TRUE.equals(value))
-                this.getPlayer().moveLeft();
-        });
-    }
-
     private void collide()
     {
-        int tileX =      (int) (this.player.getX()/widthTile);
-        int tileY =      (int) (this.player.getY()/heightTile);
+        int tileX = (int) (this.player.getX()/widthTile);
+        int tileY = (int) (this.player.getY()/heightTile);
         int tileLeft = 0;
         int tileRight = 0;
         int tileBottom = 0;
         int tileTop = 0;
+
         for (Entity e : this.entities) if (this.player.getRect().collideRect(e.getRect()) != null)
         {
              tileLeft =  this.tileMaps.getTile(tileX, tileY);
@@ -105,7 +89,6 @@ public class Environment
         }
         if (tileLeft != 0 || tileRight != 0)
             this.getPlayer().rollback();
-
         else if (tileBottom == 0)
             this.getPlayer().fall();
         else if (tileTop != 0)
@@ -122,7 +105,6 @@ public class Environment
     }
 
 
-    public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
     public List<Entity> getEntities() { return entities; }
     public Player getPlayer() { return player; }
 }
