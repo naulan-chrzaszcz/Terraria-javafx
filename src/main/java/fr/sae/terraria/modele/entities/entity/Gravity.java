@@ -19,20 +19,20 @@ public class Gravity
     protected double yInit;
 
 
-    public double formulaOfTrajectory(Entity entity)
+    public double[] formulaOfTrajectory(Entity entity)
     {
         this.degInit = -90;
 
         if (entity.offset[1] == 0) {
-            this.xTimer = 0; this.yTimer = 0;
-            this.xInit = entity.getX();
-            this.yInit = entity.getY();
+            this.xInit = entity.getX(); this.yInit = entity.getY();
             this.vInit = entity.getVelocity();
+            this.xTimer = .0; this.yTimer = .0;
             this.flightTime = (vInit*Math.sin(degInit) + Math.sqrt(Math.pow(vInit*Math.sin(degInit), 2) + 2*Gravity.VALUE*yInit))/Gravity.VALUE;
 
-            return yInit;
+            return new double[] {xInit, yInit};
         }
-        double traj = (4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * yTimer) + yInit;
+        double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
+        double trajY = ((4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * yTimer)) + yInit;
 
         if (this.flightTime/2 <= this.yTimer)
             System.out.println("ehhiuhzihiehzi");
@@ -40,6 +40,6 @@ public class Gravity
         this.xTimer += this.speed;
         this.yTimer += this.speed;
 
-        return traj;
+        return new double[] {trajX, trajY};
     }
 }

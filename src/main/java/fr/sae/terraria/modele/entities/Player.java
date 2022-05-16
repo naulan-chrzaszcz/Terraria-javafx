@@ -18,9 +18,10 @@ public class Player extends Entity
         // Applique les déplacements selon les valeurs de l'offset
         this.setX(this.x.get() + this.offset[0] * this.velocity);
         // this.setY(this.y.get() + this.offset[1] * this.velocity);
-        if (offset[1] >= 0)
-            this.setY(this.gravity.formulaOfTrajectory(this));
-        else this.setY(getY() + 2);
+        if (offset[1] >= 0) {
+            double[] jumpPos = this.gravity.formulaOfTrajectory(this);
+            this.setY(jumpPos[1]);
+        } else this.setY(getY() + 2);
 
         this.rect.update(x.get(), y.get());
     }
