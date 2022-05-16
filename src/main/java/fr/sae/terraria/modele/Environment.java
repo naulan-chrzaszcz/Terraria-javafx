@@ -90,22 +90,25 @@ public class Environment
     {
         int tileX =      (int) (this.player.getX()/widthTile);
         int tileY =      (int) (this.player.getY()/heightTile);
-        int tileBottom = this.tileMaps.getTile(tileX, tileY+1);
-        int tileTop =    this.tileMaps.getTile(tileX, tileY-1);
-
+        int tileLeft = 0;
+        int tileRight = 0;
+        int tileBottom = 0;
+        int tileTop = 0;
         for (Entity e : this.entities) if (this.player.getRect().collideRect(e.getRect()) != null)
         {
-            int tileLeft =  this.tileMaps.getTile(tileX, tileY);
-            int tileRight = this.tileMaps.getTile(tileX+1, tileY);
-
+             tileLeft =  this.tileMaps.getTile(tileX, tileY);
+             tileRight = this.tileMaps.getTile(tileX+1, tileY);
+             tileBottom = this.tileMaps.getTile(tileX, tileY+1);
+             tileTop =    this.tileMaps.getTile(tileX, tileY-1);
+            break;
             // Revient en arriere
-            if (tileLeft != 0 || tileRight != 0)
-                this.getPlayer().rollback();
         }
+        if (tileLeft != 0 || tileRight != 0)
+            this.getPlayer().rollback();
 
-        if (tileBottom == 0)
+        else if (tileBottom == 0)
             this.getPlayer().fall();
-        if (tileTop != 0)
+        else if (tileTop != 0)
             this.getPlayer().rollback();
     }
 

@@ -1,5 +1,6 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -8,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.fxml.FXML;
@@ -71,6 +73,13 @@ public class Controller implements Initializable
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);
         tileMapsView.displayPlayer();
+/*        for (Entity e : environment.getEntities()){
+            Rectangle rec = new Rectangle(tileWidth.get(),tileHeight.get());
+            rec.translateXProperty().bind(e.getXProperty());
+            rec.translateYProperty().bind(e.getYProperty());
+            display.getChildren().add(rec);
+        }*/
+
     }
 
     /**
