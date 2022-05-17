@@ -59,13 +59,16 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
-            this.getPlayer().idle();     // Reset
+            this.getPlayer().updates();
             this.collide();
 
             this.worldLimit();
 
             this.ticks++;
-            this.getPlayer().updates();
+            if (this.player.offset[1] == -1)
+                this.player.setY(this.player.getY() + 2);
+            this.player.setX(this.player.getX() + this.player.offset[0] * this.player.getVelocity());
+            this.player.rect.update(player.getX(), player.getY());
         }));
 
         loop.getKeyFrames().add(keyFrame);
@@ -80,17 +83,24 @@ public class Environment
                 allRectEntities.add(e.getRect());
 
         for (Rect r : allRectEntities) {
-            if (player.getX() + widthTile >= r.get().getMinX())
-                player.setX(r.get().getMinX());
+            System.out.println("Entity: " + r.get());
+            System.out.println("Player: " + player.rect.get());
+            if (player.getRect().get().getMaxX() >= r.get().getMinX()) {
+                player.rollbackX();
+                System.out.println("freeepo");
+            }
 
-            if (player.getY() + heightTile >= r.get().getMinY()) {
+            if (player.getX() <= r.get().getMinX())
+                player.rollbackX();
+
+            if (player.getY() + heightTile >= r.get().getMinY())
                 player.rollbackY();
-            } else if (player.getY() <= r.get().getMinY()) {
+
+            if (player.getY() <= r.get().getMinY())
                 player.rollbackY();
-            } else player.air = true;
         }
 
-        if (allRectEntities.isEmpty())
+        if (tileMaps.getTile(((int) player.getX()/widthTile), ((int) player.getY()/heightTile) + 1) == 0)
             player.fall();
     }
 

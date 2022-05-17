@@ -29,10 +29,11 @@ public class Player extends Entity
     public void updates()
     {
         super.updates();
+        this.idle();
         this.eventInput();
 
         // Applique les déplacements selon les valeurs de l'offset
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.offset[1] == 0) {
             this.gravity.xInit = this.x.get();
@@ -46,10 +47,7 @@ public class Player extends Entity
             this.gravity.formulaOfTrajectory(this);
         if (this.offset[1] == 0)
             this.air = false;
-        if (this.offset[1] == -1)
-            this.setY(this.getY() + 2);
 
-        this.rect.update(x.get(), y.get());
     }
 
     public void jump()

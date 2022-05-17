@@ -15,13 +15,13 @@ public class Entity
 
     protected Animation animation = null;
     protected Gravity gravity;
-    protected Rect rect = null;         // Permet d'avoir une hitbox
+    public Rect rect = null;         // Permet d'avoir une hitbox
 
     protected double velocity = 1;
     // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
     protected double pv = 3;    // 0 >= pv && 5 >= pv
     // Permet de savoir dans quelle direction se dirige le joueur.
-    protected int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
+    public int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
 
 
     /**
@@ -59,7 +59,7 @@ public class Entity
     public void fall() { this.offset[1] = -1; }
     /** Permet de faire revenir en arriere l'entité */
     public void rollbackX() { this.setX(prevX); }
-    public void rollbackY() { this.setX(prevX); }
+    public void rollbackY() { this.setY(prevY); }
 
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
