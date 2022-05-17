@@ -58,7 +58,8 @@ public class Entity
     /** Modifie l'offset qui permet de tomber */
     public void fall() { this.offset[1] = -1; }
     /** Permet de faire revenir en arriere l'entité */
-    public void rollback() { this.setX(prevX); this.setY(prevY); }
+    public void rollbackX() { this.setX(prevX); }
+    public void rollbackY() { this.setX(prevX); }
 
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }

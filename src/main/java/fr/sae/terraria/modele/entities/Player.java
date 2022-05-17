@@ -12,7 +12,7 @@ public class Player extends Entity
 {
     private final Map<KeyCode, Boolean> keysInput;
 
-    private boolean air;
+    public boolean air;
 
 
     /**

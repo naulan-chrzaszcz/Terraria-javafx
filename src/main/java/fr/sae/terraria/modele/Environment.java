@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -8,10 +9,12 @@ import javafx.scene.input.KeyCode;
 
 import javafx.util.Duration;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToIntFunction;
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -71,30 +74,24 @@ public class Environment
 
     private void collide()
     {
+        List<Rect> allRectEntities = new ArrayList<>();
+        for (Entity e : entities)
+            if (e.getRect().collideRect(player.getRect()) != null)
+                allRectEntities.add(e.getRect());
 
-        int tileX = (int) ((this.player.getX()+(widthTile/2))/widthTile);
-        int tileY = (int) ((this.player.getY()+(heightTile/2))/heightTile);
+        for (Rect r : allRectEntities) {
+            if (player.getX() + widthTile >= r.get().getMinX())
+                player.setX(r.get().getMinX());
 
-        int tileLeft = 0;
-        int tileRight = 0;
-        int tileBottom = 0;
-        int tileTop = 0;
-
-        for (Entity e : this.entities) if (this.player.getRect().collideRect(e.getRect()) != null)
-        {
-             tileLeft =  this.tileMaps.getTile(tileX, tileY);
-             tileRight = this.tileMaps.getTile(tileX+1, tileY);
-             tileBottom = this.tileMaps.getTile(tileX, tileY+1);
-             tileTop =    this.tileMaps.getTile(tileX, tileY-1);
-            break;
-            // Revient en arriere
+            if (player.getY() + heightTile >= r.get().getMinY()) {
+                player.rollbackY();
+            } else if (player.getY() <= r.get().getMinY()) {
+                player.rollbackY();
+            } else player.air = true;
         }
-        if (tileLeft != 0 || tileRight != 0)
-            this.getPlayer().rollback();
-        else if (tileBottom == 0)
-            this.getPlayer().fall();
-        else if (tileTop != 0)
-            this.getPlayer().rollback();
+
+        if (allRectEntities.isEmpty())
+            player.fall();
     }
 
     /** Evite que le joueur sort de la carte. */

@@ -1,6 +1,5 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -9,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.fxml.FXML;
@@ -56,8 +54,8 @@ public class Controller implements Initializable
         this.addKeysEventListener(primaryStage);
 
         // Listener pour sync la taille des tiles pour scale les tiles
-        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue()-title.getPrefHeight()) / displayRenderingHeight))));
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue() / displayRenderingWidth)))));
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue()-title.getPrefHeight()) / displayRenderingHeight))));
     }
 
     public void initialize(URL location, ResourceBundle resources)
@@ -65,8 +63,8 @@ public class Controller implements Initializable
         this.tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         // La taille des tiles apres le scaling
-        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / 256)));
-        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / 465))));
+        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / displayRenderingWidth))));
+        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / displayRenderingHeight)));
 
         this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get(), this.tileWidth.get(), this.tileHeight.get());
 
