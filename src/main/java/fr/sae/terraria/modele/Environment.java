@@ -71,6 +71,7 @@ public class Environment
 
     private void collide()
     {
+        getPlayer().jump();
         int tileX = (int) (this.player.getX()/widthTile);
         int tileY = (int) (this.player.getY()/heightTile);
         int tileLeft = 0;

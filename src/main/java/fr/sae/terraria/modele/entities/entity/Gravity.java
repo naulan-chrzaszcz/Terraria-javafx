@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities.entity;
 
 
+import fr.sae.terraria.modele.entities.Player;
+
 public class Gravity
 {
     // Constantes
@@ -19,7 +21,7 @@ public class Gravity
     protected double yInit;
 
 
-    public double[] formulaOfTrajectory(Entity entity)
+    public void formulaOfTrajectory(Entity entity)
     {
         this.degInit = -90;
 
@@ -29,17 +31,17 @@ public class Gravity
             this.xTimer = .0; this.yTimer = .0;
             this.flightTime = (vInit*Math.sin(degInit) + Math.sqrt(Math.pow(vInit*Math.sin(degInit), 2) + 2*Gravity.VALUE*yInit))/Gravity.VALUE;
 
-            return new double[] {xInit, yInit};
         }
-        double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        double trajY = ((4.905 * (yTimer*yTimer)) + ((Math.sin(degInit) * (vInit*10)) * yTimer)) + yInit;
+        //TODO nettoyer
+        if (((Player) entity).air) {
+            //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
+            entity.setY(((4.905 * (yTimer * yTimer)) + ((Math.sin(degInit) * (vInit * 10)) * yTimer)) + yInit);
 
-        if (this.flightTime/2 <= this.yTimer)
-            System.out.println("ehhiuhzihiehzi");
+            if (this.flightTime / 2 <= this.yTimer)
+                System.out.println("ehhiuhzihiehzi");
 
-        this.xTimer += this.speed;
-        this.yTimer += this.speed;
-
-        return new double[] {trajX, trajY};
+            this.xTimer += this.speed;
+            this.yTimer += this.speed;
+        }
     }
 }

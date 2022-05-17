@@ -13,7 +13,7 @@ import static javafx.scene.input.KeyCode.Q;
 public class Player extends Entity
 {
     private final Map<KeyCode, Boolean> keysInput;
-
+    public boolean air;
 
     /**
      * @param x La position du joueur en X
@@ -34,12 +34,21 @@ public class Player extends Entity
         // Applique les déplacements selon les valeurs de l'offset
         this.setX(this.x.get() + this.offset[0] * this.velocity);
         // this.setY(this.y.get() + this.offset[1] * this.velocity);
+
         if (offset[1] >= 0) {
-            double[] jumpPos = this.gravity.formulaOfTrajectory(this);
-            this.setY(jumpPos[1]);
+            this.gravity.formulaOfTrajectory(this);
         } else this.setY(getY() + 2);
+        if (offset[1] == 0)
+            air = false;
 
         this.rect.update(x.get(), y.get());
+    }
+
+    @Override
+    public void jump(){
+        if (!air)
+            super.jump();
+        air = true;
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
