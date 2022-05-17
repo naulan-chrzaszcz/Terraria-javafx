@@ -1,19 +1,19 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static javafx.scene.input.KeyCode.*;
-import static javafx.scene.input.KeyCode.Q;
+import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public class Player extends Entity
 {
     private final Map<KeyCode, Boolean> keysInput;
-    public boolean air;
+
+    private boolean air;
+
 
     /**
      * @param x La position du joueur en X
@@ -33,34 +33,42 @@ public class Player extends Entity
 
         // Applique les déplacements selon les valeurs de l'offset
         this.setX(this.x.get() + this.offset[0] * this.velocity);
-        // this.setY(this.y.get() + this.offset[1] * this.velocity);
 
-        this.gravity.formulaOfTrajectory(this);
-        if (offset[1] == 0)
-            air = false;
-        if (offset[1] == -1)
+        if (this.offset[1] == 0) {
+            this.gravity.xInit = this.x.get();
+            this.gravity.yInit = this.y.get();
+            this.gravity.vInit = this.velocity;
+
+            this.gravity.timer = .0;
+        }
+
+        if (this.air)
+            this.gravity.formulaOfTrajectory(this);
+        if (this.offset[1] == 0)
+            this.air = false;
+        if (this.offset[1] == -1)
             this.setY(this.getY() + 2);
 
         this.rect.update(x.get(), y.get());
     }
 
-    @Override
-    public void jump(){
-        if (!air)
+    public void jump()
+    {
+        if (!this.air)
             super.jump();
-        air = true;
+        this.air = true;
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
     private void eventInput()
     {
         this.keysInput.forEach((key, value) -> {
-            if ((key == Z || key == SPACE) && Boolean.TRUE.equals(value))
+            if ((key == KeyCode.Z || key == KeyCode.SPACE) && Boolean.TRUE.equals(value))
                 this.jump();
 
-            if (key == D && Boolean.TRUE.equals(value))
+            if (key == KeyCode.D && Boolean.TRUE.equals(value))
                 this.moveRight();
-            if (key == Q && Boolean.TRUE.equals(value))
+            if (key == KeyCode.Q && Boolean.TRUE.equals(value))
                 this.moveLeft();
         });
     }
