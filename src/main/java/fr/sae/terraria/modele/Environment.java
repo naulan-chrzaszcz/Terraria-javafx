@@ -45,7 +45,7 @@ public class Environment
         player.setVelocity(5);
         player.setPv(20);
         player.setX(widthTile);
-        player.setY(8*heightTile);
+        player.setY(7*heightTile);
 
         gameLoop();
     }
@@ -71,7 +71,7 @@ public class Environment
 
     private void collide()
     {
-        getPlayer().jump();
+
         int tileX = (int) (this.player.getX()/widthTile);
         int tileY = (int) (this.player.getY()/heightTile);
         int tileLeft = 0;

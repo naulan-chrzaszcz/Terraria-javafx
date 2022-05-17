@@ -35,11 +35,11 @@ public class Player extends Entity
         this.setX(this.x.get() + this.offset[0] * this.velocity);
         // this.setY(this.y.get() + this.offset[1] * this.velocity);
 
-        if (offset[1] >= 0) {
-            this.gravity.formulaOfTrajectory(this);
-        } else this.setY(getY() + 2);
+        this.gravity.formulaOfTrajectory(this);
         if (offset[1] == 0)
             air = false;
+        if (offset[1] == -1)
+            this.setY(this.getY() + 2);
 
         this.rect.update(x.get(), y.get());
     }

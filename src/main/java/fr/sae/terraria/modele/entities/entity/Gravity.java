@@ -44,4 +44,8 @@ public class Gravity
             this.yTimer += this.speed;
         }
     }
+
+    public boolean burn() {
+        return this.flightTime / 2 <= this.yTimer;
+    }
 }
