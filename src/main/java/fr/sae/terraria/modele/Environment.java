@@ -4,21 +4,13 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
-import javafx.scene.input.KeyCode;
-
 import javafx.util.Duration;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.ToIntFunction;
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
-
-import static javafx.scene.input.KeyCode.*;
 
 
 public class Environment
@@ -28,27 +20,25 @@ public class Environment
     private final TileMaps tileMaps;
     private final Player player;
 
-    private final int[] elementsSize;
     private int widthTile;
     private int heightTile;
     private int ticks = 0;
 
 
-    public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)
+    public Environment(TileMaps tileMaps, int widthTile, int heightTile)
     {
         this.tileMaps = tileMaps;
 
         this.widthTile = widthTile;
         this.heightTile = heightTile;
-        elementsSize = new int[] {widthTile*tileMaps.getWidth(), heightTile*tileMaps.getWidth(), widthPlayer, heightPlayer};
-        entities = new ArrayList<>();
+        this.entities = new ArrayList<>();
 
-        player = new Player(0,0);
-        player.setVelocity(5);
-        player.setPv(20);
-        player.setX(widthTile);
-        player.setY(7*heightTile);
-
+        this.player = new Player(0,0);
+        this.player.setVelocity(5);
+        this.player.setPv(20);
+        this.player.setX(widthTile);
+        this.player.setY(7*heightTile);
+        this.player.setRect(widthTile, heightTile);
         gameLoop();
     }
 
@@ -64,6 +54,7 @@ public class Environment
             this.worldLimit();
 
             System.out.println(this.player.offset[0]);
+            System.out.println(this.player.offset[1]);
             this.getPlayer().updates();
             this.ticks++;
         }));
@@ -74,39 +65,53 @@ public class Environment
 
     private void collide()
     {
-        for (Entity e : entities) {
-            if (player.offset[0] != 0 && player.offset[0] <= 1 && player.offset[0] >= -1) {
-                double futureLocation = player.getX()+(player.offset[0] * player.getVelocity());
-                // Right
-                if (player.offset[0] == 1 && (futureLocation + widthTile) >= e.getX())
-                    if (tileMaps.getTile((int) (player.getX()/widthTile)+1, (int) (player.getY()/heightTile)) != 0)
-                        player.offset[0] = 0;
-                // Left
-                if (player.offset[0] == -1 && futureLocation <= e.getX())
-                    if (tileMaps.getTile((int) (player.getX()/widthTile), (int) (player.getY()/heightTile)) != 0)
-                        player.offset[0] = 0;
-            }
+        int defaultX = (int) ((this.player.getX() + ((this.player.offset[0] == 1) ? widthTile : 0))/widthTile);
+        int defaultY = (int) ((this.player.getY() + ((this.player.offset[1] == -1) ? heightTile : 0))/heightTile);
 
-            if (player.offset[1] != 0 && player.offset[1] <= 1 && player.offset[1] >= -1) {
-                double futureLocation = player.getY()+(player.offset[1] * player.getVelocity());
-                if (player.offset[1] == 1 && (futureLocation + heightTile) >= e.getY())
-                    player.offset[1] = 0;
-                if (player.offset[1] == -1 && futureLocation <= e.getY())
-                    player.offset[1] = 0;
-            }
-        }
+        int topTile = (int) (this.player.getY()/heightTile) - 1;
+        int bottomTile = (int) ((this.player.getY() + heightTile)/heightTile);
+        int leftTile = (int) (this.player.getX()/widthTile);
+        int rightTile = (int) ((this.player.getX() + widthTile)/widthTile);
 
-        if (tileMaps.getTile(((int) player.getX()/widthTile), ((int) player.getY()/heightTile) + 1) == 0)
-            player.fall();
+        if (this.player.offset[1] == 0 && tileMaps.getTile(defaultX, topTile) != TileMaps.SKY)
+            this.player.offset[1] = -1;
+        else if (this.player.offset[1] == 0 && tileMaps.getTile(defaultX, bottomTile) != TileMaps.SKY)
+            this.player.offset[1] = 0;
+
+        if (this.player.offset[0] == -1 && tileMaps.getTile(leftTile, defaultY) != TileMaps.SKY)
+            this.player.offset[0] = 0;
+        else if (this.player.offset[0] == 1 && tileMaps.getTile(rightTile, defaultY) != TileMaps.SKY)
+            this.player.offset[0] = 0;
+
+        if (tileMaps.getTile(defaultX, bottomTile) == TileMaps.SKY)
+            this.player.offset[1] = -1;
+        if (tileMaps.getTile((int) (this.player.getX()/widthTile), ((int) ((this.player.getY() + heightTile)/heightTile))) != TileMaps.SKY ||
+                tileMaps.getTile((int) ((this.player.getX() + widthTile)/widthTile), ((int) ((this.player.getY() + heightTile)/heightTile))) != TileMaps.SKY)
+            for (Entity e : entities)
+                if (this.player.getRect().collideRect(e.getRect())) {
+                    int middlePoint = (int) ((this.player.getX() + (widthTile/2))/widthTile);
+                    int bottomCornerLeft = ((int) ((this.player.getY() + heightTile)/heightTile));
+
+                    if (tileMaps.getTile(middlePoint, bottomCornerLeft) == TileMaps.SKY)
+                        this.player.offset[1] = -1;
+                    if (this.player.offset[0] == -1 || this.player.offset[0] == 1)
+                        if (tileMaps.getTile(middlePoint, bottomCornerLeft) == TileMaps.SKY) {
+                            if (this.player.offset[0] == -1 && this.player.getX() > e.getX())
+                                this.player.offset[0] = 0;
+                            else if (this.player.offset[0] == 1 && this.player.getX() < e.getX())
+                                this.player.offset[0] = 0;
+                        }
+
+                }
     }
 
     /** Evite que le joueur sort de la carte. */
     private void worldLimit()
     {
-        if (player.getX() < 0)
-            player.setX(.0);
-        if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92))
-            player.setX(elementsSize[0]-(elementsSize[2]*1.92));
+        if (player.offset[0] == -1 && player.getX() < 0)
+            player.offset[0] = 0;
+        if (player.offset[0] == 1 && player.getX() > widthTile*tileMaps.getWidth())
+            player.offset[0] = 0;
     }
 
 

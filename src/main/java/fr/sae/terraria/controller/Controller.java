@@ -25,8 +25,8 @@ import fr.sae.terraria.modele.TileMaps;
 public class Controller implements Initializable
 {
     // Constantes
-    private static final int displayRenderingWidth = 465;
-    private static final int displayRenderingHeight = 256;
+    public static final int displayRenderingWidth = 465;
+    public static final int displayRenderingHeight = 256;
 
     // FXML objects
     @FXML
@@ -66,19 +66,14 @@ public class Controller implements Initializable
         this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / displayRenderingWidth))));
         this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / displayRenderingHeight)));
 
-        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get(), this.tileWidth.get(), this.tileHeight.get());
+        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get());
 
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);
         tileMapsView.displayPlayer();
-        /*for (Entity e : environment.getEntities()){
-            Rectangle rec = new Rectangle(tileWidth.get(),tileHeight.get());
-            rec.translateXProperty().bind(e.getXProperty());
-            rec.translateYProperty().bind(e.getYProperty());
-            display.getChildren().add(rec);
-        }*/
 
-
+        for (int i = 0; i < this.environment.getEntities().size(); i++)
+            this.environment.getEntities().get(i).setRect(tileWidth.get(), tileHeight.get());
     }
 
     /**

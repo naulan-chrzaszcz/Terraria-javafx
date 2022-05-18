@@ -49,6 +49,9 @@ public class Player extends Entity
         if (this.offset[1] == -1)
             this.setY(this.getY() + 2);
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
+
+        if (this.rect != null)
+            this.rect.update(x.get(), y.get());
     }
 
     public void jump()
