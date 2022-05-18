@@ -79,10 +79,12 @@ public class Environment
                 double futureLocation = player.getX()+(player.offset[0] * player.getVelocity());
                 // Right
                 if (player.offset[0] == 1 && (futureLocation + widthTile) >= e.getX())
-                    player.offset[0] = 0;
+                    if (tileMaps.getTile((int) (player.getX()/widthTile)+1, (int) (player.getY()/heightTile)) != 0)
+                        player.offset[0] = 0;
                 // Left
                 if (player.offset[0] == -1 && futureLocation <= e.getX())
-                    player.offset[0] = 0;
+                    if (tileMaps.getTile((int) (player.getX()/widthTile), (int) (player.getY()/heightTile)) != 0)
+                        player.offset[0] = 0;
             }
 
             if (player.offset[1] != 0 && player.offset[1] <= 1 && player.offset[1] >= -1) {
