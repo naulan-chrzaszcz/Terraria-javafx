@@ -29,8 +29,6 @@ public class Player extends Entity
     public void updates()
     {
         super.updates();
-        this.idle();
-        this.eventInput();
 
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
@@ -48,6 +46,9 @@ public class Player extends Entity
         if (this.offset[1] == 0)
             this.air = false;
 
+        if (this.offset[1] == -1)
+            this.setY(this.getY() + 2);
+        this.setX(this.getX() + this.offset[0] * this.getVelocity());
     }
 
     public void jump()
@@ -58,7 +59,7 @@ public class Player extends Entity
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
-    private void eventInput()
+    public void eventInput()
     {
         this.keysInput.forEach((key, value) -> {
             if ((key == KeyCode.Z || key == KeyCode.SPACE) && Boolean.TRUE.equals(value))
@@ -73,4 +74,5 @@ public class Player extends Entity
 
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
+
 }

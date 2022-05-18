@@ -1,6 +1,5 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -59,16 +58,14 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.017), (ev -> {
-            this.getPlayer().updates();
+            this.player.idle();
+            this.player.eventInput();
             this.collide();
-
             this.worldLimit();
 
+            System.out.println(this.player.offset[0]);
+            this.getPlayer().updates();
             this.ticks++;
-            if (this.player.offset[1] == -1)
-                this.player.setY(this.player.getY() + 2);
-            this.player.setX(this.player.getX() + this.player.offset[0] * this.player.getVelocity());
-            this.player.rect.update(player.getX(), player.getY());
         }));
 
         loop.getKeyFrames().add(keyFrame);
@@ -77,27 +74,24 @@ public class Environment
 
     private void collide()
     {
-        List<Rect> allRectEntities = new ArrayList<>();
-        for (Entity e : entities)
-            if (e.getRect().collideRect(player.getRect()) != null)
-                allRectEntities.add(e.getRect());
-
-        for (Rect r : allRectEntities) {
-            System.out.println("Entity: " + r.get());
-            System.out.println("Player: " + player.rect.get());
-            if (player.getRect().get().getMaxX() >= r.get().getMinX()) {
-                player.rollbackX();
-                System.out.println("freeepo");
+        for (Entity e : entities) {
+            if (player.offset[0] != 0 && player.offset[0] <= 1 && player.offset[0] >= -1) {
+                double futureLocation = player.getX()+(player.offset[0] * player.getVelocity());
+                // Right
+                if (player.offset[0] == 1 && (futureLocation + widthTile) >= e.getX())
+                    player.offset[0] = 0;
+                // Left
+                if (player.offset[0] == -1 && futureLocation <= e.getX())
+                    player.offset[0] = 0;
             }
 
-            if (player.getX() <= r.get().getMinX())
-                player.rollbackX();
-
-            if (player.getY() + heightTile >= r.get().getMinY())
-                player.rollbackY();
-
-            if (player.getY() <= r.get().getMinY())
-                player.rollbackY();
+            if (player.offset[1] != 0 && player.offset[1] <= 1 && player.offset[1] >= -1) {
+                double futureLocation = player.getY()+(player.offset[1] * player.getVelocity());
+                if (player.offset[1] == 1 && (futureLocation + heightTile) >= e.getY())
+                    player.offset[1] = 0;
+                if (player.offset[1] == -1 && futureLocation <= e.getY())
+                    player.offset[1] = 0;
+            }
         }
 
         if (tileMaps.getTile(((int) player.getX()/widthTile), ((int) player.getY()/heightTile) + 1) == 0)

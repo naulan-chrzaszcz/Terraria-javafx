@@ -79,7 +79,6 @@ public class TileMapsView
     public void displayPlayer()
     {
         ImageView playerImgView = new ImageView(playerImg);
-        environment.getPlayer().setRect((int) playerImg.getWidth(), (int) playerImg.getHeight());
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
         display.getChildren().add(playerImgView);
@@ -107,7 +106,6 @@ public class TileMapsView
     private void createStone(int x, int y)
     {
         Stone stoneEntity = new Stone(x*tileWidth.get(), y*tileHeight.get());
-        stoneEntity.setRect((int) stoneImg.getWidth(), (int) stoneImg.getHeight());
         display.getChildren().add(createImageView(stoneEntity, stoneImg));
         environment.getEntities().add(stoneEntity);
     }
@@ -115,7 +113,6 @@ public class TileMapsView
     private void createDirt(int x, int y)
     {
         Dirt dirtSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-        dirtSprite.setRect((int) dirtImg.getWidth(), (int) dirtImg.getHeight());
         display.getChildren().add(createImageView(dirtSprite, dirtImg));
         environment.getEntities().add(dirtSprite);
     }
@@ -125,7 +122,6 @@ public class TileMapsView
         Dirt floorEntity = new Dirt(x*tileWidth.get(), y*tileHeight.get());
 
         Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? floorRightImg : floorLeftImg;
-        floorEntity.setRect((int) floorImg.getWidth(), (int) floorImg.getHeight());
         display.getChildren().add(createImageView(floorEntity, floorImg));
 
         environment.getEntities().add(floorEntity);

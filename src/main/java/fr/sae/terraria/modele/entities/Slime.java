@@ -26,7 +26,6 @@ public class Slime extends Entity
             frame = 0;
         }
 
-        this.rect.update(x.get(), y.get());
     }
 
 }

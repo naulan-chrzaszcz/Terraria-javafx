@@ -15,7 +15,6 @@ public class Entity
 
     protected Animation animation = null;
     protected Gravity gravity;
-    public Rect rect = null;         // Permet d'avoir une hitbox
 
     protected double velocity = 1;
     // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
@@ -63,7 +62,6 @@ public class Entity
 
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
-    public Rect getRect() { return this.rect; }
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
     public double getPv() { return this.pv; }
@@ -73,7 +71,6 @@ public class Entity
     public void setVelocity(double velocity) { this.velocity = velocity; }
     public void setX(double x) { this.x.setValue(x); }
     public void setY(double y) { this.y.setValue(y); }
-    public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
 }
 
 
