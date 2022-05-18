@@ -14,7 +14,7 @@ public class Entity
     protected double prevY;
 
     protected Animation animation = null;
-    protected Gravity gravity;
+    public Gravity gravity;
 
     protected double velocity = 1;
     // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie

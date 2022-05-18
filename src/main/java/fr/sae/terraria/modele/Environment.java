@@ -48,7 +48,7 @@ public class Environment
         player.setPv(20);
         player.setX(widthTile);
         player.setY(7*heightTile);
-
+        System.out.println(widthTile + "" + heightTile);
         gameLoop();
     }
 
@@ -63,41 +63,53 @@ public class Environment
             this.collide();
             this.worldLimit();
 
-            System.out.println(this.player.offset[0]);
             this.getPlayer().updates();
             this.ticks++;
+
         }));
 
         loop.getKeyFrames().add(keyFrame);
         loop.play();
     }
 
-    private void collide()
-    {
-        for (Entity e : entities) {
-            if (player.offset[0] != 0 && player.offset[0] <= 1 && player.offset[0] >= -1) {
-                double futureLocation = player.getX()+(player.offset[0] * player.getVelocity());
-                // Right
-                if (player.offset[0] == 1 && (futureLocation + widthTile) >= e.getX())
-                    if (tileMaps.getTile((int) (player.getX()/widthTile)+1, (int) (player.getY()/heightTile)) != 0)
-                        player.offset[0] = 0;
-                // Left
-                if (player.offset[0] == -1 && futureLocation <= e.getX())
-                    if (tileMaps.getTile((int) (player.getX()/widthTile), (int) (player.getY()/heightTile)) != 0)
-                        player.offset[0] = 0;
-            }
+    private void collide() {
+        if (player.offset[0] != 0 || player.offset[1] != 0) {
 
-            if (player.offset[1] != 0 && player.offset[1] <= 1 && player.offset[1] >= -1) {
-                double futureLocation = player.getY()+(player.offset[1] * player.getVelocity());
-                if (player.offset[1] == 1 && (futureLocation + heightTile) >= e.getY())
+
+//                if ((Math.abs(futurelocX-e.getX()) < 5 && Math.abs(futurelocY-e.getY()) < 20) || (Math.abs(futurelocX+widthTile-e.getX()) < 5 && Math.abs(futurelocY+heightTile-e.getY()) < 20) )
+//                    player.offset[0] = 0;
+//            }
+            if (tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity()) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity() + heightTile) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity() + widthTile) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity()) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity() + widthTile) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity() + heightTile) / heightTile)) != 0)
+                player.offset[0] = 0;
+
+/*                if (player.offset[1] != 0 && (tileMaps.getTile((int)((player.getX() + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + 2) / heightTile)) != 0 || tileMaps.getTile((int)((player.getX()+ widthTile + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + 2) / heightTile)) != 0)){
                     player.offset[1] = 0;
-                if (player.offset[1] == -1 && futureLocation <= e.getY())
-                    player.offset[1] = 0;
+                }*/
+
+        }
+        if (player.air) {
+            System.out.println(player.gravity.timer);
+            System.out.println(player.gravity.flightTime/2);
+            double futurePosition = player.gravity.formulaOfTrajectory();
+            if (player.gravity.timer < (player.gravity.flightTime/2)){
+
+                if (tileMaps.getTile((int) (player.getX()/widthTile),(int)(futurePosition/heightTile)) ==0 && tileMaps.getTile((int) ((player.getX()+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0)
+                    player.setY(futurePosition);
+                else player.idle();
+            }else {
+
+                if (tileMaps.getTile(((int) player.getX() / widthTile), ((int) (player.getY() + heightTile) / heightTile) + 1) == 0 && tileMaps.getTile((int) player.getX() / widthTile + 1, (int) (player.getY() + heightTile) / heightTile + 1) == 0)
+                    player.setY(futurePosition);
             }
         }
-
-        if (tileMaps.getTile(((int) player.getX()/widthTile), ((int) player.getY()/heightTile) + 1) == 0)
-            player.fall();
+        if (player.offset[1] == 0)
+            player.air = false;
+       if (tileMaps.getTile(((int) player.getX() / widthTile), ((int) (player.getY()+heightTile) / heightTile) + 1) == 0 && tileMaps.getTile((int) player.getX() / widthTile + 1, (int) (player.getY()+heightTile) / heightTile + 1) == 0 ) {
+                player.fall();
+        }else {
+            if (Math.abs((player.getY()) - (((int)player.getY()/heightTile+1)*heightTile)) > 3)
+                player.fall();
+        }
     }
 
     /** Evite que le joueur sort de la carte. */
