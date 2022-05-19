@@ -1,8 +1,6 @@
 package fr.sae.terraria.modele.entities.entity;
 
 
-import fr.sae.terraria.modele.entities.Player;
-
 public class Gravity
 {
     // Constantes
@@ -23,9 +21,10 @@ public class Gravity
     {
         this.degInit = -90;
 
-        //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        entity.setY(((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 10)) * timer)) + yInit);
-
-        this.timer += this.speed;
+        // double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
+        entity.setY(((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 7)) * timer)) + yInit);
+        this.clock();
     }
+
+    public void clock() { this.timer += this.speed; }
 }

@@ -23,6 +23,7 @@ public class Rect
 
     public boolean collideRect(Rect rect) { return this.rect.intersects(rect.get()); }
 
-
     public Rectangle2D get() { return this.rect; }
+    public int getWidth() { return (int) (this.rect.getWidth()); }
+    public int getHeight() { return (int) (this.rect.getHeight()); }
 }

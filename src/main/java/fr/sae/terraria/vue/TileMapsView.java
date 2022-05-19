@@ -16,8 +16,6 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 
 public class TileMapsView
@@ -45,12 +43,12 @@ public class TileMapsView
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
 
-        this.floorTopImg = this.loadAnImage("tiles/floor-top.png");
-        this.floorLeftImg = this.loadAnImage("tiles/floor-left.png");
-        this.floorRightImg = this.loadAnImage("tiles/floor-right.png");
-        this.stoneImg = this.loadAnImage("tiles/rock-fill.png");
-        this.dirtImg = this.loadAnImage("tiles/dirt-top.png");
-        this.playerImg = this.loadAnImage("sprites/player/player_idle.png");
+        this.floorTopImg = TileMapsView.loadAnImage("tiles/floor-top.png", tileWidth.get(), tileWidth.get());
+        this.floorLeftImg = TileMapsView.loadAnImage("tiles/floor-left.png", tileWidth.get(), tileWidth.get());
+        this.floorRightImg = TileMapsView.loadAnImage("tiles/floor-right.png", tileWidth.get(), tileWidth.get());
+        this.stoneImg = TileMapsView.loadAnImage("tiles/rock-fill.png", tileWidth.get(), tileWidth.get());
+        this.dirtImg = TileMapsView.loadAnImage("tiles/dirt-top.png", tileWidth.get(), tileWidth.get());
+        this.playerImg = TileMapsView.loadAnImage("sprites/player/player_idle.png", tileWidth.get(), tileWidth.get());
     }
 
     public void displayMaps(TileMaps tiles)
@@ -84,14 +82,14 @@ public class TileMapsView
         display.getChildren().add(playerImgView);
     }
 
-    public Image loadAnImage(String path)
+    public static Image loadAnImage(String path, int tileWidth, int tileHeight)
     {
         InputStream pathImg = Terraria.class.getResourceAsStream(path);
         if (pathImg == null) try {
             pathImg = new FileInputStream(Terraria.srcPath + path);
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
 
-        return new Image(pathImg, tileWidth.get(), tileHeight.get(), false, false);
+        return new Image(pathImg, tileWidth, tileHeight, false, false);
     }
 
     private ImageView createImageView(Entity entity, Image img)
