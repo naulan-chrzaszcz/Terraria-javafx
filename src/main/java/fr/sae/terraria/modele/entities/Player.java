@@ -1,46 +1,81 @@
 package fr.sae.terraria.modele.entities;
 
+import javafx.scene.input.KeyCode;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public class Player extends Entity
 {
-    private double prevX;
-    private double prevY;
-    private double frame = 0; // TODO faire une animation
+    private final Map<KeyCode, Boolean> keysInput;
+
+    public boolean air;
 
 
     /**
      * @param x La position du joueur en X
      * @param y La position du joueur en Y
      */
-    public Player(int x, int y) { super(x, y); }
-
-    /** Modifie l'offset qui permet de le déplacer vers la droite */
-    public void moveRight() { this.offset[0] = 1; }
-
-    /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    public void moveLeft() { this.offset[0] = -1; }
-
-    /** Permet de ne plus faire bouger le joueur */
-    public void idle() { this.offset[0] = 0; this.offset[1] =0;}
-
-    public void rollback()
+    public Player(int x, int y)
     {
-        setX(prevX);
-        setY(prevY);
+        super(x, y);
+
+        this.keysInput = new HashMap<>();
     }
 
     public void updates()
     {
-        this.prevX = x.get();
-        this.prevY = y.get();
+        super.updates();
+
         // Applique les déplacements selon les valeurs de l'offset
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
-        this.setY(this.y.get() + this.offset[1] * this.velocity);
+        // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
-        if(frame == 4) frame = 0;
+        if (this.offset[1] == 0) {
+            this.gravity.xInit = this.x.get();
+            this.gravity.yInit = this.y.get();
+            this.gravity.vInit = this.velocity;
 
-        this.rect.update(x.get(), y.get());
+            this.gravity.timer = .0;
+        }
+
+        if (this.air)
+            this.gravity.formulaOfTrajectory(this);
+        if (this.offset[1] == 0)
+            this.air = false;
+
+        if (this.offset[1] == -1)
+            this.setY(this.getY() + 2);
+        this.setX(this.getX() + this.offset[0] * this.getVelocity());
+
+        if (this.rect != null)
+            this.rect.update(x.get(), y.get());
     }
+
+    public void jump()
+    {
+        if (!this.air)
+            super.jump();
+        this.air = true;
+    }
+
+    /** Lie les inputs au clavier à une ou des actions. */
+    public void eventInput()
+    {
+        this.keysInput.forEach((key, value) -> {
+            if ((key == KeyCode.Z || key == KeyCode.SPACE) && Boolean.TRUE.equals(value))
+                this.jump();
+
+            if (key == KeyCode.D && Boolean.TRUE.equals(value))
+                this.moveRight();
+            if (key == KeyCode.Q && Boolean.TRUE.equals(value))
+                this.moveLeft();
+        });
+    }
+
+
+    public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
+
 }

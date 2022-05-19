@@ -10,6 +10,5 @@ public class Dirt extends Block
 
     public void updates()
     {
-        this.rect.update(x.get(), y.get());
     }
 }

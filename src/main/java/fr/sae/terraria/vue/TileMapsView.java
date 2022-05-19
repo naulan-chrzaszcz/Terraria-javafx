@@ -43,12 +43,12 @@ public class TileMapsView
         this.tileHeight = tileHeight;
         this.tileWidth = tileWidth;
 
-        this.floorTopImg = this.loadAnImage("tiles/floor-top.png");
-        this.floorLeftImg = this.loadAnImage("tiles/floor-left.png");
-        this.floorRightImg = this.loadAnImage("tiles/floor-right.png");
-        this.stoneImg = this.loadAnImage("tiles/rock-fill.png");
-        this.dirtImg = this.loadAnImage("tiles/dirt-top.png");
-        this.playerImg = this.loadAnImage("sprites/player/player_idle.png");
+        this.floorTopImg = TileMapsView.loadAnImage("tiles/floor-top.png", tileWidth.get(), tileWidth.get());
+        this.floorLeftImg = TileMapsView.loadAnImage("tiles/floor-left.png", tileWidth.get(), tileWidth.get());
+        this.floorRightImg = TileMapsView.loadAnImage("tiles/floor-right.png", tileWidth.get(), tileWidth.get());
+        this.stoneImg = TileMapsView.loadAnImage("tiles/rock-fill.png", tileWidth.get(), tileWidth.get());
+        this.dirtImg = TileMapsView.loadAnImage("tiles/dirt-top.png", tileWidth.get(), tileWidth.get());
+        this.playerImg = TileMapsView.loadAnImage("sprites/player/player_idle.png", tileWidth.get(), tileWidth.get());
     }
 
     public void displayMaps(TileMaps tiles)
@@ -77,20 +77,19 @@ public class TileMapsView
     public void displayPlayer()
     {
         ImageView playerImgView = new ImageView(playerImg);
-        environment.getPlayer().setRect((int) playerImg.getWidth(), (int) playerImg.getHeight());
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
         display.getChildren().add(playerImgView);
     }
 
-    public Image loadAnImage(String path)
+    public static Image loadAnImage(String path, int tileWidth, int tileHeight)
     {
         InputStream pathImg = Terraria.class.getResourceAsStream(path);
         if (pathImg == null) try {
             pathImg = new FileInputStream(Terraria.srcPath + path);
         } catch (FileNotFoundException e) { throw new RuntimeException(e); }
 
-        return new Image(pathImg, tileWidth.get(), tileHeight.get(), false, false);
+        return new Image(pathImg, tileWidth, tileHeight, false, false);
     }
 
     private ImageView createImageView(Entity entity, Image img)
@@ -105,7 +104,6 @@ public class TileMapsView
     private void createStone(int x, int y)
     {
         Stone stoneEntity = new Stone(x*tileWidth.get(), y*tileHeight.get());
-        stoneEntity.setRect((int) stoneImg.getWidth(), (int) stoneImg.getHeight());
         display.getChildren().add(createImageView(stoneEntity, stoneImg));
         environment.getEntities().add(stoneEntity);
     }
@@ -113,7 +111,6 @@ public class TileMapsView
     private void createDirt(int x, int y)
     {
         Dirt dirtSprite = new Dirt(x*tileWidth.get(), y*tileHeight.get());
-        dirtSprite.setRect((int) dirtImg.getWidth(), (int) dirtImg.getHeight());
         display.getChildren().add(createImageView(dirtSprite, dirtImg));
         environment.getEntities().add(dirtSprite);
     }
@@ -123,7 +120,6 @@ public class TileMapsView
         Dirt floorEntity = new Dirt(x*tileWidth.get(), y*tileHeight.get());
 
         Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? floorRightImg : floorLeftImg;
-        floorEntity.setRect((int) floorImg.getWidth(), (int) floorImg.getHeight());
         display.getChildren().add(createImageView(floorEntity, floorImg));
 
         environment.getEntities().add(floorEntity);

@@ -24,7 +24,6 @@ public class Rabbit extends Entity
             frame = 0;
         }//TODO faire les frame
 
-        this.rect.update(x.get(), y.get());
     }
 
 }
