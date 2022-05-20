@@ -22,7 +22,7 @@ public class Gravity
         this.degInit = -90;
 
         // double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        entity.setY(((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 7)) * timer)) + yInit);
+        entity.setY(((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 8)) * timer)) + yInit);
         this.clock();
     }
 

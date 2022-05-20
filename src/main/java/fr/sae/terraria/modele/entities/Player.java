@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele.entities;
 
+import fr.sae.terraria.modele.entities.entity.Animation;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
@@ -23,13 +24,13 @@ public class Player extends Entity
     {
         super(x, y);
 
+        this.animation = new Animation(this);
         this.keysInput = new HashMap<>();
     }
 
     public void updates()
     {
         super.updates();
-
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
@@ -52,6 +53,7 @@ public class Player extends Entity
 
         if (this.rect != null)
             this.rect.update(x.get(), y.get());
+        this.animation.loop();
     }
 
     public void jump()
