@@ -30,7 +30,6 @@ public class Player extends Entity
 
     public void updates()
     {
-        super.updates();
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 

@@ -2,10 +2,9 @@ package fr.sae.terraria.modele.entities.entity;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.shape.Rectangle;
 
 
-public class Entity
+public abstract class Entity
 {
     // Property variables
     protected DoubleProperty x;
@@ -46,7 +45,7 @@ public class Entity
      * Permet de mettre à jour les valeurs qui concerne l'entité
      *   et qui doit rester au sain de l'objet
      */
-    public void updates() { this.prevX = x.get(); this.prevY = y.get(); }
+    public abstract void updates();
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */
     public void moveRight() { this.offset[0] = 1; }
@@ -59,16 +58,15 @@ public class Entity
     /** Modifie l'offset qui permet de tomber */
     public void fall() { this.offset[1] = -1; }
     /** Permet de faire revenir en arriere l'entité */
-    public void rollbackX() { this.setX(prevX); }
-    public void rollbackY() { this.setY(prevY); }
 
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
+    public Animation getAnimation() { return this.animation; }
+    public Rect getRect() { return this.rect; }
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
     public double getPv() { return this.pv; }
     public double getVelocity() { return this.velocity; }
-    public Rect getRect() { return this.rect; }
 
     public void setPv(int pv) { this.pv = pv; }
     public void setVelocity(double velocity) { this.velocity = velocity; }

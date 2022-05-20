@@ -2,6 +2,7 @@ package fr.sae.terraria.vue;
 
 import javafx.beans.property.IntegerProperty;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -32,7 +33,9 @@ public class TileMapsView
     private Image floorRightImg;
     private Image stoneImg;
     private Image dirtImg;
-    private Image playerImg;
+    private Image playerMoveRightImg;
+    private Image playerMoveLeftImg;
+    private Image playerIdleImg;
 
 
     public TileMapsView(Environment environment, Pane display, IntegerProperty tileWidth, IntegerProperty tileHeight)
@@ -48,7 +51,9 @@ public class TileMapsView
         this.floorRightImg = TileMapsView.loadAnImage("tiles/floor-right.png", tileWidth.get(), tileWidth.get());
         this.stoneImg = TileMapsView.loadAnImage("tiles/rock-fill.png", tileWidth.get(), tileWidth.get());
         this.dirtImg = TileMapsView.loadAnImage("tiles/dirt-top.png", tileWidth.get(), tileWidth.get());
-        this.playerImg = TileMapsView.loadAnImage("sprites/player/player_idle.png", tileWidth.get(), tileWidth.get());
+        this.playerIdleImg = TileMapsView.loadAnImage("sprites/player/player_idle.png", tileWidth.get(), tileWidth.get());
+        this.playerMoveRightImg = TileMapsView.loadAnImage("sprites/player/player_moveRight.png", tileWidth.get()*4, tileWidth.get());
+        this.playerMoveLeftImg = TileMapsView.loadAnImage("sprites/player/player_moveLeft.png", tileWidth.get()*4, tileWidth.get());
     }
 
     public void displayMaps(TileMaps tiles)
@@ -76,9 +81,22 @@ public class TileMapsView
 
     public void displayPlayer()
     {
-        ImageView playerImgView = new ImageView(playerImg);
+        ImageView playerImgView = new ImageView();
         playerImgView.translateYProperty().bind(environment.getPlayer().getYProperty());
         playerImgView.translateXProperty().bind(environment.getPlayer().getXProperty());
+
+        environment.getPlayer().getAnimation().getFrame().addListener((obs, oldFrame, newFrame) -> {
+            playerImgView.setViewport(new Rectangle2D(0, 0, tileHeight.get(), tileHeight.get()));
+            if (environment.getPlayer().offset[0] == 0 && environment.getPlayer().offset[1] == 0)
+                playerImgView.setImage(playerIdleImg);
+
+            if (environment.getPlayer().offset[0] == 1 || environment.getPlayer().offset[0] == -1) {
+                Rectangle2D frameRect = new Rectangle2D(newFrame.intValue() * tileHeight.get(), 0, tileHeight.get()-3, tileHeight.get());
+
+                playerImgView.setViewport(frameRect);
+                playerImgView.setImage((environment.getPlayer().offset[0] == -1) ? playerMoveLeftImg : playerMoveRightImg);
+            }
+        });
         display.getChildren().add(playerImgView);
     }
 
