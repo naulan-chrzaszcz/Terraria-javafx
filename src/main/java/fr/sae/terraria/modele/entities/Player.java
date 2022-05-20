@@ -77,5 +77,4 @@ public class Player extends Entity
 
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-
 }
