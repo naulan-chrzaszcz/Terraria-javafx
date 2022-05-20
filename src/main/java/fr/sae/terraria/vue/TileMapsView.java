@@ -36,6 +36,7 @@ public class TileMapsView
     private Image playerMoveRightImg;
     private Image playerMoveLeftImg;
     private Image playerIdleImg;
+    private Image healthBarImg;
 
 
     public TileMapsView(Environment environment, Pane display, IntegerProperty tileWidth, IntegerProperty tileHeight)
@@ -54,6 +55,7 @@ public class TileMapsView
         this.playerIdleImg = TileMapsView.loadAnImage("sprites/player/player_idle.png", tileWidth.get(), tileWidth.get());
         this.playerMoveRightImg = TileMapsView.loadAnImage("sprites/player/player_moveRight.png", tileWidth.get()*4, tileWidth.get());
         this.playerMoveLeftImg = TileMapsView.loadAnImage("sprites/player/player_moveLeft.png", tileWidth.get()*4, tileWidth.get());
+        // this.healthBarImg = TileMapsView.loadAnImage("healthBar.png", )
     }
 
     public void displayMaps(TileMaps tiles)
@@ -97,6 +99,11 @@ public class TileMapsView
                 playerImgView.setImage((environment.getPlayer().offset[0] == -1) ? playerMoveLeftImg : playerMoveRightImg);
             }
         });
+
+        environment.getPlayer().getPvProperty().addListener((obs, oldPv, newPv) -> {
+
+        });
+
         display.getChildren().add(playerImgView);
     }
 

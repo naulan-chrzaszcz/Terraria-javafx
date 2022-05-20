@@ -2,17 +2,18 @@ package fr.sae.terraria.modele.entities;
 
 
 import fr.sae.terraria.modele.entities.entity.Entity;
+import javafx.beans.property.SimpleDoubleProperty;
 
 public class Slime extends Entity
 {
     private int frame;
 
 
-    public Slime(int x, int y, int pv, double velocity)
+    public Slime(int x, int y, double pv, double velocity)
     {
         super(x, y);
 
-        this.pv = pv;
+        this.pv = new SimpleDoubleProperty(pv);
         this.velocity = velocity;
     }
 

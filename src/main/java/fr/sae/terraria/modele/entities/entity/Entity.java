@@ -10,16 +10,13 @@ public abstract class Entity
     protected DoubleProperty x;
     protected DoubleProperty y;
 
-    protected double prevX;
-    protected double prevY;
-
     protected Animation animation = null;
     protected Rect rect = null;
     protected Gravity gravity;
 
     protected double velocity = 1;
     // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
-    protected double pv = 3;    // 0 >= pv && 5 >= pv
+    protected DoubleProperty pv;    // 0 >= pv && 5 >= pv
     // Permet de savoir dans quelle direction se dirige le joueur.
     public int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
 
@@ -34,17 +31,14 @@ public abstract class Entity
 
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
-        this.prevX = x;
-        this.prevY = y;
+        this.pv = new SimpleDoubleProperty(0);
 
         this.offset = new int[2];
     }
 
 
-    /**
-     * Permet de mettre à jour les valeurs qui concerne l'entité
-     *   et qui doit rester au sain de l'objet
-     */
+    /** Permet de mettre à jour les valeurs qui concerne l'entité
+     *   et qui doit rester au sain de l'objet */
     public abstract void updates();
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */
@@ -57,21 +51,21 @@ public abstract class Entity
     public void jump() { this.offset[1] = 1; }
     /** Modifie l'offset qui permet de tomber */
     public void fall() { this.offset[1] = -1; }
-    /** Permet de faire revenir en arriere l'entité */
 
+    public DoubleProperty getPvProperty() { return this.pv; }
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
     public Animation getAnimation() { return this.animation; }
     public Rect getRect() { return this.rect; }
+    public double getPv() { return this.pv.get(); }
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
-    public double getPv() { return this.pv; }
     public double getVelocity() { return this.velocity; }
 
-    public void setPv(int pv) { this.pv = pv; }
-    public void setVelocity(double velocity) { this.velocity = velocity; }
+    public void setPv(double pv) { this.pv.setValue(pv); }
     public void setX(double x) { this.x.setValue(x); }
     public void setY(double y) { this.y.setValue(y); }
+    public void setVelocity(double velocity) { this.velocity = velocity; }
     public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
 }
 
