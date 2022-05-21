@@ -1,6 +1,8 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -13,6 +15,9 @@ public class PlayerView
     private Player player;
 
     private ImageView playerImgView;
+    private ImageView inventoryImgView;
+
+    private Image inventoryImg;
 
     private Image playerMoveRightImg;
     private Image playerMoveLeftImg;
@@ -30,6 +35,7 @@ public class PlayerView
         this.tileHeight = tileHeight;
 
         this.playerImgView = new ImageView();
+        this.inventoryImgView = new ImageView();
 
         this.playerIdleImg = View.loadAnImage("sprites/player/player_idle.png", tileWidth, tileHeight);
         this.playerMoveRightImg = View.loadAnImage("sprites/player/player_moveRight.png", tileWidth*4, tileHeight);
@@ -70,6 +76,39 @@ public class PlayerView
             this.player.getAnimation().setEndFrame(newEndFrame);
         });
     }
+
+    public void displayInventory(Pane display)
+    {
+        this.inventoryImg = View.loadAnImage("inventory.png",tileWidth*9,tileHeight);
+        this.player.ramasser(new Dirt(0,0));
+        this.player.ramasser(new Dirt(1,1));
+        System.out.println(this.player.getInventory()[0]);
+        this.inventoryImgView.setImage(inventoryImg);
+        this.inventoryImgView.setX((1280-44*9)/2);
+        this.inventoryImgView.setY(600);
+        display.getChildren().add(inventoryImgView);
+        Image item = null;
+        System.out.println(this.player.nombreObjetsDansInventaire());
+        for (int i = 0; i < this.player.nombreObjetsDansInventaire(); i++){
+            ImageView itemView = new ImageView();
+
+            if (this.player.getInventory()[i] instanceof Dirt){
+                item = View.loadAnImage("tiles/floor-top.png",25,25);
+            }
+
+            else if (this.player.getInventory()[i] instanceof Stone){
+                item = View.loadAnImage("tiles/rock-fill.png",25,25);
+            }
+            itemView.setX(inventoryImgView.getX()+ (tileWidth * (i+1))/4 + (tileWidth*i));
+            itemView.setY(inventoryImgView.getY()+10);
+            itemView.setImage(item);
+            display.getChildren().add(itemView);
+
+        }
+
+
+    }
+
 
     public void displayHealthBar()
     {

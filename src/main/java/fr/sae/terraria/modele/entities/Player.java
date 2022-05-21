@@ -14,6 +14,7 @@ public class Player extends Entity
     private final Map<KeyCode, Boolean> keysInput;
 
     public boolean air;
+    private Entity[] inventory = new Entity[36];
 
 
     /**
@@ -76,6 +77,25 @@ public class Player extends Entity
         });
     }
 
+    public int nombreObjetsDansInventaire()
+    {
+        int nbElementPresent = 0;
+        while(nbElementPresent < this.inventory.length && this.inventory[nbElementPresent]!= null){
+            nbElementPresent ++;
+        }
+        return nbElementPresent;
+    }
+
+    public void ramasser(Entity objetRamassé)
+    {
+        if (nombreObjetsDansInventaire() < 36)
+            inventory[nombreObjetsDansInventaire()] = objetRamassé;
+    }
+
+
+    public Entity[] getInventory() {
+        return inventory;
+    }
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }

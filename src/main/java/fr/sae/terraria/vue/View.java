@@ -25,6 +25,7 @@ public class View
 
         PlayerView playerView = new PlayerView(environment.getPlayer(), tileWidth.get(), tileHeight.get());
         playerView.displayPlayer(display);
+        playerView.displayInventory(display);
         playerView.displayHealthBar();
     }
 
