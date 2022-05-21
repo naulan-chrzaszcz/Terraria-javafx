@@ -1,5 +1,6 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.vue.View;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -68,9 +69,7 @@ public class Controller implements Initializable
 
         this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get());
 
-        TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
-        tileMapsView.displayMaps(tileMaps);
-        tileMapsView.displayPlayer();
+        View view = new View(tileMaps, environment, display, tileWidth, tileHeight);
 
         for (int i = 0; i < this.environment.getEntities().size(); i++)
             this.environment.getEntities().get(i).setRect(tileWidth.get(), tileWidth.get());
