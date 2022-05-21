@@ -79,8 +79,13 @@ public class PlayerView
 
     public void displayInventory(Pane display)
     {
+        int nombreElementsAffichés = 9;
         this.inventoryImg = View.loadAnImage("inventory.png",tileWidth*9,tileHeight);
         this.player.ramasser(new Dirt(0,0));
+        this.player.ramasser(new Dirt(1,1));
+        this.player.ramasser(new Dirt(1,1));
+        this.player.ramasser(new Dirt(1,1));
+        this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
         System.out.println(this.player.getInventory()[0]);
         this.inventoryImgView.setImage(inventoryImg);
@@ -89,7 +94,10 @@ public class PlayerView
         display.getChildren().add(inventoryImgView);
         Image item = null;
         System.out.println(this.player.nombreObjetsDansInventaire());
-        for (int i = 0; i < this.player.nombreObjetsDansInventaire(); i++){
+        if (this.player.nombreObjetsDansInventaire()<= 9){
+            nombreElementsAffichés = this.player.nombreObjetsDansInventaire();
+        }
+        for (int i = 0; i < nombreElementsAffichés; i++){
             ImageView itemView = new ImageView();
 
             if (this.player.getInventory()[i] instanceof Dirt){
@@ -99,7 +107,7 @@ public class PlayerView
             else if (this.player.getInventory()[i] instanceof Stone){
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
             }
-            itemView.setX(inventoryImgView.getX()+ (tileWidth * (i+1))/4 + (tileWidth*i));
+            itemView.setX(inventoryImgView.getX()+ (tileWidth * (i+1))/4 + (tileWidth*i*0.742));
             itemView.setY(inventoryImgView.getY()+10);
             itemView.setImage(item);
             display.getChildren().add(itemView);
