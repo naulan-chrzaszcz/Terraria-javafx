@@ -2,21 +2,13 @@ package fr.sae.terraria.vue;
 
 import javafx.beans.property.IntegerProperty;
 
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
-import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public class TileMapsView
@@ -33,10 +25,6 @@ public class TileMapsView
     private Image floorRightImg;
     private Image stoneImg;
     private Image dirtImg;
-    private Image playerMoveRightImg;
-    private Image playerMoveLeftImg;
-    private Image playerIdleImg;
-    private Image healthBarImg;
 
 
     public TileMapsView(Environment environment, Pane display, IntegerProperty tileWidth, IntegerProperty tileHeight)
@@ -101,5 +89,5 @@ public class TileMapsView
         environment.getEntities().add(floorEntity);
     }
 
-    private void errorTile(int tile) { System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
+    private void errorTile(int tile) { if (tile != 0) System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
 }
