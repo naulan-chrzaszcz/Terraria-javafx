@@ -53,8 +53,6 @@ public class Environment
             this.collide();
             this.worldLimit();
 
-            System.out.println(this.player.offset[0]);
-            System.out.println(this.player.offset[1]);
             this.getPlayer().updates();
             this.ticks++;
         }));

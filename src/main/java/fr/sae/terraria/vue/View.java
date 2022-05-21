@@ -23,7 +23,7 @@ public class View
         TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
         tileMapsView.displayMaps(tileMaps);
 
-        PlayerView playerView = new PlayerView(environment, tileWidth.get(), tileHeight.get());
+        PlayerView playerView = new PlayerView(environment.getPlayer(), tileWidth.get(), tileHeight.get());
         playerView.displayPlayer(display);
         playerView.displayHealthBar();
     }

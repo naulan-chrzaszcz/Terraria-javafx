@@ -24,7 +24,7 @@ public class Player extends Entity
     {
         super(x, y);
 
-        this.animation = new Animation(this);
+        this.animation = new Animation();
         this.keysInput = new HashMap<>();
     }
 
@@ -52,7 +52,7 @@ public class Player extends Entity
 
         if (this.rect != null)
             this.rect.update(x.get(), y.get());
-        this.animation.loop();
+        animation.loop();
     }
 
     public void jump()
