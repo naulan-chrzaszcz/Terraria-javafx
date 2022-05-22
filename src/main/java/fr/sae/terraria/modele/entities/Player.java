@@ -1,12 +1,12 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.entities.entity.Animation;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.Animation;
 
 
 public class Player extends Entity

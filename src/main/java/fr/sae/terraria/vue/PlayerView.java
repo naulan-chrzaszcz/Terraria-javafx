@@ -1,6 +1,5 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;

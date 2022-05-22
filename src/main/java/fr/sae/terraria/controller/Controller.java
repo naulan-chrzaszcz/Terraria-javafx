@@ -1,6 +1,5 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.vue.View;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -18,9 +17,10 @@ import java.util.ResourceBundle;
 
 import java.net.URL;
 
-import fr.sae.terraria.vue.TileMapsView;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+
+import fr.sae.terraria.vue.View;
 
 
 public class Controller implements Initializable

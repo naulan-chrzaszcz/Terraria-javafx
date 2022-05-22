@@ -1,9 +1,5 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,6 +8,11 @@ import javafx.scene.layout.Pane;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public class View
