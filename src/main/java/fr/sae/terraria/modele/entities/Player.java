@@ -1,24 +1,21 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.entity.Animation;
 import javafx.scene.input.KeyCode;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.Animation;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
 
 
 public class Player extends Entity
 {
-    private final Map<KeyCode, Boolean> keysInput;
+    private final EnumMap<KeyCode, Boolean> keysInput;
+    private final Map<Entity, Integer> inventory;
 
     public boolean air;
-    private Map<Entity, Integer> inventory = new HashMap<Entity, Integer>();
 
 
     /**
@@ -30,7 +27,8 @@ public class Player extends Entity
         super(x, y);
 
         this.animation = new Animation();
-        this.keysInput = new HashMap<>();
+        this.keysInput = new EnumMap<>(KeyCode.class);
+        this.inventory = new HashMap<>();
     }
 
     public void updates()
@@ -81,10 +79,7 @@ public class Player extends Entity
         });
     }
 
-    public int nombreObjetsDansInventaire()
-    {
-        return this.inventory.size();
-    }
+    public int nombreObjetsDansInventaire() { return this.inventory.size(); }
 
     public void ramasser(Entity objetRamassé)
     {
@@ -111,9 +106,6 @@ public class Player extends Entity
         }
     }
 
-    public Map<Entity, Integer> getInventory() {
-        return inventory;
-    }
-
+    public Map<Entity, Integer> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }

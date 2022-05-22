@@ -105,5 +105,6 @@ public class Environment
 
 
     public List<Entity> getEntities() { return entities; }
+    public TileMaps getTileMaps() { return tileMaps; }
     public Player getPlayer() { return player; }
 }

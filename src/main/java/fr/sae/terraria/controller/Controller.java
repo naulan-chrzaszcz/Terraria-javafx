@@ -45,6 +45,9 @@ public class Controller implements Initializable
     private Environment environment;
     private TileMaps tileMaps;
 
+    private double scaleMultiplicatorWidth = .0;
+    private double scaleMultiplicatorHeight = .0;
+
 
     public Controller(Stage primaryStage)
     {
@@ -55,8 +58,14 @@ public class Controller implements Initializable
         this.addKeysEventListener(primaryStage);
 
         // Listener pour sync la taille des tiles pour scale les tiles
-        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue() / DISPLAY_RENDERING_WIDTH)))));
-        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT))));
+        primaryStage.widthProperty().addListener((obs, oldV, newV) -> {
+            scaleMultiplicatorWidth = (newV.intValue() / DISPLAY_RENDERING_WIDTH);
+            tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
+        });
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> {
+            scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT);
+            tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
+        });
     }
 
     public void initialize(URL location, ResourceBundle resources)
@@ -64,12 +73,14 @@ public class Controller implements Initializable
         this.tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         // La taille des tiles apres le scaling
-        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / DISPLAY_RENDERING_WIDTH))));
-        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT)));
+        scaleMultiplicatorWidth = (root.getPrefWidth() / DISPLAY_RENDERING_WIDTH);
+        scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT);
+        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
+        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
 
         this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get());
 
-        View view = new View(tileMaps, environment, display, tileWidth, tileHeight);
+        new View(environment, display, tileWidth, tileHeight, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         for (int i = 0; i < this.environment.getEntities().size(); i++)
             this.environment.getEntities().get(i).setRect(tileWidth.get(), tileWidth.get());
