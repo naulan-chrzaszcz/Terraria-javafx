@@ -99,14 +99,13 @@ public class PlayerView
         this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
 
-        System.out.println(this.player.getInventory());
+        // System.out.println(this.player.getInventory());
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
-        System.out.println(this.player.nombreObjetsDansInventaire());
-        if (this.player.nombreObjetsDansInventaire()<= 9){
+        // System.out.println(this.player.nombreObjetsDansInventaire());
+        if (this.player.nombreObjetsDansInventaire()<= 9)
             nombreElementsAffichés = this.player.nombreObjetsDansInventaire();
-        }
 
         Rectangle frameInventoryImg = new Rectangle();
         frameInventoryImg.setWidth(inventoryImg.getWidth()+(2*scaleMultiplicatorWidth));
@@ -121,13 +120,11 @@ public class PlayerView
             Image item = null;
             ImageView itemView = new ImageView();
 
-            if (key instanceof Dirt){
+            if (key instanceof Dirt)
                 item = View.loadAnImage("tiles/floor-top.png",25,25);
-            }
-
-            else if (key instanceof Stone){
+            else if (key instanceof Stone)
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
-            }
+
             itemView.setX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9) - 25)/2) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
             itemView.setY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - 25)/2));
             itemView.setImage(item);
