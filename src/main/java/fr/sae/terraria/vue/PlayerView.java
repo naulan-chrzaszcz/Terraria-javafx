@@ -1,10 +1,12 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.Terraria;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import fr.sae.terraria.controller.Controller;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
@@ -97,7 +99,7 @@ public class PlayerView
 
         System.out.println(this.player.getInventory());
         this.inventoryImgView.setImage(inventoryImg);
-        this.inventoryImgView.setX((1280-44*9)/2);
+        this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
         display.getChildren().add(inventoryImgView);
         System.out.println(this.player.nombreObjetsDansInventaire());
@@ -116,7 +118,7 @@ public class PlayerView
             else if (key instanceof Stone){
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
             }
-            itemView.setX(inventoryImgView.getX()+ (scaleMultiplicatorWidth * (compteur[0]+1))/4 + (scaleMultiplicatorHeight*compteur[0]*0.742));
+            itemView.setX(inventoryImgView.getX()+ ((inventoryImgView.getImage().getWidth()/9) * (compteur[0]+1))/4 + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
             itemView.setY(inventoryImgView.getY()+10);
             itemView.setImage(item);
             display.getChildren().add(itemView);
