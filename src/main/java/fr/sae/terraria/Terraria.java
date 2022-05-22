@@ -15,7 +15,10 @@ import fr.sae.terraria.controller.Controller;
 
 public class Terraria extends Application
 {
+    // Constants
     public static final String srcPath = "src/main/resources/fr/sae/terraria/";
+    public static final int DISPLAY_RENDERING_WIDTH = 465;
+    public static final int DISPLAY_RENDERING_HEIGHT = 256;
 
     // TODO:  effet de profondeur dans la terre
     private final String titleWindow = "Terraria-Like";

@@ -19,16 +19,12 @@ import java.net.URL;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-
+import fr.sae.terraria.Terraria;
 import fr.sae.terraria.vue.View;
 
 
 public class Controller implements Initializable
 {
-    // Constants
-    public static final int DISPLAY_RENDERING_WIDTH = 465;
-    public static final int DISPLAY_RENDERING_HEIGHT = 256;
-
     // FXML objects
     @FXML
     private BorderPane root;
@@ -59,11 +55,11 @@ public class Controller implements Initializable
 
         // Listener pour sync la taille des tiles pour scale les tiles
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> {
-            scaleMultiplicatorWidth = (newV.intValue() / DISPLAY_RENDERING_WIDTH);
+            scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
             tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
         });
         primaryStage.heightProperty().addListener((obs, oldV, newV) -> {
-            scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT);
+            scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
             tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
         });
     }
@@ -73,8 +69,8 @@ public class Controller implements Initializable
         this.tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         // La taille des tiles apres le scaling
-        scaleMultiplicatorWidth = (root.getPrefWidth() / DISPLAY_RENDERING_WIDTH);
-        scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT);
+        scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+        scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
         this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
         this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
 
