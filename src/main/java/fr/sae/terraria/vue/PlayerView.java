@@ -11,6 +11,7 @@ import fr.sae.terraria.controller.Controller;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
+import javafx.scene.shape.Rectangle;
 
 
 public class PlayerView
@@ -102,11 +103,19 @@ public class PlayerView
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
-        display.getChildren().add(inventoryImgView);
         System.out.println(this.player.nombreObjetsDansInventaire());
         if (this.player.nombreObjetsDansInventaire()<= 9){
             nombreElementsAffichés = this.player.nombreObjetsDansInventaire();
         }
+
+        Rectangle frameInventoryImg = new Rectangle();
+        frameInventoryImg.setWidth(inventoryImg.getWidth()+(2*scaleMultiplicatorWidth));
+        frameInventoryImg.setHeight(inventoryImg.getHeight()+(2*scaleMultiplicatorHeight));
+        frameInventoryImg.setX(inventoryImgView.getX()-(1*scaleMultiplicatorWidth));
+        frameInventoryImg.setY(inventoryImgView.getY()-(1*scaleMultiplicatorHeight));
+        display.getChildren().add(frameInventoryImg);
+        display.getChildren().add(inventoryImgView);
+
         int[] compteur = new int[1];
         this.player.getInventory().forEach((key,integer) -> {
             Image item = null;
@@ -126,8 +135,6 @@ public class PlayerView
             compteur[0]++;
 
         });
-
-
     }
 
     public void displayHealthBar(Pane display)
