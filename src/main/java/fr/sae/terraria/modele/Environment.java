@@ -4,12 +4,10 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
-
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -21,27 +19,28 @@ public class Environment
     private final TileMaps tileMaps;
     private final Player player;
 
-    private final int[] elementsSize;
-    private final int widthTile;
-    private final int heightTile;
+    private int widthTile;
+    private int heightTile;
+
     private int ticks = 0;
 
 
-    public Environment(TileMaps tileMaps, int widthTile, int heightTile, int widthPlayer,int heightPlayer)
+    public Environment(TileMaps tileMaps, int widthTile, int heightTile)
     {
         this.tileMaps = tileMaps;
 
         this.widthTile = widthTile;
         this.heightTile = heightTile;
-        elementsSize = new int[] {widthTile*tileMaps.getWidth(), heightTile*tileMaps.getWidth(), widthPlayer, heightPlayer};
-        entities = new ArrayList<>();
 
-        player = new Player(0,0);
-        player.setVelocity(5);
-        player.setPv(20);
-        player.setX(widthTile);
-        player.setY(7*heightTile);
-        System.out.println(widthTile + "" + heightTile);
+        this.entities = new ArrayList<>();
+
+        this.player = new Player(0,0);
+        this.player.setVelocity(5);
+        this.player.setPv(20);
+        this.player.setX(widthTile);
+        this.player.setY(7*heightTile);
+        this.player.setRect(widthTile, heightTile);
+
         gameLoop();
     }
 
@@ -100,10 +99,10 @@ public class Environment
     /** Evite que le joueur sort de la carte. */
     private void worldLimit()
     {
-        if (player.getX() < 0)
-            player.setX(.0);
-        if (player.getX() > elementsSize[0]-(elementsSize[2]*1.92))
-            player.setX(elementsSize[0]-(elementsSize[2]*1.92));
+        if (player.offset[0] == -1 && player.getX() < 0)
+            player.offset[0] = 0;
+        if (player.offset[0] == 1 && player.getX() > widthTile*tileMaps.getWidth())
+            player.offset[0] = 0;
     }
 
 

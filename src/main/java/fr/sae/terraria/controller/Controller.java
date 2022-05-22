@@ -17,16 +17,17 @@ import java.util.ResourceBundle;
 
 import java.net.URL;
 
-import fr.sae.terraria.vue.TileMapsView;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+
+import fr.sae.terraria.vue.View;
 
 
 public class Controller implements Initializable
 {
-    // Constantes
-    private static final int displayRenderingWidth = 465;
-    private static final int displayRenderingHeight = 256;
+    // Constants
+    public static final int DISPLAY_RENDERING_WIDTH = 465;
+    public static final int DISPLAY_RENDERING_HEIGHT = 256;
 
     // FXML objects
     @FXML
@@ -54,8 +55,8 @@ public class Controller implements Initializable
         this.addKeysEventListener(primaryStage);
 
         // Listener pour sync la taille des tiles pour scale les tiles
-        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue() / displayRenderingWidth)))));
-        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue()-title.getPrefHeight()) / displayRenderingHeight))));
+        primaryStage.widthProperty().addListener((obs, oldV, newV) -> tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue() / DISPLAY_RENDERING_WIDTH)))));
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((newV.intValue()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT))));
     }
 
     public void initialize(URL location, ResourceBundle resources)
@@ -63,22 +64,15 @@ public class Controller implements Initializable
         this.tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         // La taille des tiles apres le scaling
-        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / displayRenderingWidth))));
-        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / displayRenderingHeight)));
+        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefWidth() / DISPLAY_RENDERING_WIDTH))));
+        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE *((root.getPrefHeight()-title.getPrefHeight()) / DISPLAY_RENDERING_HEIGHT)));
 
-        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get(), this.tileWidth.get(), this.tileHeight.get());
+        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get());
 
-        TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
-        tileMapsView.displayMaps(tileMaps);
-        tileMapsView.displayPlayer();
-        /*for (Entity e : environment.getEntities()){
-            Rectangle rec = new Rectangle(tileWidth.get(),tileHeight.get());
-            rec.translateXProperty().bind(e.getXProperty());
-            rec.translateYProperty().bind(e.getYProperty());
-            display.getChildren().add(rec);
-        }*/
+        View view = new View(tileMaps, environment, display, tileWidth, tileHeight);
 
-
+        for (int i = 0; i < this.environment.getEntities().size(); i++)
+            this.environment.getEntities().get(i).setRect(tileWidth.get(), tileWidth.get());
     }
 
     /**

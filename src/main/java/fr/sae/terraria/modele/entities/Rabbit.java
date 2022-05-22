@@ -1,17 +1,20 @@
 package fr.sae.terraria.modele.entities;
 
+import javafx.beans.property.SimpleDoubleProperty;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
+
 
 public class Rabbit extends Entity
 {
     private int frame;
 
 
-    public Rabbit(int x, int y, int pv, double velocity)
+    public Rabbit(int x, int y, double pv, double velocity)
     {
         super(x, y);
-        this.pv = pv;
+
+        this.pv = new SimpleDoubleProperty(pv);
         this.velocity = velocity;
     }
 

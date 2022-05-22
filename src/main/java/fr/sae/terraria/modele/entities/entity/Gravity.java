@@ -1,8 +1,6 @@
 package fr.sae.terraria.modele.entities.entity;
 
 
-import fr.sae.terraria.modele.entities.Player;
-
 public class Gravity
 {
     // Constantes

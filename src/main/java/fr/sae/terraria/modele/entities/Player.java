@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.Animation;
 
 
 public class Player extends Entity
@@ -13,6 +14,7 @@ public class Player extends Entity
     private final Map<KeyCode, Boolean> keysInput;
 
     public boolean air;
+    private Entity[] inventory = new Entity[36];
 
 
     /**
@@ -23,13 +25,12 @@ public class Player extends Entity
     {
         super(x, y);
 
+        this.animation = new Animation();
         this.keysInput = new HashMap<>();
     }
 
     public void updates()
     {
-        super.updates();
-
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
@@ -47,6 +48,10 @@ public class Player extends Entity
         if (this.offset[1] == -1)
             this.setY(this.getY() + 2);
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
+
+        if (this.rect != null)
+            this.rect.update(x.get(), y.get());
+        animation.loop();
     }
 
     public void jump()
@@ -70,7 +75,25 @@ public class Player extends Entity
         });
     }
 
+    public int nombreObjetsDansInventaire()
+    {
+        int nbElementPresent = 0;
+        while(nbElementPresent < this.inventory.length && this.inventory[nbElementPresent]!= null){
+            nbElementPresent ++;
+        }
+        return nbElementPresent;
+    }
+
+    public void ramasser(Entity objetRamassé)
+    {
+        if (nombreObjetsDansInventaire() < 36)
+            inventory[nombreObjetsDansInventaire()] = objetRamassé;
+    }
+
+
+    public Entity[] getInventory() {
+        return inventory;
+    }
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-
 }

@@ -1,7 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
-
 import fr.sae.terraria.modele.entities.entity.Entity;
+
 
 public class Arrow extends Entity
 {

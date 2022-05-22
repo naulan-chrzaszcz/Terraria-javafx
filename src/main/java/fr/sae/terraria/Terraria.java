@@ -1,6 +1,5 @@
 package fr.sae.terraria;
 
-import fr.sae.terraria.controller.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 
 import java.net.URL;
+
+import fr.sae.terraria.controller.Controller;
 
 
 public class Terraria extends Application
