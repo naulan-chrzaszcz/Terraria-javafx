@@ -41,10 +41,10 @@ public class PlayerView
         this.playerImgView = new ImageView();
         this.inventoryImgView = new ImageView();
 
-        this.playerIdleImg = View.loadAnImage("sprites/player/player_idle.png", 1, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        this.playerMoveRightImg = View.loadAnImage("sprites/player/player_moveRight.png", 4, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        this.playerMoveLeftImg = View.loadAnImage("sprites/player/player_moveLeft.png", 4, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        this.healthBarImg = View.loadAnImage("health.png", 3, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.playerIdleImg = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.playerMoveRightImg = View.loadAnImage("sprites/player/player_moveRight.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.playerMoveLeftImg = View.loadAnImage("sprites/player/player_moveLeft.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.healthBarImg = View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         this.widthPlayer = (int) this.playerIdleImg.getWidth();
         this.heightPlayer = (int) this.playerIdleImg.getHeight();
@@ -53,9 +53,7 @@ public class PlayerView
     /** Synchronise les coordonnées en x et y du joueur avec l'image et ensuite l'affiche sur le Pane */
     public void displayPlayer(Pane display)
     {
-        this.playerImgView.translateYProperty().bind(player.getYProperty());
-        this.playerImgView.translateXProperty().bind(player.getXProperty());
-        this.playerImgView.setImage(playerIdleImg);
+        this.playerImgView = View.createImageView(player, playerIdleImg);
         this.setAnimation();
 
         display.getChildren().add(playerImgView);

@@ -50,19 +50,6 @@ public class View
         return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
     }
 
-    public static Image loadAnImage(String path, int numberOfImagesOnSpriteSheet, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
-    {
-        // la génére juste pour prend la taille de l'image.
-        Image img = View.foundImage(path);
-        double width = img.getWidth();
-        double height = img.getHeight();
-        img.cancel();
-
-        double widthScaled = (width*scaleMultiplicatorWidth)*numberOfImagesOnSpriteSheet;
-        double heightScaled = height*scaleMultiplicatorHeight;
-        return new Image(img.getUrl(), (int) widthScaled, (int) heightScaled, false, false, false);
-    }
-
     private static Image foundImage(String path)
     {
         Image img = null;
