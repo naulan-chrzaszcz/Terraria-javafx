@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele.entities;
 
+import fr.sae.terraria.modele.entities.entity.Gravity;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ public class Player extends Entity
         super(x, y);
 
         this.animation = new Animation();
+        this.gravity = new Gravity();
         this.keysInput = new HashMap<>();
     }
 
@@ -94,6 +96,7 @@ public class Player extends Entity
     public Entity[] getInventory() {
         return inventory;
     }
+    public Gravity getGravity() { return this.gravity; }
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }

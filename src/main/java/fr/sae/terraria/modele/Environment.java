@@ -71,17 +71,15 @@ public class Environment
                 player.offset[0] = 0;
 
         }
-        System.out.println(player.air);
+
         if (player.air) {
-            double futurePosition = player.gravity.formulaOfTrajectory();
+            double futurePosition = player.getGravity().formulaOfTrajectory();
 
-
-            if (player.gravity.timer < (player.gravity.flightTime/2)){
+            if (player.getGravity().timer < (player.getGravity().flightTime/2)){
                 if (tileMaps.getTile((int) (player.getX()/widthTile),(int)(futurePosition/heightTile)) ==0 && tileMaps.getTile((int) ((player.getX()+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 }
-
             }else
                 if (Math.abs((player.getY()) - (((int)player.getY()/heightTile+1)*heightTile)) > 3)
                     player.fall();
