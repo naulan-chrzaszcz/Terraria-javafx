@@ -1,13 +1,16 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.entities.entity.Gravity;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.entity.Animation;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.Animation;
 
 
 public class Player extends Entity
@@ -15,7 +18,7 @@ public class Player extends Entity
     private final Map<KeyCode, Boolean> keysInput;
 
     public boolean air;
-    private Entity[] inventory = new Entity[36];
+    private Map<Entity, Integer> inventory = new HashMap<Entity, Integer>();
 
 
     /**
@@ -27,7 +30,6 @@ public class Player extends Entity
         super(x, y);
 
         this.animation = new Animation();
-        this.gravity = new Gravity();
         this.keysInput = new HashMap<>();
     }
 
@@ -40,12 +42,14 @@ public class Player extends Entity
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
-            this.gravity.flightTime = 1;
 
             this.gravity.timer = .0;
         }
 
-
+        if (this.air)
+            this.gravity.formulaOfTrajectory();
+        if (this.offset[1] == 0)
+            this.air = false;
 
         if (this.offset[1] == -1)
             this.setY(this.getY() + 2);
@@ -79,24 +83,37 @@ public class Player extends Entity
 
     public int nombreObjetsDansInventaire()
     {
-        int nbElementPresent = 0;
-        while(nbElementPresent < this.inventory.length && this.inventory[nbElementPresent]!= null){
-            nbElementPresent ++;
-        }
-        return nbElementPresent;
+        return this.inventory.size();
     }
 
     public void ramasser(Entity objetRamassé)
     {
-        if (nombreObjetsDansInventaire() < 36)
-            inventory[nombreObjetsDansInventaire()] = objetRamassé;
+        if (nombreObjetsDansInventaire() < 36){
+            Map<Object, Integer> temp= new HashMap<>();
+            Iterator it = this.inventory.entrySet().iterator();
+            if (this.inventory.size()==0)
+                this.inventory.put(objetRamassé,1);
+            while (it.hasNext()){
+                Object obj =  it.next();
+                temp.put( obj, 1);
+                System.out.println(obj);
+            }
+            temp.forEach((key, integer) ->{
+                System.out.println(key);
+                if (key instanceof Dirt && objetRamassé instanceof Dirt)
+                    this.inventory.put((Entity) key,this.inventory.get(key)+1);
+                else if(key instanceof Stone && objetRamassé instanceof Stone)
+                    this.inventory.put((Entity) key,this.inventory.get(key)+1);
+                else if (key instanceof Entity){
+                    this.inventory.put((Entity) key,1);
+                }
+            });
+        }
     }
 
-
-    public Entity[] getInventory() {
+    public Map<Entity, Integer> getInventory() {
         return inventory;
     }
-    public Gravity getGravity() { return this.gravity; }
 
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }

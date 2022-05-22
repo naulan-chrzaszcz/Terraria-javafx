@@ -61,6 +61,7 @@ public abstract class Entity
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
     public double getVelocity() { return this.velocity; }
+    public Gravity getGravity() { return gravity; }
 
     public void setPv(double pv) { this.pv.setValue(pv); }
     public void setX(double x) { this.x.setValue(x); }

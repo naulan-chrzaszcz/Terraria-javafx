@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.security.Key;
+
 
 public class PlayerView
 {
@@ -80,38 +82,42 @@ public class PlayerView
     {
         int nombreElementsAffichés = 9;
         this.inventoryImg = View.loadAnImage("inventory.png",tileWidth*9,tileHeight);
+
         this.player.ramasser(new Dirt(0,0));
         this.player.ramasser(new Dirt(1,1));
+        this.player.ramasser(new Stone(1,1));
         this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
-        this.player.ramasser(new Dirt(1,1));
-        System.out.println(this.player.getInventory()[0]);
+
+        System.out.println(this.player.getInventory());
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX((1280-44*9)/2);
         this.inventoryImgView.setY(600);
         display.getChildren().add(inventoryImgView);
-        Image item = null;
         System.out.println(this.player.nombreObjetsDansInventaire());
         if (this.player.nombreObjetsDansInventaire()<= 9){
             nombreElementsAffichés = this.player.nombreObjetsDansInventaire();
         }
-        for (int i = 0; i < nombreElementsAffichés; i++){
+        int[] compteur = new int[1];
+        this.player.getInventory().forEach((key,integer) -> {
+            Image item = null;
             ImageView itemView = new ImageView();
 
-            if (this.player.getInventory()[i] instanceof Dirt){
+            if (key instanceof Dirt){
                 item = View.loadAnImage("tiles/floor-top.png",25,25);
             }
 
-            else if (this.player.getInventory()[i] instanceof Stone){
+            else if (key instanceof Stone){
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
             }
-            itemView.setX(inventoryImgView.getX()+ (tileWidth * (i+1))/4 + (tileWidth*i*0.742));
+            itemView.setX(inventoryImgView.getX()+ (tileWidth * (compteur[0]+1))/4 + (tileWidth*compteur[0]*0.742));
             itemView.setY(inventoryImgView.getY()+10);
             itemView.setImage(item);
             display.getChildren().add(itemView);
+            compteur[0]++;
 
-        }
+        });
 
 
     }
