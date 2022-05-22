@@ -15,16 +15,20 @@ public class Gravity
     public double vInit;
     public double xInit;
     public double yInit;
+    public double flightTime = 1;
 
 
-    public void formulaOfTrajectory(Entity entity)
+
+    public double formulaOfTrajectory()
     {
         this.degInit = -90;
+        double yValue;
+        flightTime = (vInit*Math.sin(degInit) + Math.sqrt(Math.pow(vInit*Math.sin(degInit), 2) + 2*Gravity.VALUE*yInit))/Gravity.VALUE;
 
-        // double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        entity.setY(((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 8)) * timer)) + yInit);
-        this.clock();
+        //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
+        yValue = ((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 10)) * timer)) + yInit;
+
+        this.timer += this.speed;
+        return yValue;
     }
-
-    public void clock() { this.timer += this.speed; }
 }

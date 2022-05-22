@@ -38,14 +38,12 @@ public class Player extends Entity
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
+            this.gravity.flightTime = 1;
 
             this.gravity.timer = .0;
         }
 
-        if (this.air)
-            this.gravity.formulaOfTrajectory(this);
-        if (this.offset[1] == 0)
-            this.air = false;
+
 
         if (this.offset[1] == -1)
             this.setY(this.getY() + 2);
