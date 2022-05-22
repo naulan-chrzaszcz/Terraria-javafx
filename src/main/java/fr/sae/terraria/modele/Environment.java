@@ -36,7 +36,7 @@ public class Environment
 
         this.player = new Player(0,0);
         this.player.setVelocity(5);
-        this.player.setPv(20);
+        this.player.setPv(4);
         this.player.setX(widthTile);
         this.player.setY(7*heightTile);
         this.player.setRect(widthTile, heightTile);

@@ -128,11 +128,16 @@ public class PlayerView
 
     }
 
-
     public void displayHealthBar(Pane display)
     {
-        for (int i = 0; i < player.getPvMax(); i++)
-            display.getChildren().add(new ImageView(View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight)));
+        for (int i = 1; i <= player.getPvMax(); i++) {
+            ImageView healthView = new ImageView(View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight));
+            Rectangle2D viewPort = new Rectangle2D(0, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
+            healthView.setX(inventoryImgView.getX()+((healthView.getImage().getWidth()/3)*i));
+            healthView.setY(inventoryImgView.getY()-healthView.getImage().getHeight());
+            healthView.setViewport(viewPort);
+            display.getChildren().add(healthView);
+        }
 
         player.getPvProperty().addListener((obs, oldPv, newPv) -> {
 
