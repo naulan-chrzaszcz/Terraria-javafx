@@ -2,6 +2,7 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
 import javafx.geometry.Rectangle2D;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -118,8 +119,8 @@ public class PlayerView
             else if (key instanceof Stone){
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
             }
-            itemView.setX(inventoryImgView.getX()+ ((inventoryImgView.getImage().getWidth()/9) * (compteur[0]+1))/4 + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
-            itemView.setY(inventoryImgView.getY()+10);
+            itemView.setX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9) - 25)/2) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
+            itemView.setY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - 25)/2));
             itemView.setImage(item);
             display.getChildren().add(itemView);
             compteur[0]++;
