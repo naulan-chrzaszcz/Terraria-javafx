@@ -45,6 +45,7 @@ public class Player extends Entity
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
+            this.gravity.degInit =  -90;
 
             this.gravity.timer = .0;
         }
@@ -54,8 +55,7 @@ public class Player extends Entity
         if (this.offset[1] == 0)
             this.air = false;
 
-        if (this.offset[1] == -1)
-            this.setY(this.getY() + 2);
+
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
 
         if (this.rect != null)

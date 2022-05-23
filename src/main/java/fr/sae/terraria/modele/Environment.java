@@ -34,6 +34,7 @@ public class Environment
     private int widthPlayer;
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
+    private int tolerance;
 
     private int ticks = 0;
 
@@ -41,6 +42,7 @@ public class Environment
 
     public Environment(TileMaps tileMaps, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        this.tolerance = 3;
         this.tileMaps = tileMaps;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
@@ -49,8 +51,8 @@ public class Environment
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
 
         Image image = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        widthPlayer = (int)image.getWidth();
-        heightPlayer = (int)image.getHeight();
+        widthPlayer = (int) image.getWidth();
+        heightPlayer = (int) image.getHeight();
         image.cancel();
 
         this.entities = FXCollections.observableArrayList();
@@ -58,11 +60,11 @@ public class Environment
             this.random = SecureRandom.getInstanceStrong();
         } catch (NoSuchAlgorithmException e) { throw new RuntimeException(e); }
 
-        this.player = new Player(0,0);
+        this.player = new Player(0, 0);
         this.player.setVelocity(5);
         this.player.setPv(4);
         this.player.setX(widthTile);
-        this.player.setY(7*heightTile);
+        this.player.setY(7 * heightTile);
         this.player.setRect(widthTile, heightTile);
 
         gameLoop();
@@ -92,38 +94,51 @@ public class Environment
 
     private void collide() {
         if (player.offset[0] != 0 || player.offset[1] != 0) {
-            boolean pTopLeft = tileMaps.getTile((int) (player.getX()+2+player.offset[0]*player.getVelocity())/widthTile,(int) player.getY()/heightTile) != 0;
-            boolean pTopRight = tileMaps.getTile((int)(player.getX()-2+widthPlayer+ getPlayer().getVelocity()*player.offset[0])/widthTile, (int)player.getY()/heightTile) != 0;
-            boolean pBotLeft = tileMaps.getTile((int) (player.getX()+2+ getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer)/heightTile) != 0;
-            boolean pBotRight = tileMaps.getTile((int) (player.getX()-2+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer)/heightTile) != 0;
+            boolean pTopLeft = tileMaps.getTile((int) (player.getX()+tolerance+player.offset[0]*player.getVelocity())/widthTile,(int) (player.getY()+tolerance)/heightTile) != 0;
+            boolean pTopRight = tileMaps.getTile((int)(player.getX()-tolerance+widthPlayer+ getPlayer().getVelocity()*player.offset[0])/widthTile, (int)(player.getY()+tolerance)/heightTile) != 0;
+            boolean pBotLeft = tileMaps.getTile((int) (player.getX()+tolerance+ getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
+            boolean pBotRight = tileMaps.getTile((int) (player.getX()-tolerance+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
             if ( pTopLeft|| pTopRight  || pBotLeft  || pBotRight )
                 player.offset[0] = 0;
 
         }
-
         if (player.air) {
             double futurePosition = player.getGravity().formulaOfTrajectory();
             if (player.getGravity().timer < player.getGravity().flightTime){
-                // TODO :  remettre bein la condition idem pour en bas
-                if (tileMaps.getTile((int) (player.getX()/widthTile),(int)(futurePosition/heightTile)) ==0 && tileMaps.getTile((int) ((player.getX()+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0) {
+                boolean pTopLeft  = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int)(futurePosition/heightTile)) ==0;
+                boolean pTopRight = tileMaps.getTile((int) (((player.getX()-tolerance)+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0;
+                if ( pTopLeft && pTopRight ) {
+                    player.setY(futurePosition);
+                    player.offset[1] = 1;
+                }else player.getGravity().setFall(player.getY());
+            }
+            else {
+                boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
+                boolean pBotRight = tileMaps.getTile((int) ((player.getX()-tolerance+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
+                if (pBotLeft && pBotRight ){
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 }
             }
-            else {
-                boolean pBotLeft = tileMaps.getTile((int) (player.getX()/widthTile),(int) ((futurePosition+heightPlayer+3)/heightTile)) == 0;
-                boolean pBotRight = tileMaps.getTile((int) ((player.getX()+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+3)/heightTile)) == 0;
-                if (pBotLeft && pBotRight ){
-                    player.setY(futurePosition);
-                    player.offset[1] = -1;
-                }
-            }
         }
 
+
+        if (tileMaps.getTile((int) ((player.getX() + tolerance) / widthTile), (int) (player.getY() + heightPlayer + tolerance) / heightTile) == 0 && tileMaps.getTile((int) ((player.getX() + widthPlayer - tolerance) / widthTile), (int) (player.getY() + heightPlayer + tolerance) / heightTile) == 0 && !player.air) {
+            player.fall();
+        }
         if (player.offset[1] == 0)
             player.air = false;
-       if (tileMaps.getTile((int)((player.getX()+2)/widthTile),(int)(player.getY()+heightPlayer+2)/heightTile) == 0 && tileMaps.getTile((int)((player.getX()+widthPlayer-2)/widthTile),(int)(player.getY()+heightPlayer+2)/heightTile) == 0) {
-                player.fall();
+
+        if (player.offset[1] == -1) {
+            player.getGravity().degInit = 0;
+            double futurY = player.getGravity().formulaOfTrajectory();
+            boolean pBotLeft = tileMaps.getTile((int) ((player.getX() + tolerance) / widthTile), (int) ((futurY + heightPlayer + tolerance) / heightTile)) == 0;
+            boolean pBotRight = tileMaps.getTile((int) ((player.getX() - tolerance + widthPlayer) / widthTile), (int) ((futurY + heightPlayer + tolerance) / heightTile)) == 0;
+            if (pBotLeft && pBotRight) {
+                player.setY(futurY);
+                player.offset[1] = -1;
+            }  else player.offset[1] = 0;
+            // TODO : PROX OFFSET 0 RESET YINIT
         }
     }
 
@@ -132,7 +147,7 @@ public class Environment
         double spawnRate = .2;
         int whenSpawn = 5000;
 
-        if (ticks%whenSpawn == 0)
+        if (ticks % whenSpawn == 0)
             for (int y = 0; y < tileMaps.getHeight(); y++) {
                 boolean spawnOrNot = Math.random() < spawnRate;
 
@@ -146,8 +161,8 @@ public class Environment
 
                     if (posFloor.size() > 0) {
                         int whereSpawn = random.nextInt(posFloor.size());
-                        int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn-1);
-                        if (tileMaps.getTile(xTree, y-1) == 0) {
+                        int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
+                        if (tileMaps.getTile(xTree, y - 1) == 0) {
                             Tree tree = new Tree(xTree * widthTile, y * heightTile);
                             entities.add(0, tree);
                         }

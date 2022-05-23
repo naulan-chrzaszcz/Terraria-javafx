@@ -11,24 +11,23 @@ public class Gravity
     public double speed = .15;
 
     // Depart initial
-    public double degInit;
-    public double vInit;
+    public double degInit = -90;
+    public double vInit = 5;
     public double xInit;
     public double yInit;
     public double flightTime = 1;
 
+    // Formule de type ax²+bx+c ( c = yInit )
+    public double a = Gravity.VALUE/2;
 
 
     public double formulaOfTrajectory()
     {
-        //TODO : exploser la formule en a b c pour résoudre l'équation ... = x pour ne plus avoir le problème avec le saut
-        this.degInit = -90;
         double yValue;
         flightTime = calcFlightTime();
         //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        yValue = ((4.905 * (timer * timer)) + ((Math.sin(degInit) * (vInit * 10)) * timer)) + yInit;
+        yValue = ((a* (timer * timer)) + (b() * timer)) + yInit;
         this.timer += this.speed;
-
         return yValue;
     }
 
@@ -40,5 +39,17 @@ public class Gravity
         else
             res = ((vInit * 10) * Math.sin(degInit)) / Gravity.VALUE;
         return res;
+    }
+
+    public void setFall(double actualY){
+        // change le timer afin que le joueur tombe
+        System.out.println("ACTUAL Y"+actualY);
+        System.out.println("Yinit : " + yInit);
+        double delt = (b()*b()) - (4*a*(yInit-actualY));
+        timer = (-b() + Math.sqrt(delt))/(2*a);
+    }
+
+    private double b(){
+        return (Math.sin(degInit) * (vInit * 10));
     }
 }
