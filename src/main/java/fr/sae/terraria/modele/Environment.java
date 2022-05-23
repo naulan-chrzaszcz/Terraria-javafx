@@ -145,9 +145,11 @@ public class Environment
 
                 if (spawnOrNot) {
                     ArrayList<Integer> posFloor = new ArrayList<>();
-                    for (int x = 0; x < tileMaps.getWidth(); x++)
-                        if (tileMaps.getTile(x, y) == TileMaps.FLOOR_TOP)
+                    for (int x = 0; x < tileMaps.getWidth(); x++) {
+                        int targetTile = tileMaps.getTile(x, y);
+                        if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
                             posFloor.add(x);
+                    }
 
                     if (posFloor.size() > 0) {
                         int whereSpawn = random.nextInt(posFloor.size());
