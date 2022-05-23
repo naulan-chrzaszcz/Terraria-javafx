@@ -63,8 +63,8 @@ public class Environment
         this.player = new Player(0, 0);
         this.player.setVelocity(5);
         this.player.setPv(4);
-        this.player.setX(widthTile);
-        this.player.setY(7 * heightTile);
+        this.player.setX(5*widthTile);
+        this.player.setY(3 * heightTile);
         this.player.setRect(widthTile, heightTile);
 
         gameLoop();
@@ -110,7 +110,7 @@ public class Environment
                 if ( pTopLeft && pTopRight ) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
-                }else player.getGravity().setFall(player.getY());
+                }else {player.getGravity().setFall(player.getY()); player.offset[1] = 1;}
             }
             else {
                 boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;

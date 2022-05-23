@@ -41,7 +41,7 @@ public class Player extends Entity
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
-        if (this.offset[1] == 0) {
+        if (this.offset[1] == 0 && !air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -50,10 +50,7 @@ public class Player extends Entity
             this.gravity.timer = .0;
         }
 
-        if (this.air)
-            this.gravity.formulaOfTrajectory();
-        if (this.offset[1] == 0)
-            this.air = false;
+
 
 
         this.setX(this.getX() + this.offset[0] * this.getVelocity());

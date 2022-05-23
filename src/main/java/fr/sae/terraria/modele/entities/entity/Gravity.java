@@ -8,7 +8,7 @@ public class Gravity
 
     // Horloges
     public double timer = .0;
-    public double speed = .15;
+    public double speed = .3;
 
     // Depart initial
     public double degInit = -90;
