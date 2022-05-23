@@ -13,7 +13,7 @@ import fr.sae.terraria.modele.blocks.Stone;
 public class Player extends Entity
 {
     private final EnumMap<KeyCode, Boolean> keysInput;
-    private final Map<Entity, Integer> inventory;
+    private final Map<Integer, ArrayList<Entity>> inventory;
 
     public boolean air;
 
@@ -29,6 +29,9 @@ public class Player extends Entity
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.inventory = new HashMap<>();
+        for (int i =0; i<26; i++){
+            this.inventory.put(i, new ArrayList<>());
+        }
     }
 
     public void updates()
@@ -83,29 +86,26 @@ public class Player extends Entity
 
     public void ramasser(Entity objetRamassé)
     {
-        if (nombreObjetsDansInventaire() < 36){
-            Map<Object, Integer> temp= new HashMap<>();
-            Iterator it = this.inventory.entrySet().iterator();
-            if (this.inventory.size()==0)
-                this.inventory.put(objetRamassé,1);
-            while (it.hasNext()){
-                Object obj =  it.next();
-                temp.put( obj, 1);
-                System.out.println(obj);
-            }
-            temp.forEach((key, integer) ->{
-                System.out.println(key);
-                if (key instanceof Dirt && objetRamassé instanceof Dirt)
-                    this.inventory.put((Entity) key,this.inventory.get(key)+1);
-                else if(key instanceof Stone && objetRamassé instanceof Stone)
-                    this.inventory.put((Entity) key,this.inventory.get(key)+1);
-                else if (key instanceof Entity){
-                    this.inventory.put((Entity) key,1);
+        if (nombreObjetsDansInventaire() < 27){
+            for(int integer =0 ; integer < inventory.size(); integer++){
+                if (this.inventory.get(integer).size() == 0) {
+                    this.inventory.get(integer).add(objetRamassé);
+                    break;
                 }
-            });
+                else if (this.inventory.get(integer).get(0) instanceof Dirt && objetRamassé instanceof Dirt){
+                    this.inventory.get(integer).add(objetRamassé);
+                    System.out.println("babajei");
+                    break;
+                }
+                else if (this.inventory.get(integer).get(0) instanceof Stone && objetRamassé instanceof Stone){
+                    this.inventory.get(integer).add(objetRamassé);;
+                    System.out.println("ekesekes");
+                    break;
+                }
+            }
         }
     }
 
-    public Map<Entity, Integer> getInventory() { return inventory; }
+    public Map<Integer, ArrayList<Entity>> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }
