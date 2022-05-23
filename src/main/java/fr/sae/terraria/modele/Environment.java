@@ -92,15 +92,22 @@ public class Environment
 
         if (player.air) {
             double futurePosition = player.getGravity().formulaOfTrajectory();
-
-            if (player.getGravity().timer < (player.getGravity().flightTime/2)){
+            if (player.getGravity().timer < player.getGravity().flightTime){
+                // TODO :  remettre bein la condition idem pour en bas
                 if (tileMaps.getTile((int) (player.getX()/widthTile),(int)(futurePosition/heightTile)) ==0 && tileMaps.getTile((int) ((player.getX()+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 }
             }
+            else {
+                boolean pBotLeft = tileMaps.getTile((int) (player.getX()/widthTile),(int) ((futurePosition+heightPlayer+3)/heightTile)) == 0;
+                boolean pBotRight = tileMaps.getTile((int) ((player.getX()+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+3)/heightTile)) == 0;
+                if (pBotLeft && pBotRight ){
+                    player.setY(futurePosition);
+                    player.offset[1] = -1;
+                }
+            }
         }
-
 
         if (player.offset[1] == 0)
             player.air = false;
