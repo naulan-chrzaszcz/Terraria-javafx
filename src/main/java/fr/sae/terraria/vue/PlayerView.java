@@ -1,15 +1,14 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
-import javafx.collections.transformation.SortedList;
 import javafx.geometry.Rectangle2D;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
 
+import fr.sae.terraria.controller.Controller;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
@@ -104,7 +103,7 @@ public class PlayerView
         this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
 
-        // System.out.println(this.player.getInventory());
+
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
@@ -121,13 +120,14 @@ public class PlayerView
         display.getChildren().add(inventoryImgView);
 
         int[] compteur = new int[1];
-        this.player.getInventory().forEach((key,integer) -> {
+       for (int integer =0 ; integer< 2; integer++){
+            Label nombreObjets = new Label();
             Image item = null;
             ImageView itemView = new ImageView();
-
-            if (key instanceof Dirt)
+            if (this.player.getInventory().get(integer).get(0) instanceof  Dirt)
                 item = View.loadAnImage("tiles/floor-top.png",25,25);
-            else if (key instanceof Stone)
+
+            else if (this.player.getInventory().get(integer).get(0) instanceof Stone)
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
 
             itemView.setX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9) - 25)/2) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
@@ -136,7 +136,7 @@ public class PlayerView
             display.getChildren().add(itemView);
             compteur[0]++;
 
-        });
+        }
     }
 
     public void displayHealthBar(Pane display)
