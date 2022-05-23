@@ -7,22 +7,33 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720" prefWidth="1280" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane fx:id="root"
+            maxHeight="-Infinity" maxWidth="-Infinity"
+            minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="720" prefWidth="1280"
+            xmlns="http://javafx.com/javafx/11"
+            xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@./game.css" />
    </stylesheets>
 
 
    <top>
-      <HBox id="textArea" fx:id="title" prefHeight="25.0" prefWidth="1280" BorderPane.alignment="CENTER">
+      <HBox id="textArea"
+            fx:id="title"
+            prefHeight="25.0" prefWidth="1280"
+            BorderPane.alignment="CENTER">
          <children>
-            <Text id="text" text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago" />
+            <Text id="text"
+                  text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago" />
          </children>
       </HBox>
    </top>
 
    <center>
-      <StackPane prefWidth="1280" BorderPane.alignment="CENTER">
+      <StackPane prefWidth="1280"
+                 BorderPane.alignment="CENTER">
          <children>
             <Pane id="sky"
                   fx:id="displayTiledMap" />
