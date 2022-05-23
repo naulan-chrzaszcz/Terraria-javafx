@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.Terraria;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -26,6 +27,7 @@ public class Environment
     private int heightTile;
     private int heightPlayer;
     private int widthPlayer;
+    private double scaleMultiplicatorWidth;
 
     private int ticks = 0;
 
@@ -33,6 +35,7 @@ public class Environment
     public Environment(TileMaps tileMaps, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.tileMaps = tileMaps;
+        this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
 
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
@@ -101,7 +104,7 @@ public class Environment
 
         if (player.offset[1] == 0)
             player.air = false;
-       if (tileMaps.getTile((int)((player.getX()+2)/widthTile),(int)(player.getY()+heightPlayer+3)/heightTile) == 0 && tileMaps.getTile((int)((player.getX()+widthPlayer-2)/widthTile),(int)(player.getY()+heightPlayer+3)/heightTile) == 0) {
+       if (tileMaps.getTile((int)((player.getX()+2)/widthTile),(int)(player.getY()+heightPlayer+2)/heightTile) == 0 && tileMaps.getTile((int)((player.getX()+widthPlayer-2)/widthTile),(int)(player.getY()+heightPlayer+2)/heightTile) == 0) {
                 player.fall();
         }
     }
@@ -111,7 +114,7 @@ public class Environment
     {
         if (player.offset[0] == -1 && player.getX() < 0)
             player.offset[0] = 0;
-        if (player.offset[0] == 1 && player.getX() > widthTile*tileMaps.getWidth())
+        if (player.offset[0] == 1 && player.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - widthPlayer)
             player.offset[0] = 0;
     }
 
