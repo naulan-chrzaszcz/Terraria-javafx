@@ -1,5 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
 import java.util.*;
@@ -13,7 +15,7 @@ import fr.sae.terraria.modele.blocks.Stone;
 public class Player extends Entity
 {
     private final EnumMap<KeyCode, Boolean> keysInput;
-    private final Map<Integer, ArrayList<Entity>> inventory;
+    private final Map<Integer, ObservableList<Entity>> inventory;
 
     public boolean air;
 
@@ -30,7 +32,7 @@ public class Player extends Entity
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.inventory = new HashMap<>();
         for (int i =0; i<26; i++){
-            this.inventory.put(i, new ArrayList<>());
+            this.inventory.put(i, FXCollections.observableArrayList());
         }
     }
 
@@ -82,7 +84,17 @@ public class Player extends Entity
         });
     }
 
-    public int nombreObjetsDansInventaire() { return this.inventory.size(); }
+    public int nombreObjetsDansInventaire()
+        {
+            int compteur = 0;
+            for (int i = 0; i< inventory.size(); i++) {
+                if (this.inventory.get(i).size() != 0) {
+                    if (this.inventory.get(i).get(0) != null)
+                        compteur++;
+                }
+            }
+            return compteur;
+        }
 
     public void ramasser(Entity objetRamassé)
     {
@@ -106,6 +118,6 @@ public class Player extends Entity
         }
     }
 
-    public Map<Integer, ArrayList<Entity>> getInventory() { return inventory; }
+    public Map<Integer, ObservableList<Entity>> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
 }

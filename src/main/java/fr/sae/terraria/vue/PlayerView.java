@@ -1,18 +1,25 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.entities.entity.Entity;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import fr.sae.terraria.controller.Controller;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
+import javafx.scene.text.Font;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -119,10 +126,11 @@ public class PlayerView
         frameInventoryImg.setY(inventoryImgView.getY()-(1*scaleMultiplicatorHeight));
         display.getChildren().add(frameInventoryImg);
         display.getChildren().add(inventoryImgView);
+        System.out.println(nombreElementsAffichés);
 
         int[] compteur = new int[1];
-       for (int integer =0 ; integer< 2; integer++){
-            Label nombreObjets = new Label();
+       for (int integer =0 ; integer< nombreElementsAffichés; integer++){
+
             Image item = null;
             ImageView itemView = new ImageView();
             if (this.player.getInventory().get(integer).get(0) instanceof  Dirt)
@@ -131,10 +139,29 @@ public class PlayerView
             else if (this.player.getInventory().get(integer).get(0) instanceof Stone)
                 item = View.loadAnImage("tiles/rock-fill.png",25,25);
 
-            itemView.setX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9) - 25)/2) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
-            itemView.setY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - 25)/2));
+            itemView.setX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]));
+            itemView.setY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - item.getHeight())/2));
             itemView.setImage(item);
             display.getChildren().add(itemView);
+
+
+           Label nombreObjets = new Label();
+           nombreObjets.setText(String.valueOf(this.player.getInventory().get(integer).size()));
+
+           StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory().get(integer).size()));
+           nombreObjets.textProperty().bind(stringProperty);
+           this.player.getInventory().get(integer).addListener(new ListChangeListener<Entity>() {
+               @Override
+               public void onChanged(Change<? extends Entity> c) {
+                   stringProperty.setValue(String.valueOf(c.getList().size()));
+               }
+           });
+           nombreObjets.setFont(new Font("Arial",5 * scaleMultiplicatorWidth));
+           nombreObjets.setLayoutX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9/2) - item.getWidth())) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]) + 3);
+           nombreObjets.setLayoutY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - item.getHeight()/2)) - 5);
+           nombreObjets.setTextFill(Color.WHITE);
+           display.getChildren().add(nombreObjets);
+
             compteur[0]++;
 
         }
