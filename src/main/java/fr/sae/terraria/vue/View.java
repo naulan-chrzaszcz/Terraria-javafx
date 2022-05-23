@@ -21,19 +21,18 @@ public class View
 
 
     public View(Environment environment,
-                Pane display,
-                IntegerProperty tileWidth,
-                IntegerProperty tileHeight,
+                Pane displayTiledMap,
+                Pane displayHUD,
                 double scaleMultiplicatorWidth,
                 double scaleMultiplicatorHeight)
     {
-        TileMapsView tileMapsView = new TileMapsView(environment, display, tileWidth, tileHeight);
+        TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        playerView.displayPlayer(display);
-        playerView.displayInventory(display);
-        playerView.displayHealthBar(display);
+        playerView.displayPlayer(displayHUD);
+        playerView.displayInventory(displayHUD);
+        playerView.displayHealthBar(displayHUD);
     }
 
     public static Image loadAnImage(String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }

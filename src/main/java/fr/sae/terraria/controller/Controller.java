@@ -31,7 +31,9 @@ public class Controller implements Initializable
     @FXML
     private HBox title;
     @FXML
-    private Pane display;
+    private Pane displayHUD;
+    @FXML
+    private Pane displayTiledMap;
 
     // Property variables
     private final IntegerProperty tileWidth;
@@ -76,7 +78,7 @@ public class Controller implements Initializable
 
         this.environment = new Environment(tileMaps, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
-        new View(environment, display, tileWidth, tileHeight, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         for (int i = 0; i < this.environment.getEntities().size(); i++)
             this.environment.getEntities().get(i).setRect(tileWidth.get(), tileWidth.get());

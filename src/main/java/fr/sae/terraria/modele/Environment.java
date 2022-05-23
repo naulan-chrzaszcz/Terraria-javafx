@@ -1,16 +1,27 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.entities.entity.Rect;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.lang.reflect.Array;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -18,8 +29,9 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 
 public class Environment
 {
-    private final List<Entity> entities;
+    private final ObservableList<Entity> entities;
 
+    private final Random random;
     private final TileMaps tileMaps;
     private final Player player;
 
@@ -28,14 +40,17 @@ public class Environment
     private int heightPlayer;
     private int widthPlayer;
     private double scaleMultiplicatorWidth;
+    private double scaleMultiplicatorHeight;
 
     private int ticks = 0;
+
 
 
     public Environment(TileMaps tileMaps, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.tileMaps = tileMaps;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
+        this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
 
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
@@ -44,10 +59,11 @@ public class Environment
         widthPlayer = (int)image.getWidth();
         heightPlayer = (int)image.getHeight();
         image.cancel();
-        System.out.println(widthPlayer);
-        System.out.println(heightPlayer);
 
-        this.entities = new ArrayList<>();
+        this.entities = FXCollections.observableArrayList();
+        try {
+            this.random = SecureRandom.getInstanceStrong();
+        } catch (NoSuchAlgorithmException e) { throw new RuntimeException(e); }
 
         this.player = new Player(0,0);
         this.player.setVelocity(5);
@@ -69,6 +85,8 @@ public class Environment
             this.player.eventInput();
             this.collide();
             this.worldLimit();
+
+            this.generateTree();
 
             this.getPlayer().updates();
             this.ticks++;
@@ -116,6 +134,34 @@ public class Environment
         }
     }
 
+    private void generateTree()
+    {
+        double spawnRate = .2;
+        int whenSpawn = 5000;
+
+        if (ticks%whenSpawn == 0)
+            for (int y = 0; y < tileMaps.getHeight(); y++) {
+                boolean spawnOrNot = Math.random() < spawnRate;
+
+                if (spawnOrNot) {
+                    ArrayList<Integer> posFloor = new ArrayList<>();
+                    for (int x = 0; x < tileMaps.getWidth(); x++)
+                        if (tileMaps.getTile(x, y) == TileMaps.FLOOR_TOP)
+                            posFloor.add(x);
+
+                    if (posFloor.size() > 0) {
+                        int whereSpawn = random.nextInt(posFloor.size());
+                        int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn-1);
+                        if (tileMaps.getTile(xTree, y-1) == 0) {
+                            Tree tree = new Tree(xTree * widthTile, y * heightTile);
+                            entities.add(0, tree);
+                        }
+                        return;
+                    }
+                }
+            }
+    }
+
     /** Evite que le joueur sort de la carte. */
     private void worldLimit()
     {
@@ -126,7 +172,7 @@ public class Environment
     }
 
 
-    public List<Entity> getEntities() { return entities; }
-    public TileMaps getTileMaps() { return tileMaps; }
-    public Player getPlayer() { return player; }
+    public ObservableList<Entity> getEntities() { return this.entities; }
+    public TileMaps getTileMaps() { return this.tileMaps; }
+    public Player getPlayer() { return this.player; }
 }
