@@ -1,9 +1,11 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -21,16 +23,25 @@ public class Environment
 
     private int widthTile;
     private int heightTile;
+    private int heightPlayer;
+    private int widthPlayer;
 
     private int ticks = 0;
 
 
-    public Environment(TileMaps tileMaps, int widthTile, int heightTile)
+    public Environment(TileMaps tileMaps, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.tileMaps = tileMaps;
 
-        this.widthTile = widthTile;
-        this.heightTile = heightTile;
+        this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
+        this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
+
+        Image image = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        widthPlayer = (int)image.getWidth();
+        heightPlayer = (int)image.getHeight();
+        image.cancel();
+        System.out.println(widthPlayer);
+        System.out.println(heightPlayer);
 
         this.entities = new ArrayList<>();
 
@@ -66,8 +77,11 @@ public class Environment
 
     private void collide() {
         if (player.offset[0] != 0 || player.offset[1] != 0) {
-
-            if (tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity()) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity()) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity() + heightTile) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity() + widthTile) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity()) / heightTile)) != 0 || tileMaps.getTile((int) ((player.getX() + player.offset[0] * player.getVelocity() + widthTile) / widthTile), (int) ((player.getY() + player.offset[1] * player.getVelocity() + heightTile) / heightTile)) != 0)
+            boolean pTopLeft = tileMaps.getTile((int) (player.getX()+2+player.offset[0]*player.getVelocity())/widthTile,(int) player.getY()/heightTile) != 0;
+            boolean pTopRight = tileMaps.getTile((int)(player.getX()-2+widthPlayer+ getPlayer().getVelocity()*player.offset[0])/widthTile, (int)player.getY()/heightTile) != 0;
+            boolean pBotLeft = tileMaps.getTile((int) (player.getX()+2+ getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer)/heightTile) != 0;
+            boolean pBotRight = tileMaps.getTile((int) (player.getX()-2+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer)/heightTile) != 0;
+            if ( pTopLeft|| pTopRight  || pBotLeft  || pBotRight )
                 player.offset[0] = 0;
 
         }
@@ -80,16 +94,13 @@ public class Environment
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 }
-            }else
-                if (Math.abs((player.getY()) - (((int)player.getY()/heightTile+1)*heightTile)) > 3)
-                    player.fall();
+            }
         }
+
+
         if (player.offset[1] == 0)
             player.air = false;
-       if (tileMaps.getTile(((int) player.getX() / widthTile), ((int) (player.getY()+heightTile) / heightTile) + 1) == 0 && tileMaps.getTile((int) player.getX() / widthTile + 1, (int) (player.getY()+heightTile) / heightTile + 1) == 0 ) {
-                player.fall();
-        }else {
-            if (Math.abs((player.getY()) - (((int)player.getY()/heightTile+1)*heightTile)) > 3)
+       if (tileMaps.getTile((int)((player.getX()+2)/widthTile),(int)(player.getY()+heightPlayer+3)/heightTile) == 0 && tileMaps.getTile((int)((player.getX()+widthPlayer-2)/widthTile),(int)(player.getY()+heightPlayer+3)/heightTile) == 0) {
                 player.fall();
         }
     }

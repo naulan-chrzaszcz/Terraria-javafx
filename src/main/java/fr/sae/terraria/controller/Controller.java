@@ -74,7 +74,7 @@ public class Controller implements Initializable
         this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
         this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
 
-        this.environment = new Environment(tileMaps, tileWidth.get(), tileHeight.get());
+        this.environment = new Environment(tileMaps, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         new View(environment, display, tileWidth, tileHeight, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
