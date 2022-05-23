@@ -146,8 +146,8 @@ public class PlayerView
         for (int i = 0; i < player.getPvMax(); i++) {
             ImageView healthView = new ImageView(View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight));
             Rectangle2D viewPort = new Rectangle2D((healthView.getImage().getWidth()/3)*2, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
-            healthView.setViewport(viewPort);
 
+            healthView.setViewport(viewPort);
             healthView.setX(inventoryImgView.getX() + ((healthView.getImage().getWidth()/3)*i));
             healthView.setY((inventoryImgView.getY() - healthView.getImage().getHeight()) - (2*scaleMultiplicatorHeight));
             display.getChildren().add(healthView);
