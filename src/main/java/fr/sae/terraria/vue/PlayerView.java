@@ -1,17 +1,22 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Rectangle2D;
 
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 
-import fr.sae.terraria.controller.Controller;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
-import javafx.scene.shape.Rectangle;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PlayerView
@@ -136,17 +141,25 @@ public class PlayerView
 
     public void displayHealthBar(Pane display)
     {
-        for (int i = 1; i <= player.getPvMax(); i++) {
+        ImageView[] healths = new ImageView[(int) (player.getPvMax())];
+        for (int i = 0; i < player.getPvMax(); i++) {
             ImageView healthView = new ImageView(View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight));
-            Rectangle2D viewPort = new Rectangle2D(0, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
+            Rectangle2D viewPort = new Rectangle2D((healthView.getImage().getWidth()/3)*2, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
+            healthView.setViewport(viewPort);
+
             healthView.setX(inventoryImgView.getX() + ((healthView.getImage().getWidth()/3)*i));
             healthView.setY((inventoryImgView.getY() - healthView.getImage().getHeight()) - (2*scaleMultiplicatorHeight));
-            healthView.setViewport(viewPort);
             display.getChildren().add(healthView);
+            healths[i] = healthView;
         }
 
         player.getPvProperty().addListener((obs, oldPv, newPv) -> {
+            if (oldPv.intValue() >= 0) {
+                ImageView healthView = healths[oldPv.intValue()-1];
 
+                Rectangle2D viewPort = new Rectangle2D((healthView.getImage().getWidth()/3)*0, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
+                healthView.setViewport(viewPort);
+            }
         });
     }
 }

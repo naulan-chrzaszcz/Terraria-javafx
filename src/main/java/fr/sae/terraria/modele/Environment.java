@@ -14,6 +14,7 @@ import java.util.List;
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 
+
 public class Environment
 {
     private final List<Entity> entities;
