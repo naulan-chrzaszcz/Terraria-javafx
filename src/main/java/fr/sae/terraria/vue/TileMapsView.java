@@ -13,6 +13,9 @@ import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class TileMapsView
 {
@@ -85,16 +88,57 @@ public class TileMapsView
 
     private void createTree(Tree tree)
     {
-        for (int i = 0; i < (int) (treeImg.getHeight()/tileHeight); i++) {
-            Rectangle2D rectangle2D = new Rectangle2D(0, (tileHeight*i), tileWidth, tileHeight);
-            ImageView view = new ImageView();
+        List<ImageView> imagesTree = new ArrayList<>();
 
-            view.setImage(treeImg);
-            view.setViewport(rectangle2D);
-            view.setY((tree.getY() + (i * tileHeight)) - treeImg.getHeight());
-            view.setX(tree.getX());
+        int nbFoliage = ((int) (Math.random()*2))+1;
+        int nbTrunk = ((int) (Math.random()*3))+1;
 
-            display.getChildren().add(view);
+        Rectangle2D viewportFirstFrame = new Rectangle2D(0, 0, tileWidth, tileHeight);
+        ImageView firstFrameView = new ImageView();
+        firstFrameView.setImage(treeImg);
+        firstFrameView.setViewport(viewportFirstFrame);
+        imagesTree.add(firstFrameView);
+        for (int f = 0; f < nbFoliage; f++) {
+            Rectangle2D viewportSecondFrame = new Rectangle2D(0, tileHeight, tileWidth, tileHeight);
+            ImageView secondFrameView = new ImageView();
+            secondFrameView.setImage(treeImg);
+            secondFrameView.setViewport(viewportSecondFrame);
+            imagesTree.add(secondFrameView);
+        }
+
+        if (nbTrunk > 1) {
+            Rectangle2D viewportEndTrunk = new Rectangle2D(0, (tileHeight*2), tileWidth, tileHeight);
+            ImageView endTrunkView = new ImageView();
+            endTrunkView.setImage(treeImg);
+            endTrunkView.setViewport(viewportEndTrunk);
+            imagesTree.add(endTrunkView);
+
+            for (int t = 0; t < nbTrunk-1; t++) {
+                Rectangle2D viewportTrunk = new Rectangle2D(tileWidth, (tileHeight*2), tileWidth, tileHeight);
+                ImageView trunkView = new ImageView();
+                trunkView.setImage(treeImg);
+                trunkView.setViewport(viewportTrunk);
+                imagesTree.add(trunkView);
+            }
+        } else {
+            Rectangle2D viewportTrunk = new Rectangle2D(0, (tileHeight*2), tileWidth, tileHeight);
+            ImageView trunkView = new ImageView();
+            trunkView.setImage(treeImg);
+            trunkView.setViewport(viewportTrunk);
+            imagesTree.add(trunkView);
+        }
+        Rectangle2D viewportTrunkFoot = new Rectangle2D(0, (tileHeight*3), tileWidth, tileHeight);
+        ImageView trunkFootView = new ImageView();
+        trunkFootView.setImage(treeImg);
+        trunkFootView.setViewport(viewportTrunkFoot);
+        imagesTree.add(trunkFootView);
+
+        for (int i = 0; i < imagesTree.size(); i++) {
+            ImageView treeView = imagesTree.get(i);
+
+            treeView.setY((int) ((tree.getY() + (i * tileHeight)) - (tileHeight * imagesTree.size())));
+            treeView.setX((int) tree.getX());
+            display.getChildren().add(treeView);
         }
     }
 

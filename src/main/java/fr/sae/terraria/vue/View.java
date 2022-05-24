@@ -1,14 +1,10 @@
 package fr.sae.terraria.vue;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.net.URL;
 
 import fr.sae.terraria.Terraria;
@@ -20,6 +16,16 @@ public class View
 {
 
 
+    /**
+     * Cette classe lors de l'initialisation, crée et génére toutes les views du jeux
+     *  Contient des fonctions essentiels au chargement des images et des creations de vue
+     *
+     * @param environment -
+     * @param displayTiledMap Le pane qui se charge d'afficher la carte
+     * @param displayHUD Le pane qui se charge d'afficher les elements du HUD
+     * @param scaleMultiplicatorWidth Le multiplicateur en largeur qui permet de redimensionner les images
+     * @param scaleMultiplicatorHeight Le multiplicateur en hauteur qui permet de redimensionner les images
+     */
     public View(Environment environment,
                 Pane displayTiledMap,
                 Pane displayHUD,

@@ -4,7 +4,6 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 

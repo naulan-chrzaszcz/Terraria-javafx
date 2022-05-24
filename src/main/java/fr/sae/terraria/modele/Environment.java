@@ -145,7 +145,7 @@ public class Environment
     private void generateTree()
     {
         double spawnRate = .2;
-        int whenSpawn = 5000;
+        int whenSpawn = 5_000;
 
         if (ticks % whenSpawn == 0)
             for (int y = 0; y < tileMaps.getHeight(); y++) {
@@ -155,6 +155,7 @@ public class Environment
                     ArrayList<Integer> posFloor = new ArrayList<>();
                     for (int x = 0; x < tileMaps.getWidth(); x++) {
                         int targetTile = tileMaps.getTile(x, y);
+
                         if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
                             posFloor.add(x);
                     }
@@ -162,8 +163,14 @@ public class Environment
                     if (posFloor.size() > 0) {
                         int whereSpawn = random.nextInt(posFloor.size());
                         int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
+
                         if (tileMaps.getTile(xTree, y - 1) == 0) {
                             Tree tree = new Tree(xTree * widthTile, y * heightTile);
+
+                            for (Entity entity : entities)
+                                if (entity instanceof Tree)
+                                    if (tree.getY() == entity.getY() && tree.getX() == entity.getX())
+                                        return;
                             entities.add(0, tree);
                         }
                         return;
