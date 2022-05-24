@@ -142,41 +142,51 @@ public class Environment
         }
     }
 
+    /** A un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
     private void generateTree()
     {
         double spawnRate = .2;
         int whenSpawn = 5_000;
 
-        if (ticks % whenSpawn == 0)
-            for (int y = 0; y < tileMaps.getHeight(); y++) {
-                boolean spawnOrNot = Math.random() < spawnRate;
+        // Frequence d'apparition
+        if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
+            // Est-ce que l'arbre doit spawn sur ce 'y'
+            boolean spawnOrNot = Math.random() < spawnRate;
 
-                if (spawnOrNot) {
-                    ArrayList<Integer> posFloor = new ArrayList<>();
-                    for (int x = 0; x < tileMaps.getWidth(); x++) {
-                        int targetTile = tileMaps.getTile(x, y);
+            if (spawnOrNot) {
+                ArrayList<Integer> posFloor = new ArrayList<>();
+                // Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste
+                for (int x = 0; x < tileMaps.getWidth(); x++) {
+                    int targetTile = tileMaps.getTile(x, y);
 
-                        if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
-                            posFloor.add(x);
-                    }
-
-                    if (posFloor.size() > 0) {
-                        int whereSpawn = random.nextInt(posFloor.size());
-                        int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
-
-                        if (tileMaps.getTile(xTree, y - 1) == 0) {
-                            Tree tree = new Tree(xTree * widthTile, y * heightTile);
-
-                            for (Entity entity : entities)
-                                if (entity instanceof Tree)
-                                    if (tree.getY() == entity.getY() && tree.getX() == entity.getX())
-                                        return;
-                            entities.add(0, tree);
-                        }
-                        return;
-                    }
+                    if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
+                        posFloor.add(x);
                 }
+
+                // Si il y a du sol sur la ligne
+                if (posFloor.size() > 0) {
+                    int whereSpawn = random.nextInt(posFloor.size());
+                    int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
+
+                    // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
+                    if (tileMaps.getTile(xTree, y - 1) == 0) {
+                        Tree tree = new Tree(xTree * widthTile, y * heightTile);
+
+                        for (Entity entity : entities)
+                            if (entity instanceof Tree)
+                                if (tree.getY() == entity.getY() && tree.getX() == entity.getX())
+                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                    return;
+
+                        // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
+                        entities.add(0, tree);
+                    }
+                    // Une fois l'arbre généré, il arrête complétement toutes la fontion
+                    return;
+                }
+                // Sinon on retourne vers la premiere boucle 'for'
             }
+        }
     }
 
     /** Evite que le joueur sort de la carte. */
