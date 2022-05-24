@@ -61,8 +61,8 @@ public class Environment
         this.player = new Player(0, 0);
         this.player.setVelocity(5);
         this.player.setPv(4);
-        this.player.setX(5*widthTile);
-        this.player.setY(3*heightTile);
+        this.player.setX((5*widthTile));
+        this.player.setY((3*heightTile));
         this.player.setRect(widthPlayer, heightPlayer);
 
         gameLoop();
@@ -92,6 +92,7 @@ public class Environment
         loop.play();
     }
 
+    // TODO: le déplacé dans Entity.
     private void collide()
     {
         int tolerance = 3;
@@ -102,7 +103,7 @@ public class Environment
             boolean pBotLeft  = tileMaps.getTile((int) (player.getX()+tolerance+getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
             boolean pBotRight = tileMaps.getTile((int) (player.getX()-tolerance+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
 
-            if ( pTopLeft|| pTopRight  || pBotLeft  || pBotRight )
+            if (pTopLeft|| pTopRight  || pBotLeft  || pBotRight)
                 player.offset[0] = 0;
         }
 
@@ -116,7 +117,7 @@ public class Environment
                 if ( pTopLeft && pTopRight ) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
-                } else {player.getGravity().setFall(player.getY()); player.offset[1] = 1;}
+                } else { player.getGravity().setFall(player.getY()); player.offset[1] = 1; }
             } else {
                 boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
                 boolean pBotRight = tileMaps.getTile((int) ((player.getX()-tolerance+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
@@ -169,7 +170,7 @@ public class Environment
                 }
 
                 // Si il y a du sol sur la ligne
-                if (posFloor.size() > 0) {
+                if (!posFloor.isEmpty()) {
                     int whereSpawn = random.nextInt(posFloor.size());
                     int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
 
@@ -178,11 +179,9 @@ public class Environment
                         Tree tree = new Tree(xTree * widthTile, y * heightTile);
 
                         for (Entity entity : entities)
-                            if (entity instanceof Tree)
-                                if (tree.getY() == entity.getY() && tree.getX() == entity.getX())
-                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                    return;
-
+                            if (entity instanceof Tree && tree.getY() == entity.getY() && tree.getX() == entity.getX())
+                                // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                return;
                         // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
                         entities.add(0, tree);
                     }
