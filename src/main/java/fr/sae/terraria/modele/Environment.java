@@ -85,7 +85,6 @@ public class Environment
 
             this.getPlayer().updates();
             this.ticks++;
-
         }));
 
         loop.getKeyFrames().add(keyFrame);

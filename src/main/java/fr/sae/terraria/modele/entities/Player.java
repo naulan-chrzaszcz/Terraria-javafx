@@ -14,8 +14,10 @@ import fr.sae.terraria.modele.blocks.Stone;
 
 public class Player extends Entity
 {
-    private final EnumMap<KeyCode, Boolean> keysInput;
+    private static final int NB_CASES_MAX_INVENTORY = 27;
+
     private final Map<Integer, ObservableList<Entity>> inventory;
+    private final EnumMap<KeyCode, Boolean> keysInput;
 
     public boolean air;
 
@@ -31,9 +33,9 @@ public class Player extends Entity
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.inventory = new HashMap<>();
-        for (int i =0; i<26; i++){
+
+        for (int i = 0; i < NB_CASES_MAX_INVENTORY; i++)
             this.inventory.put(i, FXCollections.observableArrayList());
-        }
     }
 
     public void updates()
@@ -49,9 +51,6 @@ public class Player extends Entity
 
             this.gravity.timer = .0;
         }
-
-
-
 
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
 
@@ -81,36 +80,31 @@ public class Player extends Entity
         });
     }
 
-    public int nombreObjetsDansInventaire()
-        {
-            int compteur = 0;
-            for (int i = 0; i< inventory.size(); i++) {
-                if (this.inventory.get(i).size() != 0) {
-                    if (this.inventory.get(i).get(0) != null)
-                        compteur++;
-                }
-            }
-            return compteur;
-        }
-
-    public void ramasser(Entity objetRamassé)
+    public int lengthOfInventoryFull()
     {
-        if (nombreObjetsDansInventaire() < 27){
-            for(int integer =0 ; integer < inventory.size(); integer++){
-                if (this.inventory.get(integer).size() == 0) {
-                    this.inventory.get(integer).add(objetRamassé);
-                    break;
-                }
-                else if (this.inventory.get(integer).get(0) instanceof Dirt && objetRamassé instanceof Dirt){
-                    this.inventory.get(integer).add(objetRamassé);
-                    System.out.println("babajei");
-                    break;
-                }
-                else if (this.inventory.get(integer).get(0) instanceof Stone && objetRamassé instanceof Stone){
-                    this.inventory.get(integer).add(objetRamassé);;
-                    System.out.println("ekesekes");
-                    break;
-                }
+        int counter = 0;
+        for (int i = 0; i < inventory.size(); i++)
+            counter += (!this.inventory.get(i).isEmpty() && this.inventory.get(i).get(0) != null) ? 1 : 0;
+
+        return counter;
+    }
+
+    public void ramasser(Entity pickupObject)
+    {
+        if (lengthOfInventoryFull() < NB_CASES_MAX_INVENTORY) {
+            int i = 0;
+            while (i < this.inventory.size()) {
+                int beforeSize = this.inventory.get(i).size();
+                if (this.inventory.get(i).isEmpty())
+                    this.inventory.get(i).add(pickupObject);
+                else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt)
+                    this.inventory.get(i).add(pickupObject);
+                else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone)
+                    this.inventory.get(i).add(pickupObject);
+                int afterSize = this.inventory.get(i).size();
+
+                if (beforeSize != afterSize) return;
+                i++;
             }
         }
     }

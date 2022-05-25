@@ -110,8 +110,8 @@ public class PlayerView
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
         // System.out.println(this.player.nombreObjetsDansInventaire());
-        if (this.player.nombreObjetsDansInventaire()<= 9)
-            nombreElementsAffichés = this.player.nombreObjetsDansInventaire();
+        if (this.player.lengthOfInventoryFull()<= 9)
+            nombreElementsAffichés = this.player.lengthOfInventoryFull();
 
         Rectangle frameInventoryImg = new Rectangle();
         frameInventoryImg.setWidth(inventoryImg.getWidth()+(2*scaleMultiplicatorWidth));
