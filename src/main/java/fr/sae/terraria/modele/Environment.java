@@ -1,5 +1,6 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.modele.blocks.TallGrass;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -82,6 +83,7 @@ public class Environment
             this.worldLimit();
 
             this.generateTree();
+            this.generateTallGrass();
 
             this.getPlayer().updates();
             this.ticks++;
@@ -151,7 +153,7 @@ public class Environment
     private void generateTree()
     {
         double spawnRate = .2;
-        int whenSpawn = 5_000;
+        int whenSpawn = 2;
 
         // Frequence d'apparition
         if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
@@ -183,6 +185,50 @@ public class Environment
                                 return;
                         // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
                         entities.add(0, tree);
+                    }
+                    // Une fois l'arbre généré, il arrête complétement toutes la fontion
+                    return;
+                }
+                // Sinon on retourne vers la premiere boucle 'for'
+            }
+        }
+    }
+
+    private void generateTallGrass()
+    {
+        double spawnRate = .3;
+        int whenSpawn = 2000;
+
+        // Frequence d'apparition
+        if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
+            // Est-ce que l'arbre doit spawn sur ce 'y'
+            boolean spawnOrNot = Math.random() < spawnRate;
+
+            if (spawnOrNot) {
+                ArrayList<Integer> posFloor = new ArrayList<>();
+                // Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste
+                for (int x = 0; x < tileMaps.getWidth(); x++) {
+                    int targetTile = tileMaps.getTile(x, y);
+
+                    if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
+                        posFloor.add(x);
+                }
+
+                // Si il y a du sol sur la ligne
+                if (!posFloor.isEmpty()) {
+                    int whereSpawn = random.nextInt(posFloor.size());
+                    int xTallGrass = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
+
+                    // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
+                    if (tileMaps.getTile(xTallGrass, y - 1) == 0) {
+                        TallGrass tallGrass = new TallGrass(xTallGrass * widthTile, (y-1) * heightTile);
+
+                        for (Entity entity : entities)
+                            if (entity instanceof TallGrass && tallGrass.getY() == entity.getY() && tallGrass.getX() == entity.getX())
+                                // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                return;
+                        // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
+                        entities.add(0, tallGrass);
                     }
                     // Une fois l'arbre généré, il arrête complétement toutes la fontion
                     return;

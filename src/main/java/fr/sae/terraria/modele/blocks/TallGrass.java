@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.blocks;
 
-public class TallGrass
+import fr.sae.terraria.modele.entities.entity.Entity;
+
+public class TallGrass extends Entity
 {
     /*
         TODO: Donne de la fibre au joueur de manière aléatoire
@@ -9,6 +11,12 @@ public class TallGrass
               (Optionnel) Faire une animation lorsque le joueur passe dedans
      */
     public TallGrass(int x, int y){
+        super(x,y);
+
+    }
+
+    @Override
+    public void updates() {
 
     }
 }

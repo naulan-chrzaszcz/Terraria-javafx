@@ -1,5 +1,6 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.modele.blocks.TallGrass;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -34,6 +35,7 @@ public class TileMapsView
     private Image treeImg;
     private Image stoneImg;
     private Image dirtImg;
+    private Image tallGrassImg;
 
 
     public TileMapsView(Environment environment, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
@@ -52,11 +54,15 @@ public class TileMapsView
         this.stoneImg = View.loadAnImage("tiles/rock-fill.png", tileWidth, tileHeight);
         this.dirtImg = View.loadAnImage("tiles/dirt-top.png", tileWidth, tileHeight);
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
-            while (c.next())
+            while (c.next()) {
                 if (c.getList().get(0) instanceof Tree)
                     createTree((Tree) c.getList().get(0));
+                if (c.getList().get(0) instanceof TallGrass)
+                    createTallGrass((TallGrass) c.getList().get(0));
+            }
         });
     }
 
@@ -137,6 +143,15 @@ public class TileMapsView
             treeView.setX((int) tree.getX());
             display.getChildren().add(treeView);
         }
+    }
+
+    private void createTallGrass(TallGrass tallGrass){
+        ImageView tallGrassView = new ImageView(tallGrassImg);
+        System.out.println(tallGrass.getX()/tileWidth);
+        System.out.println(tallGrass.getY()/tileHeight);
+        tallGrassView.setX(tallGrass.getX());
+        tallGrassView.setY(tallGrass.getY());
+        display.getChildren().add(tallGrassView);
     }
 
     private void createStone(int x, int y)
