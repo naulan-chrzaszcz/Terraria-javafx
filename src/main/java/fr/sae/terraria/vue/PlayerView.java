@@ -4,12 +4,15 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,9 +29,10 @@ public class PlayerView
 
     private ImageView playerImgView;
     private ImageView inventoryImgView;
+    private ImageView cursorImgView;
 
+    private Image cursorImg;
     private Image inventoryImg;
-
     private Image playerMoveRightImg;
     private Image playerMoveLeftImg;
     private Image playerIdleImg;
@@ -49,6 +53,7 @@ public class PlayerView
 
         this.playerImgView = new ImageView();
         this.inventoryImgView = new ImageView();
+        this.cursorImgView = new ImageView();
 
         this.playerIdleImg = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.playerMoveRightImg = View.loadAnImage("sprites/player/player_moveRight.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
@@ -96,10 +101,12 @@ public class PlayerView
     public void displayInventory(Pane display)
     {
         int nombreElementsAffichés = 9;
+        this.cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.inventoryImg = View.loadAnImage("inventory.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         this.player.ramasser(new Dirt(0,0));
         this.player.ramasser(new Dirt(1,1));
+        this.player.ramasser(new Stone(1,1));
         this.player.ramasser(new Stone(1,1));
         this.player.ramasser(new Dirt(1,1));
         this.player.ramasser(new Dirt(1,1));
@@ -109,8 +116,7 @@ public class PlayerView
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
-        // System.out.println(this.player.nombreObjetsDansInventaire());
-        if (this.player.lengthOfInventoryFull()<= 9)
+        if (this.player.lengthOfInventoryFull() <= 9)
             nombreElementsAffichés = this.player.lengthOfInventoryFull();
 
         Rectangle frameInventoryImg = new Rectangle();
@@ -120,10 +126,24 @@ public class PlayerView
         frameInventoryImg.setY(inventoryImgView.getY()-(1*scaleMultiplicatorHeight));
         display.getChildren().add(frameInventoryImg);
         display.getChildren().add(inventoryImgView);
-        System.out.println(nombreElementsAffichés);
+        this.player.deplacementScroll.addListener((obs, oldValue, newValue) -> {
+            this.cursorImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2 + ((inventoryImgView.getImage().getWidth()/9) * newValue.intValue() - 2.5)));
+        });
+        this.cursorImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2 - 2.5));
+        this.cursorImgView.setY(600-2.5);
+        this.cursorImgView.setImage(cursorImg);
+
+        /*
+        Rectangle frameCursorImg = new Rectangle();
+        frameCursorImg.setWidth(cursorImg.getWidth()+(2*scaleMultiplicatorWidth));
+        frameCursorImg.setHeight(cursorImg.getHeight()+(2*scaleMultiplicatorHeight));
+        frameCursorImg.setX(cursorImgView.getX()-(1*scaleMultiplicatorWidth));
+        frameCursorImg.setY(cursorImgView.getY()-(1*scaleMultiplicatorHeight));
+        */
+        display.getChildren().add(cursorImgView);
 
         int[] compteur = new int[1];
-       for (int integer =0 ; integer< nombreElementsAffichés; integer++){
+        for (int integer = 0 ; integer < nombreElementsAffichés; integer++) {
 
             Image item = null;
             ImageView itemView = new ImageView();
@@ -151,12 +171,11 @@ public class PlayerView
                }
            });
            nombreObjets.setFont(new Font("Arial",5 * scaleMultiplicatorWidth));
-           nombreObjets.setLayoutX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9/2) - item.getWidth())) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]) + 3);
-           nombreObjets.setLayoutY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - item.getHeight()/2)) - 5);
+           nombreObjets.setLayoutX(inventoryImgView.getX() + (((inventoryImgView.getImage().getWidth()/9/2) - item.getWidth())) + ((inventoryImgView.getImage().getWidth()/9)*compteur[0]) + 5);
+           nombreObjets.setLayoutY(inventoryImgView.getY() + ((inventoryImgView.getImage().getHeight() - item.getHeight()/2)) - 6);
            nombreObjets.setTextFill(Color.WHITE);
            display.getChildren().add(nombreObjets);
-
-            compteur[0]++;
+           compteur[0]++;
 
         }
     }

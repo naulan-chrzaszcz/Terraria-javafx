@@ -1,5 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
@@ -10,15 +12,19 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.Animation;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
+import javafx.scene.input.ScrollEvent;
 
 
 public class Player extends Entity
 {
     private static final int NB_CASES_MAX_INVENTORY = 27;
 
-    private final Map<Integer, ObservableList<Entity>> inventory;
     private final EnumMap<KeyCode, Boolean> keysInput;
+    private final Map<Integer, ObservableList<Entity>> inventory;
 
+    private Entity itemSelected;
+
+    public IntegerProperty deplacementScroll;
     public boolean air;
 
 
@@ -33,6 +39,7 @@ public class Player extends Entity
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.inventory = new HashMap<>();
+        this.deplacementScroll = new SimpleIntegerProperty(0);
 
         for (int i = 0; i < NB_CASES_MAX_INVENTORY; i++)
             this.inventory.put(i, FXCollections.observableArrayList());

@@ -1,9 +1,11 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.modele.entities.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -98,6 +100,19 @@ public class Controller implements Initializable
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
             this.environment.getPlayer().getKeysInput().put(key.getCode(), false);
             key.consume();
+        });
+
+        stage.addEventFilter(ScrollEvent.SCROLL, scroll -> {
+            Player player = this.environment.getPlayer();
+
+            if (scroll.getDeltaY() < 0)
+                player.deplacementScroll.setValue(player.deplacementScroll.get() - 1);
+            else if (scroll.getDeltaY() > 0)
+                player.deplacementScroll.setValue(player.deplacementScroll.get() + 1);
+            if (player.deplacementScroll.get() > 8)
+                player.deplacementScroll.setValue(0);
+            if (player.deplacementScroll.get() < 0)
+                player.deplacementScroll.setValue(8);
         });
     }
 }
