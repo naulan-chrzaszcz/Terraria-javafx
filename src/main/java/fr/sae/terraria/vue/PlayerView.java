@@ -104,14 +104,10 @@ public class PlayerView
         this.cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.inventoryImg = View.loadAnImage("inventory.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
-        this.player.ramasser(new Dirt(0,0));
-        this.player.ramasser(new Dirt(1,1));
-        this.player.ramasser(new Stone(1,1));
-        this.player.ramasser(new Stone(1,1));
-        this.player.ramasser(new Dirt(1,1));
-        this.player.ramasser(new Dirt(1,1));
-        this.player.ramasser(new Dirt(1,1));
-
+        for (int i = 0; i < 30; i++)
+            this.player.ramasser(new Dirt(0,0));
+        for (int i = 0; i < 30; i++)
+            this.player.ramasser(new Stone(1,1));
 
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
@@ -128,18 +124,21 @@ public class PlayerView
         display.getChildren().add(inventoryImgView);
         this.player.deplacementScroll.addListener((obs, oldValue, newValue) -> {
             this.cursorImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2 + ((inventoryImgView.getImage().getWidth()/9) * newValue.intValue() - 2.5)));
+            System.out.println(newValue.intValue());
+            if (newValue.intValue() > 0 && newValue.intValue() < 8)
+                if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
+                    this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
+                    System.out.println(this.player.getInventory().get(newValue.intValue()).get(0));
+                }
+                else
+                    this.player.setItemSelected(null);
+            System.out.println(this.player.getItemSelected());
         });
+
         this.cursorImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2 - 2.5));
         this.cursorImgView.setY(600-2.5);
         this.cursorImgView.setImage(cursorImg);
 
-        /*
-        Rectangle frameCursorImg = new Rectangle();
-        frameCursorImg.setWidth(cursorImg.getWidth()+(2*scaleMultiplicatorWidth));
-        frameCursorImg.setHeight(cursorImg.getHeight()+(2*scaleMultiplicatorHeight));
-        frameCursorImg.setX(cursorImgView.getX()-(1*scaleMultiplicatorWidth));
-        frameCursorImg.setY(cursorImgView.getY()-(1*scaleMultiplicatorHeight));
-        */
         display.getChildren().add(cursorImgView);
 
         int[] compteur = new int[1];

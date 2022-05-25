@@ -98,23 +98,34 @@ public class Player extends Entity
 
     public void ramasser(Entity pickupObject)
     {
+        boolean estComplet = false;
         if (lengthOfInventoryFull() < NB_CASES_MAX_INVENTORY) {
             int i = 0;
             while (i < this.inventory.size()) {
                 int beforeSize = this.inventory.get(i).size();
                 if (this.inventory.get(i).isEmpty())
                     this.inventory.get(i).add(pickupObject);
-                else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt)
+                else if (this.inventory.get(i).size() == 16) {
+                    estComplet = true;
+                }
+                else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt) {
                     this.inventory.get(i).add(pickupObject);
+                    estComplet = false;
+                }
                 else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone)
                     this.inventory.get(i).add(pickupObject);
+                    estComplet = false;
 
                 if (beforeSize != this.inventory.get(i).size()) return;
                 i++;
+                if (estComplet)
+                    this.inventory.get(lengthOfInventoryFull()).add(pickupObject);
             }
         }
     }
 
     public Map<Integer, ObservableList<Entity>> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
+    public Entity getItemSelected() { return itemSelected; }
+    public void setItemSelected(Entity itemSelected) { this.itemSelected = itemSelected; }
 }
