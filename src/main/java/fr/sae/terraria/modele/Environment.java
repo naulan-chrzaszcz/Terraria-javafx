@@ -152,11 +152,11 @@ public class Environment
     /** A un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
     private void generateTree()
     {
-        double spawnRate = .2;
-        int whenSpawn = 2;
+        double spawnRate = .2;      // 20%
+        int whenSpawn = 5_000;
 
         // Frequence d'apparition
-        if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
+        if (ticks%whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
             // Est-ce que l'arbre doit spawn sur ce 'y'
             boolean spawnOrNot = Math.random() < spawnRate;
 
