@@ -24,21 +24,18 @@ import fr.sae.terraria.vue.View;
 
 public class Environment
 {
-    private static final double TREE_SPAWN_RATE = .2;
-    private static final int WHEN_SPAWN_A_TREE = 5_000;
     private static final int COLLISION_TOLERANCE = 3;
 
     private final ObservableList<Entity> entities;
 
-    private final Random random;
     private final TileMaps tileMaps;
     private final Player player;
 
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
 
-    private int widthTile;
-    private int heightTile;
+    public int widthTile;
+    public int heightTile;
     private int widthPlayer;
     private int heightPlayer;
     private int ticks = 0;
@@ -60,9 +57,6 @@ public class Environment
         image.cancel();
 
         this.entities = FXCollections.observableArrayList();
-        try {
-            this.random = SecureRandom.getInstanceStrong();
-        } catch (NoSuchAlgorithmException e) { throw new RuntimeException(e); }
 
         this.player = new Player(0, 0);
         this.player.setVelocity(5);
@@ -85,8 +79,8 @@ public class Environment
             this.collide();
             this.worldLimit();
 
-            this.generateTree();
-            this.generateTallGrass();
+            GenerateEntity.tree(this);
+            GenerateEntity.tallGrass(this);
 
             this.getPlayer().updates();
             for (Entity entity : entities)
@@ -152,95 +146,6 @@ public class Environment
         }
     }
 
-    /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
-    private void generateTree()
-    {
-        // Fréquence d'apparition
-        if (ticks%WHEN_SPAWN_A_TREE == 0)
-            for (int y = 0; y < tileMaps.getHeight(); y++)
-                // Est-ce que l'arbre doit spawn sur ce 'y'
-                if (Math.random() < TREE_SPAWN_RATE) {
-                    List<Integer> locFloorsOnAxisX = findFloors(y);
-                    // Si il y a du sol sur la ligne
-                    if (!locFloorsOnAxisX.isEmpty()) {
-                        int onWhichFloor = random.nextInt(locFloorsOnAxisX.size());
-                        int targetFloor = locFloorsOnAxisX.get((onWhichFloor == 0) ? onWhichFloor : onWhichFloor - 1);
-                        int xTree = targetFloor * widthTile;
-                        int yTree = ((y == 0) ? y : (y - 1)) * heightTile;
-                        // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
-                        if (tileMaps.getTile(targetFloor, y - 1) == TileMaps.SKY) {
-                            for (Entity entity : this.entities)
-                                if (entity instanceof Tree && xTree == entity.getX() && yTree == entity.getY())
-                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                    return;
-                            // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                            this.entities.add(0, new Tree(xTree, yTree));
-                        }
-                        // Une fois l'arbre généré, il arrête complétement toutes la fontion
-                        return;
-                    }
-                    // Sinon on retourne vers la premiere boucle 'for'
-                }
-    }
-
-    /** Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste */
-    private List<Integer> findFloors(int y)
-    {
-        List<Integer> localisation = new ArrayList<>();
-        for (int x = 0; x < tileMaps.getWidth(); x++) {
-            int targetTile = tileMaps.getTile(x, y);
-
-            if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
-                localisation.add(x);
-        }
-
-        return localisation;
-    }
-
-    private void generateTallGrass()
-    {
-        double spawnRate = .3;
-        int whenSpawn = 2_000;
-
-        // Frequence d'apparition
-        if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
-            // Est-ce que l'arbre doit spawn sur ce 'y'
-            boolean spawnOrNot = Math.random() < spawnRate;
-
-            if (spawnOrNot) {
-                ArrayList<Integer> posFloor = new ArrayList<>();
-                // Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste
-                for (int x = 0; x < tileMaps.getWidth(); x++) {
-                    int targetTile = tileMaps.getTile(x, y);
-
-                    if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
-                        posFloor.add(x);
-                }
-
-                // Si il y a du sol sur la ligne
-                if (!posFloor.isEmpty()) {
-                    int whereSpawn = random.nextInt(posFloor.size());
-                    int xTallGrass = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
-
-                    // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
-                    if (tileMaps.getTile(xTallGrass, y - 1) == 0) {
-                        TallGrass tallGrass = new TallGrass(xTallGrass * widthTile, (y-1) * heightTile);
-
-                        for (Entity entity : entities)
-                            if (entity instanceof TallGrass && tallGrass.getY() == entity.getY() && tallGrass.getX() == entity.getX())
-                                // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                return;
-                        // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                        entities.add(0, tallGrass);
-                    }
-                    // Une fois l'arbre généré, il arrête complétement toutes la fontion
-                    return;
-                }
-                // Sinon on retourne vers la premiere boucle 'for'
-            }
-        }
-    }
-
     /** Evite que le joueur sort de la carte. */
     private void worldLimit()
     {
@@ -254,4 +159,5 @@ public class Environment
     public ObservableList<Entity> getEntities() { return this.entities; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
+    public int getTicks() { return this.ticks; }
 }
