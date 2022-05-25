@@ -101,9 +101,8 @@ public class Player extends Entity
                     this.inventory.get(i).add(pickupObject);
                 else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone)
                     this.inventory.get(i).add(pickupObject);
-                int afterSize = this.inventory.get(i).size();
 
-                if (beforeSize != afterSize) return;
+                if (beforeSize != this.inventory.get(i).size()) return;
                 i++;
             }
         }
