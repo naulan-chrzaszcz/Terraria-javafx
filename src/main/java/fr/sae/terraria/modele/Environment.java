@@ -175,7 +175,7 @@ public class Environment
 
                     // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
                     if (tileMaps.getTile(xTree, y - 1) == 0) {
-                        Tree tree = new Tree(xTree * widthTile, y * heightTile);
+                        Tree tree = new Tree(xTree * widthTile, (y - 1) * heightTile);
 
                         for (Entity entity : entities)
                             if (entity instanceof Tree && tree.getY() == entity.getY() && tree.getX() == entity.getX())

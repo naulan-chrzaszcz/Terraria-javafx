@@ -53,13 +53,10 @@ public class TileMapsView
         this.dirtImg = View.loadAnImage("tiles/dirt-top.png", tileWidth, tileHeight);
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
-        environment.getEntities().addListener(new ListChangeListener<Entity>() {
-            @Override
-            public void onChanged(Change<? extends Entity> c) {
-                while (c.next())
-                    if (c.getList().get(0) instanceof Tree)
-                        createTree((Tree) c.getList().get(0));
-            }
+        environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
+            while (c.next())
+                if (c.getList().get(0) instanceof Tree)
+                    createTree((Tree) c.getList().get(0));
         });
     }
 
@@ -136,7 +133,7 @@ public class TileMapsView
         for (int i = 0; i < imagesTree.size(); i++) {
             ImageView treeView = imagesTree.get(i);
 
-            treeView.setY((int) ((tree.getY() + (i * tileHeight)) - (tileHeight * imagesTree.size())));
+            treeView.setY((int) (((tree.getY() + tileHeight) + (i * tileHeight)) - (tileHeight * imagesTree.size())));
             treeView.setX((int) tree.getX());
             display.getChildren().add(treeView);
         }

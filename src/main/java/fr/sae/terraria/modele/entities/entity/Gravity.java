@@ -23,11 +23,11 @@ public class Gravity
 
     public double formulaOfTrajectory()
     {
-        double yValue;
         flightTime = calcFlightTime();
         //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        yValue = ((a* (timer * timer)) + (b() * timer)) + yInit;
+        double yValue = ((a* (timer * timer)) + (b() * timer)) + yInit;
         this.timer += this.speed;
+
         return yValue;
     }
 
@@ -36,15 +36,13 @@ public class Gravity
         double res;
         if (degInit < 0)
             res = ((vInit * 10) * Math.sin(-degInit)) / Gravity.VALUE;
-        else
-            res = ((vInit * 10) * Math.sin(degInit)) / Gravity.VALUE;
+        else res = ((vInit * 10) * Math.sin(degInit)) / Gravity.VALUE;
+
         return res;
     }
 
     public void setFall(double actualY){
         // change le timer afin que le joueur tombe
-        System.out.println("ACTUAL Y"+actualY);
-        System.out.println("Yinit : " + yInit);
         double delt = (b()*b()) - (4*a*(yInit-actualY));
         timer = (-b() + Math.sqrt(delt))/(2*a);
     }
