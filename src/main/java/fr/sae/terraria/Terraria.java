@@ -20,10 +20,10 @@ public class Terraria extends Application
 {
     // Constants
     public static final String srcPath = "src/main/resources/fr/sae/terraria/";
+    public static final double TARGET_FPS = .017;
     public static final int DISPLAY_RENDERING_WIDTH = 465;
     public static final int DISPLAY_RENDERING_HEIGHT = 256;
 
-    // TODO:  effet de profondeur dans la terre
     private final String titleWindow = "Terraria-Like";
     private final int widthWindow = 1280;
     private final int heightWindow = 720;
@@ -33,8 +33,6 @@ public class Terraria extends Application
 
     public void start(Stage stage) throws IOException
     {
-        /* TODO: Commencer par le menu */
-
         URL pathFxml = Terraria.class.getResource("vue/game.fxml");
         if (pathFxml == null)
             pathFxml = new File(srcPath + "vue/game.fxml").toURI().toURL();

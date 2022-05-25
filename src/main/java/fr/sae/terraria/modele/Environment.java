@@ -1,6 +1,5 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.blocks.TallGrass;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,17 +11,23 @@ import javafx.util.Duration;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.blocks.TallGrass;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.vue.View;
 
 
 public class Environment
 {
+    private static final double TREE_SPAWN_RATE = .2;
+    private static final int WHEN_SPAWN_A_TREE = 5_000;
+    private static final int COLLISION_TOLERANCE = 3;
+
     private final ObservableList<Entity> entities;
 
     private final Random random;
@@ -71,12 +76,10 @@ public class Environment
 
     private void gameLoop()
     {
-        double fpsTarget = .017;
-
         Timeline loop = new Timeline();
         loop.setCycleCount(Animation.INDEFINITE);
 
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(fpsTarget), (ev -> {
+        KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             this.player.idle();
             this.player.eventInput();
             this.collide();
@@ -86,6 +89,8 @@ public class Environment
             this.generateTallGrass();
 
             this.getPlayer().updates();
+            for (Entity entity : entities)
+                entity.updates();
             this.ticks++;
         }));
 
@@ -96,13 +101,11 @@ public class Environment
     // TODO: le déplacé dans Entity.
     private void collide()
     {
-        int tolerance = 3;
-
         if (player.offset[0] != 0 || player.offset[1] != 0) {
-            boolean pTopLeft  = tileMaps.getTile((int) (player.getX()+tolerance+player.offset[0]*player.getVelocity())/widthTile,(int) (player.getY()+tolerance)/heightTile) != 0;
-            boolean pTopRight = tileMaps.getTile((int) (player.getX()-tolerance+widthPlayer+ getPlayer().getVelocity()*player.offset[0])/widthTile, (int) (player.getY()+tolerance)/heightTile) != 0;
-            boolean pBotLeft  = tileMaps.getTile((int) (player.getX()+tolerance+getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
-            boolean pBotRight = tileMaps.getTile((int) (player.getX()-tolerance+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer-tolerance)/heightTile) != 0;
+            boolean pTopLeft  = tileMaps.getTile((int) (player.getX()+COLLISION_TOLERANCE+player.offset[0]*player.getVelocity())/widthTile,(int) (player.getY()+COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pTopRight = tileMaps.getTile((int) (player.getX()-COLLISION_TOLERANCE+widthPlayer+ getPlayer().getVelocity()*player.offset[0])/widthTile, (int) (player.getY()+COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pBotLeft  = tileMaps.getTile((int) (player.getX()+COLLISION_TOLERANCE+getPlayer().getVelocity()*player.offset[0])/widthTile,(int) (player.getY()+heightPlayer-COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pBotRight = tileMaps.getTile((int) (player.getX()-COLLISION_TOLERANCE+widthPlayer+ player.getVelocity()*player.offset[0])/widthTile , (int) (player.getY()+heightPlayer-COLLISION_TOLERANCE)/heightTile) != 0;
 
             if (pTopLeft|| pTopRight  || pBotLeft  || pBotRight)
                 player.offset[0] = 0;
@@ -112,16 +115,16 @@ public class Environment
             double futurePosition = player.getGravity().formulaOfTrajectory();
 
             if (player.getGravity().timer < player.getGravity().flightTime){
-                boolean pTopLeft  = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int)(futurePosition/heightTile)) ==0;
-                boolean pTopRight = tileMaps.getTile((int) (((player.getX()-tolerance)+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0;
+                boolean pTopLeft  = tileMaps.getTile((int) ((player.getX()+COLLISION_TOLERANCE)/widthTile),(int)(futurePosition/heightTile)) ==0;
+                boolean pTopRight = tileMaps.getTile((int) (((player.getX()-COLLISION_TOLERANCE)+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0;
 
                 if ( pTopLeft && pTopRight ) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 } else { player.getGravity().setFall(player.getY()); player.offset[1] = 1; }
             } else {
-                boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+tolerance)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
-                boolean pBotRight = tileMaps.getTile((int) ((player.getX()-tolerance+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+tolerance)/heightTile)) == 0;
+                boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+COLLISION_TOLERANCE)/widthTile),(int) ((futurePosition+heightPlayer+COLLISION_TOLERANCE)/heightTile)) == 0;
+                boolean pBotRight = tileMaps.getTile((int) ((player.getX()-COLLISION_TOLERANCE+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+COLLISION_TOLERANCE)/heightTile)) == 0;
 
                 if (pBotLeft && pBotRight ){
                     player.setY(futurePosition);
@@ -130,7 +133,7 @@ public class Environment
             }
         }
 
-        if (tileMaps.getTile((int) ((player.getX() + tolerance) / widthTile), (int) (player.getY() + heightPlayer + tolerance) / heightTile) == 0 && tileMaps.getTile((int) ((player.getX() + widthPlayer - tolerance) / widthTile), (int) (player.getY() + heightPlayer + tolerance) / heightTile) == 0 && !player.air)
+        if (tileMaps.getTile((int) ((player.getX() + COLLISION_TOLERANCE) / widthTile), (int) (player.getY() + heightPlayer + COLLISION_TOLERANCE) / heightTile) == 0 && tileMaps.getTile((int) ((player.getX() + widthPlayer - COLLISION_TOLERANCE) / widthTile), (int) (player.getY() + heightPlayer + COLLISION_TOLERANCE) / heightTile) == 0 && !player.air)
             player.fall();
         if (player.offset[1] == 0)
             player.air = false;
@@ -138,8 +141,8 @@ public class Environment
         if (player.offset[1] == -1) {
             player.getGravity().degInit = 0;
             double futurY = player.getGravity().formulaOfTrajectory();
-            boolean pBotLeft = tileMaps.getTile((int) ((player.getX() + tolerance) / widthTile), (int) ((futurY + heightPlayer + tolerance) / heightTile)) == 0;
-            boolean pBotRight = tileMaps.getTile((int) ((player.getX() - tolerance + widthPlayer) / widthTile), (int) ((futurY + heightPlayer + tolerance) / heightTile)) == 0;
+            boolean pBotLeft = tileMaps.getTile((int) ((player.getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + heightPlayer + COLLISION_TOLERANCE) / heightTile)) == 0;
+            boolean pBotRight = tileMaps.getTile((int) ((player.getX() - COLLISION_TOLERANCE + widthPlayer) / widthTile), (int) ((futurY + heightPlayer + COLLISION_TOLERANCE) / heightTile)) == 0;
 
             if (pBotLeft && pBotRight) {
                 player.setY(futurY);
@@ -149,55 +152,55 @@ public class Environment
         }
     }
 
-    /** A un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
+    /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
     private void generateTree()
     {
-        double spawnRate = .2;      // 20%
-        int whenSpawn = 5_000;
-
-        // Frequence d'apparition
-        if (ticks%whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
-            // Est-ce que l'arbre doit spawn sur ce 'y'
-            boolean spawnOrNot = Math.random() < spawnRate;
-
-            if (spawnOrNot) {
-                ArrayList<Integer> posFloor = new ArrayList<>();
-                // Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste
-                for (int x = 0; x < tileMaps.getWidth(); x++) {
-                    int targetTile = tileMaps.getTile(x, y);
-
-                    if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
-                        posFloor.add(x);
-                }
-
-                // Si il y a du sol sur la ligne
-                if (!posFloor.isEmpty()) {
-                    int whereSpawn = random.nextInt(posFloor.size());
-                    int xTree = posFloor.get((whereSpawn == 0) ? whereSpawn : whereSpawn - 1);
-
-                    // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
-                    if (tileMaps.getTile(xTree, y - 1) == 0) {
-                        Tree tree = new Tree(xTree * widthTile, (y - 1) * heightTile);
-
-                        for (Entity entity : entities)
-                            if (entity instanceof Tree && tree.getY() == entity.getY() && tree.getX() == entity.getX())
-                                // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                return;
-                        // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                        entities.add(0, tree);
+        // Fréquence d'apparition
+        if (ticks%WHEN_SPAWN_A_TREE == 0)
+            for (int y = 0; y < tileMaps.getHeight(); y++)
+                // Est-ce que l'arbre doit spawn sur ce 'y'
+                if (Math.random() < TREE_SPAWN_RATE) {
+                    List<Integer> locFloorsOnAxisX = findFloors(y);
+                    // Si il y a du sol sur la ligne
+                    if (!locFloorsOnAxisX.isEmpty()) {
+                        int onWhichFloor = random.nextInt(locFloorsOnAxisX.size());
+                        int targetFloor = locFloorsOnAxisX.get((onWhichFloor == 0) ? onWhichFloor : onWhichFloor - 1);
+                        int xTree = targetFloor * widthTile;
+                        int yTree = ((y == 0) ? y : (y - 1)) * heightTile;
+                        // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
+                        if (tileMaps.getTile(targetFloor, y - 1) == TileMaps.SKY) {
+                            for (Entity entity : this.entities)
+                                if (entity instanceof Tree && xTree == entity.getX() && yTree == entity.getY())
+                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                    return;
+                            // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
+                            this.entities.add(0, new Tree(xTree, yTree));
+                        }
+                        // Une fois l'arbre généré, il arrête complétement toutes la fontion
+                        return;
                     }
-                    // Une fois l'arbre généré, il arrête complétement toutes la fontion
-                    return;
+                    // Sinon on retourne vers la premiere boucle 'for'
                 }
-                // Sinon on retourne vers la premiere boucle 'for'
-            }
+    }
+
+    /** Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste */
+    private List<Integer> findFloors(int y)
+    {
+        List<Integer> localisation = new ArrayList<>();
+        for (int x = 0; x < tileMaps.getWidth(); x++) {
+            int targetTile = tileMaps.getTile(x, y);
+
+            if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
+                localisation.add(x);
         }
+
+        return localisation;
     }
 
     private void generateTallGrass()
     {
         double spawnRate = .3;
-        int whenSpawn = 2000;
+        int whenSpawn = 2_000;
 
         // Frequence d'apparition
         if (ticks % whenSpawn == 0) for (int y = 0; y < tileMaps.getHeight(); y++) {
