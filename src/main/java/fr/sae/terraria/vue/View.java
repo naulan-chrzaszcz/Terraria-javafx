@@ -37,8 +37,11 @@ public class View
 
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
-        playerView.displayInventory(displayHUD);
-        playerView.displayHealthBar(displayHUD);
+
+        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        hudView.displayInventoryBar();
+        hudView.displayCursorInventoryBar();
+        hudView.displayHealthBar();
 
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }

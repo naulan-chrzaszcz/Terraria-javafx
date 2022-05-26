@@ -2,7 +2,6 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.vue.TileMapsView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -93,13 +92,13 @@ public class Controller implements Initializable
             Player player = this.environment.getPlayer();
 
             if (scroll.getDeltaY() < 0)
-                player.deplacementScroll.setValue(player.deplacementScroll.get() - 1);
+                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() - 1);
             else if (scroll.getDeltaY() > 0)
-                player.deplacementScroll.setValue(player.deplacementScroll.get() + 1);
-            if (player.deplacementScroll.get() > 8)
-                player.deplacementScroll.setValue(0);
-            if (player.deplacementScroll.get() < 0)
-                player.deplacementScroll.setValue(8);
+                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() + 1);
+            if (player.positionOfCursorInventoryBar.get() > 8)
+                player.positionOfCursorInventoryBar.setValue(0);
+            if (player.positionOfCursorInventoryBar.get() < 0)
+                player.positionOfCursorInventoryBar.setValue(8);
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
@@ -154,9 +153,7 @@ public class Controller implements Initializable
                         if (player.getItemSelected() instanceof Dirt) {
                             environment.getEntities().add(0, new Dirt(xBlock*tileWidth, yBlock*tileHeight));
                             environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
-                        }
-
-                        if (player.getItemSelected() instanceof Stone) {
+                        } else if (player.getItemSelected() instanceof Stone) {
                             environment.getEntities().add(0, new Stone(xBlock*tileWidth, yBlock*tileHeight));
                             environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                         }
