@@ -1,7 +1,5 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
@@ -19,6 +17,8 @@ import java.util.ResourceBundle;
 
 import java.net.URL;
 
+import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.Environment;
