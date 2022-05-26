@@ -39,6 +39,8 @@ public class View
         playerView.displayPlayer(displayHUD);
         playerView.displayInventory(displayHUD);
         playerView.displayHealthBar(displayHUD);
+
+        new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
     public static Image loadAnImage(String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }

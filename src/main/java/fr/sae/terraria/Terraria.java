@@ -47,8 +47,6 @@ public class Terraria extends Application
         stage.setScene(scene);
         stage.sizeToScene();
 
-
-
         stage.show();
     }
 }

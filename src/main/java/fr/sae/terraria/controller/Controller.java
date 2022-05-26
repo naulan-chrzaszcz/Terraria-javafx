@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.fxml.FXML;
@@ -45,7 +47,6 @@ public class Controller implements Initializable
 
     // Local Object variable
     private Environment environment;
-    private TileMaps tileMaps;
 
     private double scaleMultiplicatorWidth = .0;
     private double scaleMultiplicatorHeight = .0;
@@ -55,9 +56,6 @@ public class Controller implements Initializable
     {
         this.tileWidth = new SimpleIntegerProperty();
         this.tileHeight = new SimpleIntegerProperty();
-        this.tileMaps = new TileMaps();
-
-        this.addKeysEventListener(primaryStage);
 
         // Listener pour sync la taille des tiles pour scale les tiles
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> {
@@ -68,11 +66,11 @@ public class Controller implements Initializable
             scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
             tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
         });
+        this.addKeysEventListener(primaryStage);
     }
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        this.tileMaps.load("src/main/resources/fr/sae/terraria/maps/map_0.json");
 
         // La taille des tiles apres le scaling
         scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
@@ -80,7 +78,7 @@ public class Controller implements Initializable
         this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
         this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
 
-        this.environment = new Environment(tileMaps, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
@@ -90,7 +88,7 @@ public class Controller implements Initializable
 
     /**
      * Ajoute la fonctionnalité des listeners des event du clavier
-     * @param stage Specifie l'application
+     * @param stage Specifier l'application
      */
     private void addKeysEventListener(Stage stage)
     {

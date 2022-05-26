@@ -34,9 +34,10 @@ public class Environment
 
 
 
-    public Environment(TileMaps tileMaps, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
-        this.tileMaps = tileMaps;
+        this.tileMaps = new TileMaps();
+        this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
 
