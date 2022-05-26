@@ -12,11 +12,11 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.Animation;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
-import javafx.scene.input.ScrollEvent;
 
 
 public class Player extends Entity
 {
+    public static final int BREAK_BLOCK_DISTANCE = 2;
     private static final int NB_CASES_MAX_INVENTORY = 27;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
@@ -87,7 +87,7 @@ public class Player extends Entity
         });
     }
 
-    public int lengthOfInventoryFull()
+    public int nbStacksIntoInventory()
     {
         int counter = 0;
         for (int i = 0; i < inventory.size(); i++)
@@ -96,30 +96,28 @@ public class Player extends Entity
         return counter;
     }
 
-    public void ramasser(Entity pickupObject)
+    public void pickup(Entity pickupObject)
     {
         boolean estComplet = false;
-        if (lengthOfInventoryFull() < NB_CASES_MAX_INVENTORY) {
+        if (nbStacksIntoInventory() < NB_CASES_MAX_INVENTORY) {
             int i = 0;
             while (i < this.inventory.size()) {
                 int beforeSize = this.inventory.get(i).size();
                 if (this.inventory.get(i).isEmpty())
                     this.inventory.get(i).add(pickupObject);
-                else if (this.inventory.get(i).size() == 16) {
+                else if (this.inventory.get(i).size() == 16)
                     estComplet = true;
-                }
                 else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt) {
                     this.inventory.get(i).add(pickupObject);
                     estComplet = false;
-                }
-                else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone)
+                } else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone)
                     this.inventory.get(i).add(pickupObject);
                     estComplet = false;
 
                 if (beforeSize != this.inventory.get(i).size()) return;
                 i++;
                 if (estComplet)
-                    this.inventory.get(lengthOfInventoryFull()).add(pickupObject);
+                    this.inventory.get(nbStacksIntoInventory()).add(pickupObject);
             }
         }
     }

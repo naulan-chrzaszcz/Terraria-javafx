@@ -147,12 +147,11 @@ public class TileMapsView
 
     private void createTallGrass(TallGrass tallGrass)
     {
-        ImageView tallGrassView = new ImageView();
-
-        tallGrassView.setImage(tallGrassImg);
+        ImageView tallGrassView = new ImageView(tallGrassImg);
         tallGrassView.setX(tallGrass.getX());
         tallGrassView.setY(tallGrass.getY());
 
+        // L'animation de la pousse de la haute herbe
         tallGrass.getTallGrassGrowthProperty().addListener(((observable, oldValue, newValue) -> {
             tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()));
             tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()) + tileHeight);

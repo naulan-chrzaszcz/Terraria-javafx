@@ -1,6 +1,5 @@
 package fr.sae.terraria.modele.blocks;
 
-import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

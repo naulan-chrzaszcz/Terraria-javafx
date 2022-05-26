@@ -8,16 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import fr.sae.terraria.modele.entities.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.blocks.Tree;
-import fr.sae.terraria.modele.blocks.TallGrass;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.vue.View;
 

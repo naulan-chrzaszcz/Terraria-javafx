@@ -1,10 +1,12 @@
 package fr.sae.terraria.controller;
 
 import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -113,6 +115,30 @@ public class Controller implements Initializable
                 player.deplacementScroll.setValue(0);
             if (player.deplacementScroll.get() < 0)
                 player.deplacementScroll.setValue(8);
+        });
+
+        stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
+            Player player = this.environment.getPlayer();
+            int xBlock = (int) (click.getX()/tileWidth.get());
+            int yBlock = (int) (click.getY()/tileHeight.get());
+            int xPlayer = (int) ((player.getX()+(tileWidth.get()/2))/tileWidth.get());
+            int yPlayer = (int) ((player.getY()+(tileHeight.get()/2))/tileHeight.get());
+            int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
+            int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
+
+            if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
+                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
+                for (Entity entity : environment.getEntities()) {
+                    int xEntity = (int) ((entity.getX()+(tileWidth.get()/2))/tileWidth.get());
+                    int yEntity = (int) ((entity.getY()+(tileHeight.get()/2))/tileHeight.get());
+
+                    if (xEntity == xBlock && yEntity == yBlock) {
+                        System.out.println(entity);
+                        player.pickup(entity);
+                        break;
+                    }
+                }
+            }
         });
     }
 }

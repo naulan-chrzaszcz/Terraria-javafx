@@ -4,15 +4,12 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -105,15 +102,15 @@ public class PlayerView
         this.inventoryImg = View.loadAnImage("inventory.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         for (int i = 0; i < 30; i++)
-            this.player.ramasser(new Dirt(0,0));
+            this.player.pickup(new Dirt(0,0));
         for (int i = 0; i < 30; i++)
-            this.player.ramasser(new Stone(1,1));
+            this.player.pickup(new Stone(1,1));
 
         this.inventoryImgView.setImage(inventoryImg);
         this.inventoryImgView.setX(((scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH - inventoryImgView.getImage().getWidth())/2));
         this.inventoryImgView.setY(600);
-        if (this.player.lengthOfInventoryFull() <= 9)
-            nombreElementsAffichés = this.player.lengthOfInventoryFull();
+        if (this.player.nbStacksIntoInventory() <= 9)
+            nombreElementsAffichés = this.player.nbStacksIntoInventory();
 
         Rectangle frameInventoryImg = new Rectangle();
         frameInventoryImg.setWidth(inventoryImg.getWidth()+(2*scaleMultiplicatorWidth));
