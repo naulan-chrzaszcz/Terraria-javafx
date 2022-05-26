@@ -9,14 +9,21 @@ import javafx.scene.shape.Rectangle;
 
 public class MouseCursorView
 {
-    private Rectangle mouseCursorRect;
 
 
+    /**
+     * Un rectangle rouge qui suit la souris
+     *   Permet de savoir où nous cliquons sur l'écran plus précisément sur quel tile
+     *
+     * @param display L'afficheur qui se gère du HUD
+     * @param scaleMultiplicatorWidth Scaling en largeur
+     * @param scaleMultiplicatorHeight Scaling en hauteur
+     */
     public MouseCursorView(Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
         int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
-        mouseCursorRect = new Rectangle(tileWidth, tileHeight);
+        Rectangle mouseCursorRect = new Rectangle(tileWidth, tileHeight);
 
         mouseCursorRect.setFill(Color.TRANSPARENT);
         mouseCursorRect.setStroke(Color.RED);

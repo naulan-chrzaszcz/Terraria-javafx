@@ -3,13 +3,12 @@ package fr.sae.terraria.modele.entities;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.scene.input.KeyCode;
 
 import java.util.*;
 
+import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.Animation;
 import fr.sae.terraria.modele.blocks.Dirt;
@@ -22,10 +21,10 @@ public class Player extends Entity
     private static final int BLOCK_STACKING_MAX = 16;
     private static final int NB_CASES_MAX_INVENTORY = 27;
 
-    private final Map<Integer, ObservableList<Entity>> inventory;
+    private final Map<Integer, ObservableList<StowableObjectType>> inventory;
     private final EnumMap<KeyCode, Boolean> keysInput;
 
-    private Entity itemSelected;
+    private StowableObjectType itemSelected;
 
     public IntegerProperty positionOfCursorInventoryBar;
 
@@ -119,7 +118,7 @@ public class Player extends Entity
         return counter;
     }
 
-    public void pickup(Entity pickupObject)
+    public void pickup(StowableObjectType pickupObject)
     {
         int nbStacksInventory = nbStacksIntoInventory();
         boolean estComplet = false;
@@ -150,8 +149,8 @@ public class Player extends Entity
         }
     }
 
-    public Map<Integer, ObservableList<Entity>> getInventory() { return inventory; }
+    public Map<Integer, ObservableList<StowableObjectType>> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-    public Entity getItemSelected() { return itemSelected; }
-    public void setItemSelected(Entity itemSelected) { this.itemSelected = itemSelected; }
+    public StowableObjectType getItemSelected() { return itemSelected; }
+    public void setItemSelected(StowableObjectType itemSelected) { this.itemSelected = itemSelected; }
 }

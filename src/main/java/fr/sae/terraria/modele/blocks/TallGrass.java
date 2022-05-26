@@ -1,11 +1,10 @@
 package fr.sae.terraria.modele.blocks;
 
-import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 
-public class TallGrass extends Entity
+public class TallGrass extends Block
 {
     public static final int GROWTH_TALLGRASS_STEP = 4;
     public static final double GROWTH_SPEED = .005;

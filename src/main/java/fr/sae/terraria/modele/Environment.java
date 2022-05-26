@@ -24,7 +24,6 @@ public class Environment
     private final Player player;
 
     private double scaleMultiplicatorWidth;
-    private double scaleMultiplicatorHeight;
 
     public int widthTile;
     public int heightTile;
@@ -38,7 +37,6 @@ public class Environment
         this.tileMaps = new TileMaps();
         this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
-        this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
 
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);

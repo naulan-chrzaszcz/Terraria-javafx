@@ -1,5 +1,6 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.modele.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -78,7 +79,7 @@ public class HUDView
     private void refreshItemsInventoryBar()
     {
         for (int i = 0; i < this.player.getInventory().size(); i++)
-            this.player.getInventory().get(i).addListener((ListChangeListener<Entity>) c -> {
+            this.player.getInventory().get(i).addListener((ListChangeListener<StowableObjectType>) c -> {
                 while(c.next())
                     this.displayItemIntoInventoryBar();
             });
@@ -117,7 +118,7 @@ public class HUDView
 
             StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory().get(integer).size()));
             nombreObjets.textProperty().bind(stringProperty);
-            this.player.getInventory().get(integer).addListener((ListChangeListener<Entity>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
+            this.player.getInventory().get(integer).addListener((ListChangeListener<StowableObjectType>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
             nombreObjets.setFont(new Font("Arial",5 * scaleMultiplicatorWidth));
             nombreObjets.setLayoutX(inventoryBarImgView.getX() + ((((inventoryBarImgView.getImage().getWidth()/9)/2) - item.getWidth())) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur[0]) + 5);
             nombreObjets.setLayoutY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight()/2)) - 6);
@@ -146,7 +147,7 @@ public class HUDView
             this.cursorImgView.setX(((widthWindow - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
             if (newValue.intValue() > 0 && newValue.intValue() < 8)
                 if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
-                    this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
+                    this.player.setItemSelected((StowableObjectType) (this.player.getInventory().get(newValue.intValue()).get(0)));
                 } else this.player.setItemSelected(null);
         });
 

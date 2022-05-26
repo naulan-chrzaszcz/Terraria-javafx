@@ -1,5 +1,6 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import javafx.scene.Node;
@@ -52,8 +53,6 @@ public class Controller implements Initializable
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
         primaryStage.heightProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
 
-        System.out.println(scaleMultiplicatorHeight);
-        System.out.println(scaleMultiplicatorWidth);
         this.addKeysEventListener(primaryStage);
     }
 
@@ -125,7 +124,7 @@ public class Controller implements Initializable
 
                         if (xEntity == xBlock && yEntity == yBlock) {
                             System.out.println(entity);     // TODO: supp
-                            player.pickup(entity);
+                            player.pickup((StowableObjectType) entity);
 
                             Node nodeAtDelete = null; int i = 0;
                             do {

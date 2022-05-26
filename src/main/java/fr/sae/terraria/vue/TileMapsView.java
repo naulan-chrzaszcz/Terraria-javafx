@@ -24,8 +24,6 @@ public class TileMapsView
 
     private Environment environment;
 
-    private double scaleMultiplicatorWidth;
-    private double scaleMultiplicatorHeight;
     private int tileWidth;
     private int tileHeight;
 
@@ -42,8 +40,6 @@ public class TileMapsView
     {
         this.environment = environment;
         this.display = display;
-        this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
-        this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
 
         this.tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
         this.tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
@@ -181,7 +177,6 @@ public class TileMapsView
     private void createFloor(int typeOfFloor, int x, int y)
     {
         Dirt floorEntity = new Dirt(x*tileWidth, y*tileHeight);
-
         Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? floorRightImg : floorLeftImg;
         display.getChildren().add(View.createImageView(floorEntity, floorImg));
 

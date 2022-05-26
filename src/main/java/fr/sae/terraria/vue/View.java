@@ -46,20 +46,7 @@ public class View
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
-    public static Image loadAnImage(String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }
-
-    public static Image loadAnImage(String path, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
-    {
-        Image img = View.foundImage(path);
-        double width = img.getWidth();
-        double height = img.getHeight();
-        img.cancel();
-
-        double widthScaled = width*scaleMultiplicatorWidth;
-        double heightScaled = height*scaleMultiplicatorHeight;
-        return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
-    }
-
+    /** Essaye de trouver et de charger l'image sinon renvoie null */
     private static Image foundImage(String path)
     {
         Image img = null;
@@ -73,6 +60,21 @@ public class View
         return img;
     }
 
+    /** Charge une image avec une resolution carré (Ex: 16x16) */
+    public static Image loadAnImage(String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }
+
+    /** Charge une image avec une resolution non carrée */
+    public static Image loadAnImage(String path, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    {
+        Image img = View.foundImage(path);
+        double width = img.getWidth();
+        double height = img.getHeight();
+        img.cancel();
+
+        double widthScaled = width*scaleMultiplicatorWidth;
+        double heightScaled = height*scaleMultiplicatorHeight;
+        return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
+    }
 
     public static ImageView createImageView(Entity entity, Image img)
     {
