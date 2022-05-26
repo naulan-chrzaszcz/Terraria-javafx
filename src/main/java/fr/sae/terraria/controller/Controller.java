@@ -1,5 +1,6 @@
 package fr.sae.terraria.controller;
 
+import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -121,6 +122,22 @@ public class Controller implements Initializable
                     if (xEntity == xBlock && yEntity == yBlock) {
                         System.out.println(entity);     // TODO: supp
                         player.pickup(entity);
+
+                        Node nodeAtDelete = null; int i = 0;
+                        do {
+                            Node node = displayTiledMap.getChildren().get(i);
+                            int xNode = (int) ((node.getTranslateX()+(tileWidth/2))/tileWidth);
+                            int yNode = (int) ((node.getTranslateY()+(tileHeight/2))/tileHeight);
+
+                            if (xNode == xEntity && yNode == yEntity) {
+                                nodeAtDelete = node;
+                                environment.getTileMaps().setTile(TileMaps.SKY, yNode, xNode);
+                                environment.getEntities().remove(entity);
+                                displayTiledMap.getChildren().remove(nodeAtDelete);
+                            }
+                            i++;
+                        } while (i < displayTiledMap.getChildren().size() && nodeAtDelete == null);
+
                         break;
                     }
                 }

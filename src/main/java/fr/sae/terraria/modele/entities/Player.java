@@ -115,10 +115,12 @@ public class Player extends Entity
                     this.inventory.get(i).add(pickupObject);
                     estComplet = false;
 
+                // Quand un objet a étais mise dans l'inventaire, il arrête la fonction
                 if (beforeSize != this.inventory.get(i).size()) return;
-                i++;
                 if (estComplet)
                     this.inventory.get(nbStacksIntoInventory()).add(pickupObject);
+
+                i++;
             }
         }
     }
