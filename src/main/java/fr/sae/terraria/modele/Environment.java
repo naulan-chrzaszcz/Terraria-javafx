@@ -33,7 +33,6 @@ public class Environment
     private int ticks = 0;
 
 
-
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.tileMaps = new TileMaps();

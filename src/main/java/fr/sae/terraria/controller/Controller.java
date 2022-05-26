@@ -1,21 +1,12 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -23,6 +14,8 @@ import java.util.ResourceBundle;
 
 import java.net.URL;
 
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.Terraria;
@@ -41,49 +34,38 @@ public class Controller implements Initializable
     @FXML
     private Pane displayTiledMap;
 
-    // Property variables
-    private final IntegerProperty tileWidth;
-    private final IntegerProperty tileHeight;
-
     // Local Object variable
     private Environment environment;
 
+    // TODO: plutot mettre un DoubleProperty a c'est deux variables
     private double scaleMultiplicatorWidth = .0;
     private double scaleMultiplicatorHeight = .0;
 
 
     public Controller(Stage primaryStage)
     {
-        this.tileWidth = new SimpleIntegerProperty();
-        this.tileHeight = new SimpleIntegerProperty();
-
         // Listener pour sync la taille des tiles pour scale les tiles
-        primaryStage.widthProperty().addListener((obs, oldV, newV) -> {
-            scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
-            tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
-        });
-        primaryStage.heightProperty().addListener((obs, oldV, newV) -> {
-            scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-            tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
-        });
+        primaryStage.widthProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
+        primaryStage.heightProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
+
+        System.out.println(scaleMultiplicatorHeight);
+        System.out.println(scaleMultiplicatorWidth);
         this.addKeysEventListener(primaryStage);
     }
 
     public void initialize(URL location, ResourceBundle resources)
     {
-
         // La taille des tiles apres le scaling
         scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-        this.tileWidth.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth));
-        this.tileHeight.setValue((int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight));
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
+        int tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
+        int tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
         for (int i = 0; i < this.environment.getEntities().size(); i++)
-            this.environment.getEntities().get(i).setRect(tileWidth.get(), tileWidth.get());
+            this.environment.getEntities().get(i).setRect(tileWidth, tileHeight);
     }
 
     /**
@@ -116,22 +98,28 @@ public class Controller implements Initializable
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
+            // TODO: Obliger de le recalculé, a voir dans le temps si c'est deplacable.
+            double scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+            double scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+            int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
+            int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
+
             Player player = this.environment.getPlayer();
-            int xBlock = (int) (click.getX()/tileWidth.get());
-            int yBlock = (int) (click.getY()/tileHeight.get());
-            int xPlayer = (int) ((player.getX()+(tileWidth.get()/2))/tileWidth.get());
-            int yPlayer = (int) ((player.getY()+(tileHeight.get()/2))/tileHeight.get());
+            int xBlock = (int) (click.getX()/tileWidth);
+            int yBlock = (int) (click.getY()/tileHeight);
+            int xPlayer = (int) ((player.getX()+(tileWidth/2))/tileWidth);
+            int yPlayer = (int) ((player.getY()+(tileHeight/2))/tileHeight);
             int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
                 && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
                 for (Entity entity : environment.getEntities()) {
-                    int xEntity = (int) ((entity.getX()+(tileWidth.get()/2))/tileWidth.get());
-                    int yEntity = (int) ((entity.getY()+(tileHeight.get()/2))/tileHeight.get());
+                    int xEntity = (int) ((entity.getX()+(tileWidth/2))/tileWidth);
+                    int yEntity = (int) ((entity.getY()+(tileHeight/2))/tileHeight);
 
                     if (xEntity == xBlock && yEntity == yBlock) {
-                        System.out.println(entity);
+                        System.out.println(entity);     // TODO: supp
                         player.pickup(entity);
                         break;
                     }

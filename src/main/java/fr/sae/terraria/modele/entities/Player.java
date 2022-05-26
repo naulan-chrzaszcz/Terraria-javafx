@@ -19,12 +19,13 @@ public class Player extends Entity
     public static final int BREAK_BLOCK_DISTANCE = 2;
     private static final int NB_CASES_MAX_INVENTORY = 27;
 
-    private final EnumMap<KeyCode, Boolean> keysInput;
     private final Map<Integer, ObservableList<Entity>> inventory;
+    private final EnumMap<KeyCode, Boolean> keysInput;
 
     private Entity itemSelected;
 
     public IntegerProperty deplacementScroll;
+
     public boolean air;
 
 
