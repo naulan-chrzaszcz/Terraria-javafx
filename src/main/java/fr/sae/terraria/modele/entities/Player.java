@@ -16,7 +16,7 @@ import fr.sae.terraria.modele.blocks.Stone;
 
 public class Player extends Entity
 {
-    public static final int BREAK_BLOCK_DISTANCE = 2;
+    public static final int BREAK_BLOCK_DISTANCE = 1;
     private static final int NB_CASES_MAX_INVENTORY = 27;
 
     private final Map<Integer, ObservableList<Entity>> inventory;

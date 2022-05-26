@@ -1,7 +1,11 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.vue.TileMapsView;
 import javafx.scene.Node;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
@@ -114,31 +118,48 @@ public class Controller implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
-                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
-                for (Entity entity : environment.getEntities()) {
-                    int xEntity = (int) ((entity.getX()+(tileWidth/2))/tileWidth);
-                    int yEntity = (int) ((entity.getY()+(tileHeight/2))/tileHeight);
+                    && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
+                if (click.getButton().equals(MouseButton.PRIMARY))
+                    for (Entity entity : environment.getEntities()) {
+                        int xEntity = (int) ((entity.getX()+(tileWidth/2))/tileWidth);
+                        int yEntity = (int) ((entity.getY()+(tileHeight/2))/tileHeight);
 
-                    if (xEntity == xBlock && yEntity == yBlock) {
-                        System.out.println(entity);     // TODO: supp
-                        player.pickup(entity);
+                        if (xEntity == xBlock && yEntity == yBlock) {
+                            System.out.println(entity);     // TODO: supp
+                            player.pickup(entity);
 
-                        Node nodeAtDelete = null; int i = 0;
-                        do {
-                            Node node = displayTiledMap.getChildren().get(i);
-                            int xNode = (int) ((node.getTranslateX()+(tileWidth/2))/tileWidth);
-                            int yNode = (int) ((node.getTranslateY()+(tileHeight/2))/tileHeight);
+                            Node nodeAtDelete = null; int i = 0;
+                            do {
+                                Node node = displayTiledMap.getChildren().get(i);
+                                int xNode = (int) ((node.getTranslateX()+(tileWidth/2))/tileWidth);
+                                int yNode = (int) ((node.getTranslateY()+(tileHeight/2))/tileHeight);
 
-                            if (xNode == xEntity && yNode == yEntity) {
-                                nodeAtDelete = node;
-                                environment.getTileMaps().setTile(TileMaps.SKY, yNode, xNode);
-                                environment.getEntities().remove(entity);
-                                displayTiledMap.getChildren().remove(nodeAtDelete);
-                            }
-                            i++;
-                        } while (i < displayTiledMap.getChildren().size() && nodeAtDelete == null);
+                                if (xNode == xEntity && yNode == yEntity) {
+                                    nodeAtDelete = node;
+                                    environment.getTileMaps().setTile(TileMaps.SKY, yNode, xNode);
+                                    environment.getEntities().remove(entity);
+                                    displayTiledMap.getChildren().remove(nodeAtDelete);
+                                }
+                                i++;
+                            } while (i < displayTiledMap.getChildren().size() && nodeAtDelete == null);
 
-                        break;
+                            break;
+                        }
+                    }
+
+                if (click.getButton().equals(MouseButton.SECONDARY))
+                {
+                    if (player.getItemSelected() != null) {
+                        System.out.println(player.getItemSelected());
+                        if (player.getItemSelected() instanceof Dirt) {
+                            environment.getEntities().add(0, new Dirt(xBlock*tileWidth, yBlock*tileHeight));
+                            environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
+                        }
+
+                        if (player.getItemSelected() instanceof Stone) {
+                            environment.getEntities().add(0, new Stone(xBlock*tileWidth, yBlock*tileHeight));
+                            environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
+                        }
                     }
                 }
             }

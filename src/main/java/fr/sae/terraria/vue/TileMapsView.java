@@ -62,6 +62,10 @@ public class TileMapsView
                     createTree((Tree) c.getList().get(0));
                 if (c.getList().get(0) instanceof TallGrass)
                     createTallGrass((TallGrass) c.getList().get(0));
+                if (c.getList().get(0) instanceof Dirt)
+                    display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
+                if (c.getList().get(0) instanceof Stone)
+                    display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
             }
         });
     }
