@@ -109,8 +109,8 @@ public class Environment
             double futurePosition = player.getGravity().formulaOfTrajectory();
 
             if (player.getGravity().timer < player.getGravity().flightTime){
-                boolean pTopLeft  = tileMaps.getTile((int) ((player.getX()+COLLISION_TOLERANCE)/widthTile),(int)(futurePosition/heightTile)) ==0;
-                boolean pTopRight = tileMaps.getTile((int) (((player.getX()-COLLISION_TOLERANCE)+widthTile)/widthTile),(int)(futurePosition/heightTile)) ==0;
+                boolean pTopLeft  = tileMaps.getTile((int) ((player.getX()+COLLISION_TOLERANCE)/widthTile),(int)(futurePosition/heightTile)) == 0;
+                boolean pTopRight = tileMaps.getTile((int) (((player.getX()-COLLISION_TOLERANCE)+widthTile)/widthTile),(int)(futurePosition/heightTile)) == 0;
 
                 if ( pTopLeft && pTopRight ) {
                     player.setY(futurePosition);
@@ -120,7 +120,7 @@ public class Environment
                 boolean pBotLeft = tileMaps.getTile((int) ((player.getX()+COLLISION_TOLERANCE)/widthTile),(int) ((futurePosition+heightPlayer+COLLISION_TOLERANCE)/heightTile)) == 0;
                 boolean pBotRight = tileMaps.getTile((int) ((player.getX()-COLLISION_TOLERANCE+widthPlayer)/widthTile),(int) ((futurePosition+heightPlayer+COLLISION_TOLERANCE)/heightTile)) == 0;
 
-                if (pBotLeft && pBotRight ){
+                if (pBotLeft && pBotRight) {
                     player.setY(futurePosition);
                     player.offset[1] = 1;
                 }

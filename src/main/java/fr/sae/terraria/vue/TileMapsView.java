@@ -145,12 +145,19 @@ public class TileMapsView
         }
     }
 
-    private void createTallGrass(TallGrass tallGrass){
-        ImageView tallGrassView = new ImageView(tallGrassImg);
-        System.out.println(tallGrass.getX()/tileWidth);
-        System.out.println(tallGrass.getY()/tileHeight);
+    private void createTallGrass(TallGrass tallGrass)
+    {
+        ImageView tallGrassView = new ImageView();
+
+        tallGrassView.setImage(tallGrassImg);
         tallGrassView.setX(tallGrass.getX());
         tallGrassView.setY(tallGrass.getY());
+
+        tallGrass.getTallGrassGrowthProperty().addListener(((observable, oldValue, newValue) -> {
+            tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()));
+            tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()) + tileHeight);
+        }));
+
         display.getChildren().add(tallGrassView);
     }
 

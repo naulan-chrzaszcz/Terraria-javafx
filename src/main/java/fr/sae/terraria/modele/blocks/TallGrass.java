@@ -1,22 +1,32 @@
 package fr.sae.terraria.modele.blocks;
 
+import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 
 public class TallGrass extends Entity
 {
-    /*
-        TODO: Donne de la fibre au joueur de manière aléatoire
-              Peut ne pas drop ou drop juste 1 (Pas plus)
-              (Optionnel) Faire que l'herbe au passage du joueur provoque un bruitage
-              (Optionnel) Faire une animation lorsque le joueur passe dedans
-     */
-    public TallGrass(int x, int y){
-        super(x,y);
+    public static final int GROWTH_TALLGRASS_STEP = 4;
+    public static final double GROWTH_SPEED = .005;
 
+    private DoubleProperty tallGrassGrowth;
+
+
+    public TallGrass(int x, int y)
+    {
+        super(x, y);
+
+        this.tallGrassGrowth = new SimpleDoubleProperty(0);
     }
 
-    @Override
-    public void updates() {
-
+    public void updates()
+    {
+        if (tallGrassGrowth.get() < GROWTH_TALLGRASS_STEP)
+            tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
+
+
+    public DoubleProperty getTallGrassGrowthProperty() { return this.tallGrassGrowth; }
 }
