@@ -108,25 +108,30 @@ public class Controller implements Initializable
             int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
 
             Player player = this.environment.getPlayer();
+            // Le bloc où la souris à clicker
             int xBlock = (int) (click.getX()/tileWidth);
             int yBlock = (int) (click.getY()/tileHeight);
+            // La position du joueur
             int xPlayer = (int) ((player.getX()+(tileWidth/2))/tileWidth);
             int yPlayer = (int) ((player.getY()+(tileHeight/2))/tileHeight);
+            // La distance entre le bloc et le joueur
             int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
-                    && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
+                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
                 if (click.getButton().equals(MouseButton.PRIMARY))
+                    // Commence a cherché l'entité ciblée
                     for (Entity entity : environment.getEntities()) {
+                        // La position de l'entité
                         int xEntity = (int) ((entity.getX()+(tileWidth/2))/tileWidth);
                         int yEntity = (int) ((entity.getY()+(tileHeight/2))/tileHeight);
 
                         if (xEntity == xBlock && yEntity == yBlock) {
-                            System.out.println(entity);     // TODO: supp
                             player.pickup((StowableObjectType) entity);
 
                             Node nodeAtDelete = null; int i = 0;
+                            // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
                             do {
                                 Node node = displayTiledMap.getChildren().get(i);
                                 int xNode = (int) ((node.getTranslateX()+(tileWidth/2))/tileWidth);
@@ -135,12 +140,14 @@ public class Controller implements Initializable
                                 if (xNode == xEntity && yNode == yEntity) {
                                     nodeAtDelete = node;
                                     environment.getTileMaps().setTile(TileMaps.SKY, yNode, xNode);
+                                    // Supprime dans le modele et dans la vue
                                     environment.getEntities().remove(entity);
                                     displayTiledMap.getChildren().remove(nodeAtDelete);
                                 }
                                 i++;
                             } while (i < displayTiledMap.getChildren().size() && nodeAtDelete == null);
 
+                            // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
                             break;
                         }
                     }
@@ -148,7 +155,6 @@ public class Controller implements Initializable
                 if (click.getButton().equals(MouseButton.SECONDARY))
                 {
                     if (player.getItemSelected() != null) {
-                        System.out.println(player.getItemSelected());
                         if (player.getItemSelected() instanceof Dirt) {
                             environment.getEntities().add(0, new Dirt(xBlock*tileWidth, yBlock*tileHeight));
                             environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
