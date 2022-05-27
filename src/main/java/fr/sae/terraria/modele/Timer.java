@@ -2,35 +2,42 @@ package fr.sae.terraria.modele;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
-public class Timer {
-    private SimpleIntegerProperty minuts;
+
+public class Timer
+{
+    private SimpleIntegerProperty minutes;
     private SimpleIntegerProperty hours;
     private SimpleIntegerProperty days;
 
-    public Timer(){
-        minuts = new SimpleIntegerProperty(0);
+
+    public Timer()
+    {
+        minutes = new SimpleIntegerProperty(0);
         hours = new SimpleIntegerProperty(0);
         days = new SimpleIntegerProperty(0);
     }
 
-    public void update(){
-        System.out.println(getDays());
-        if (getMinuts()+1 == 60){
-            if (getHours()+1 == 24){
+    public void update()
+    {
+        System.out.println(getDays());   // TODO supp
+        if (getMinutes()+1 == 60) {
+            if (getHours()+1 == 24) {
                 days.setValue(getDays()+1);
                 hours.setValue(0);
-            }else {
+            } else {
                 hours.setValue(getHours()+1);
-                minuts.setValue(0);
+                minutes.setValue(0);
             }
-        }else minuts.setValue(getMinuts()+1);
-        System.out.println("Time : " + getDays() + "h :" + getHours() + "m : " + getMinuts());
+        } else minutes.setValue(getMinutes()+1);
+        System.out.println("Time : " + getDays() + "h :" + getHours() + "m : " + getMinutes());
     }
 
-    public int getMinuts() {return minuts.get();}
-    public SimpleIntegerProperty minutsProperty() {return minuts;}
+    public SimpleIntegerProperty daysProperty() { return days; }
+    public SimpleIntegerProperty hoursProperty() { return hours; }
+    public SimpleIntegerProperty minutesProperty() { return minutes; }
+
+
+    public int getMinutes() { return minutes.get(); }
     public int getHours() {return hours.get();}
-    public SimpleIntegerProperty hoursProperty() {return hours;}
-    public int getDays() {return days.get();}
-    public SimpleIntegerProperty daysProperty() {return days;}
+    public int getDays() { return days.get(); }
 }

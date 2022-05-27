@@ -18,7 +18,6 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.TileMaps;
 
 
@@ -31,6 +30,10 @@ public class HUDView
     private Image inventoryBarImg;
     private Image healthBarImg;
 
+    private Label minutes;
+    private Label hours;
+
+    private Timer gameTime;
     private Player player;
     private Pane display;
 
@@ -40,19 +43,16 @@ public class HUDView
     private double heightWindow;
     private int tileWidth;
     private int tileHeight;
-    private Timer gameTime;
-    private Label minuts;
-    private Label hours;
 
 
-    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime,Label minuts, Label hours)
+    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime, Label minutes, Label hours)
     {
         this.player = player;
         this.display = display;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.gameTime = gameTime;
-        this.minuts = minuts;
+        this.minutes = minutes;
         this.hours = hours;
 
         this.widthWindow = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
@@ -154,7 +154,7 @@ public class HUDView
             this.cursorImgView.setX(((widthWindow - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
             if (newValue.intValue() > 0 && newValue.intValue() < 8)
                 if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
-                    this.player.setItemSelected((StowableObjectType) (this.player.getInventory().get(newValue.intValue()).get(0)));
+                    this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
                 } else this.player.setItemSelected(null);
         });
 
@@ -188,7 +188,7 @@ public class HUDView
     }
 
     public void displayTimer() {
-        minuts.textProperty().bind(gameTime.minutsProperty().asString());
+        minutes.textProperty().bind(gameTime.minutesProperty().asString());
         hours.textProperty().bind(gameTime.hoursProperty().asString());
     }
 }
