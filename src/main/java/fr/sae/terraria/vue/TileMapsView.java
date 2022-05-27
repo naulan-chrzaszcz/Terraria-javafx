@@ -143,11 +143,14 @@ public class TileMapsView
             treeView.setX((int) tree.getX());
             display.getChildren().add(treeView);
         }
+
+        tree.setRect(tileWidth, (2+nbFoliage+nbTrunk)*tileHeight);
     }
 
     private void createTallGrass(TallGrass tallGrass)
     {
         ImageView tallGrassView = new ImageView(tallGrassImg);
+        tallGrass.setRect(tileWidth, tileHeight);
         tallGrassView.setX(tallGrass.getX());
         tallGrassView.setY(tallGrass.getY());
 
@@ -163,6 +166,7 @@ public class TileMapsView
     private void createStone(int x, int y)
     {
         Stone stoneEntity = new Stone(x*tileWidth, y*tileHeight);
+        stoneEntity.setRect(tileWidth, tileHeight);
         display.getChildren().add(View.createImageView(stoneEntity, stoneImg));
         environment.getEntities().add(stoneEntity);
     }
@@ -170,6 +174,7 @@ public class TileMapsView
     private void createDirt(int x, int y)
     {
         Dirt dirtSprite = new Dirt(x*tileWidth, y*tileHeight);
+        dirtSprite.setRect(tileWidth, tileHeight);
         display.getChildren().add(View.createImageView(dirtSprite, dirtImg));
         environment.getEntities().add(dirtSprite);
     }
@@ -178,6 +183,7 @@ public class TileMapsView
     {
         Dirt floorEntity = new Dirt(x*tileWidth, y*tileHeight);
         Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? floorRightImg : floorLeftImg;
+        floorEntity.setRect(tileWidth, tileHeight);
         display.getChildren().add(View.createImageView(floorEntity, floorImg));
 
         environment.getEntities().add(floorEntity);

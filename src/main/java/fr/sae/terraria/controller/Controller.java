@@ -1,6 +1,7 @@
 package fr.sae.terraria.controller;
 
 import fr.sae.terraria.modele.blocks.Stone;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -10,6 +11,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -69,11 +71,6 @@ public class Controller implements Initializable
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, displayMinuts, displayHours);
-
-        int tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
-        int tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
-        for (int i = 0; i < this.environment.getEntities().size(); i++)
-            this.environment.getEntities().get(i).setRect(tileWidth, tileHeight);
     }
 
     /**
@@ -106,16 +103,19 @@ public class Controller implements Initializable
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
+            Player player = this.environment.getPlayer();
+            // La position correcte sur le Pane
+            double mouseX = click.getSceneX();
+            double mouseY = click.getSceneY()-title.getPrefHeight();
+            Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
             // TODO: Obliger de le recalculé, a voir dans le temps si c'est deplacable.
             double scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
             double scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
             int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
             int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
-
-            Player player = this.environment.getPlayer();
             // Le bloc où la souris à clicker
-            int xBlock = (int) (click.getX()/tileWidth);
-            int yBlock = (int) (click.getY()/tileHeight);
+            int xBlock = (int) (mouseX/tileWidth);
+            int yBlock = (int) (mouseY/tileHeight);
             // La position du joueur
             int xPlayer = (int) ((player.getX()+(tileWidth/2))/tileWidth);
             int yPlayer = (int) ((player.getY()+(tileHeight/2))/tileHeight);
@@ -129,22 +129,22 @@ public class Controller implements Initializable
                     // Commence a cherché l'entité ciblée
                     for (Entity entity : environment.getEntities()) {
                         // La position de l'entité
-                        int xEntity = (int) ((entity.getX()+(tileWidth/2))/tileWidth);
-                        int yEntity = (int) ((entity.getY()+(tileHeight/2))/tileHeight);
+                        int xEntity = (int) (entity.getRect().get().getMinX());
+                        int yEntity = (int) (entity.getRect().get().getMinY());
 
-                        if (xEntity == xBlock && yEntity == yBlock) {
+                        if (entity.getRect().collideRect(rectangle)) {
                             player.pickup((StowableObjectType) entity);
 
                             Node nodeAtDelete = null; int i = 0;
                             // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
                             do {
                                 Node node = displayTiledMap.getChildren().get(i);
-                                int xNode = (int) ((node.getTranslateX()+(tileWidth/2))/tileWidth);
-                                int yNode = (int) ((node.getTranslateY()+(tileHeight/2))/tileHeight);
+                                int xNode = (int) (node.getTranslateX());
+                                int yNode = (int) (node.getTranslateY());
 
                                 if (xNode == xEntity && yNode == yEntity) {
                                     nodeAtDelete = node;
-                                    environment.getTileMaps().setTile(TileMaps.SKY, yNode, xNode);
+                                    environment.getTileMaps().setTile(TileMaps.SKY, yNode/tileHeight, xNode/tileWidth);
                                     // Supprime dans le modele et dans la vue
                                     environment.getEntities().remove(entity);
                                     displayTiledMap.getChildren().remove(nodeAtDelete);

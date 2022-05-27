@@ -1,7 +1,5 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.Timer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -19,6 +17,8 @@ import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.Timer;
 
 
 public class HUDView

@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele.entities.entity;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.shape.Rectangle;
 
 
 public class Rect
@@ -21,7 +22,8 @@ public class Rect
         this.rect = new Rectangle2D(x, y, (int) width, (int) height);
     }
 
-    public boolean collideRect(Rect rect) { return this.rect.intersects(rect.get()); }
+    public boolean collideRect(Rect rect) { return this.rect.intersects(rect.get()) || this.rect.contains(rect.get()); }
+    public boolean collideRect(Rectangle2D rect) { return this.rect.intersects(rect) || this.rect.contains(rect); }
 
     public Rectangle2D get() { return this.rect; }
     public int getWidth() { return (int) (this.rect.getWidth()); }

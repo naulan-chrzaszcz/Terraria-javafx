@@ -1,9 +1,7 @@
 package fr.sae.terraria.modele.blocks;
 
-import fr.sae.terraria.modele.entities.entity.Entity;
 
-
-public class Tree extends Entity
+public class Tree extends Block
 {
 
 
