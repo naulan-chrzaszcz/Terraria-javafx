@@ -1,19 +1,14 @@
 package fr.sae.terraria;
 
+import fr.sae.terraria.controller.Controller;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-
 import java.net.URL;
-
-import fr.sae.terraria.controller.Controller;
 
 
 public class Terraria extends Application

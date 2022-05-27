@@ -1,6 +1,16 @@
 package fr.sae.terraria.controller;
 
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.vue.View;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -11,23 +21,10 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-
-import java.util.ResourceBundle;
 
 import java.net.URL;
-
-import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.vue.View;
+import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable
@@ -124,7 +121,9 @@ public class Controller implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
-                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
+                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE)
+            {
+                // Casse les blocs
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     // Commence a cherché l'entité ciblée
                     for (Entity entity : environment.getEntities()) {
@@ -157,14 +156,19 @@ public class Controller implements Initializable
                         }
                     }
 
+                // Pose les blocs
                 if (click.getButton().equals(MouseButton.SECONDARY))
                 {
                     if (player.getItemSelected() != null) {
                         if (player.getItemSelected() instanceof Dirt) {
-                            environment.getEntities().add(0, new Dirt(xBlock*tileWidth, yBlock*tileHeight));
+                            Dirt dirt = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
+                            dirt.setRect(tileWidth, tileHeight);
+                            environment.getEntities().add(0, dirt);
                             environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
                         } else if (player.getItemSelected() instanceof Stone) {
-                            environment.getEntities().add(0, new Stone(xBlock*tileWidth, yBlock*tileHeight));
+                            Stone stone = new Stone(xBlock*tileWidth, yBlock*tileHeight);
+                            stone.setRect(tileWidth, tileHeight);
+                            environment.getEntities().add(0, stone);
                             environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                         }
                     }

@@ -1,25 +1,27 @@
 package fr.sae.terraria.modele.entities;
 
+import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.entity.Animation;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
-import java.util.*;
-
-import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.Animation;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Player extends Entity
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
-    private static final int BLOCK_STACKING_MAX = 16;
-    private static final int NB_CASES_MAX_INVENTORY = 27;
+    public static final int BLOCK_STACKING_MAX = 16;
+    public static final int NB_CASES_MAX_INVENTORY = 27;
+    public static final int NB_LINES_INVENTORY = 3;
 
     private final Map<Integer, ObservableList<StowableObjectType>> inventory;
     private final EnumMap<KeyCode, Boolean> keysInput;

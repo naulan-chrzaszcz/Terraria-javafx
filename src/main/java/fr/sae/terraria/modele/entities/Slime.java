@@ -1,8 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
-import javafx.beans.property.SimpleDoubleProperty;
-
 import fr.sae.terraria.modele.entities.entity.Entity;
+import javafx.beans.property.SimpleDoubleProperty;
 
 
 public class Slime extends Entity

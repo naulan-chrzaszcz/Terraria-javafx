@@ -1,5 +1,12 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.Timer;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -11,14 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.Timer;
 
 
 public class HUDView
@@ -99,7 +98,7 @@ public class HUDView
         int itemInventoryHeight = (tileHeight/2);
 
         int nbElementDisplayed = 9;
-        if (this.player.nbStacksIntoInventory() <= 9)
+        if (this.player.nbStacksIntoInventory() <= Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)
             nbElementDisplayed = this.player.nbStacksIntoInventory();
 
 

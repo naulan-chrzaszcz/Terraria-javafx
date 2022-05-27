@@ -1,5 +1,8 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -7,10 +10,6 @@ import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.net.URL;
-
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.entity.Entity;
 
 
 public class View

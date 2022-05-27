@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class TallGrass extends Block
 {
-    public static final int GROWTH_TALLGRASS_STEP = 4;
+    public static final int GROWTH_TALL_GRASS_STEP = 4;
     public static final double GROWTH_SPEED = .005;
 
     private DoubleProperty tallGrassGrowth;
@@ -21,7 +21,7 @@ public class TallGrass extends Block
 
     public void updates()
     {
-        if (tallGrassGrowth.get() < GROWTH_TALLGRASS_STEP)
+        if (tallGrassGrowth.get() < GROWTH_TALL_GRASS_STEP)
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 

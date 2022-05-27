@@ -1,18 +1,17 @@
 package fr.sae.terraria.vue;
 
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.blocks.TallGrass;
+import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
-import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.blocks.Tree;
-import fr.sae.terraria.modele.entities.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,8 +155,8 @@ public class TileMapsView
 
         // L'animation de la pousse de la haute herbe
         tallGrass.getTallGrassGrowthProperty().addListener(((observable, oldValue, newValue) -> {
-            tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()));
-            tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALLGRASS_STEP)*newValue.intValue()) + tileHeight);
+            tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()));
+            tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()) + tileHeight);
         }));
 
         display.getChildren().add(tallGrassView);

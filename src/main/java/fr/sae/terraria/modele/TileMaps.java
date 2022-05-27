@@ -1,10 +1,9 @@
 package fr.sae.terraria.modele;
 
-import java.io.FileReader;
-
-import java.util.Arrays;
-
 import com.google.gson.stream.JsonReader;
+
+import java.io.FileReader;
+import java.util.Arrays;
 
 
 public class TileMaps

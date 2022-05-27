@@ -1,5 +1,9 @@
 package fr.sae.terraria.modele;
 
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -7,11 +11,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
-
-import fr.sae.terraria.modele.entities.*;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.vue.View;
 
 
 public class Environment

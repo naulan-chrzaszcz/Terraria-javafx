@@ -1,12 +1,12 @@
 package fr.sae.terraria.modele;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import fr.sae.terraria.modele.blocks.TallGrass;
 import fr.sae.terraria.modele.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 
 public class GenerateEntity

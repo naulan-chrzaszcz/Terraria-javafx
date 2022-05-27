@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele.entities.entity;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.shape.Rectangle;
 
 
 public class Rect
