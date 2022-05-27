@@ -1,7 +1,12 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.entities.StowableObjectType;
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.Timer;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -13,12 +18,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-
-import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.TileMaps;
 import javafx.scene.transform.Rotate;
 
 
@@ -33,16 +32,16 @@ public class HUDView
     private Image clockImg;
     private Image clockCursorImg;
 
+    private Timer gameTime;
     private Player player;
     private Pane display;
 
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
-    private double widthWindow;
-    private double heightWindow;
+    private double windowWidth;
+    private double windowHeight;
     private int tileWidth;
     private int tileHeight;
-    private Timer gameTime;
 
 
     public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime)
@@ -53,8 +52,8 @@ public class HUDView
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.gameTime = gameTime;
 
-        this.widthWindow = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
-        this.heightWindow = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
+        this.windowWidth = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
+        this.windowHeight = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
         this.tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
 
@@ -137,8 +136,8 @@ public class HUDView
 
     public void displayInventoryBar()
     {
-        this.inventoryBarImgView.setX(((widthWindow - inventoryBarImg.getWidth())/2));
-        this.inventoryBarImgView.setY((heightWindow - inventoryBarImg.getHeight()) - tileHeight);
+        this.inventoryBarImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2));
+        this.inventoryBarImgView.setY((windowHeight - inventoryBarImg.getHeight()) - tileHeight);
 
         display.getChildren().add(setFrameInventoryBar(inventoryBarImgView));
         display.getChildren().add(inventoryBarImgView);
@@ -147,11 +146,11 @@ public class HUDView
     /** Affiche un carré qui se superpose sur la barre d'inventaire qui permet de savoir où on se situe */
     public void displayCursorInventoryBar()
     {
-        this.cursorImgView.setX(((widthWindow - inventoryBarImg.getWidth())/2 - scaleMultiplicatorWidth));
-        this.cursorImgView.setY(((heightWindow - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
+        this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 - scaleMultiplicatorWidth));
+        this.cursorImgView.setY(((windowHeight - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
 
         this.player.positionOfCursorInventoryBar.addListener((obs, oldValue, newValue) -> {
-            this.cursorImgView.setX(((widthWindow - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
+            this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
             if (newValue.intValue() > 0 && newValue.intValue() < 8)
                 if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
                     this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
@@ -195,10 +194,10 @@ public class HUDView
             rotate.setAngle(newValue.intValue()/8 -90);
         }));
 
-        clockCursorView.setX(widthWindow/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
-        clockView.setX(widthWindow/2);
+        clockCursorView.setX(windowWidth /2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
+        clockView.setX(windowWidth /2);
 
-        rotate.setPivotX(widthWindow/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
+        rotate.setPivotX(windowWidth /2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
         rotate.setPivotY(clockCursorImg.getHeight());
         clockCursorView.getTransforms().add(rotate);
         display.getChildren().add(clockView);
