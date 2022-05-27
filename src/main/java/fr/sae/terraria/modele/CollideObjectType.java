@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.entities;
+package fr.sae.terraria.modele;
 
 
 import fr.sae.terraria.modele.entities.entity.Gravity;

@@ -1,6 +1,6 @@
 package fr.sae.terraria.modele.tools;
 
-import fr.sae.terraria.modele.entities.StowableObjectType;
+import fr.sae.terraria.modele.StowableObjectType;
 
 
 public class Tool implements StowableObjectType

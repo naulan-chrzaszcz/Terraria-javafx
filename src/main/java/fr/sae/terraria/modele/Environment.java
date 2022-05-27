@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.entities.CollideObjectType;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.vue.View;

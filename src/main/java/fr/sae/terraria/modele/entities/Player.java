@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities;
 
+import fr.sae.terraria.modele.CollideObjectType;
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;

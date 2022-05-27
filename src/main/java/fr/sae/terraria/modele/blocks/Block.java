@@ -1,6 +1,6 @@
 package fr.sae.terraria.modele.blocks;
 
-import fr.sae.terraria.modele.entities.StowableObjectType;
+import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 
 

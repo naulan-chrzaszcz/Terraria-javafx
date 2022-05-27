@@ -6,7 +6,7 @@ import fr.sae.terraria.modele.Timer;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.entities.StowableObjectType;
+import fr.sae.terraria.modele.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
