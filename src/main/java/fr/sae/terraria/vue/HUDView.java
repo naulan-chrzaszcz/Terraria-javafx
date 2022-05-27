@@ -186,22 +186,22 @@ public class HUDView
         });
     }
 
-    public void displayTimer() {
-        ImageView clockView = new ImageView(clockImg);
+    public void displayTimer()
+    {
         ImageView clockCursorView = new ImageView(clockCursorImg);
+        clockCursorView.setX(windowWidth/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
+
+        ImageView clockView = new ImageView(clockImg);
+        clockView.setX(windowWidth/2);
+
         Rotate rotate = new Rotate();
-        gameTime.minutesProperty().addListener(((observable, oldValue, newValue) -> {
-            rotate.setAngle(newValue.intValue()/8 -90);
-        }));
-
-        clockCursorView.setX(windowWidth /2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
-        clockView.setX(windowWidth /2);
-
-        rotate.setPivotX(windowWidth /2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
+        rotate.setPivotX(windowWidth/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
         rotate.setPivotY(clockCursorImg.getHeight());
+
+        gameTime.minutesProperty().addListener(((obs, oldV, newV) -> rotate.setAngle((newV.intValue()/8) - 90)));
         clockCursorView.getTransforms().add(rotate);
+
         display.getChildren().add(clockView);
         display.getChildren().add(clockCursorView);
-
     }
 }
