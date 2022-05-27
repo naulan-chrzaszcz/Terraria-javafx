@@ -12,6 +12,7 @@ public abstract class Block extends Entity implements StowableObjectType
     {
         super(x, y);
     }
+    public Block() { this(0, 0); }
 
     public abstract void updates();
 }

@@ -2,6 +2,7 @@ package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
@@ -71,12 +72,18 @@ public class Environment
             GenerateEntity.tallGrass(this);
             GenerateEntity.rabbit(this);
 
-            for (Entity entity : entities) {
-                if (entity instanceof CollideObjectType)
+            for (Entity entity : entities)
+            {
+                if (ticks%Rabbit.JUMP_FREQUENCY == 0)
+                    if (entity instanceof Rabbit && Math.random() < Rabbit.LUCK_OF_JUMPING)
+                        entity.jump();
+                if (entity instanceof CollideObjectType) {
+                    this.worldLimit(entity);
                     ((CollideObjectType) entity).collide();
-                this.worldLimit(entity);
+                }
                 entity.updates();
             }
+
             this.player.collide();
             this.player.updates();
 
@@ -92,9 +99,9 @@ public class Environment
     private void worldLimit(Entity entity)
     {
         if (entity.offset[0] == -1 && entity.getX() < 0)
-            entity.offset[0] = 0;
+            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
         if (entity.offset[0] == 1 && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
-            entity.offset[0] = 0;
+                entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
     }
 
     private void updateGameTimer(){

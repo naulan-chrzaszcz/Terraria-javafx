@@ -49,7 +49,7 @@ public abstract class Entity
     /** Permet de ne plus faire bouger l'entité */
     public void idle() { this.offset[0] = 0; this.offset[1] = 0; }
     /** Modifie l'offset qui permet de le faire sauter */
-    public void jump() { this.offset[1] = 1; }
+    public void jump() { offset[1] = 1; }
     /** Modifie l'offset qui permet de tomber */
     public void fall() { this.offset[1] = -1; }
 
@@ -57,6 +57,7 @@ public abstract class Entity
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
     public Animation getAnimation() { return this.animation; }
+    public Gravity getGravity() { return this.gravity; }
     public Rect getRect() { return this.rect; }
     public double getPvMax() { return this.pv.get(); }
     public double getPv() { return this.pv.get(); }

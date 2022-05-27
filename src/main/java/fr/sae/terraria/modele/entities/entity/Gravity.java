@@ -20,6 +20,8 @@ public class Gravity
     // Formule de type ax²+bx+c ( c = yInit )
     public double a = Gravity.VALUE/2;
 
+    public int amplitude = 10;
+
 
     public double formulaOfTrajectory()
     {
@@ -31,23 +33,30 @@ public class Gravity
         return yValue;
     }
 
-    private double calcFlightTime() {
+    private double calcFlightTime()
+    {
         // résolution de l'équation f'(x) = 0
         double res;
         if (degInit < 0)
-            res = ((vInit * 10) * Math.sin(-degInit)) / Gravity.VALUE;
-        else res = ((vInit * 10) * Math.sin(degInit)) / Gravity.VALUE;
+            res = ((vInit * amplitude) * Math.sin(-degInit)) / Gravity.VALUE;
+        else res = ((vInit * amplitude) * Math.sin(degInit)) / Gravity.VALUE;
 
         return res;
     }
 
-    public void setFall(double actualY){
+    private double b(){
+        return (Math.sin(degInit) * (vInit * amplitude));
+    }
+
+
+    public void setFall(double actualY)
+    {
         // change le timer afin que le joueur tombe
         double delt = (b()*b()) - (4*a*(yInit-actualY));
         timer = (-b() + Math.sqrt(delt))/(2*a);
     }
 
-    private double b(){
-        return (Math.sin(degInit) * (vInit * 10));
-    }
+
+    public void setXInit(double newXInit) { xInit = newXInit; }
+    public void setYInit(double newYInit) { yInit = newYInit; }
 }

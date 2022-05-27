@@ -19,6 +19,8 @@ public class TallGrass extends Block
         this.tallGrassGrowth = new SimpleDoubleProperty(0);
     }
 
+    public TallGrass() { this(0, 0); }
+
     public void updates()
     {
         if (tallGrassGrowth.get() < GROWTH_TALL_GRASS_STEP)

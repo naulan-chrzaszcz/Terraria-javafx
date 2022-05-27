@@ -150,11 +150,6 @@ public class TileMapsView
         tree.setRect(tileWidth, (2+nbFoliage+nbTrunk)*tileHeight);
     }
 
-    private void createRabbit(Rabbit rabbit)
-    {
-
-    }
-
     private void createTallGrass(TallGrass tallGrass)
     {
         ImageView tallGrassView = new ImageView(tallGrassImg);

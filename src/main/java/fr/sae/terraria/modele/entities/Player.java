@@ -81,94 +81,112 @@ public class Player extends Entity implements CollideObjectType
         int widthTile = environment.widthTile;
         int heightTile = environment.heightTile;
 
-        if (offset[0] != 0 || offset[1] != 0) {
-            boolean pTopLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+offset[0]*velocity)/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pTopRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pBotLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+velocity*offset[0])/widthTile, (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pBotRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile , (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
+        // Detection vide en dessous
+        int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
+        int posX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
+        if (tileMaps.getTile(posX, yBottom+1) == TileMaps.SKY)
+            air = true;
 
-            if (pTopLeft|| pTopRight  || pBotLeft  || pBotRight)
+        // Detection collision gauche droite
+        if (offset[0] != 0) {
+            int yTop = (int) (getY()+COLLISION_TOLERANCE)/heightTile;
+            int futurePositionX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)+(velocity*offset[0])) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
+
+            if (tileMaps.getTile(futurePositionX, yTop) != TileMaps.SKY ||
+                    tileMaps.getTile(futurePositionX, yBottom) != TileMaps.SKY )
                 offset[0] = 0;
         }
 
-        if (air) {
-            double futurePosition = gravity.formulaOfTrajectory();
+        // Detection collision en bas et en haut
+        if (offset[1] != 0) {
+            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
+            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
 
-            if (gravity.timer < gravity.flightTime){
-                boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
-                boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
+            // Tombe
+            if (offset[1] == -1) {
+                gravity.degInit = 0;
+                double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
 
-                if ( pTopLeft && pTopRight ) {
-                    setY(futurePosition);
-                    offset[1] = 1;
-                } else { gravity.setFall(getY()); offset[1] = 1; }
-            } else {
-                boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
-                boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
+                if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                        tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                    this.gravity.xInit = this.x.get();
+                    this.gravity.yInit = this.y.get();
+                    gravity.timer = 0;
+                    offset[1] = 0;
+                } else setY(futurePositionY);
+            // Saute
+            } else if (offset[1] == 1) {
+                double futurePositionY = gravity.formulaOfTrajectory();
 
-                if (pBotLeft && pBotRight) {
-                    setY(futurePosition);
-                    offset[1] = 1;
+                // Quand le joueur monte
+                if ((gravity.flightTime/2) >= gravity.timer) {
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY) {
+                        gravity.timer = 0;
+                        offset[1] = 0;
+                    } else setY(futurePositionY);
+                // Quand le joueur decent
+                } else {
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                        this.gravity.xInit = this.x.get();
+                        this.gravity.yInit = this.y.get();
+                        gravity.timer = 0;
+                        offset[1] = 0;
+                    } else setY(futurePositionY);
                 }
             }
-        }
-
-        if (tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) (getY()+rect.getHeight()+COLLISION_TOLERANCE) / heightTile) == 0 && tileMaps.getTile((int) ((getX() + rect.getWidth() - COLLISION_TOLERANCE) / widthTile), (int) (getY() + rect.getHeight() + COLLISION_TOLERANCE) / heightTile) == 0 && !air)
-            fall();
-        if (offset[1] == 0)
-            air = false;
-
-        if (offset[1] == -1) {
+            air = true;
+        } else if (air) {
             gravity.degInit = 0;
-            double futurY = gravity.formulaOfTrajectory();
-            boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
-            boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
+            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
+            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
+            double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
 
-            if (pBotLeft && pBotRight) {
-                setY(futurY);
-                offset[1] = -1;
-            }  else offset[1] = 0;
-            // TODO : PROX OFFSET 0 RESET YINIT
+            if (tileMaps.getTile(xLeft, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                    tileMaps.getTile(xRight, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                this.gravity.xInit = this.x.get();
+                this.gravity.yInit = this.y.get();
+                offset[1] = 0;
+                air = false;
+            } else setY(futurePositionY - rect.getHeight());
         }
-    }
-
-    public void jump()
-    {
-        if (!this.air)
-            super.jump();
-        this.air = true;
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
     public void eventInput()
     {
         this.keysInput.forEach((key, value) -> {
-            if ((key == KeyCode.Z || key == KeyCode.SPACE) && Boolean.TRUE.equals(value))
-                this.jump();
+            if (Boolean.TRUE.equals(value)) {
+                if ((key == KeyCode.Z || key == KeyCode.SPACE))
+                    this.jump();
 
-            if (key == KeyCode.D && Boolean.TRUE.equals(value))
-                this.moveRight();
-            if (key == KeyCode.Q && Boolean.TRUE.equals(value))
-                this.moveLeft();
+                if (key == KeyCode.D)
+                    this.moveRight();
+                else if (key == KeyCode.Q)
+                    this.moveLeft();
 
-            if (key == KeyCode.DIGIT1 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(0);
-            else if (key == KeyCode.DIGIT2 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(1);
-            else if (key == KeyCode.DIGIT3 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(2);
-            else if (key == KeyCode.DIGIT4 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(3);
-            else if (key == KeyCode.DIGIT5 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(4);
-            else if (key == KeyCode.DIGIT6 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(5);
-            else if (key == KeyCode.DIGIT7 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(6);
-            else if (key == KeyCode.DIGIT8 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(7);
-            else if (key == KeyCode.DIGIT9 && Boolean.TRUE.equals(value))
-                this.positionOfCursorInventoryBar.set(8);
+                if (key == KeyCode.DIGIT1)
+                    this.positionOfCursorInventoryBar.set(0);
+                else if (key == KeyCode.DIGIT2)
+                    this.positionOfCursorInventoryBar.set(1);
+                else if (key == KeyCode.DIGIT3)
+                    this.positionOfCursorInventoryBar.set(2);
+                else if (key == KeyCode.DIGIT4)
+                    this.positionOfCursorInventoryBar.set(3);
+                else if (key == KeyCode.DIGIT5)
+                    this.positionOfCursorInventoryBar.set(4);
+                else if (key == KeyCode.DIGIT6)
+                    this.positionOfCursorInventoryBar.set(5);
+                else if (key == KeyCode.DIGIT7)
+                    this.positionOfCursorInventoryBar.set(6);
+                else if (key == KeyCode.DIGIT8)
+                    this.positionOfCursorInventoryBar.set(7);
+                else if (key == KeyCode.DIGIT9)
+                    this.positionOfCursorInventoryBar.set(8);
+            }
         });
     }
 

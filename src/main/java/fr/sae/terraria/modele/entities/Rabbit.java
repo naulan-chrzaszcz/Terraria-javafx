@@ -9,6 +9,9 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 
 public class Rabbit extends Entity implements CollideObjectType
 {
+    public static final double LUCK_OF_JUMPING = .5;
+    public static final int JUMP_FREQUENCY = 50;
+
     private Environment environment;
     private Animation animation;
 
@@ -21,12 +24,13 @@ public class Rabbit extends Entity implements CollideObjectType
         this.animation = new Animation();
         this.velocity = 1;
         this.offset[0] = 1;
+        this.gravity.amplitude = 40;
     }
+
+    public Rabbit(Environment environment) { this(environment, 0, 0); }
 
     public void updates()
     {
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
-
         if (this.offset[1] == 0 && !air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
@@ -36,6 +40,10 @@ public class Rabbit extends Entity implements CollideObjectType
             this.gravity.timer = .0;
         }
 
+        this.setX(this.x.get() + this.offset[0] * this.velocity);
+
+        if (this.rect != null)
+            this.rect.update(x.get(), y.get());
         this.animation.loop();
     }
 
@@ -45,56 +53,80 @@ public class Rabbit extends Entity implements CollideObjectType
         int widthTile = environment.widthTile;
         int heightTile = environment.heightTile;
 
-        if (offset[0] != 0 || offset[1] != 0) {
-            boolean pTopLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+offset[0]*velocity)/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pTopRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pBotLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+velocity*offset[0])/widthTile, (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
-            boolean pBotRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile , (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
+        // Detection vide en dessous
+        int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
+        int posX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
+        if (tileMaps.getTile(posX, yBottom+1) == TileMaps.SKY)
+            air = true;
 
-            if (pTopLeft || pBotLeft)
-                offset[0] = 1;
-            if (pTopRight || pBotRight)
-                offset[0] = -1;
+        // Detection collision gauche droite
+        if (offset[0] != 0) {
+            int yTop = (int) (getY()+COLLISION_TOLERANCE)/heightTile;
+            int futurePositionX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)+(velocity*offset[0])) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
+
+            if (tileMaps.getTile(futurePositionX, yTop) != TileMaps.SKY ||
+                    tileMaps.getTile(futurePositionX, yBottom) != TileMaps.SKY )
+                offset[0] = (-1) * offset[0];
         }
 
-        if (air) {
-            double futurePosition = gravity.formulaOfTrajectory();
+        // Detection collision en bas et en haut
+        if (offset[1] != 0) {
+            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
+            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
 
-            if (gravity.timer < gravity.flightTime){
-                boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
-                boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
+            // Tombe
+            if (offset[1] == -1) {
+                gravity.degInit = 0;
+                double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
 
-                if ( pTopLeft && pTopRight ) {
-                    setY(futurePosition);
-                    offset[1] = 1;
-                } else { gravity.setFall(getY()); offset[1] = 1; }
-            } else {
-                boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
-                boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
+                if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                        tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                    this.gravity.xInit = this.x.get();
+                    this.gravity.yInit = this.y.get();
+                    gravity.timer = 0;
+                    offset[1] = 0;
+                } else setY(futurePositionY);
+                // Saute
+            } else if (offset[1] == 1) {
+                double futurePositionY = gravity.formulaOfTrajectory();
 
-                if (pBotLeft && pBotRight) {
-                    setY(futurePosition);
-                    offset[1] = 1;
+                // Quand le joueur monte
+                if ((gravity.flightTime/2) >= gravity.timer) {
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY) {
+                        this.gravity.xInit = this.x.get();
+                        this.gravity.yInit = this.y.get();
+                        gravity.timer = 0;
+                        offset[1] = 0;
+                    } else setY(futurePositionY);
+                    // Quand le joueur decent
+                } else {
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                        this.gravity.xInit = this.x.get();
+                        this.gravity.yInit = this.y.get();
+                        gravity.timer = 0;
+                        offset[1] = 0;
+                    } else setY(futurePositionY);
                 }
             }
-        }
 
-        if (tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) (getY()+rect.getHeight()+COLLISION_TOLERANCE) / heightTile) == 0 && tileMaps.getTile((int) ((getX() + rect.getWidth() - COLLISION_TOLERANCE) / widthTile), (int) (getY() + rect.getHeight() + COLLISION_TOLERANCE) / heightTile) == 0 && !air)
-            fall();
-        if (offset[1] == 0)
-            air = false;
-
-        if (offset[1] == -1) {
+            air = true;
+        } else if (air) {
             gravity.degInit = 0;
-            double futurY = gravity.formulaOfTrajectory();
-            boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
-            boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
+            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
+            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
+            double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
 
-            if (pBotLeft && pBotRight) {
-                setY(futurY);
-                offset[1] = -1;
-            }  else offset[1] = 0;
-            // TODO : PROX OFFSET 0 RESET YINIT
+            if (tileMaps.getTile(xLeft, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                    tileMaps.getTile(xRight, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                this.gravity.xInit = this.x.get();
+                this.gravity.yInit = this.y.get();
+                offset[1] = 0;
+                air = false;
+            } else setY(futurePositionY - rect.getHeight());
         }
     }
 
