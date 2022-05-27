@@ -17,12 +17,26 @@ public class Rabbit extends Entity implements CollideObjectType
     {
         super(x, y);
         this.environment = environment;
+
+        this.animation = new Animation();
+        this.velocity = 1;
+        this.offset[0] = 1;
     }
 
     public void updates()
     {
         this.setX(this.x.get() + this.offset[0] * this.velocity);
-        this.setY(this.y.get() + this.offset[1] * this.velocity);
+
+        if (this.offset[1] == 0 && !air) {
+            this.gravity.xInit = this.x.get();
+            this.gravity.yInit = this.y.get();
+            this.gravity.vInit = this.velocity;
+            this.gravity.degInit =  -90;
+
+            this.gravity.timer = .0;
+        }
+
+        this.animation.loop();
     }
 
     public void collide()
@@ -37,21 +51,23 @@ public class Rabbit extends Entity implements CollideObjectType
             boolean pBotLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+velocity*offset[0])/widthTile, (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
             boolean pBotRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile , (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
 
-            if (pTopLeft|| pTopRight  || pBotLeft  || pBotRight)
-                offset[0] = 0;
+            if (pTopLeft || pBotLeft)
+                offset[0] = 1;
+            if (pTopRight || pBotRight)
+                offset[0] = -1;
         }
 
         if (air) {
-            double futurePosition = GRAVITY.formulaOfTrajectory();
+            double futurePosition = gravity.formulaOfTrajectory();
 
-            if (GRAVITY.timer < GRAVITY.flightTime){
+            if (gravity.timer < gravity.flightTime){
                 boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
                 boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
 
                 if ( pTopLeft && pTopRight ) {
                     setY(futurePosition);
                     offset[1] = 1;
-                } else { GRAVITY.setFall(getY()); offset[1] = 1; }
+                } else { gravity.setFall(getY()); offset[1] = 1; }
             } else {
                 boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
                 boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
@@ -69,8 +85,8 @@ public class Rabbit extends Entity implements CollideObjectType
             air = false;
 
         if (offset[1] == -1) {
-            GRAVITY.degInit = 0;
-            double futurY = GRAVITY.formulaOfTrajectory();
+            gravity.degInit = 0;
+            double futurY = gravity.formulaOfTrajectory();
             boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
             boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
 
@@ -81,6 +97,9 @@ public class Rabbit extends Entity implements CollideObjectType
             // TODO : PROX OFFSET 0 RESET YINIT
         }
     }
+
+
+    public Animation getAnimation() { return animation; }
 }
 
 

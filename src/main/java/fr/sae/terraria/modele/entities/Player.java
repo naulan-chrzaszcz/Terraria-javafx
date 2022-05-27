@@ -60,12 +60,12 @@ public class Player extends Entity implements CollideObjectType
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.offset[1] == 0 && !air) {
-            this.GRAVITY.xInit = this.x.get();
-            this.GRAVITY.yInit = this.y.get();
-            this.GRAVITY.vInit = this.velocity;
-            this.GRAVITY.degInit =  -90;
+            this.gravity.xInit = this.x.get();
+            this.gravity.yInit = this.y.get();
+            this.gravity.vInit = this.velocity;
+            this.gravity.degInit =  -90;
 
-            this.GRAVITY.timer = .0;
+            this.gravity.timer = .0;
         }
 
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
@@ -92,16 +92,16 @@ public class Player extends Entity implements CollideObjectType
         }
 
         if (air) {
-            double futurePosition = GRAVITY.formulaOfTrajectory();
+            double futurePosition = gravity.formulaOfTrajectory();
 
-            if (GRAVITY.timer < GRAVITY.flightTime){
+            if (gravity.timer < gravity.flightTime){
                 boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
                 boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
 
                 if ( pTopLeft && pTopRight ) {
                     setY(futurePosition);
                     offset[1] = 1;
-                } else { GRAVITY.setFall(getY()); offset[1] = 1; }
+                } else { gravity.setFall(getY()); offset[1] = 1; }
             } else {
                 boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
                 boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
@@ -119,8 +119,8 @@ public class Player extends Entity implements CollideObjectType
             air = false;
 
         if (offset[1] == -1) {
-            GRAVITY.degInit = 0;
-            double futurY = GRAVITY.formulaOfTrajectory();
+            gravity.degInit = 0;
+            double futurY = gravity.formulaOfTrajectory();
             boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
             boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
 

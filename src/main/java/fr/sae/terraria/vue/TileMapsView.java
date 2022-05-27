@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.blocks.TallGrass;
 import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
@@ -53,15 +54,18 @@ public class TileMapsView
 
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
             while (c.next()) if (c.wasAdded()) {
-                    if (c.getList().get(0) instanceof Tree)
-                        createTree((Tree) c.getList().get(0));
-                    if (c.getList().get(0) instanceof TallGrass)
-                        createTallGrass((TallGrass) c.getList().get(0));
-                    if (c.getList().get(0) instanceof Dirt)
-                        display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
-                    if (c.getList().get(0) instanceof Stone)
-                        display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
-                }
+                if (c.getList().get(0) instanceof Tree)
+                    createTree((Tree) c.getList().get(0));
+                if (c.getList().get(0) instanceof TallGrass)
+                    createTallGrass((TallGrass) c.getList().get(0));
+                if (c.getList().get(0) instanceof Rabbit) {
+                    RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+                    rabbitView.displayRabbit(display);
+                } if (c.getList().get(0) instanceof Dirt)
+                    display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
+                if (c.getList().get(0) instanceof Stone)
+                    display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
+            }
         });
     }
 
@@ -144,6 +148,11 @@ public class TileMapsView
         }
 
         tree.setRect(tileWidth, (2+nbFoliage+nbTrunk)*tileHeight);
+    }
+
+    private void createRabbit(Rabbit rabbit)
+    {
+
     }
 
     private void createTallGrass(TallGrass tallGrass)

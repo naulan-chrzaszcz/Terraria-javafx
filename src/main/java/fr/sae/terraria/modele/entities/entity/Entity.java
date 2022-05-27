@@ -11,6 +11,7 @@ public abstract class Entity
     protected DoubleProperty x;
     protected DoubleProperty y;
 
+    protected final Gravity gravity = new Gravity();
     protected Animation animation = null;
     protected Rect rect = null;
 

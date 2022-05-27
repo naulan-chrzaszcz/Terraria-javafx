@@ -65,14 +65,16 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             this.player.idle();
             this.player.eventInput();
-            this.worldLimit();
+            this.worldLimit(this.player);
 
             GenerateEntity.tree(this);
             GenerateEntity.tallGrass(this);
+            GenerateEntity.rabbit(this);
 
             for (Entity entity : entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
+                this.worldLimit(entity);
                 entity.updates();
             }
             this.player.collide();
@@ -87,12 +89,12 @@ public class Environment
     }
 
     /** Evite que le joueur sort de la carte. */
-    private void worldLimit()
+    private void worldLimit(Entity entity)
     {
-        if (player.offset[0] == -1 && player.getX() < 0)
-            player.offset[0] = 0;
-        if (player.offset[0] == 1 && player.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - player.getRect().getWidth())
-            player.offset[0] = 0;
+        if (entity.offset[0] == -1 && entity.getX() < 0)
+            entity.offset[0] = 0;
+        if (entity.offset[0] == 1 && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
+            entity.offset[0] = 0;
     }
 
     private void updateGameTimer(){
