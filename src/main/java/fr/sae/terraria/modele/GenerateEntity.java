@@ -92,6 +92,11 @@ public class GenerateEntity
                 }
     }
 
+    public static void rabbit()
+    {
+
+    }
+
     /** Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste */
     private static List<Integer> findFloors(TileMaps maps, int y)
     {

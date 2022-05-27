@@ -2,6 +2,7 @@ package fr.sae.terraria.modele;
 
 import javafx.beans.property.SimpleIntegerProperty;
 
+
 public class Timer
 {
     private final SimpleIntegerProperty minutes;
