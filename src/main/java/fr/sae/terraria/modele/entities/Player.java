@@ -6,12 +6,10 @@ import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.Animation;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.vue.View;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 import java.util.EnumMap;
@@ -34,8 +32,6 @@ public class Player extends Entity implements CollideObjectType
     private StowableObjectType itemSelected;
 
     private Environment environment;
-
-    public boolean air;
 
 
     /**
@@ -62,12 +58,12 @@ public class Player extends Entity implements CollideObjectType
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.offset[1] == 0 && !air) {
-            this.gravity.xInit = this.x.get();
-            this.gravity.yInit = this.y.get();
-            this.gravity.vInit = this.velocity;
-            this.gravity.degInit =  -90;
+            this.GRAVITY.xInit = this.x.get();
+            this.GRAVITY.yInit = this.y.get();
+            this.GRAVITY.vInit = this.velocity;
+            this.GRAVITY.degInit =  -90;
 
-            this.gravity.timer = .0;
+            this.GRAVITY.timer = .0;
         }
 
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
@@ -94,16 +90,16 @@ public class Player extends Entity implements CollideObjectType
         }
 
         if (air) {
-            double futurePosition = gravity.formulaOfTrajectory();
+            double futurePosition = GRAVITY.formulaOfTrajectory();
 
-            if (gravity.timer < gravity.flightTime){
+            if (GRAVITY.timer < GRAVITY.flightTime){
                 boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
                 boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
 
                 if ( pTopLeft && pTopRight ) {
                     setY(futurePosition);
                     offset[1] = 1;
-                } else { gravity.setFall(getY()); offset[1] = 1; }
+                } else { GRAVITY.setFall(getY()); offset[1] = 1; }
             } else {
                 boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
                 boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
@@ -121,8 +117,8 @@ public class Player extends Entity implements CollideObjectType
             air = false;
 
         if (offset[1] == -1) {
-            gravity.degInit = 0;
-            double futurY = gravity.formulaOfTrajectory();
+            GRAVITY.degInit = 0;
+            double futurY = GRAVITY.formulaOfTrajectory();
             boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
             boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
 

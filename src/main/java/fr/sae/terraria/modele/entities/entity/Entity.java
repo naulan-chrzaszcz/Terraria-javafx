@@ -7,18 +7,18 @@ import javafx.beans.property.SimpleDoubleProperty;
 public abstract class Entity
 {
     // Property variables
+    protected DoubleProperty pv;
     protected DoubleProperty x;
     protected DoubleProperty y;
 
     protected Animation animation = null;
     protected Rect rect = null;
-    protected Gravity gravity;
 
     protected double velocity = 1;
     // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
     protected double pvMax;
-    protected DoubleProperty pv;    // 0 >= pv && 5 >= pv
     // Permet de savoir dans quelle direction se dirige le joueur.
+    public boolean air = false;
     public int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
 
 
@@ -28,8 +28,6 @@ public abstract class Entity
      */
     protected Entity(int x, int y)
     {
-        this.gravity = new Gravity();
-
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         this.pv = new SimpleDoubleProperty(0);
@@ -64,7 +62,6 @@ public abstract class Entity
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
     public double getVelocity() { return this.velocity; }
-    public Gravity getGravity() { return gravity; }
 
     public void setPv(double pv) { this.pv.setValue(pv); this.pvMax = pv;}
     public void setX(double x) { this.x.setValue(x); }
