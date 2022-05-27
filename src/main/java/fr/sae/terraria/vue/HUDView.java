@@ -23,18 +23,17 @@ import javafx.scene.transform.Rotate;
 
 public class HUDView
 {
-    private ImageView inventoryBarImgView;
-    private ImageView cursorImgView;
+    private final ImageView inventoryBarImgView;
+    private final ImageView cursorImgView;
 
-    private Image cursorImg;
-    private Image inventoryBarImg;
-    private Image healthBarImg;
-    private Image clockImg;
-    private Image clockCursorImg;
+    private final Image inventoryBarImg;
+    private final Image healthBarImg;
+    private final Image clockImg;
+    private final Image clockCursorImg;
 
-    private Timer gameTime;
-    private Player player;
-    private Pane display;
+    private final Timer gameTime;
+    private final Player player;
+    private final Pane display;
 
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
@@ -59,7 +58,7 @@ public class HUDView
 
         this.healthBarImg = View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.inventoryBarImg = View.loadAnImage("inventoryBar.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        this.cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        Image cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.clockImg = View.loadAnImage("clock.png",scaleMultiplicatorWidth,scaleMultiplicatorHeight);
         this.clockCursorImg = View.loadAnImage("clock-cursor.png",scaleMultiplicatorWidth,scaleMultiplicatorHeight);
 
@@ -186,6 +185,7 @@ public class HUDView
         });
     }
 
+    /** Affiche une horloge à aiguille visuelle à l'écran. */
     public void displayTimer()
     {
         ImageView clockCursorView = new ImageView(clockCursorImg);

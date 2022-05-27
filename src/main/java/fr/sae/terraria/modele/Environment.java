@@ -98,7 +98,7 @@ public class Environment
     private void updateGameTimer(){
         /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
         if (ticks % 37 == 0){
-            gameTime.update();
+            gameTime.updates();
         }
     }
 
