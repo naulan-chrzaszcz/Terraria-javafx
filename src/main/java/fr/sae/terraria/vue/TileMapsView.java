@@ -52,16 +52,16 @@ public class TileMapsView
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
-            while (c.next()) {
-                if (c.getList().get(0) instanceof Tree)
-                    createTree((Tree) c.getList().get(0));
-                if (c.getList().get(0) instanceof TallGrass)
-                    createTallGrass((TallGrass) c.getList().get(0));
-                if (c.getList().get(0) instanceof Dirt)
-                    display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
-                if (c.getList().get(0) instanceof Stone)
-                    display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
-            }
+            while (c.next()) if (c.wasAdded()) {
+                    if (c.getList().get(0) instanceof Tree)
+                        createTree((Tree) c.getList().get(0));
+                    if (c.getList().get(0) instanceof TallGrass)
+                        createTallGrass((TallGrass) c.getList().get(0));
+                    if (c.getList().get(0) instanceof Dirt)
+                        display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
+                    if (c.getList().get(0) instanceof Stone)
+                        display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
+                }
         });
     }
 

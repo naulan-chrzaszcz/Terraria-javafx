@@ -30,9 +30,7 @@ public class View
                 Pane displayTiledMap,
                 Pane displayHUD,
                 double scaleMultiplicatorWidth,
-                double scaleMultiplicatorHeight,
-                Label minuts,
-                Label hours)
+                double scaleMultiplicatorHeight)
     {
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
@@ -40,7 +38,7 @@ public class View
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
 
-        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, environment.getGameTime(),minuts,hours);
+        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, environment.getGameTime());
         hudView.displayInventoryBar();
         hudView.displayCursorInventoryBar();
         hudView.displayHealthBar();

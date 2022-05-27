@@ -67,7 +67,7 @@ public class Controller implements Initializable
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, displayMinuts, displayHours);
+        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
     /**

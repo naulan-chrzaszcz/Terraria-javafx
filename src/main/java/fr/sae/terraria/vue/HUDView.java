@@ -1,12 +1,7 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.StowableObjectType;
-import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.Timer;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.entities.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -19,6 +14,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 
+import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.blocks.Dirt;
+import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.TileMaps;
+import javafx.scene.transform.Rotate;
+
 
 public class HUDView
 {
@@ -28,11 +30,9 @@ public class HUDView
     private Image cursorImg;
     private Image inventoryBarImg;
     private Image healthBarImg;
+    private Image clockImg;
+    private Image clockCursorImg;
 
-    private Label minutes;
-    private Label hours;
-
-    private Timer gameTime;
     private Player player;
     private Pane display;
 
@@ -42,17 +42,16 @@ public class HUDView
     private double heightWindow;
     private int tileWidth;
     private int tileHeight;
+    private Timer gameTime;
 
 
-    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime, Label minutes, Label hours)
+    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime)
     {
         this.player = player;
         this.display = display;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.gameTime = gameTime;
-        this.minutes = minutes;
-        this.hours = hours;
 
         this.widthWindow = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
         this.heightWindow = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
@@ -62,6 +61,8 @@ public class HUDView
         this.healthBarImg = View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.inventoryBarImg = View.loadAnImage("inventoryBar.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.clockImg = View.loadAnImage("clock.png",scaleMultiplicatorWidth,scaleMultiplicatorHeight);
+        this.clockCursorImg = View.loadAnImage("clock-cursor.png",scaleMultiplicatorWidth,scaleMultiplicatorHeight);
 
         this.inventoryBarImgView = new ImageView(inventoryBarImg);
         this.cursorImgView = new ImageView(cursorImg);
@@ -187,7 +188,21 @@ public class HUDView
     }
 
     public void displayTimer() {
-        minutes.textProperty().bind(gameTime.minutesProperty().asString());
-        hours.textProperty().bind(gameTime.hoursProperty().asString());
+        ImageView clockView = new ImageView(clockImg);
+        ImageView clockCursorView = new ImageView(clockCursorImg);
+        Rotate rotate = new Rotate();
+        gameTime.minutesProperty().addListener(((observable, oldValue, newValue) -> {
+            rotate.setAngle(newValue.intValue()/8 -90);
+        }));
+
+        clockCursorView.setX(widthWindow/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
+        clockView.setX(widthWindow/2);
+
+        rotate.setPivotX(widthWindow/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
+        rotate.setPivotY(clockCursorImg.getHeight());
+        clockCursorView.getTransforms().add(rotate);
+        display.getChildren().add(clockView);
+        display.getChildren().add(clockCursorView);
+
     }
 }

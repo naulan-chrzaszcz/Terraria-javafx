@@ -38,17 +38,7 @@
          <children>
             <Pane id="sky"
                   fx:id="displayTiledMap" />
-            <Pane fx:id="displayHUD">
-               <children>
-                  <HBox prefHeight="32.0" prefWidth="115.0">
-                     <children>
-                        <Label fx:id="displayHours" />
-                        <Label text=" : " />
-                        <Label fx:id="displayMinuts" />
-                     </children>
-                  </HBox>
-               </children>
-            </Pane>
+            <Pane fx:id="displayHUD"/>
          </children>
       </StackPane>
    </center>
