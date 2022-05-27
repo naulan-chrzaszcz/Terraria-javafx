@@ -1,6 +1,7 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.Timer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -39,14 +40,20 @@ public class HUDView
     private double heightWindow;
     private int tileWidth;
     private int tileHeight;
+    private Timer gameTime;
+    private Label minuts;
+    private Label hours;
 
 
-    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime,Label minuts, Label hours)
     {
         this.player = player;
         this.display = display;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
+        this.gameTime = gameTime;
+        this.minuts = minuts;
+        this.hours = hours;
 
         this.widthWindow = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
         this.heightWindow = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
@@ -178,5 +185,10 @@ public class HUDView
                 healthView.setViewport(viewPort);
             }
         });
+    }
+
+    public void displayTimer() {
+        minuts.textProperty().bind(gameTime.minutsProperty().asString());
+        hours.textProperty().bind(gameTime.hoursProperty().asString());
     }
 }

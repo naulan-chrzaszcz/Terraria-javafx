@@ -1,5 +1,6 @@
 package fr.sae.terraria.vue;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -30,7 +31,9 @@ public class View
                 Pane displayTiledMap,
                 Pane displayHUD,
                 double scaleMultiplicatorWidth,
-                double scaleMultiplicatorHeight)
+                double scaleMultiplicatorHeight,
+                Label minuts,
+                Label hours)
     {
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
@@ -38,10 +41,11 @@ public class View
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
 
-        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, environment.getGameTime(),minuts,hours);
         hudView.displayInventoryBar();
         hudView.displayCursorInventoryBar();
         hudView.displayHealthBar();
+        hudView.displayTimer();
 
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }

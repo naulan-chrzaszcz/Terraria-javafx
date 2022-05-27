@@ -2,6 +2,7 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.modele.blocks.Stone;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -38,6 +39,10 @@ public class Controller implements Initializable
     private Pane displayHUD;
     @FXML
     private Pane displayTiledMap;
+    @FXML
+    private Label displayMinuts;
+    @FXML
+    private Label displayHours;
 
     // Local Object variable
     private Environment environment;
@@ -63,7 +68,7 @@ public class Controller implements Initializable
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, displayMinuts, displayHours);
 
         int tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         int tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);

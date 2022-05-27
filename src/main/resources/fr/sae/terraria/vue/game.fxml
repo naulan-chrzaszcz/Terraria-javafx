@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -37,7 +38,17 @@
          <children>
             <Pane id="sky"
                   fx:id="displayTiledMap" />
-            <Pane fx:id="displayHUD"/>
+            <Pane fx:id="displayHUD">
+               <children>
+                  <HBox prefHeight="32.0" prefWidth="115.0">
+                     <children>
+                        <Label fx:id="displayHours" />
+                        <Label text=" : " />
+                        <Label fx:id="displayMinuts" />
+                     </children>
+                  </HBox>
+               </children>
+            </Pane>
          </children>
       </StackPane>
    </center>

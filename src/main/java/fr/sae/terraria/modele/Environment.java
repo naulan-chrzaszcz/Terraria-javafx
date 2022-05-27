@@ -17,13 +17,14 @@ import fr.sae.terraria.vue.View;
 public class Environment
 {
     private static final int COLLISION_TOLERANCE = 3;
-
+    private Timer gameTime;
     private final ObservableList<Entity> entities;
 
     private final TileMaps tileMaps;
     private final Player player;
 
     private double scaleMultiplicatorWidth;
+
 
     public int widthTile;
     public int heightTile;
@@ -34,6 +35,7 @@ public class Environment
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        this.gameTime = new Timer();
         this.tileMaps = new TileMaps();
         this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
@@ -71,6 +73,7 @@ public class Environment
 
             GenerateEntity.tree(this);
             GenerateEntity.tallGrass(this);
+            updateGameTimer();
 
             this.getPlayer().updates();
             for (Entity entity : entities)
@@ -144,10 +147,17 @@ public class Environment
         if (player.offset[0] == 1 && player.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - widthPlayer)
             player.offset[0] = 0;
     }
+    private void updateGameTimer(){
+        /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
+        if (ticks % 5/*353*/ == 0){
+            gameTime.update();
+        }
+    }
 
 
     public ObservableList<Entity> getEntities() { return this.entities; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
     public int getTicks() { return this.ticks; }
+    public Timer getGameTime() {return this.gameTime;}
 }
