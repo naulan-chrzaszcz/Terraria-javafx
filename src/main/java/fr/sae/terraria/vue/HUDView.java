@@ -1,6 +1,6 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.entities.StowableObjectType;
 import fr.sae.terraria.modele.Timer;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

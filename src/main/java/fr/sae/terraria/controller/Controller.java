@@ -2,7 +2,7 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.entities.StowableObjectType;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;

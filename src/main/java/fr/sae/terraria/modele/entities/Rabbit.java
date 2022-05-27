@@ -4,7 +4,7 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleDoubleProperty;
 
 
-public class Rabbit extends Entity
+public class Rabbit extends Entity implements CollideObjectType
 {
     private int frame;
 
@@ -28,6 +28,10 @@ public class Rabbit extends Entity
 
     }
 
+    public void collide()
+    {
+
+    }
 }
 
 

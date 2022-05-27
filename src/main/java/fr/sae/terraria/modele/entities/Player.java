@@ -1,14 +1,17 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.StowableObjectType;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.Animation;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.vue.View;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 import java.util.EnumMap;
@@ -16,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Player extends Entity
+public class Player extends Entity implements CollideObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
     public static final int BLOCK_STACKING_MAX = 16;
@@ -26,9 +29,11 @@ public class Player extends Entity
     private final Map<Integer, ObservableList<StowableObjectType>> inventory;
     private final EnumMap<KeyCode, Boolean> keysInput;
 
+    public IntegerProperty positionOfCursorInventoryBar;
+
     private StowableObjectType itemSelected;
 
-    public IntegerProperty positionOfCursorInventoryBar;
+    private Environment environment;
 
     public boolean air;
 
@@ -37,9 +42,10 @@ public class Player extends Entity
      * @param x La position du joueur en X
      * @param y La position du joueur en Y
      */
-    public Player(int x, int y)
+    public Player(Environment environment, int x, int y)
     {
         super(x, y);
+        this.environment = environment;
 
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
@@ -69,6 +75,63 @@ public class Player extends Entity
         if (this.rect != null)
             this.rect.update(x.get(), y.get());
         animation.loop();
+    }
+
+    public void collide()
+    {
+        TileMaps tileMaps = environment.getTileMaps();
+        int widthTile = environment.widthTile;
+        int heightTile = environment.heightTile;
+
+        if (offset[0] != 0 || offset[1] != 0) {
+            boolean pTopLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+offset[0]*velocity)/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pTopRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile, (int) (getY()+COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pBotLeft  = tileMaps.getTile((int) (getX()+COLLISION_TOLERANCE+velocity*offset[0])/widthTile, (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
+            boolean pBotRight = tileMaps.getTile((int) (getX()-COLLISION_TOLERANCE+rect.getWidth()+velocity*offset[0])/widthTile , (int) (getY()+rect.getHeight()-COLLISION_TOLERANCE)/heightTile) != 0;
+
+            if (pTopLeft|| pTopRight  || pBotLeft  || pBotRight)
+                offset[0] = 0;
+        }
+
+        if (air) {
+            double futurePosition = gravity.formulaOfTrajectory();
+
+            if (gravity.timer < gravity.flightTime){
+                boolean pTopLeft  = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int)(futurePosition/heightTile)) == 0;
+                boolean pTopRight = tileMaps.getTile((int) (((getX()-COLLISION_TOLERANCE)+widthTile)/widthTile), (int)(futurePosition/heightTile)) == 0;
+
+                if ( pTopLeft && pTopRight ) {
+                    setY(futurePosition);
+                    offset[1] = 1;
+                } else { gravity.setFall(getY()); offset[1] = 1; }
+            } else {
+                boolean pBotLeft = tileMaps.getTile((int) ((getX()+COLLISION_TOLERANCE)/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
+                boolean pBotRight = tileMaps.getTile((int) ((getX()-COLLISION_TOLERANCE+rect.getWidth())/widthTile), (int) ((futurePosition+rect.getHeight()+COLLISION_TOLERANCE)/heightTile)) == 0;
+
+                if (pBotLeft && pBotRight) {
+                    setY(futurePosition);
+                    offset[1] = 1;
+                }
+            }
+        }
+
+        if (tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) (getY()+rect.getHeight()+COLLISION_TOLERANCE) / heightTile) == 0 && tileMaps.getTile((int) ((getX() + rect.getWidth() - COLLISION_TOLERANCE) / widthTile), (int) (getY() + rect.getHeight() + COLLISION_TOLERANCE) / heightTile) == 0 && !air)
+            fall();
+        if (offset[1] == 0)
+            air = false;
+
+        if (offset[1] == -1) {
+            gravity.degInit = 0;
+            double futurY = gravity.formulaOfTrajectory();
+            boolean pBotLeft = tileMaps.getTile((int) ((getX() + COLLISION_TOLERANCE) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
+            boolean pBotRight = tileMaps.getTile((int) ((getX() - COLLISION_TOLERANCE + rect.getWidth()) / widthTile), (int) ((futurY + rect.getHeight() + COLLISION_TOLERANCE) / heightTile)) == 0;
+
+            if (pBotLeft && pBotRight) {
+                setY(futurY);
+                offset[1] = -1;
+            }  else offset[1] = 0;
+            // TODO : PROX OFFSET 0 RESET YINIT
+        }
     }
 
     public void jump()

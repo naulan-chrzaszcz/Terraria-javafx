@@ -4,7 +4,7 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleDoubleProperty;
 
 
-public class Slime extends Entity
+public class Slime extends Entity implements CollideObjectType
 {
     private int frame;
 
@@ -29,4 +29,8 @@ public class Slime extends Entity
 
     }
 
+    public void collide()
+    {
+
+    }
 }
