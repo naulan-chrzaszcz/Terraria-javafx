@@ -65,6 +65,8 @@ public class HUDView
         this.inventoryBarImgView = new ImageView(inventoryBarImg);
         this.cursorImgView = new ImageView(cursorImg);
 
+        new ItemSelectedView(display, player, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+
         this.refreshItemsInventoryBar();
     }
 
@@ -93,8 +95,8 @@ public class HUDView
     /** Affiche ou supprime les items qui rentrent ou sort de la barre d'inventaire  */
     private void displayItemIntoInventoryBar()
     {
-        int itemInventoryWidth = (tileWidth/2);
-        int itemInventoryHeight = (tileHeight/2);
+        int itemInventoryWidth = (int) (tileWidth/1.5);
+        int itemInventoryHeight = (int) (tileHeight/1.5);
 
         int nbElementDisplayed = 9;
         if (this.player.nbStacksIntoInventory() <= Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)
