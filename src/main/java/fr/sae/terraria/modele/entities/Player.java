@@ -116,6 +116,7 @@ public class Player extends Entity implements CollideObjectType
             // Saute
             } else if (offset[1] == 1) {
                 double futurePositionY = gravity.formulaOfTrajectory();
+                air = true;
 
                 // Quand le joueur monte
                 if ((gravity.flightTime/2) >= gravity.timer) {
@@ -134,10 +135,10 @@ public class Player extends Entity implements CollideObjectType
                         this.gravity.yInit = this.y.get();
                         gravity.timer = 0;
                         offset[1] = 0;
+                        air = false;
                     } else setY(futurePositionY);
                 }
             }
-            air = true;
         } else if (air) {
             gravity.degInit = 0;
             int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
