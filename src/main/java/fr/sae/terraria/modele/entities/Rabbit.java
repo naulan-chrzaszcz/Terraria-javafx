@@ -128,6 +128,9 @@ public class Rabbit extends Entity implements CollideObjectType
                 air = false;
             } else setY(futurePositionY - rect.getHeight());
         }
+
+        if (environment.getPlayer().getRect().collideRect(rect))
+            offset[0] = (-1) * offset[0];
     }
 
 
