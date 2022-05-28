@@ -77,9 +77,8 @@ public class Player extends Entity implements CollideObjectType
 
     public void collide()
     {
+        int widthTile = environment.widthTile; int heightTile = environment.heightTile;
         TileMaps tileMaps = environment.getTileMaps();
-        int widthTile = environment.widthTile;
-        int heightTile = environment.heightTile;
 
         // Detection vide en dessous
         int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
@@ -100,7 +99,7 @@ public class Player extends Entity implements CollideObjectType
         // Detection collision en bas et en haut
         if (offset[1] != 0) {
             int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
-            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
+            int xRight = (int) ((getX()+getRect().getWidth())-COLLISION_TOLERANCE)/widthTile;
 
             // Tombe
             if (offset[1] == -1) {
@@ -120,16 +119,16 @@ public class Player extends Entity implements CollideObjectType
 
                 // Quand le joueur monte
                 if ((gravity.flightTime/2) >= gravity.timer) {
-                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
-                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY) {
-                        gravity.timer = 0;
-                        offset[1] = 0;
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                        offset[1] = -1;
                     } else setY(futurePositionY);
                 // Quand le joueur decent
                 } else {
-                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
-                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE) / heightTile) != TileMaps.SKY ||
-                            tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                    if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
+                            tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
+                        offset[1] = -1;
+                    } else if (tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                             tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
                         this.gravity.xInit = this.x.get();
                         this.gravity.yInit = this.y.get();
@@ -153,6 +152,10 @@ public class Player extends Entity implements CollideObjectType
                 air = false;
             } else setY(futurePositionY - rect.getHeight());
         }
+
+        System.out.println("gauche-droite: " + offset[0]);
+        System.out.println("haut-bas: " + offset[1]);
+        System.out.println("air: " + air);
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
@@ -160,8 +163,8 @@ public class Player extends Entity implements CollideObjectType
     {
         this.keysInput.forEach((key, value) -> {
             if (Boolean.TRUE.equals(value)) {
-                if ((key == KeyCode.Z || key == KeyCode.SPACE))
-                    this.jump();
+                if (key == KeyCode.Z || key == KeyCode.SPACE)
+                    if (offset[1] != -1) this.jump();
 
                 if (key == KeyCode.D)
                     this.moveRight();

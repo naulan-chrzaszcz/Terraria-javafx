@@ -64,7 +64,7 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            this.player.idle();
+            this.player.offset[0] = 0;
             this.player.eventInput();
             this.worldLimit(this.player);
 
