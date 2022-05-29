@@ -12,13 +12,13 @@ public class Gravity
 
     // Depart initial
     public double degInit = -90;
-    public double vInit = 5;
+    public double vInit;
     public double xInit;
     public double yInit;
-    public double flightTime = 1;
+    public double flightTime;
 
     // Formule de type ax²+bx+c ( c = yInit )
-    public double a = Gravity.VALUE/2;
+    private double a = Gravity.VALUE/2;
 
     public int amplitude = 10;
 
@@ -27,7 +27,7 @@ public class Gravity
     {
         flightTime = calcFlightTime();
         //double trajX = -entity.offset[0] * (Math.cos(degInit) * (vInit*10) * xTimer) + xInit;
-        double yValue = ((a* (timer * timer)) + (b() * timer)) + yInit;
+        double yValue = ((a* (timer * timer)) + ((Math.sin(degInit) * (vInit * amplitude)) * timer)) + yInit;
         this.timer += this.speed;
 
         return yValue;
@@ -43,19 +43,6 @@ public class Gravity
 
         return res;
     }
-
-    private double b(){
-        return (Math.sin(degInit) * (vInit * amplitude));
-    }
-
-
-    public void setFall(double actualY)
-    {
-        // change le timer afin que le joueur tombe
-        double delt = (b()*b()) - (4*a*(yInit-actualY));
-        timer = (-b() + Math.sqrt(delt))/(2*a);
-    }
-
 
     public void setXInit(double newXInit) { xInit = newXInit; }
     public void setYInit(double newYInit) { yInit = newYInit; }
