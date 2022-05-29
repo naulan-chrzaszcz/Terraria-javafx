@@ -90,7 +90,7 @@ public class Environment
             this.player.collide();
             this.player.updates();
 
-            this.updateGameTimer();
+            this.gameTime.updates(ticks);
             this.ticks++;
         }));
 
@@ -106,14 +106,6 @@ public class Environment
         if (entity.offset[0] == Entity.IS_MOVING_RIGHT && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
             entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
     }
-
-    /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
-    private void updateGameTimer()
-    {
-        if (ticks%37 == 0)
-            gameTime.updates();
-    }
-
 
     public ObservableList<Entity> getEntities() { return this.entities; }
     public TileMaps getTileMaps() { return this.tileMaps; }
