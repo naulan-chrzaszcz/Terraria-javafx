@@ -2,7 +2,7 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.Timer;
+import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.blocks.TallGrass;
@@ -32,7 +32,7 @@ public class HUDView
     private final Image clockImg;
     private final Image clockCursorImg;
 
-    private final Timer gameTime;
+    private final Clock gameTime;
     private final Player player;
     private final Pane display;
 
@@ -44,7 +44,7 @@ public class HUDView
     private int tileHeight;
 
 
-    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Timer gameTime)
+    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Clock gameTime)
     {
         this.player = player;
         this.display = display;

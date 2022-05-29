@@ -13,6 +13,7 @@ import java.util.List;
 
 public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType
 {
+    public static final double REPRODUCTION_RATE = 1_250;
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 

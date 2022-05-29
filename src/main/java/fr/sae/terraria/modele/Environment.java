@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Environment
 {
-    private Timer gameTime;
+    private Clock gameTime;
     private final ObservableList<Entity> entities;
 
     private final TileMaps tileMaps;
@@ -39,7 +39,7 @@ public class Environment
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
-        this.gameTime = new Timer();
+        this.gameTime = new Clock();
         this.tileMaps = new TileMaps();
         this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
@@ -130,6 +130,6 @@ public class Environment
     public ObservableList<Entity> getEntities() { return this.entities; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
-    public Timer getGameTime() {return this.gameTime;}
+    public Clock getGameTime() {return this.gameTime;}
     public int getTicks() { return this.ticks; }
 }

@@ -3,7 +3,7 @@ package fr.sae.terraria.modele;
 import javafx.beans.property.SimpleIntegerProperty;
 
 
-public class Timer
+public class Clock
 {
     public static final int ONE_MINUTE_INGAME = 37;
     public static final int ONE_DAY_INGAME = 1440;
@@ -12,7 +12,7 @@ public class Timer
     private final SimpleIntegerProperty days;
 
 
-    public Timer()
+    public Clock()
     {
         minutes = new SimpleIntegerProperty(0);
         days = new SimpleIntegerProperty(0);
@@ -21,7 +21,7 @@ public class Timer
     public void updates(int ticks)
     {
         // si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes
-        if (ticks%Timer.ONE_MINUTE_INGAME == 0) {
+        if (ticks% Clock.ONE_MINUTE_INGAME == 0) {
             if (getMinutes()+1 == ONE_DAY_INGAME) {
                 days.setValue(getDays()+1);
                 minutes.setValue(0);
