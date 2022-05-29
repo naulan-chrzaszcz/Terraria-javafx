@@ -209,8 +209,10 @@ public class Player extends Entity implements CollideObjectType
             int i = 0;
             while (i < this.inventory.size()) {
                 int beforeSize = this.inventory.get(i).size();
-                if (this.inventory.get(i).isEmpty())
+                if (this.inventory.get(i).isEmpty()) {
                     this.inventory.get(i).add(pickupObject);
+                    this.setItemSelected(pickupObject);
+                }
                 else if (this.inventory.get(i).size() == BLOCK_STACKING_MAX)
                     estComplet = true;
                 else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt) {
