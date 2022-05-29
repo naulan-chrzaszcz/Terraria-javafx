@@ -10,10 +10,12 @@ import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class TileMapsView
 
     private int tileWidth;
     private int tileHeight;
+    private Clock clock;
 
     private Image floorTopImg;
     private Image floorLeftImg;
@@ -52,7 +55,11 @@ public class TileMapsView
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
+
+
+
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
+
             while (c.next()) if (c.wasAdded()) {
                 if (c.getList().get(0) instanceof Tree)
                     createTree((Tree) c.getList().get(0));
@@ -144,6 +151,13 @@ public class TileMapsView
 
             treeView.setY((int) (((tree.getY() + tileHeight) + (i * tileHeight)) - (tileHeight * imagesTree.size())));
             treeView.setX((int) tree.getX());
+
+            /** pour changer la couleur en fonction du temps**/
+
+            final ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(-0.5);
+            treeView.setEffect(colorAdjust);
+
             display.getChildren().add(treeView);
         }
 
@@ -162,6 +176,12 @@ public class TileMapsView
             tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()));
             tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()) + tileHeight);
         }));
+        /** pour changer la couleur en fonction du temps**/
+        //if (clock.getMinutes() > 20*60) {}
+            final ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(-0.5);
+            tallGrassView.setEffect(colorAdjust);
+
 
         display.getChildren().add(tallGrassView);
     }

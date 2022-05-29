@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -157,10 +158,11 @@ public class HUDView
 
         this.player.positionOfCursorInventoryBar.addListener((obs, oldValue, newValue) -> {
             this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
-            if (newValue.intValue() > 0 && newValue.intValue() < 8)
+            if (newValue.intValue() >= 0 && newValue.intValue() <= 8)
                 if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
                     this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
                 } else this.player.setItemSelected(null);
+            System.out.println(this.player.getItemSelected());
         });
 
         display.getChildren().add(cursorImgView);
@@ -213,5 +215,8 @@ public class HUDView
 
         display.getChildren().add(clockView);
         display.getChildren().add(clockCursorView);
+
+
+
     }
 }

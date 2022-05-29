@@ -64,7 +64,6 @@ public class PlayerView
     public void displayPlayer(Pane display)
     {
         this.setAnimation();
-
         display.getChildren().add(playerImgView);
     }
 }

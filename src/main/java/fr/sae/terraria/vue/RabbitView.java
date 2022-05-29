@@ -3,6 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -57,7 +58,12 @@ public class RabbitView
     public void displayRabbit(Pane display)
     {
         this.setAnimation();
+        /** pour changer la couleur en fonction du temps**/
 
+        final ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.5);
+
+        rabbitImgView.setEffect(colorAdjust);
         display.getChildren().add(rabbitImgView);
     }
 }
