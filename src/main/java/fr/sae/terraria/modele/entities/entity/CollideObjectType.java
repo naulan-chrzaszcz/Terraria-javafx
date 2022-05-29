@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele;
+package fr.sae.terraria.modele.entities.entity;
 
 
 public interface CollideObjectType

@@ -1,17 +1,22 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.CollideObjectType;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.Animation;
+import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class Rabbit extends Entity implements CollideObjectType
+public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType
 {
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
+    private final List<Entity> children;
     private Environment environment;
     private Animation animation;
 
@@ -21,6 +26,7 @@ public class Rabbit extends Entity implements CollideObjectType
         super(x, y);
         this.environment = environment;
 
+        this.children = new ArrayList<>();
         this.animation = new Animation();
         this.velocity = 1;
         this.offset[0] = (Math.random() <= .5) ? Entity.IS_MOVING_RIGHT : Entity.IS_MOVING_LEFT;
@@ -46,6 +52,8 @@ public class Rabbit extends Entity implements CollideObjectType
             this.rect.update(x.get(), y.get());
         this.animation.loop();
     }
+
+    public void reproduction(Environment environment) {}
 
     public void collide()
     {
@@ -134,6 +142,7 @@ public class Rabbit extends Entity implements CollideObjectType
 
 
     public Animation getAnimation() { return animation; }
+    public List<Entity> getChildren() { return this.children; }
 }
 
 

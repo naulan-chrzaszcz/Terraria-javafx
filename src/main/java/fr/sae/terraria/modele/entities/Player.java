@@ -1,13 +1,13 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.CollideObjectType;
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.Animation;
+import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;

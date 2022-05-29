@@ -1,7 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 
 public class Arrow extends Entity implements StowableObjectType

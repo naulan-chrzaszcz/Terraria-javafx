@@ -2,12 +2,12 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.vue.View;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

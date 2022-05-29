@@ -1,6 +1,6 @@
 package fr.sae.terraria.modele.entities;
 
-import fr.sae.terraria.modele.CollideObjectType;
+import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.beans.property.SimpleDoubleProperty;
 
