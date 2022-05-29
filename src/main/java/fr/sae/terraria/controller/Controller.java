@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -121,8 +122,7 @@ public class Controller implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
-                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE)
-            {
+                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
                 // Casse les blocs
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     // Commence a cherché l'entité ciblée
@@ -149,7 +149,7 @@ public class Controller implements Initializable
                                     displayTiledMap.getChildren().remove(nodeAtDelete);
                                 }
                                 i++;
-                            } while (i < displayTiledMap.getChildren().size() && nodeAtDelete == null);
+                            } while (i < displayTiledMap.getChildren().size() && Objects.isNull(nodeAtDelete));
 
                             // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
                             break;
@@ -157,19 +157,27 @@ public class Controller implements Initializable
                     }
 
                 // Pose les blocs
-                if (click.getButton().equals(MouseButton.SECONDARY))
-                {
-                    if (player.getItemSelected() != null) {
+                if (click.getButton().equals(MouseButton.SECONDARY)) {
+                    if (!Objects.isNull(player.getItemSelected())) {
+                        Entity entity = null;
                         if (player.getItemSelected() instanceof Dirt) {
-                            Dirt dirt = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
-                            dirt.setRect(tileWidth, tileHeight);
-                            environment.getEntities().add(0, dirt);
+                            entity = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
                             environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
                         } else if (player.getItemSelected() instanceof Stone) {
-                            Stone stone = new Stone(xBlock*tileWidth, yBlock*tileHeight);
-                            stone.setRect(tileWidth, tileHeight);
-                            environment.getEntities().add(0, stone);
+                            entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
                             environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
+                        }
+
+                        if(!Objects.isNull(entity)) {
+                            entity.setRect(tileWidth, tileHeight);
+                            environment.getEntities().add(0, entity);
+
+                            // Si on le pose sur le joueur
+                            if (player.getRect().collideRect(entity.getRect())) {
+                                player.setY(entity.getY() - player.getRect().getHeight());
+                                player.getGravity().yInit = player.getY();
+                                player.getGravity().xInit = player.getX();
+                            }
                         }
                     }
                 }

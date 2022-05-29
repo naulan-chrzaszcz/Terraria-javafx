@@ -6,6 +6,12 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public abstract class Entity
 {
+    public static final int IS_FALLING = -1;
+    public static final int IS_JUMPING = 1;
+    public static final int IS_MOVING_LEFT = -1;
+    public static final int IS_MOVING_RIGHT = 1;
+    public static final int IDLE = 0;
+
     // Property variables
     protected DoubleProperty pv;
     protected DoubleProperty x;
@@ -42,14 +48,15 @@ public abstract class Entity
      *   et qui doit rester au sain de l'objet */
     public abstract void updates();
 
+    public void setJumpPosInit() { this.gravity.xInit = this.x.get(); this.gravity.yInit = this.y.get(); }
     /** Modifie l'offset qui permet de le déplacer vers la droite */
-    public void moveRight() { this.offset[0] = 1; }
+    public void moveRight() { this.offset[0] = Entity.IS_MOVING_RIGHT; }
     /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    public void moveLeft() { this.offset[0] = -1; }
+    public void moveLeft() { this.offset[0] = Entity.IS_MOVING_LEFT; }
     /** Modifie l'offset qui permet de le faire sauter */
-    public void jump() { offset[1] = 1; }
+    public void jump() { offset[1] = Entity.IS_JUMPING; }
     /** Modifie l'offset qui permet de tomber */
-    public void fall() { this.offset[1] = -1; }
+    public void fall() { this.offset[1] = Entity.IS_FALLING; }
 
     public DoubleProperty getPvProperty() { return this.pv; }
     public DoubleProperty getXProperty() { return this.x; }

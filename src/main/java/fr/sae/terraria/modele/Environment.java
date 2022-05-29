@@ -62,7 +62,7 @@ public class Environment
         loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            this.player.offset[0] = 0;
+            this.player.offset[0] = Entity.IDLE;
             this.player.eventInput();
             this.worldLimit(this.player);
 
@@ -71,9 +71,15 @@ public class Environment
             GenerateEntity.rabbit(this);
 
             for (Entity entity : entities) {
-                if (ticks%Rabbit.JUMP_FREQUENCY == 0)
-                    if (entity instanceof Rabbit && Math.random() < Rabbit.LUCK_OF_JUMPING)
-                        if (entity.offset[1] != -1) entity.jump();
+                if (entity instanceof Rabbit) {
+                    boolean mustJump = ticks%Rabbit.JUMP_FREQUENCY == 0;
+                    if (mustJump) {
+                        boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
+                        if (jumpOrNot && entity.offset[1] != Entity.IS_FALLING)
+                            entity.jump();
+                    }
+                }
+
                 if (entity instanceof CollideObjectType) {
                     this.worldLimit(entity);
                     ((CollideObjectType) entity).collide();
@@ -95,16 +101,16 @@ public class Environment
     /** Evite que le joueur sort de la carte. */
     private void worldLimit(Entity entity)
     {
-        if (entity.offset[0] == -1 && entity.getX() < 0)
-            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
-        if (entity.offset[0] == 1 && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
-            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
+        if (entity.offset[0] == Entity.IS_MOVING_LEFT && entity.getX() < 0)
+            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
+        if (entity.offset[0] == Entity.IS_MOVING_RIGHT && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
+            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
     }
 
     /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
     private void updateGameTimer()
     {
-        if (ticks % 37 == 0)
+        if (ticks%37 == 0)
             gameTime.updates();
     }
 
