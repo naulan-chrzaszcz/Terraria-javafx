@@ -3,7 +3,6 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -39,12 +38,12 @@ public class RabbitView
         // Change la limite de frame de l'animation selon le sprite sheet chargé
         this.rabbitImgView.imageProperty().addListener((obs, oldImg, newImg) -> {
             int newEndFrame = (int) (newImg.getWidth() / widthTile);
-            if (this.rabbit.getAnimation().getFrame().get() >= newEndFrame)
+            if (this.rabbit.getAnimation().getFrame() >= newEndFrame)
                 this.rabbit.getAnimation().reset();
             this.rabbit.getAnimation().setEndFrame(newEndFrame);
         });
 
-        this.rabbit.getAnimation().getFrame().addListener((obs, oldFrame, newFrame) -> {
+        this.rabbit.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
             this.rabbitImgView.setViewport(new Rectangle2D(0, 0, widthTile, heightTile));
             if (rabbit.offset[0] == 1 || rabbit.offset[0] == -1) {
                 Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * widthTile), 0, widthTile, heightTile);
@@ -58,12 +57,6 @@ public class RabbitView
     public void displayRabbit(Pane display)
     {
         this.setAnimation();
-        /** pour changer la couleur en fonction du temps**/
-
-        final ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(-0.5);
-
-        rabbitImgView.setEffect(colorAdjust);
         display.getChildren().add(rabbitImgView);
     }
 }

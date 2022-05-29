@@ -71,7 +71,7 @@ public class Player extends Entity implements CollideObjectType
         this.setX(this.getX() + this.offset[0] * this.getVelocity());
 
         if (this.rect != null)
-            this.rect.update(x.get(), y.get());
+            this.rect.updates(x.get(), y.get());
         animation.loop();
     }
 

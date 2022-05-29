@@ -3,7 +3,6 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -38,23 +37,13 @@ public class View
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
 
-        HUDView hudView = new HUDView(environment.getPlayer(), environment.getGameTime(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        HUDView hudView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         hudView.displayInventoryBar();
         hudView.displayCursorInventoryBar();
         hudView.displayHealthBar();
         hudView.displayClock();
 
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-
-
-        /** Pour changer la couleur en fonction du temps**/
-        final ColorAdjust colorAdjust = new ColorAdjust();
-        colorAdjust.setBrightness(-0.5);
-        displayHUD.getChildren().get(0).setEffect(colorAdjust); // pour mettre le player de la bonne couleur
-        for (int i = 0; i < displayTiledMap.getChildren().size(); i++){
-            displayTiledMap.getChildren().get(i).setEffect(colorAdjust);
-        }
-
     }
 
     /** Essaye de trouver et de charger l'image sinon renvoie null */
@@ -94,8 +83,5 @@ public class View
         imageView.translateYProperty().bind(entity.getYProperty());
 
         return imageView;
-    }
-    public void  changeTime(){
-
     }
 }

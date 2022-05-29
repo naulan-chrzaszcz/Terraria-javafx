@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -30,45 +29,40 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable
 {
-    // FXML objects
-    @FXML
-    private BorderPane root;
     @FXML
     private HBox title;
+    @FXML
+    private BorderPane root;
     @FXML
     private Pane displayHUD;
     @FXML
     private Pane displayTiledMap;
-    @FXML
-    private Label displayMinuts;
-    @FXML
-    private Label displayHours;
 
-    // Local Object variable
+    private Stage primaryStage;
     private Environment environment;
 
     // TODO: plutot mettre un DoubleProperty a c'est deux variables
-    private double scaleMultiplicatorWidth = .0;
-    private double scaleMultiplicatorHeight = .0;
+    private double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
+    private double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
 
 
     public Controller(Stage primaryStage)
     {
-        // Listener pour sync la taille des tiles pour scale les tiles
+        this.primaryStage = primaryStage;
+
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
         primaryStage.heightProperty().addListener((obs, oldV, newV) -> scaleMultiplicatorHeight = ((newV.intValue()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
-
-        this.addKeysEventListener(primaryStage);
     }
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        // La taille des tiles apres le scaling
         scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+
+        this.addKeysEventListener(primaryStage);
     }
 
     /**
@@ -77,23 +71,26 @@ public class Controller implements Initializable
      */
     private void addKeysEventListener(Stage stage)
     {
+        Player player = this.environment.getPlayer();
+
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            this.environment.getPlayer().getKeysInput().put(key.getCode(), true);
+            player.getKeysInput().put(key.getCode(), true);
             key.consume();
         });
 
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
-            this.environment.getPlayer().getKeysInput().put(key.getCode(), false);
+            player.getKeysInput().put(key.getCode(), false);
             key.consume();
         });
 
         stage.addEventFilter(ScrollEvent.SCROLL, scroll -> {
-            Player player = this.environment.getPlayer();
-
-            if (scroll.getDeltaY() < 0)
-                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() - 1);
-            else if (scroll.getDeltaY() > 0)
+            boolean scrollUp = scroll.getDeltaY() > 0;
+            if (scrollUp)
                 player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() + 1);
+            boolean scrollDown = scroll.getDeltaY() < 0;
+            if (scrollDown)
+                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() - 1);
+
             if (player.positionOfCursorInventoryBar.get() > 8)
                 player.positionOfCursorInventoryBar.setValue(0);
             if (player.positionOfCursorInventoryBar.get() < 0)
@@ -101,16 +98,14 @@ public class Controller implements Initializable
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
-            Player player = this.environment.getPlayer();
+            double scaleMultiplicativeWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+            double scaleMultiplicativeHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+            int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeWidth);
+            int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeHeight);
             // La position correcte sur le Pane
             double mouseX = click.getSceneX();
             double mouseY = click.getSceneY()-title.getPrefHeight();
-            Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-            // TODO: Obliger de le recalculé, a voir dans le temps si c'est deplacable.
-            double scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-            double scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-            int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
-            int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
+            Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);
             // Le bloc où la souris à clicker
             int xBlock = (int) (mouseX/tileWidth);
             int yBlock = (int) (mouseY/tileHeight);
@@ -121,8 +116,9 @@ public class Controller implements Initializable
             int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
-            if (distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE
-                && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE) {
+            boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
+            if (isOneBlockDistance)
+            {
                 // Casse les blocs
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     // Commence a cherché l'entité ciblée
@@ -158,7 +154,8 @@ public class Controller implements Initializable
 
                 // Pose les blocs
                 if (click.getButton().equals(MouseButton.SECONDARY)) {
-                    if (!Objects.isNull(player.getItemSelected())) {
+                    boolean haveAnItemOnHand = !Objects.isNull(player.getItemSelected());
+                    if (haveAnItemOnHand) {
                         Entity entity = null;
                         if (player.getItemSelected() instanceof Dirt) {
                             entity = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
@@ -173,11 +170,17 @@ public class Controller implements Initializable
                             environment.getEntities().add(0, entity);
 
                             // Si on le pose sur le joueur
-                            if (player.getRect().collideRect(entity.getRect())) {
+                            boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
+                            if (isIntoABlock) {
+                                // Place le joueur au-dessus du block posé.
                                 player.setY(entity.getY() - player.getRect().getHeight());
                                 player.getGravity().yInit = player.getY();
                                 player.getGravity().xInit = player.getX();
                             }
+
+                            player.getInventory().get(player.positionOfCursorInventoryBar.get()).remove(player.getItemSelected());
+                            if (player.getInventory().get(player.positionOfCursorInventoryBar.get()).size()-1 >= 0)
+                                player.setItemSelected(player.getInventory().get(player.positionOfCursorInventoryBar.get()).get(player.getInventory().get(player.positionOfCursorInventoryBar.get()).size()-1));
                         }
                     }
                 }

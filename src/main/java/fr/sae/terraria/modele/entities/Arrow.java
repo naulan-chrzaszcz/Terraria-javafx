@@ -15,10 +15,5 @@ public class Arrow extends Entity implements StowableObjectType
         this.velocity = velocity;
     }
 
-    public void updates()
-    {
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
-        this.setY(this.y.get() + this.offset[1] * this.velocity);
-
-    }
+    public void updates() { }
 }

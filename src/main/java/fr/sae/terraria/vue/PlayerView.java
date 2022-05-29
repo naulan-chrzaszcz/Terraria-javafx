@@ -41,12 +41,12 @@ public class PlayerView
         // Change la limite de frame de l'animation selon le sprite sheet chargé
         this.playerImgView.imageProperty().addListener((obs, oldImg, newImg) -> {
             int newEndFrame = (int) (newImg.getWidth() / widthPlayer);
-            if (this.player.getAnimation().getFrame().get() >= newEndFrame)
+            if (this.player.getAnimation().getFrame() >= newEndFrame)
                 this.player.getAnimation().reset();
             this.player.getAnimation().setEndFrame(newEndFrame);
         });
 
-        player.getAnimation().getFrame().addListener((obs, oldFrame, newFrame) -> {
+        player.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
             this.playerImgView.setViewport(new Rectangle2D(0, 0, widthPlayer, heightPlayer));
             if (player.offset[0] == 0 && player.offset[1] == 0)
                 this.playerImgView.setImage(this.playerIdleImg);

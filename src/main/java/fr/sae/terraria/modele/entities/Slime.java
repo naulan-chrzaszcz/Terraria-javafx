@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 public class Slime extends Entity implements CollideObjectType
 {
-    private int frame;
 
 
     public Slime(int x, int y, double pv, double velocity)
@@ -18,20 +17,7 @@ public class Slime extends Entity implements CollideObjectType
         this.velocity = velocity;
     }
 
-    public void updates()
-    {
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
-        this.setY(this.y.get() + this.offset[1] * this.velocity);
+    public void updates() { }
 
-        // TODO: faire les frame
-        if(frame == 4) {
-            frame = 0;
-        }
-
-    }
-
-    public void collide()
-    {
-
-    }
+    public void collide() { }
 }

@@ -13,11 +13,13 @@ import java.util.List;
 
 public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType
 {
+    public static final int WHEN_SPAWN_A_RABBIT = 2_500;
+    public static final double RABBIT_SPAWN_RATE = .2;
+
     public static final double REPRODUCTION_RATE = 1_250;
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
-    private final List<Entity> children;
     private Environment environment;
     private Animation animation;
 
@@ -27,7 +29,6 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         super(x, y);
         this.environment = environment;
 
-        this.children = new ArrayList<>();
         this.animation = new Animation();
         this.velocity = 1;
         this.offset[0] = (Math.random() <= .5) ? Entity.IS_MOVING_RIGHT : Entity.IS_MOVING_LEFT;
@@ -50,11 +51,16 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.rect != null)
-            this.rect.update(x.get(), y.get());
+            this.rect.updates(x.get(), y.get());
         this.animation.loop();
     }
 
-    public void reproduction(Environment environment) {}
+    public List<Entity> reproduction(Environment environment)
+    {
+        List<Entity> children = new ArrayList<>();
+
+        return children;
+    }
 
     public void collide()
     {
@@ -145,7 +151,6 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
 
     public Animation getAnimation() { return animation; }
-    public List<Entity> getChildren() { return this.children; }
 }
 
 

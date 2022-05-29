@@ -3,7 +3,6 @@ package fr.sae.terraria.modele;
 import com.google.gson.stream.JsonReader;
 
 import java.io.FileReader;
-import java.util.Arrays;
 
 
 public class TileMaps
@@ -81,36 +80,6 @@ public class TileMaps
             }
             jsonReader.endObject();
         } catch (Exception e) { e.printStackTrace(); }
-    }
-
-    /**
-     * Crée une variable de la même taille que la carte couramment utilisé
-     *  La copie et renvoie la variable qui a copié la carte du jeu
-     *
-     * @return Un tableau 2D qui contient la carte qui est utilisé dans le jeu.
-     */
-    public int[][] copy()
-    {
-        int[][] mapCopy = new int[maps.length][maps[0].length];
-
-        for (int i = 0; i < this.maps.length; i++)
-            mapCopy[i] = Arrays.copyOf(maps[i], maps[i].length);
-
-        return mapCopy;
-    }
-
-    public void clear()
-    {
-        for (int y = 0; y < getHeight(); y++)
-            for (int x = 0; x < getWidth(); x++)
-                maps[y][x] = SKY;
-    }
-
-    public void fill(int tileIndex)
-    {
-        for (int y = 0; y < getHeight(); y++)
-            for (int x = 0; x < getWidth(); x++)
-                maps[y][x] = tileIndex;
     }
 
 

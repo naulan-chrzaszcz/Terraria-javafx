@@ -22,7 +22,7 @@ import java.util.List;
 
 public class Environment
 {
-    private Clock gameTime;
+    private Clock clock;
     private final ObservableList<Entity> entities;
 
     private final TileMaps tileMaps;
@@ -31,7 +31,6 @@ public class Environment
     public double scaleMultiplicatorWidth;
     public double scaleMultiplicatorHeight;
 
-
     public int widthTile;
     public int heightTile;
     private int ticks = 0;
@@ -39,29 +38,39 @@ public class Environment
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
-        this.gameTime = new Clock();
-        this.tileMaps = new TileMaps();
-        this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
 
-        this.entities = FXCollections.observableArrayList();
+        this.tileMaps = new TileMaps();
+        this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
 
+        this.clock = new Clock();
+        this.entities = FXCollections.observableArrayList();
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
-        Image image = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        int widthPlayer = (int) image.getWidth();
-        int heightPlayer = (int) image.getHeight();
-        image.cancel();
 
         this.player = new Player(this, (5*widthTile), (3*heightTile));
         this.player.setVelocity(5);
         this.player.setPv(4);
-        this.player.setRect(widthPlayer, heightPlayer);
+        Image image = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.player.setRect((int) image.getWidth(), (int) image.getHeight());
+        image.cancel();
 
         gameLoop();
     }
 
+    /** Evite que l'entité sort de la fenêtre. */
+    private void worldLimit(Entity entity)
+    {
+        double widthScreen = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
+
+        boolean exceedsScreenOnLeft = entity.offset[0] == Entity.IS_MOVING_LEFT && entity.getX() < 0;
+        boolean exceedsScreenOnRight = entity.offset[0] == Entity.IS_MOVING_RIGHT && entity.getX() > (widthScreen - entity.getRect().getWidth());
+        if (exceedsScreenOnLeft || exceedsScreenOnRight)
+            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
+    }
+
+    /** La boucle principale du jeu  */
     private void gameLoop()
     {
         Timeline loop = new Timeline();
@@ -73,15 +82,19 @@ public class Environment
             this.player.eventInput();
             this.worldLimit(this.player);
 
-            // Ajoute les entités qui ont été ajouté par des ReproductiveObjectType
-            for (Entity entity : entitiesAtAdded) this.entities.add(0, entity);
+            // Ajoute les entités ReproductiveObjectType
+            for (Entity entity : entitiesAtAdded)
+                this.entities.add(0, entity);
             entitiesAtAdded.clear();
 
+            // Génère aléatoirement des entités
             GenerateEntity.tree(this);
             GenerateEntity.tallGrass(this);
             GenerateEntity.rabbit(this);
 
-            for (Entity entity : entities) {
+            for (Entity entity : entities)
+            {
+                // Fait sauter ou non le lapin
                 if (entity instanceof Rabbit) {
                     boolean mustJump = ticks%Rabbit.JUMP_FREQUENCY == 0;
                     if (mustJump) {
@@ -97,10 +110,10 @@ public class Environment
                 }
 
                 if (entity instanceof ReproductiveObjectType) {
-                    if (entity instanceof TallGrass && ticks%TallGrass.REPRODUCTION_RATE == 0) {
-                        ((ReproductiveObjectType) entity).reproduction(this);
-                        entitiesAtAdded.addAll(((ReproductiveObjectType) entity).getChildren());
-                    }
+                    // Reproduit les hautes herbes
+                    boolean tallGrassMustReproduce = ticks%TallGrass.REPRODUCTION_RATE == 0;
+                    if (entity instanceof TallGrass && tallGrassMustReproduce)
+                        entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
                 }
                 entity.updates();
             }
@@ -108,7 +121,7 @@ public class Environment
             this.player.collide();
             this.player.updates();
 
-            this.gameTime.updates(ticks);
+            this.clock.updates(ticks);
             this.ticks++;
         }));
 
@@ -116,20 +129,10 @@ public class Environment
         loop.play();
     }
 
-    /** Evite que l'entité sort de la fenêtre. */
-    private void worldLimit(Entity entity)
-    {
-        double widthScreen = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
-
-        boolean exceedsScreenOnLeft = entity.offset[0] == Entity.IS_MOVING_LEFT && entity.getX() < 0;
-        boolean exceedsScreenOnRight = entity.offset[0] == Entity.IS_MOVING_RIGHT && entity.getX() > (widthScreen - entity.getRect().getWidth());
-        if (exceedsScreenOnLeft || exceedsScreenOnRight)
-            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
-    }
 
     public ObservableList<Entity> getEntities() { return this.entities; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
-    public Clock getGameTime() {return this.gameTime;}
+    public Clock getGameClock() { return this.clock; }
     public int getTicks() { return this.ticks; }
 }

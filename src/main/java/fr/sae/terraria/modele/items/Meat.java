@@ -1,6 +1,3 @@
 package fr.sae.terraria.modele.items;
 
-public class Meat extends Item
-{
-
-}
+public class Meat extends Item { }

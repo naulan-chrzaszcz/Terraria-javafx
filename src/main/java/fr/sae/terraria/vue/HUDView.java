@@ -1,8 +1,8 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.Clock;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
 import fr.sae.terraria.modele.blocks.TallGrass;
@@ -13,14 +13,14 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.transform.Rotate;
+
+import java.util.Objects;
 
 
 public class HUDView
@@ -47,6 +47,12 @@ public class HUDView
     private int tileHeight;
 
 
+    /**
+     * Affiche tout ce qui concerne l'HUD
+     *
+     * @param gameTime Pour afficher l'horloge
+     * @param display Sur quel pane l'HUD doit s'afficher
+     */
     public HUDView(Player player, Clock gameTime, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.player = player;
@@ -54,6 +60,8 @@ public class HUDView
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.gameTime = gameTime;
+
+        new ItemSelectedView(display, player, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         this.windowWidth = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
         this.windowHeight = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
@@ -69,8 +77,6 @@ public class HUDView
 
         this.inventoryBarImgView = new ImageView(inventoryBarImg);
         this.cursorImgView = new ImageView(cursorImg);
-
-        new ItemSelectedView(display, player, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
         this.refreshItemsInventoryBar();
     }
@@ -102,16 +108,15 @@ public class HUDView
         int itemInventoryWidth = (int) (tileWidth/1.5);
         int itemInventoryHeight = (int) (tileHeight/1.5);
 
-        int nbElementDisplayed = 9;
+        int nbElementDisplayed = Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY;
         if (this.player.nbStacksIntoInventory() <= Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)
             nbElementDisplayed = this.player.nbStacksIntoInventory();
 
-
-        int[] compteur = new int[1];
+        int compteur = 0;
         for (int integer = 0 ; integer < nbElementDisplayed; integer++) {
-
-            Image item = null;
             ImageView itemView = new ImageView();
+            Image item = null;
+
             if (this.player.getInventory().get(integer).get(0) instanceof Dirt)
                 item = View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight);
             else if (this.player.getInventory().get(integer).get(0) instanceof Stone)
@@ -119,28 +124,31 @@ public class HUDView
             else if (this.player.getInventory().get(integer).get(0) instanceof TallGrass)
                 item = View.loadAnImage("tiles/tall-grass.png", itemInventoryWidth, itemInventoryHeight);
 
-            if (item != null) {
-                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur[0]));
+            if (!Objects.isNull(item)) {
+                itemView.setImage(item);
+                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur));
                 itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight())/2));
+
+                int fontSize = (int) (5*scaleMultiplicatorWidth);
+                Label nbObjects = new Label();
+                nbObjects.setId("textInventoryBar");
+                nbObjects.setFont(new Font("Arial", fontSize));
+                nbObjects.setText(String.valueOf(this.player.getInventory().get(integer).size()));
+                nbObjects.setLayoutX(itemView.getX());
+                nbObjects.setLayoutY(itemView.getY() + item.getHeight() - fontSize);
+
+                StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory().get(integer).size()));
+                this.player.getInventory().get(integer).addListener((ListChangeListener<StowableObjectType>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
+                nbObjects.textProperty().bind(stringProperty);
+
+                display.getChildren().add(itemView);
+                display.getChildren().add(nbObjects);
+                compteur++;
             }
-            itemView.setImage(item);
-            display.getChildren().add(itemView);
-
-            Label nombreObjets = new Label();
-            nombreObjets.setText(String.valueOf(this.player.getInventory().get(integer).size()));
-
-            StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory().get(integer).size()));
-            nombreObjets.textProperty().bind(stringProperty);
-            this.player.getInventory().get(integer).addListener((ListChangeListener<StowableObjectType>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
-            nombreObjets.setFont(new Font("Arial",5 * scaleMultiplicatorWidth));
-            nombreObjets.setLayoutX(inventoryBarImgView.getX() + ((((inventoryBarImgView.getImage().getWidth()/9)/2) - item.getWidth())) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur[0]) + 5);
-            nombreObjets.setLayoutY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight()/2)) - 6);
-            nombreObjets.setTextFill(Color.WHITE);
-            display.getChildren().add(nombreObjets);
-            compteur[0]++;
         }
     }
 
+    /** Affiche la barre d'inventaire */
     public void displayInventoryBar()
     {
         this.inventoryBarImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2));
@@ -156,18 +164,16 @@ public class HUDView
         this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 - scaleMultiplicatorWidth));
         this.cursorImgView.setY(((windowHeight - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
 
-        this.player.positionOfCursorInventoryBar.addListener((obs, oldValue, newValue) -> {
-            this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newValue.intValue() - scaleMultiplicatorWidth)));
-            if (newValue.intValue() >= 0 && newValue.intValue() <= 8)
-                if (!this.player.getInventory().get(newValue.intValue()).isEmpty()) {
-                    this.player.setItemSelected(this.player.getInventory().get(newValue.intValue()).get(0));
-                } else this.player.setItemSelected(null);
-            System.out.println(this.player.getItemSelected());
+        this.player.positionOfCursorInventoryBar.addListener((obs, oldV, newV) -> {
+            this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newV.intValue() - scaleMultiplicatorWidth)));
+            if (newV.intValue() >= 0 && newV.intValue() < (Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY))
+                this.player.setItemSelected((!this.player.getInventory().get(newV.intValue()).isEmpty()) ? this.player.getInventory().get(newV.intValue()).get(0) : null);
         });
 
         display.getChildren().add(cursorImgView);
     }
 
+    /** Affiche la barre de vie du joueur */
     public void displayHealthBar()
     {
         // Crée et positionne les cœurs dans un tableau de longueur qui correspond à la vie max du joueur.
@@ -215,8 +221,5 @@ public class HUDView
 
         display.getChildren().add(clockView);
         display.getChildren().add(clockCursorView);
-
-
-
     }
 }

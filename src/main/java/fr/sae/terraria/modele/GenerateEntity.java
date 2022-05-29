@@ -9,20 +9,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static fr.sae.terraria.modele.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
+import static fr.sae.terraria.modele.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
+import static fr.sae.terraria.modele.blocks.Tree.TREE_SPAWN_RATE;
+import static fr.sae.terraria.modele.blocks.Tree.WHEN_SPAWN_A_TREE;
+import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.Rabbit.WHEN_SPAWN_A_RABBIT;
+
 
 public class GenerateEntity
 {
-    private static final double TREE_SPAWN_RATE = .2;
-    private static final double TALL_GRASS_SPAWN_RATE = .3;
-    private static final double RABBIT_SPAWN_RATE = .2;
-    private static final int WHEN_SPAWN_A_TREE = 5_000;
-    private static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
-    private static final int WHEN_SPAWN_A_RABBIT = 2_500;
-
     private static final Random random = new Random();
 
 
-    private static void generateAnEntity(Environment environment, Entity entity_1, int whenSpawn, double spawnRate)
+    /**
+     * Génère une entité selon de quand il spawn et du pourcent de change qu'il spawn réellement.
+     *
+     * @param e L'entité concernée
+     * @param whenSpawn Le nombre qui determine quand il doit spawn sur la carte
+     * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit qu'on souhaite le placer
+     */
+    private static void generateAnEntity(Environment environment, Entity e, int whenSpawn, double spawnRate)
     {
         List<Entity> entities = environment.getEntities();
         TileMaps maps = environment.getTileMaps();
@@ -48,13 +55,13 @@ public class GenerateEntity
                                 if (entity instanceof Tree && xEntity == entity.getX() && yEntity == entity.getY())
                                     // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
                                     return;
-                            entity_1.setX(xEntity);
-                            entity_1.setY(yEntity);
-                            entity_1.getGravity().setXInit(xEntity);
-                            entity_1.getGravity().setYInit(yEntity);
-                            entity_1.setRect(widthTile, heightTile);
+                            e.setX(xEntity);
+                            e.setY(yEntity);
+                            e.getGravity().setXInit(xEntity);
+                            e.getGravity().setYInit(yEntity);
+                            e.setRect(widthTile, heightTile);
                             // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                            entities.add(0, entity_1);
+                            entities.add(0, e);
                         }
                         // Une fois l'arbre généré, il arrête complétement toute la fonction
                         return;
@@ -63,7 +70,7 @@ public class GenerateEntity
                 }
     }
 
-    /** Range les positions du sol sur la ligne 'y' pour tirer au sort l'un dans la liste */
+    /** Range les positions du sol sur la ligne 'y' */
     private static List<Integer> findFloors(TileMaps maps, int y)
     {
         List<Integer> localisation = new ArrayList<>();
@@ -79,8 +86,8 @@ public class GenerateEntity
 
     /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
     public static void tree(Environment environment) { generateAnEntity(environment, new Tree(), WHEN_SPAWN_A_TREE, TREE_SPAWN_RATE); }
-
+    /** À un certain moment, grace au tick, il va générer des hautes herbes sur un sol */
     public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
-
+    /** À un certain moment, grace au tick, il va générer des lapins sur un sol */
     public static void rabbit(Environment environment) { generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE); }
 }

@@ -12,7 +12,6 @@ public abstract class Entity
     public static final int IS_MOVING_RIGHT = 1;
     public static final int IDLE = 0;
 
-    // Property variables
     protected DoubleProperty pv;
     protected DoubleProperty x;
     protected DoubleProperty y;
@@ -22,9 +21,7 @@ public abstract class Entity
     protected Rect rect = null;
 
     protected double velocity = 1;
-    // Permet d'avoir des cœurs et des demi-cœurs sur la barre de vie
     protected double pvMax;
-    // Permet de savoir dans quelle direction se dirige le joueur.
     public boolean air = false;
     public int[] offset;     // offset[0] >= -1 && offset[0] <= 1 et offset[1] >= -1 && offset[1] <= 1
 
@@ -44,10 +41,13 @@ public abstract class Entity
     }
 
 
-    /** Permet de mettre à jour les valeurs qui concerne l'entité
-     *   et qui doit rester au sain de l'objet */
+    /**
+     * Permet de mettre à jour les valeurs qui concerne l'entité
+     *   et qui doit rester au sain de l'objet
+     */
     public abstract void updates();
 
+    /** Modifie le xInit et le yInit pour modifier le point de départ du saut ou de là où il tombe */
     public void setJumpPosInit() { this.gravity.xInit = this.x.get(); this.gravity.yInit = this.y.get(); }
     /** Modifie l'offset qui permet de le déplacer vers la droite */
     public void moveRight() { this.offset[0] = Entity.IS_MOVING_RIGHT; }
@@ -57,6 +57,7 @@ public abstract class Entity
     public void jump() { offset[1] = Entity.IS_JUMPING; }
     /** Modifie l'offset qui permet de tomber */
     public void fall() { this.offset[1] = Entity.IS_FALLING; }
+
 
     public DoubleProperty getPvProperty() { return this.pv; }
     public DoubleProperty getXProperty() { return this.x; }

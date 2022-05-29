@@ -13,11 +13,12 @@ import java.util.List;
 
 public class TallGrass extends Block implements ReproductiveObjectType
 {
+    public static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
+    public static final double TALL_GRASS_SPAWN_RATE = .3;
     public static final double REPRODUCTION_RATE = 500;
-    public static final double GROWTH_SPEED = .00050;
+    public static final double GROWTH_SPEED = .0005;
     public static final int GROWTH_TALL_GRASS_STEP = 6;
     public static final int LOOTS_FIBRE_MAX = 3;
-    private final List<Entity> children;
 
     private DoubleProperty tallGrassGrowth;
 
@@ -26,7 +27,6 @@ public class TallGrass extends Block implements ReproductiveObjectType
     {
         super(x, y);
 
-        this.children = new ArrayList<>();
         this.tallGrassGrowth = new SimpleDoubleProperty(0);
     }
 
@@ -38,8 +38,9 @@ public class TallGrass extends Block implements ReproductiveObjectType
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 
-    public void reproduction(Environment environment)
+    public List<Entity> reproduction(Environment environment)
     {
+        List<Entity> children = new ArrayList<>();
         List<Entity> entities = environment.getEntities();
 
         int left = 0;
@@ -64,9 +65,10 @@ public class TallGrass extends Block implements ReproductiveObjectType
                 children.add(tallGrassChildren);
             }
         }
+
+        return children;
     }
 
 
-    public List<Entity> getChildren() { return this.children; }
     public DoubleProperty getTallGrassGrowthProperty() { return this.tallGrassGrowth; }
 }
