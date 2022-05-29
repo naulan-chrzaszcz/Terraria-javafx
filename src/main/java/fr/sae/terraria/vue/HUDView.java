@@ -1,12 +1,13 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.StowableObjectType;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.Timer;
 import fr.sae.terraria.modele.blocks.Dirt;
 import fr.sae.terraria.modele.blocks.Stone;
+import fr.sae.terraria.modele.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
@@ -110,15 +111,17 @@ public class HUDView
             ImageView itemView = new ImageView();
             if (this.player.getInventory().get(integer).get(0) instanceof Dirt)
                 item = View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight);
-
             else if (this.player.getInventory().get(integer).get(0) instanceof Stone)
                 item = View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight);
+            else if (this.player.getInventory().get(integer).get(0) instanceof TallGrass)
+                item = View.loadAnImage("tiles/tall-grass.png", itemInventoryWidth, itemInventoryHeight);
 
-            itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur[0]));
-            itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight())/2));
+            if (item != null) {
+                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur[0]));
+                itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight())/2));
+            }
             itemView.setImage(item);
             display.getChildren().add(itemView);
-
 
             Label nombreObjets = new Label();
             nombreObjets.setText(String.valueOf(this.player.getInventory().get(integer).size()));

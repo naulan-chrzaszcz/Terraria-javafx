@@ -48,11 +48,9 @@ public class Environment
         int heightPlayer = (int) image.getHeight();
         image.cancel();
 
-        this.player = new Player(this, 0, 0);
+        this.player = new Player(this, (5*widthTile), (3*heightTile));
         this.player.setVelocity(5);
         this.player.setPv(4);
-        this.player.setX((5*widthTile));
-        this.player.setY((3*heightTile));
         this.player.setRect(widthPlayer, heightPlayer);
 
         gameLoop();
@@ -72,11 +70,10 @@ public class Environment
             GenerateEntity.tallGrass(this);
             GenerateEntity.rabbit(this);
 
-            for (Entity entity : entities)
-            {
+            for (Entity entity : entities) {
                 if (ticks%Rabbit.JUMP_FREQUENCY == 0)
                     if (entity instanceof Rabbit && Math.random() < Rabbit.LUCK_OF_JUMPING)
-                        entity.jump();
+                        if (entity.offset[1] != -1) entity.jump();
                 if (entity instanceof CollideObjectType) {
                     this.worldLimit(entity);
                     ((CollideObjectType) entity).collide();
@@ -101,14 +98,14 @@ public class Environment
         if (entity.offset[0] == -1 && entity.getX() < 0)
             entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
         if (entity.offset[0] == 1 && entity.getX() > (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH) - entity.getRect().getWidth())
-                entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
+            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : 0;
     }
 
-    private void updateGameTimer(){
-        /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
-        if (ticks % 37 == 0){
+    /** si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes */
+    private void updateGameTimer()
+    {
+        if (ticks % 37 == 0)
             gameTime.updates();
-        }
     }
 
 

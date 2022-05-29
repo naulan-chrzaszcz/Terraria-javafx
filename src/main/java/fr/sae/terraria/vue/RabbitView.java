@@ -2,7 +2,6 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
-import fr.sae.terraria.modele.entities.entity.Rect;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

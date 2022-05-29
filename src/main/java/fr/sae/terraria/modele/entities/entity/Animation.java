@@ -2,7 +2,6 @@ package fr.sae.terraria.modele.entities.entity;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.geometry.Rectangle2D;
 
 
 public class Animation

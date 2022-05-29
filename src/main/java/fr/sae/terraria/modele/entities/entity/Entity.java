@@ -46,8 +46,6 @@ public abstract class Entity
     public void moveRight() { this.offset[0] = 1; }
     /** Modifie l'offset qui permet de le déplacer vers la gauche */
     public void moveLeft() { this.offset[0] = -1; }
-    /** Permet de ne plus faire bouger l'entité */
-    public void idle() { this.offset[0] = 0; this.offset[1] = 0; }
     /** Modifie l'offset qui permet de le faire sauter */
     public void jump() { offset[1] = 1; }
     /** Modifie l'offset qui permet de tomber */

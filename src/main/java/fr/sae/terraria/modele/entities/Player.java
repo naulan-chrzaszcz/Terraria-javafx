@@ -84,79 +84,75 @@ public class Player extends Entity implements CollideObjectType
         int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
         int posX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
         if (tileMaps.getTile(posX, yBottom+1) == TileMaps.SKY)
-            air = true;
+            this.air = true;
 
         // Detection collision gauche droite
-        if (offset[0] != 0) {
+        if (this.offset[0] != 0) {
             int yTop = (int) (getY()+COLLISION_TOLERANCE)/heightTile;
             int futurePositionX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)+(velocity*offset[0])) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
 
             if (tileMaps.getTile(futurePositionX, yTop) != TileMaps.SKY ||
                     tileMaps.getTile(futurePositionX, yBottom) != TileMaps.SKY )
-                offset[0] = 0;
+                this.offset[0] = 0;
         }
 
         // Detection collision en bas et en haut
-        if (offset[1] != 0) {
+        if (this.offset[1] != 0) {
             int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
             int xRight = (int) ((getX()+getRect().getWidth())-COLLISION_TOLERANCE)/widthTile;
 
             // Tombe
-            if (offset[1] == -1) {
-                gravity.degInit = 0;
+            if (this.offset[1] == -1) {
+                this.gravity.degInit = 0;
                 double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
 
                 if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                         tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
                     this.gravity.xInit = this.x.get();
                     this.gravity.yInit = this.y.get();
-                    gravity.timer = 0;
-                    offset[1] = 0;
+                    this.gravity.timer = 0;
+                    this.offset[1] = 0;
                 } else setY(futurePositionY);
             // Saute
-            } else if (offset[1] == 1) {
+            } else if (this.offset[1] == 1) {
                 double futurePositionY = gravity.formulaOfTrajectory();
-                air = true;
+                this.air = true;
 
                 // Quand le joueur monte
                 if ((gravity.flightTime/2) >= gravity.timer) {
                     if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                             tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
-                        offset[1] = -1;
+                        this.fall();
                     } else setY(futurePositionY);
                 // Quand le joueur decent
                 } else {
                     if (tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                             tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
-                        offset[1] = -1;
+                        this.fall();
                     } else if (tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                             tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
                         this.gravity.xInit = this.x.get();
                         this.gravity.yInit = this.y.get();
-                        gravity.timer = 0;
-                        offset[1] = 0;
-                        air = false;
+                        this.gravity.timer = 0;
+                        this.offset[1] = 0;
+                        this.air = false;
                     } else setY(futurePositionY);
                 }
             }
-        } else if (air) {
-            gravity.degInit = 0;
+        } else if (this.air) {
+            this.gravity.degInit = 0;
             int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
             int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
-            double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
+            double futurePositionY = this.gravity.formulaOfTrajectory() + this.rect.getHeight();
 
             if (tileMaps.getTile(xLeft, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY ||
                     tileMaps.getTile(xRight, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY) {
                 this.gravity.xInit = this.x.get();
                 this.gravity.yInit = this.y.get();
-                offset[1] = 0;
-                air = false;
-            } else setY(futurePositionY - rect.getHeight());
+                this.offset[1] = 0;
+                this.air = false;
+            } else setY(futurePositionY - this.rect.getHeight());
         }
-
-        System.out.println("gauche-droite: " + offset[0]);
-        System.out.println("haut-bas: " + offset[1]);
-        System.out.println("air: " + air);
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
@@ -165,7 +161,7 @@ public class Player extends Entity implements CollideObjectType
         this.keysInput.forEach((key, value) -> {
             if (Boolean.TRUE.equals(value)) {
                 if (key == KeyCode.Z || key == KeyCode.SPACE)
-                    if (offset[1] != -1) this.jump();
+                    if (this.offset[1] != -1) this.jump();
 
                 if (key == KeyCode.D)
                     this.moveRight();
@@ -234,8 +230,10 @@ public class Player extends Entity implements CollideObjectType
         }
     }
 
+
     public Map<Integer, ObservableList<StowableObjectType>> getInventory() { return inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
     public StowableObjectType getItemSelected() { return itemSelected; }
+
     public void setItemSelected(StowableObjectType itemSelected) { this.itemSelected = itemSelected; }
 }
