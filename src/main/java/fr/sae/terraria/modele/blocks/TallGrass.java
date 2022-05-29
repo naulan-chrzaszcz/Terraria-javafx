@@ -14,7 +14,7 @@ import java.util.List;
 public class TallGrass extends Block implements ReproductiveObjectType
 {
     public static final double REPRODUCTION_RATE = 500;
-    public static final double GROWTH_SPEED = .001;
+    public static final double GROWTH_SPEED = .00050;
     public static final int GROWTH_TALL_GRASS_STEP = 6;
     public static final int LOOTS_FIBRE_MAX = 3;
     private final List<Entity> children;

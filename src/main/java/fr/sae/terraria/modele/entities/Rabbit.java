@@ -137,8 +137,10 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         }
 
         // TODO: Ce n'est pas parfait
+        /*
         if (environment.getPlayer().getRect().collideRect(rect))
             offset[0] = (-1) * offset[0];
+         */
     }
 
 

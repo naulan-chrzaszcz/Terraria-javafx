@@ -37,11 +37,11 @@ public class View
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
 
-        HUDView hudView = new HUDView(environment.getPlayer(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, environment.getGameTime());
+        HUDView hudView = new HUDView(environment.getPlayer(), environment.getGameTime(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         hudView.displayInventoryBar();
         hudView.displayCursorInventoryBar();
         hudView.displayHealthBar();
-        hudView.displayTimer();
+        hudView.displayClock();
 
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }

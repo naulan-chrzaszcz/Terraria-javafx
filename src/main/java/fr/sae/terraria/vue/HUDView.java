@@ -32,6 +32,8 @@ public class HUDView
     private final Image clockImg;
     private final Image clockCursorImg;
 
+    private final Rectangle frameInventoryBar;
+
     private final Clock gameTime;
     private final Player player;
     private final Pane display;
@@ -44,7 +46,7 @@ public class HUDView
     private int tileHeight;
 
 
-    public HUDView(Player player, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight, Clock gameTime)
+    public HUDView(Player player, Clock gameTime, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.player = player;
         this.display = display;
@@ -57,6 +59,7 @@ public class HUDView
         this.tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         this.tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
 
+        this.frameInventoryBar = new Rectangle();
         this.healthBarImg = View.loadAnImage("health.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.inventoryBarImg = View.loadAnImage("inventoryBar.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         Image cursorImg = View.loadAnImage("cursor.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
@@ -74,7 +77,6 @@ public class HUDView
     /** Applique une bordure de couleur noire autour de la barre d'inventaire */
     private Rectangle setFrameInventoryBar(ImageView inventoryBarImgView)
     {
-        Rectangle frameInventoryBar = new Rectangle();
         frameInventoryBar.setWidth(inventoryBarImg.getWidth() + (2*scaleMultiplicatorWidth));
         frameInventoryBar.setHeight(inventoryBarImg.getHeight() + (2*scaleMultiplicatorHeight));
         frameInventoryBar.setX(inventoryBarImgView.getX() - scaleMultiplicatorWidth);
@@ -191,18 +193,21 @@ public class HUDView
     }
 
     /** Affiche une horloge à aiguille visuelle à l'écran. */
-    public void displayTimer()
+    public void displayClock()
     {
         ImageView clockCursorView = new ImageView(clockCursorImg);
-        clockCursorView.setX(windowWidth/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
-
         ImageView clockView = new ImageView(clockImg);
-        clockView.setX(windowWidth/2);
-
         Rotate rotate = new Rotate();
-        rotate.setPivotX(windowWidth/2 + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
-        rotate.setPivotY(clockCursorImg.getHeight());
+        double yClock = inventoryBarImgView.getY() - clockImg.getHeight();
+        double xClock = inventoryBarImgView.getX() + (inventoryBarImg.getWidth()/2 - clockImg.getWidth()/2);
 
+        clockCursorView.setX(xClock + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2));
+        clockCursorView.setY(yClock);
+        clockView.setX(xClock);
+        clockView.setY(yClock);
+
+        rotate.setPivotX(xClock + (clockImg.getWidth()/2) - (clockCursorImg.getWidth()/2) + (clockCursorImg.getWidth()/2));
+        rotate.setPivotY(yClock + clockCursorImg.getHeight());
         gameTime.minutesProperty().addListener(((obs, oldV, newV) -> rotate.setAngle((newV.intValue()/8) - 90)));
         clockCursorView.getTransforms().add(rotate);
 
