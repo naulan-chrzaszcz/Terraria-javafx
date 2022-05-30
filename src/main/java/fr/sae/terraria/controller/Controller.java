@@ -20,11 +20,17 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.logging.Filter;
 
 
 public class Controller implements Initializable
@@ -37,6 +43,8 @@ public class Controller implements Initializable
     private Pane displayHUD;
     @FXML
     private Pane displayTiledMap;
+    @FXML
+    private  Pane filter;
 
     private Stage primaryStage;
     private Environment environment;
@@ -61,8 +69,30 @@ public class Controller implements Initializable
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        /*Circle c =new Circle(1000*scaleMultiplicatorWidth);
+        c.setLayoutX(500);
+        c.setLayoutY(500);
+        c.setOpacity(1);
+        c.setFill(Color.web("#f2f2c7"));
+        filter.getChildren().add(c);
+         */
+        Rectangle r = new Rectangle(16*30*scaleMultiplicatorWidth,16*16*scaleMultiplicatorHeight);
+        r.setFill(Color.web("#0d0d38"));
 
         this.addKeysEventListener(primaryStage);
+        Circle c =new Circle(50*scaleMultiplicatorWidth);
+        c.setLayoutX(500);
+        c.setLayoutY(500);
+        c.setFill(Color.YELLOW);
+        final Shape shape = Shape.subtract(r,c);
+        c.setLayoutX(800);
+        filter.getChildren().clear();
+        shape.subtract(shape,c);
+        final Shape shapdde = Shape.subtract(r,c);
+        filter.getChildren().add(shapdde);
+
+
+
     }
 
     /**

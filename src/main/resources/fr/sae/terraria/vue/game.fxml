@@ -34,7 +34,10 @@
          <children>
             <Pane id="sky"
                   fx:id="displayTiledMap" />
+            <Pane id="filter"
+                  fx:id="filter"/>
             <Pane fx:id="displayHUD"/>
+
          </children>
       </StackPane>
    </center>
