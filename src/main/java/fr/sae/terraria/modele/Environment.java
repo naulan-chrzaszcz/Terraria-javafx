@@ -40,7 +40,7 @@ public class Environment
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
 
         this.tileMaps = new TileMaps();
-        this.tileMaps.load(Terraria.srcPath + "maps/map_0.json");
+        this.tileMaps.load(Terraria.SRC_PATH + "maps/map_0.json");
 
         this.clock = new Clock();
         this.entities = FXCollections.observableArrayList();

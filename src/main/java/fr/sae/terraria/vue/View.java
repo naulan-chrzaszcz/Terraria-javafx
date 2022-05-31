@@ -57,7 +57,7 @@ public class View
         try {
             URL pathImg = Terraria.class.getResource(path).toURI().toURL();
             if (pathImg == null)
-                pathImg = new File(Terraria.srcPath + path).toURI().toURL();
+                pathImg = new File(Terraria.SRC_PATH + path).toURI().toURL();
             img = new Image(pathImg.toString());
         } catch (Exception ignored) {}
 
