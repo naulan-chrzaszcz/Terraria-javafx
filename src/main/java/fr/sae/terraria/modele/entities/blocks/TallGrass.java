@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.blocks;
+package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;

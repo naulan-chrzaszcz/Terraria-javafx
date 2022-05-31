@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.blocks;
+package fr.sae.terraria.modele.entities.blocks;
 
 
 public class Dirt extends Block

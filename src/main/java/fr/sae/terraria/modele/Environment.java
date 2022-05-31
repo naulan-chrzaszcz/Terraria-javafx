@@ -1,7 +1,7 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.blocks.TallGrass;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;

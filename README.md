@@ -12,7 +12,7 @@ IUT de Montreuil Paris8 | BUT Informatique en 1er année.
 ### Progression:
 [Les sprints](https://github.com/NaulaN/SAE-Terraria-Like/releases/tag/sprints)
 - [X] Sprint n°1
-- [ ] Sprint n°2
+- [X] Sprint n°2
 - [ ] Sprint n°3
 - [ ] Sprint n°4
 
