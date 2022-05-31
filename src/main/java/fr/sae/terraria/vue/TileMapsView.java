@@ -2,10 +2,10 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.blocks.Dirt;
-import fr.sae.terraria.modele.blocks.Stone;
-import fr.sae.terraria.modele.blocks.TallGrass;
-import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.entities.blocks.Dirt;
+import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;

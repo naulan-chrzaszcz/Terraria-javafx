@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.blocks;
+package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;

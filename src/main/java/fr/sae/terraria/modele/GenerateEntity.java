@@ -1,7 +1,7 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.blocks.TallGrass;
-import fr.sae.terraria.modele.blocks.Tree;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static fr.sae.terraria.modele.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
-import static fr.sae.terraria.modele.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
-import static fr.sae.terraria.modele.blocks.Tree.TREE_SPAWN_RATE;
-import static fr.sae.terraria.modele.blocks.Tree.WHEN_SPAWN_A_TREE;
+import static fr.sae.terraria.modele.entities.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
+import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.blocks.Tree.WHEN_SPAWN_A_TREE;
 import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.Rabbit.WHEN_SPAWN_A_RABBIT;
 

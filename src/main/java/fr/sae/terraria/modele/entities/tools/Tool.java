@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.tools;
+package fr.sae.terraria.modele.entities.tools;
 
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
