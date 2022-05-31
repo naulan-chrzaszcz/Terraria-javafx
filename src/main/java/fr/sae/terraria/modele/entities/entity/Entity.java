@@ -11,18 +11,24 @@ import java.util.Map;
 
 
 /**
- * <h1>La classes Entity</h1>
- * <h2>Description:</h2>
+ * <h1><b>La classes Entity</b></h1>
+ * <h2><u>Description:</u></h2>
  *
- * <p>La classe entity correspond tous les objets visible du jeu,
+ * <p>La <b>classe entity correspond tous les objets visible du jeu</b>,
  * contient des fonctions privates qui peuvent êtres implémenter grâce au interface mise à disposition</p>
  * <p></p>
  * <p>C'est interfaces agissent comme une sorte de pâte à modelé, ils permettent surtout de
  * rendre public les fonctions de Entity qui sont eux protected</p>
  *
- * <h2>Comment l'utilisé ?</h2>
+ * <h2><u>Comment l'utiliser ?</u></h2>
  * <p>Il suffit d'extend des objects qui vous souhaitez êtres des entitées</p>
- * <img src="src/main/resources/fr/sae/terraria/docs/ExampleExtendEntity.PNG">
+ * <p><u>Exemple de code qui hérite de Entity:</u></p>
+ * <img src="https://raw.githubusercontent.com/NaulaN/SAE-Terraria-Like/develop/src/main/resources/fr/sae/terraria/docs/ExampleExtendEntity.PNG">
+ * <p>Donc sur cette exemple dans le jeu, le lapin est considèrer comme une entités.</p>
+ * <p></p>
+ * <p>Toutes les méthodes/fonctions protected sont appelable vers l'extérieur d'un classes qui l'hérite grâce à des interfaces.</p>
+ * <p>Donc pour avoir correctement les fonctions:</p>
+ * <img src="">
  */
 public abstract class Entity
 {
