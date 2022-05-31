@@ -2,12 +2,8 @@ package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Player;
-import fr.sae.terraria.modele.entities.Rabbit;
-import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.MovableObjectType;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
@@ -82,8 +78,7 @@ public class Environment
             GenerateEntity.tallGrass(this);
             GenerateEntity.rabbit(this);
 
-            for (Entity entity : entities)
-            {
+            for (Entity entity : entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
 
