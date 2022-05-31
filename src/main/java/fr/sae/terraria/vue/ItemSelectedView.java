@@ -6,7 +6,6 @@ import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
-import fr.sae.terraria.modele.items.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;

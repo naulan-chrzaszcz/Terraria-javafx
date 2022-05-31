@@ -1,13 +1,9 @@
 package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
-import fr.sae.terraria.modele.entities.entity.Animation;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.entity.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -19,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class Player extends Entity implements CollideObjectType
+public class Player extends Entity implements CollideObjectType, MovableObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
     public static final int BLOCK_STACKING_MAX = 16;
@@ -68,93 +64,27 @@ public class Player extends Entity implements CollideObjectType
             this.gravity.timer = .0;
         }
 
-        this.setX(this.getX() + this.offset[0] * this.getVelocity());
+        this.move();
 
         if (this.rect != null)
             this.rect.updates(x.get(), y.get());
         animation.loop();
     }
 
+    public void move() { this.setX(this.getX() + this.offset[0] * this.getVelocity()); }
     public void collide()
     {
-        int widthTile = environment.widthTile; int heightTile = environment.heightTile;
-        TileMaps tileMaps = environment.getTileMaps();
+        Map<String, Boolean> whereCollide = super.collide(this.environment);
 
-        // Detection vide en dessous
-        int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
-        int posX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
-
-        boolean footInTheVoid = tileMaps.getTile(posX, yBottom+1) == TileMaps.SKY;
-        if (footInTheVoid)
-            this.air = true;
-
-        // Detection collision gauche droite
-        if (this.offset[0] != Entity.IDLE) {
-            int yTop = (int) (getY()+COLLISION_TOLERANCE)/heightTile;
-            int futurePositionX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)+(velocity*offset[0])) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
-
-            // Il gère les deux car futurePositionX change dynamiquement suivant l'offset
-            boolean isCollideLeftOrRight = tileMaps.getTile(futurePositionX, yTop) != TileMaps.SKY || tileMaps.getTile(futurePositionX, yBottom) != TileMaps.SKY;
-            if (isCollideLeftOrRight)
-                this.offset[0] = Entity.IDLE;
-        }
-
-        // Detection collision en bas et en haut
-        if (this.offset[1] != Entity.IDLE) {
-            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
-            int xRight = (int) ((getX()+getRect().getWidth())-COLLISION_TOLERANCE)/widthTile;
-
-            // Tombe
-            if (this.offset[1] == Entity.IS_FALLING) {
-                this.gravity.degInit = 0;
-                double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
-
-                boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-                if (isCollideBottom) {
-                    this.setJumpPosInit();
-                    this.gravity.timer = 0;
-                    this.offset[1] = Entity.IDLE;
-                } else setY(futurePositionY);
-            // Saute
-            } else if (this.offset[1] == Entity.IS_JUMPING) {
-                double futurePositionY = gravity.formulaOfTrajectory();
-                this.air = true;
-
-                boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-
-                // Quand le joueur monte
-                if ((gravity.flightTime/2) >= gravity.timer) {
-                    if (isCollideTop) {
-                        this.fall();
-                    } else setY(futurePositionY);
-                // Quand le joueur decent
-                } else {
-                    boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-
-                    if (isCollideTop) {
-                        this.fall();
-                    } else if (isCollideBottom) {
-                        this.setJumpPosInit();
-                        this.gravity.timer = 0;
-                        this.offset[1] = Entity.IDLE;
-                        this.air = false;
-                    } else setY(futurePositionY);
-                }
-            }
-        } else if (this.air) {
-            this.gravity.degInit = 0;
-            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
-            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
-            double futurePositionY = this.gravity.formulaOfTrajectory() + this.rect.getHeight();
-
-            boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-            if (isCollideBottom) {
-                this.offset[1] = Entity.IDLE;
-                this.air = false;
-                this.setJumpPosInit();
-            } else setY(futurePositionY - this.rect.getHeight());
+        if (!whereCollide.isEmpty()) {
+            if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
+                this.offset[0] = 0;
         }
     }
+    public void moveRight() { super.moveRight(); }
+    public void moveLeft() { super.moveLeft(); }
+    public void jump() { super.jump(); }
+    public void fall() { super.fall(); }
 
     /** Lie les inputs au clavier à une ou des actions. */
     public void eventInput()

@@ -41,28 +41,32 @@ public class TallGrass extends Block implements ReproductiveObjectType
     public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();
-        List<Entity> entities = environment.getEntities();
 
-        int left = 0;
-        int right = 0;
-        for (int x = 0; x < entities.size(); x++) {
-            if (entities.get(x).getX() == (getX() - environment.widthTile) && entities.get(x).getY() == getY())
-                left++;
-            if (entities.get(x).getX() == (getX() + environment.widthTile) && entities.get(x).getY() == getY())
-                right++;
-        }
+        boolean tallGrassMustReproduce = environment.getTicks()%TallGrass.REPRODUCTION_RATE == 0;
+        if (tallGrassMustReproduce) {
+            List<Entity> entities = environment.getEntities();
 
-        int x = -1;
-        int y = (int) (getY()/environment.heightTile)+1;
-        if (left == 0)
-            x = (int) (getX() - environment.widthTile)/environment.widthTile;
-        else if (right == 0)
-            x = (int) (getX() + environment.widthTile)/environment.widthTile;
+            int left = 0;
+            int right = 0;
+            for (int x = 0; x < entities.size(); x++) {
+                if (entities.get(x).getX() == (getX() - environment.widthTile) && entities.get(x).getY() == getY())
+                    left++;
+                if (entities.get(x).getX() == (getX() + environment.widthTile) && entities.get(x).getY() == getY())
+                    right++;
+            }
 
-        if ((x >= 0 && x < environment.getTileMaps().getWidth()) && (y >= 0 && y < environment.getTileMaps().getHeight())) {
-            if (environment.getTileMaps().getTile(x, y) != TileMaps.SKY) {
-                TallGrass tallGrassChildren = new TallGrass((int) ((left == 0) ? (getX() - environment.widthTile) : (getX() + environment.widthTile)), (int) getY());
-                children.add(tallGrassChildren);
+            int x = -1;
+            int y = (int) (getY()/environment.heightTile)+1;
+            if (left == 0)
+                x = (int) (getX() - environment.widthTile)/environment.widthTile;
+            else if (right == 0)
+                x = (int) (getX() + environment.widthTile)/environment.widthTile;
+
+            if ((x >= 0 && x < environment.getTileMaps().getWidth()) && (y >= 0 && y < environment.getTileMaps().getHeight())) {
+                if (environment.getTileMaps().getTile(x, y) != TileMaps.SKY) {
+                    TallGrass tallGrassChildren = new TallGrass((int) ((left == 0) ? (getX() - environment.widthTile) : (getX() + environment.widthTile)), (int) getY());
+                    children.add(tallGrassChildren);
+                }
             }
         }
 

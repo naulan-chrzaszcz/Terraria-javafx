@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.MovableObjectType;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
@@ -95,26 +96,16 @@ public class Environment
             for (Entity entity : entities)
             {
                 // Fait sauter ou non le lapin
-                if (entity instanceof Rabbit) {
-                    boolean mustJump = ticks%Rabbit.JUMP_FREQUENCY == 0;
-                    if (mustJump) {
-                        boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
-                        if (jumpOrNot && entity.offset[1] != Entity.IS_FALLING)
-                            entity.jump();
-                    }
-                }
+                if (entity instanceof MovableObjectType) {
 
-                if (entity instanceof CollideObjectType) {
                     this.worldLimit(entity);
-                    ((CollideObjectType) entity).collide();
                 }
 
-                if (entity instanceof ReproductiveObjectType) {
-                    // Reproduit les hautes herbes
-                    boolean tallGrassMustReproduce = ticks%TallGrass.REPRODUCTION_RATE == 0;
-                    if (entity instanceof TallGrass && tallGrassMustReproduce)
-                        entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
-                }
+                if (entity instanceof CollideObjectType)
+                    ((CollideObjectType) entity).collide();
+
+                if (entity instanceof ReproductiveObjectType)
+                    entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
                 entity.updates();
             }
 
