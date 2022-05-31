@@ -1,16 +1,18 @@
 package fr.sae.terraria.modele.entities.entity;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 
 import java.util.List;
 
 
 /**
- * Permet de regrouper les entités qui peuvent se reproduire et d'implémenter cette fonctionnalité.
+ * <h1>ReproductionObjectType</h1>
+ * <h2><u>Description:</u></h2>
+ * <p>Il permet de savoir si l'entité qui implemente cette interface est une entité qui peut se reproduire entre eux.</p>
  *
  * @see fr.sae.terraria.modele.entities.Rabbit
- * @see TallGrass
+ * @see fr.sae.terraria.modele.entities.blocks.TallGrass
+ * @author CHRZASZCZ Naulan
  */
 public interface ReproductiveObjectType
 {
