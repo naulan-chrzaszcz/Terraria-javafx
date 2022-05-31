@@ -99,7 +99,8 @@
                 </top>
 
                 <center>
-                    <Pane prefHeight="200.0"
+                    <Pane fx:id="displayInventory"
+                          prefHeight="200.0"
                           prefWidth="200.0"
                           BorderPane.alignment="CENTER"/>
                 </center>

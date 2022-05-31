@@ -44,11 +44,12 @@ public class GameController implements Initializable
     private  Pane filter;
 
     private Stage primaryStage;
-    private Environment environment;
 
     // TODO: plutot mettre un DoubleProperty a c'est deux variables
     private double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
     private double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
+    public Environment environment;
+    public Player player = null;
 
 
     public GameController(Stage primaryStage)
@@ -65,6 +66,7 @@ public class GameController implements Initializable
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.player = this.environment.getPlayer();
         new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, filter);
         /*Circle c =new Circle(1000*scaleMultiplicatorWidth);
         c.setLayoutX(500);

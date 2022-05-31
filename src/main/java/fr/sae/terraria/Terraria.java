@@ -33,22 +33,26 @@ public class Terraria extends Application
 
     public static void main(String[] args) { launch(); }
 
+    private FXMLLoader loadFXML(String path)
+    {
+        URL pathGameFxml = Terraria.class.getResource(path);
+        if (Objects.isNull(pathGameFxml)) try {
+            pathGameFxml = new File(SRC_PATH + path).toURI().toURL();
+        } catch (MalformedURLException e) { throw new RuntimeException(e); }
+
+        return new FXMLLoader(pathGameFxml);
+    }
+
     public void start(Stage stage) throws IOException
     {
-        URL pathGameFxml = Terraria.class.getResource("vue/game.fxml");
-        if (Objects.isNull(pathGameFxml))
-            pathGameFxml = new File(SRC_PATH + "vue/game.fxml").toURI().toURL();
-        
-        FXMLLoader fxmlLoader = new FXMLLoader(pathGameFxml);
         GameController gameController = new GameController(stage);
+        MenuController menuController = new MenuController(stage);
+
+        FXMLLoader fxmlLoader = this.loadFXML("vue/game.fxml");
         fxmlLoader.setController(gameController);
         Scene game = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
 
-        URL pathMenuFxml = Terraria.class.getResource("vue/menu.fxml");
-        if (Objects.isNull(pathMenuFxml))
-            pathMenuFxml = new File(SRC_PATH + "vue/menu.fxml").toURI().toURL();
-        fxmlLoader = new FXMLLoader(pathMenuFxml);
-        MenuController menuController = new MenuController(stage);
+        fxmlLoader = this.loadFXML("vue/menu.fxml");
         fxmlLoader.setController(menuController);
         Scene menu = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
 
@@ -63,12 +67,28 @@ public class Terraria extends Application
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.M && timePressedKey[0] <= 1)
                 switchScene.set(!switchScene.get());
-            key.consume();
 
             timePressedKey[0]++;
+            key.consume();
         });
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> timePressedKey[0] = 1);
         stage.sizeToScene();
+
+        stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
+            if (switchScene.get()) {
+                if (!Objects.isNull(menuController.player)) {
+                    gameController.player = menuController.player;
+                    menuController.loop.stop();
+                    gameController.environment.getLoop().play();
+                }
+            } else {
+                if (!Objects.isNull(gameController.player)) {
+                    menuController.player = gameController.player;
+                    menuController.loop.play();
+                    gameController.environment.getLoop().stop();
+                }
+            }
+        }));
 
         stage.show();
     }

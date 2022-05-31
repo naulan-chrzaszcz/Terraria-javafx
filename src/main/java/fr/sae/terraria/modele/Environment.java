@@ -32,6 +32,7 @@ public class Environment
     public int widthTile;
     public int heightTile;
     private int ticks = 0;
+    private Timeline loop;
 
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
@@ -60,8 +61,8 @@ public class Environment
     /** La boucle principale du jeu  */
     private void gameLoop()
     {
-        Timeline loop = new Timeline();
-        loop.setCycleCount(Animation.INDEFINITE);
+        this.loop = new Timeline();
+        this.loop.setCycleCount(Animation.INDEFINITE);
 
         List<Entity> entitiesAtAdded = new ArrayList<>();
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
@@ -94,8 +95,8 @@ public class Environment
             this.ticks++;
         }));
 
-        loop.getKeyFrames().add(keyFrame);
-        loop.play();
+        this.loop.getKeyFrames().add(keyFrame);
+        this.loop.play();
     }
 
 
@@ -103,5 +104,6 @@ public class Environment
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
     public Clock getGameClock() { return this.clock; }
+    public Timeline getLoop() { return this.loop; }
     public int getTicks() { return this.ticks; }
 }
