@@ -157,8 +157,6 @@ public class HUDView
     /** Affiche la barre d'inventaire */
     public void displayInventoryBar()
     {
-        Torch torch = new Torch(0, 0);
-        this.player.pickup(torch);
         this.inventoryBarImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2));
         this.inventoryBarImgView.setY((windowHeight - inventoryBarImg.getHeight()) - tileHeight);
 

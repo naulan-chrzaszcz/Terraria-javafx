@@ -82,6 +82,8 @@ public class TileMapsView
 
     public void displayMaps(TileMaps tiles)
     {
+        Torch torch = new Torch(0, 0);
+        this.environment.getPlayer().pickup(torch);
         for (int y = 0; y < tiles.getHeight() ; y++)
             for (int x = 0 ; x < tiles.getWidth() ; x++)
                 switch (tiles.getTile(x, y))

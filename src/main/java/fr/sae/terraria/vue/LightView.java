@@ -2,6 +2,8 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.blocks.Torch;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -10,12 +12,14 @@ import javafx.scene.shape.Shape;
 public class LightView {
     private static final double opacityIter = 0.0017;
 
+    private ObservableList<Torch> torches;
     private Clock clock;
     private Pane filterPane;
     private double opacityNight;
     private Shape air;
     private Shape fade;
     private Shape tunnel;
+
 
     public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth) {
 
