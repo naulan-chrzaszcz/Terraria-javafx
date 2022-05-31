@@ -68,28 +68,33 @@ public class Controller implements Initializable
         scaleMultiplicatorHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, filter);
         /*Circle c =new Circle(1000*scaleMultiplicatorWidth);
         c.setLayoutX(500);
         c.setLayoutY(500);
         c.setOpacity(1);
         c.setFill(Color.web("#f2f2c7"));
         filter.getChildren().add(c);
-         */
+
         Rectangle r = new Rectangle(16*30*scaleMultiplicatorWidth,16*16*scaleMultiplicatorHeight);
         r.setFill(Color.web("#0d0d38"));
-
+*/
         this.addKeysEventListener(primaryStage);
+/*
         Circle c =new Circle(50*scaleMultiplicatorWidth);
         c.setLayoutX(500);
         c.setLayoutY(500);
         c.setFill(Color.YELLOW);
         final Shape shape = Shape.subtract(r,c);
-        c.setLayoutX(800);
         filter.getChildren().clear();
+        Circle ca = new Circle(300);
+        ca.setTranslateX(50);
+        ca.setTranslateY(50);
         shape.subtract(shape,c);
-        final Shape shapdde = Shape.subtract(r,c);
+        final Shape shapdde = Shape.subtract(shape,ca);
         filter.getChildren().add(shapdde);
+*/
+
 
 
 

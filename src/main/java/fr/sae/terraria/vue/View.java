@@ -29,13 +29,17 @@ public class View
                 Pane displayTiledMap,
                 Pane displayHUD,
                 double scaleMultiplicatorWidth,
-                double scaleMultiplicatorHeight)
+                double scaleMultiplicatorHeight,
+                Pane filter)
     {
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.displayPlayer(displayHUD);
+
+        LightView lightView = new LightView(environment.getGameClock(),filter,scaleMultiplicatorHeight,scaleMultiplicatorWidth);
+        lightView.setLightElements();
 
         HUDView hudView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         hudView.displayInventoryBar();

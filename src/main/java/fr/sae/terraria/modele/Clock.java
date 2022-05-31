@@ -7,13 +7,18 @@ public class Clock
 {
     public static final int ONE_MINUTE_INGAME = 37;
     public static final int ONE_DAY_INGAME = 1440;
+    public static final int MIDNIGHT_INGAME =0;
+
+    public static final int MINUTES_IN_A_DAY = 1440;
+    public static final int FOUR_PM_INGAME = 960;
+    public static final int EIGHT_AM_INGAME = 480;
     private final SimpleIntegerProperty minutes;
     private final SimpleIntegerProperty days;
 
 
     public Clock()
     {
-        minutes = new SimpleIntegerProperty(0);
+        minutes = new SimpleIntegerProperty(EIGHT_AM_INGAME+1);
         days = new SimpleIntegerProperty(0);
     }
 
