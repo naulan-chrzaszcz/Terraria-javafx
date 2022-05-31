@@ -3,7 +3,6 @@ package fr.sae.terraria.modele.entities.entity;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -11,6 +10,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+/**
+ * <h1><b>La classes Entity</b></h1>
+ * <h2><u>Description:</u></h2>
+ *
+ * <p>La <b>classe entity correspond tous les objets visible du jeu</b>,
+ * contient des fonctions privates qui peuvent êtres implémenter grâce au interface mise à disposition</p>
+ * <p></p>
+ * <p>C'est interfaces agissent comme une sorte de pâte à modelé, ils permettent surtout de
+ * rendre public les fonctions de Entity qui sont eux protected</p>
+ *
+ * <h2><u>Comment l'utiliser ?</u></h2>
+ * <p>Il suffit d'extend des objects qui vous souhaitez êtres des entitées</p>
+ * <p><u>Exemple de code qui hérite de Entity:</u></p>
+ * <img src="https://raw.githubusercontent.com/NaulaN/SAE-Terraria-Like/develop/src/main/resources/fr/sae/terraria/docs/ExampleExtendEntity.PNG">
+ * <p>Donc sur cette exemple dans le jeu, le lapin est considèrer comme une entités.</p>
+ * <p></p>
+ * <p>Toutes les méthodes/fonctions protected sont appelable vers l'extérieur d'un classes qui l'hérite grâce à des interfaces.</p>
+ * <p>Donc pour avoir correctement les fonctions:</p>
+ * <img src="">
+ */
 public abstract class Entity
 {
     public static final int IS_FALLING = -1;
@@ -26,11 +45,11 @@ public abstract class Entity
     protected final Gravity gravity = new Gravity();
     protected Animation animation = null;
     protected Rect rect = null;
-
-    protected double velocity = 1;
+    protected double velocity;
     protected double pvMax;
-    public int[] offset = new int[2];
-    public boolean air = false;
+    protected boolean air;
+
+    public int[] offset;
 
 
     /**
@@ -42,7 +61,11 @@ public abstract class Entity
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         this.pv = new SimpleDoubleProperty(0);
+
         this.pvMax = pv.get();
+        this.air = false;
+        this.offset = new int[2];
+        this.velocity = 1;
     }
 
 
@@ -149,23 +172,24 @@ public abstract class Entity
         return (exceedsScreenOnLeft || exceedsScreenOnRight);
     }
 
+
     public DoubleProperty getPvProperty() { return this.pv; }
     public DoubleProperty getXProperty() { return this.x; }
     public DoubleProperty getYProperty(){ return this.y; }
     public Animation getAnimation() { return this.animation; }
     public Gravity getGravity() { return this.gravity; }
     public Rect getRect() { return this.rect; }
+    public double getVelocity() { return this.velocity; }
     public double getPvMax() { return this.pv.get(); }
     public double getPv() { return this.pv.get(); }
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }
-    public double getVelocity() { return this.velocity; }
 
+    public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
+    public void setVelocity(double velocity) { this.velocity = velocity; }
     public void setPv(double pv) { this.pv.setValue(pv); this.pvMax = pv;}
     public void setX(double x) { this.x.setValue(x); }
     public void setY(double y) { this.y.setValue(y); }
-    public void setVelocity(double velocity) { this.velocity = velocity; }
-    public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
 }
 
 

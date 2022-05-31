@@ -74,6 +74,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     }
 
     public void move() { this.setX(this.getX() + this.offset[0] * this.getVelocity()); }
+
     public void collide()
     {
         Map<String, Boolean> whereCollide = super.collide(this.environment);
@@ -83,6 +84,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
                 this.offset[0] = 0;
         }
     }
+
     public void moveRight() { super.moveRight(); }
     public void moveLeft() { super.moveLeft(); }
     public void jump() { super.jump(); }
