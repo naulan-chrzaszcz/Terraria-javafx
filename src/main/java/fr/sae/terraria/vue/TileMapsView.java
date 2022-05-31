@@ -2,10 +2,7 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Tree;
+import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
@@ -29,6 +26,7 @@ public class TileMapsView
     private int tileHeight;
     private Clock clock;
 
+    private Image torchImg;
     private Image floorTopImg;
     private Image floorLeftImg;
     private Image floorRightImg;
@@ -51,6 +49,7 @@ public class TileMapsView
         this.floorRightImg = View.loadAnImage("tiles/floor-right.png", tileWidth, tileHeight);
         this.stoneImg = View.loadAnImage("tiles/rock-fill.png", tileWidth, tileHeight);
         this.dirtImg = View.loadAnImage("tiles/dirt-top.png", tileWidth, tileHeight);
+        this.torchImg = View.loadAnImage("tiles/torch.png", tileWidth, tileHeight);
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
@@ -67,10 +66,13 @@ public class TileMapsView
                 if (c.getList().get(0) instanceof Rabbit) {
                     RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
                     rabbitView.displayRabbit(display);
-                } if (c.getList().get(0) instanceof Dirt)
+                } if (c.getList().get(0) instanceof Torch){
+                    createTorch((Torch) c.getList().get(0));
+                }if (c.getList().get(0) instanceof Dirt)
                     display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
                 if (c.getList().get(0) instanceof Stone)
                     display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
+
             }
         });
     }
@@ -179,6 +181,12 @@ public class TileMapsView
         stoneEntity.setRect(tileWidth, tileHeight);
         display.getChildren().add(View.createImageView(stoneEntity, stoneImg));
         environment.getEntities().add(stoneEntity);
+    }
+
+    private void createTorch(Torch torch)
+    {
+        torch.setRect(tileWidth, tileHeight);
+        display.getChildren().add(View.createImageView(torch, torchImg));
     }
 
     private void createDirt(int x, int y)

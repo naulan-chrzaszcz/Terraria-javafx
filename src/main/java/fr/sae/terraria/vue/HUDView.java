@@ -7,6 +7,7 @@ import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -123,6 +124,10 @@ public class HUDView
                 item = View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight);
             else if (this.player.getInventory().get(integer).get(0) instanceof TallGrass)
                 item = View.loadAnImage("tiles/tall-grass.png", itemInventoryWidth, itemInventoryHeight);
+            else if (this.player.getInventory().get(integer).get(0) instanceof Torch){
+                item = View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight);
+            }
+
 
             if (!Objects.isNull(item)) {
                 itemView.setImage(item);
@@ -151,6 +156,8 @@ public class HUDView
     /** Affiche la barre d'inventaire */
     public void displayInventoryBar()
     {
+        Torch torch = new Torch(0, 0);
+        this.player.pickup(torch);
         this.inventoryBarImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2));
         this.inventoryBarImgView.setY((windowHeight - inventoryBarImg.getHeight()) - tileHeight);
 

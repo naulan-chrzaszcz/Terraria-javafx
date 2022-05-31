@@ -3,6 +3,7 @@ package fr.sae.terraria.modele.entities;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.*;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -149,6 +150,9 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
                     this.inventory.get(i).add(pickupObject);
                     estComplet = false;
                 } else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone) {
+                    this.inventory.get(i).add(pickupObject);
+                    estComplet = false;
+                } else if (this.inventory.get(i).get(0) instanceof Torch && pickupObject instanceof Torch) {
                     this.inventory.get(i).add(pickupObject);
                     estComplet = false;
                 }
