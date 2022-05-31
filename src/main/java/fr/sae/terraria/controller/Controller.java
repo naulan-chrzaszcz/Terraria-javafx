@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.vue.View;
@@ -192,6 +193,11 @@ public class Controller implements Initializable
                         } else if (player.getItemSelected() instanceof Stone) {
                             entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
                             environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
+                        } else if (player.getItemSelected() instanceof Torch) {
+                            if (environment.getTileMaps().getTile((int) mouseX/tileWidth, (int) (mouseY/tileHeight )+1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX/tileWidth, (int) (mouseY/tileHeight )) == TileMaps.SKY){
+                                environment.getEntities().add(0, new Torch(xBlock*tileWidth, yBlock*tileWidth));
+                            }
+
                         }
 
                         if(!Objects.isNull(entity)) {
