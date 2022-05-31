@@ -65,6 +65,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
             this.gravity.timer = .0;
         }
 
+        this.worldLimit();
         this.move();
 
         if (this.rect != null)
@@ -86,6 +87,12 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public void moveLeft() { super.moveLeft(); }
     public void jump() { super.jump(); }
     public void fall() { super.fall(); }
+
+    public void worldLimit()
+    {
+        if (super.worldLimit(environment))
+            offset[0] = 0;
+    }
 
     /** Lie les inputs au clavier à une ou des actions. */
     public void eventInput()

@@ -46,6 +46,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         }
 
         this.move();
+        this.worldLimit();
 
         if (this.rect != null)
             this.rect.updates(x.get(), y.get());
@@ -89,6 +90,12 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public void jump() { offset[1] = Entity.IS_JUMPING; }
     /** Modifie l'offset qui permet de tomber */
     public void fall() { offset[1] = Entity.IS_FALLING; }
+
+    public void worldLimit()
+    {
+        if (super.worldLimit(environment))
+            offset[0] = (-1) * offset[0];
+    }
 
 
     public Animation getAnimation() { return animation; }

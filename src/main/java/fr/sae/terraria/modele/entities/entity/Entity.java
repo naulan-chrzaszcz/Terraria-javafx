@@ -1,7 +1,9 @@
 package fr.sae.terraria.modele.entities.entity;
 
+import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -86,7 +88,7 @@ public abstract class Entity
 
                 boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
                 if (isCollideBottom) {
-                    this.setJumpPosInit();
+                    this.gravity.setJumpPosInit(this);
                     this.gravity.timer = 0;
                     this.offset[1] = Entity.IDLE;
                 } else setY(futurePositionY);
@@ -109,7 +111,7 @@ public abstract class Entity
                     if (isCollideTop) {
                         this.fall();
                     } else if (isCollideBottom) {
-                        this.setJumpPosInit();
+                        this.gravity.setJumpPosInit(this);
                         this.gravity.timer = 0;
                         this.offset[1] = Entity.IDLE;
                         this.air = false;
@@ -126,25 +128,26 @@ public abstract class Entity
             if (isCollideBottom) {
                 this.offset[1] = Entity.IDLE;
                 this.air = false;
-                this.setJumpPosInit();
+                this.gravity.setJumpPosInit(this);
             } else setY(futurePositionY - this.rect.getHeight());
         }
 
         return whereCollide;
     }
 
-    /** Modifie le xInit et le yInit pour modifier le point de départ du saut ou de là où il tombe */
-    public void setJumpPosInit() { this.gravity.xInit = this.x.get(); this.gravity.yInit = this.y.get(); }
-
-
-    /** Modifie l'offset qui permet de le déplacer vers la droite */
     protected void moveRight() { offset[0] = Entity.IS_MOVING_RIGHT; }
-    /** Modifie l'offset qui permet de le déplacer vers la gauche */
     protected void moveLeft() { offset[0] = Entity.IS_MOVING_LEFT; }
-    /** Modifie l'offset qui permet de le faire sauter */
     protected void jump() { offset[1] = Entity.IS_JUMPING; }
-    /** Modifie l'offset qui permet de tomber */
     protected void fall() { offset[1] = Entity.IS_FALLING; }
+
+    protected boolean worldLimit(Environment environment)
+    {
+        double widthScreen = (environment.scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
+
+        boolean exceedsScreenOnLeft = offset[0] == Entity.IS_MOVING_LEFT && getX() < 0;
+        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX() > (widthScreen - getRect().getWidth());
+        return (exceedsScreenOnLeft || exceedsScreenOnRight);
+    }
 
     public DoubleProperty getPvProperty() { return this.pv; }
     public DoubleProperty getXProperty() { return this.x; }

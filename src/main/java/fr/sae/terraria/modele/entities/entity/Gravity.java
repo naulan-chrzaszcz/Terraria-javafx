@@ -34,6 +34,10 @@ public class Gravity
         return ((vInit * amplitude) * Math.sin(degInit)) / Gravity.VALUE;
     }
 
+    /** Modifie le xInit et le yInit pour modifier le point de départ du saut ou de là où il tombe */
+    protected void setJumpPosInit(Entity entity) { this.xInit = entity.getX(); this.yInit = entity.getY(); }
+
+
     public void setXInit(double newXInit) { xInit = newXInit; }
     public void setYInit(double newYInit) { yInit = newYInit; }
 }

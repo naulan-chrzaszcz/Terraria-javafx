@@ -3,6 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
