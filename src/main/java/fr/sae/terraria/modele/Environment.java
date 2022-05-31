@@ -1,9 +1,10 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.MovableObjectType;
@@ -60,17 +61,6 @@ public class Environment
         gameLoop();
     }
 
-    /** Evite que l'entité sort de la fenêtre. */
-    private void worldLimit(Entity entity)
-    {
-        double widthScreen = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
-
-        boolean exceedsScreenOnLeft = entity.offset[0] == Entity.IS_MOVING_LEFT && entity.getX() < 0;
-        boolean exceedsScreenOnRight = entity.offset[0] == Entity.IS_MOVING_RIGHT && entity.getX() > (widthScreen - entity.getRect().getWidth());
-        if (exceedsScreenOnLeft || exceedsScreenOnRight)
-            entity.offset[0] = (entity instanceof Rabbit) ? ((-1) * entity.offset[0]) : Entity.IDLE;
-    }
-
     /** La boucle principale du jeu  */
     private void gameLoop()
     {
@@ -81,7 +71,6 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             this.player.offset[0] = Entity.IDLE;
             this.player.eventInput();
-            this.worldLimit(this.player);
 
             // Ajoute les entités ReproductiveObjectType
             for (Entity entity : entitiesAtAdded)
@@ -95,12 +84,6 @@ public class Environment
 
             for (Entity entity : entities)
             {
-                // Fait sauter ou non le lapin
-                if (entity instanceof MovableObjectType) {
-
-                    this.worldLimit(entity);
-                }
-
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
 

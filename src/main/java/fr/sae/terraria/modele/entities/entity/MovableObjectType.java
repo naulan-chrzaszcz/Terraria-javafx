@@ -11,6 +11,8 @@ public interface MovableObjectType
     void jump();
     /** Modifie l'offset qui permet de tomber */
     void fall();
+    /** Evite que l'entité sort de la fenêtre. */
+    void worldLimit();
     /** Fait bouger le joueur selon les instructions mise dans move() */
     void move();
 }
