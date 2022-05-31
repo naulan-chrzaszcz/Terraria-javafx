@@ -14,8 +14,8 @@ import java.util.Map;
  * <h1><b>La classes Entity</b></h1>
  * <h2><u>Description:</u></h2>
  *
- * <p>La <b>classe entity correspond tous les objets visible du jeu</b>,
- * contient des fonctions privates qui peuvent êtres implémenter grâce au interface mise à disposition</p>
+ * <p>Correspond à un element physique qui doit avoir des coordonnées sur un environment.</p>
+ * <p>contient des fonctions privates qui peuvent êtres implémenter grâce au interface mise à disposition au sain du même package</p>
  * <p></p>
  * <p>C'est interfaces agissent comme une sorte de pâte à modelé, ils permettent surtout de
  * rendre public les fonctions de Entity qui sont eux protected</p>
@@ -23,12 +23,19 @@ import java.util.Map;
  * <h2><u>Comment l'utiliser ?</u></h2>
  * <p>Il suffit d'extend des objects qui vous souhaitez êtres des entitées</p>
  * <p><u>Exemple de code qui hérite de Entity:</u></p>
- * <img src="https://raw.githubusercontent.com/NaulaN/SAE-Terraria-Like/develop/src/main/resources/fr/sae/terraria/docs/ExampleExtendEntity.PNG">
+ * <img src="https://raw.githubusercontent.com/NaulaN/SAE-Terraria-Like/develop/src/main/resources/fr/sae/terraria/docs/ExampleExtendEntity.PNG"/>
  * <p>Donc sur cette exemple dans le jeu, le lapin est considèrer comme une entités.</p>
  * <p></p>
  * <p>Toutes les méthodes/fonctions protected sont appelable vers l'extérieur d'un classes qui l'hérite grâce à des interfaces.</p>
  * <p>Donc pour avoir correctement les fonctions:</p>
- * <img src="">
+ *
+ * <p>Sont implementable grâce à l'interface MovableObjectType</p>
+ * @see CollideObjectType
+ * @see MovableObjectType
+ * @see ReproductiveObjectType
+ * @see StowableObjectType
+ *
+ * @author CHRZASZCZ Naulan
  */
 public abstract class Entity
 {
@@ -70,11 +77,19 @@ public abstract class Entity
 
 
     /**
-     * Permet de mettre à jour les valeurs qui concerne l'entité
-     *   et qui doit rester au sain de l'objet
+     * Il permet à chaque passage de la boucle du jeu, de faire diverses fonctions liée à l'Entité.
+     *  Certaine fonction qui sera implementé grâce à des interfaces sera probablement obligatoirement mise dans cette fonction.
      */
     public abstract void updates();
 
+    /**
+     * Permet de detectés les collisions sur la carte et de son environment.
+     *
+     * @param environment Permet de savoir les tailles des tiles et d'avoir la matrixe de données de la carte.
+     * @return Il vas retourner une HashMap qui ne contiendra pas de clé ou 4 clés maximum
+     *         left, right, top, bottom sera les clés qui peuvent être present lors d'une detection de collision.
+     *         Il permettra de faire des actions personnalisées les actions faites par l'entité suivant d'où il rentre en collision avec son environment.
+     */
     protected Map<String, Boolean> collide(Environment environment)
     {
         int widthTile = environment.widthTile; int heightTile = environment.heightTile;
@@ -158,11 +173,17 @@ public abstract class Entity
         return whereCollide;
     }
 
-    protected void moveRight() { offset[0] = Entity.IS_MOVING_RIGHT; }
-    protected void moveLeft() { offset[0] = Entity.IS_MOVING_LEFT; }
-    protected void jump() { offset[1] = Entity.IS_JUMPING; }
-    protected void fall() { offset[1] = Entity.IS_FALLING; }
+    protected void moveRight() { this.offset[0] = Entity.IS_MOVING_RIGHT; }
+    protected void moveLeft() { this.offset[0] = Entity.IS_MOVING_LEFT; }
+    protected void jump() { this.offset[1] = Entity.IS_JUMPING; }
+    protected void fall() { this.offset[1] = Entity.IS_FALLING; }
 
+    /**
+     * Lorsque le joueur sort de l'ecran et/ou de la carte, la fonction retourne une valeurs boolean qui sera manipulable sur les classes qui l'héritera.
+     * @param environment Permet d'avoir les informations naicessaire sur la carte et l'écran pour que l'entité ne sorte pas.
+     *
+     * @return false = ne sort pas | true = sort de l'écran soit vers la droite ou soit vers le bas
+     */
     protected boolean worldLimit(Environment environment)
     {
         double widthScreen = (environment.scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
