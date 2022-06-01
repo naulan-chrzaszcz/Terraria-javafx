@@ -10,21 +10,20 @@ import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.vue.View;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.input.*;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -33,7 +32,7 @@ import java.util.ResourceBundle;
 public class GameController implements Initializable
 {
     @FXML
-    private HBox title;
+    public HBox title;
     @FXML
     private BorderPane root;
     @FXML
@@ -41,13 +40,15 @@ public class GameController implements Initializable
     @FXML
     private Pane displayTiledMap;
     @FXML
+    private Pane displayHostileBeings;
+    @FXML
     private  Pane filter;
 
     private Stage primaryStage;
 
     // TODO: plutot mettre un DoubleProperty a c'est deux variables
-    private double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
-    private double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
+    public double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
+    public double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
     public Environment environment;
     public Player player = null;
 
@@ -67,36 +68,9 @@ public class GameController implements Initializable
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.player = this.environment.getPlayer();
-        new View(environment, displayTiledMap, displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight, filter);
-        /*Circle c =new Circle(1000*scaleMultiplicatorWidth);
-        c.setLayoutX(500);
-        c.setLayoutY(500);
-        c.setOpacity(1);
-        c.setFill(Color.web("#f2f2c7"));
-        filter.getChildren().add(c);
+        new View(environment, displayHostileBeings, displayTiledMap, displayHUD, filter, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
 
-        Rectangle r = new Rectangle(16*30*scaleMultiplicatorWidth,16*16*scaleMultiplicatorHeight);
-        r.setFill(Color.web("#0d0d38"));
-*/
         this.addKeysEventListener(primaryStage);
-/*
-        Circle c =new Circle(50*scaleMultiplicatorWidth);
-        c.setLayoutX(500);
-        c.setLayoutY(500);
-        c.setFill(Color.YELLOW);
-        final Shape shape = Shape.subtract(r,c);
-        filter.getChildren().clear();
-        Circle ca = new Circle(300);
-        ca.setTranslateX(50);
-        ca.setTranslateY(50);
-        shape.subtract(shape,c);
-        final Shape shapdde = Shape.subtract(shape,ca);
-        filter.getChildren().add(shapdde);
-*/
-
-
-
-
     }
 
     /**
@@ -120,15 +94,15 @@ public class GameController implements Initializable
         stage.addEventFilter(ScrollEvent.SCROLL, scroll -> {
             boolean scrollUp = scroll.getDeltaY() > 0;
             if (scrollUp)
-                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() + 1);
+                player.getPosCursorHorizontallyInventoryBarProperty().set(player.getPosCursorHorizontallyInventoryBar() + 1);
             boolean scrollDown = scroll.getDeltaY() < 0;
             if (scrollDown)
-                player.positionOfCursorInventoryBar.setValue(player.positionOfCursorInventoryBar.get() - 1);
+                player.getPosCursorHorizontallyInventoryBarProperty().set(player.getPosCursorHorizontallyInventoryBar() - 1);
 
-            if (player.positionOfCursorInventoryBar.get() > 8)
-                player.positionOfCursorInventoryBar.setValue(0);
-            if (player.positionOfCursorInventoryBar.get() < 0)
-                player.positionOfCursorInventoryBar.setValue(8);
+            if (player.getPosCursorHorizontallyInventoryBar() > (Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)-1)
+                player.getPosCursorHorizontallyInventoryBarProperty().set(0);
+            if (player.getPosCursorHorizontallyInventoryBar() < 0)
+                player.getPosCursorHorizontallyInventoryBarProperty().set((Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)-1);
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
@@ -217,9 +191,12 @@ public class GameController implements Initializable
                                 player.getGravity().xInit = player.getX();
                             }
 
-                            player.getInventory().get(player.positionOfCursorInventoryBar.get()).remove(player.getItemSelected());
-                            if (player.getInventory().get(player.positionOfCursorInventoryBar.get()).size()-1 >= 0)
-                                player.setItemSelected(player.getInventory().get(player.positionOfCursorInventoryBar.get()).get(player.getInventory().get(player.positionOfCursorInventoryBar.get()).size()-1));
+                            ObservableList<StowableObjectType> stacksSelected = player.getInventory()[player.getPosCursorVerticallyInventoryBar()][player.getPosCursorHorizontallyInventoryBar()];
+                            stacksSelected.remove(player.getItemSelected());
+                            if (stacksSelected.size()-1 >= 0) {
+                                int endLineStacks = stacksSelected.size()-1;
+                                player.setItemSelected(stacksSelected.get(endLineStacks));
+                            }
                         }
                     }
                 }

@@ -12,6 +12,7 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -96,16 +97,20 @@ public class HUDView
     /** Applique sur les toutes les cases de l'inventaire des écouteurs qui permet d'actualiser les images des items  */
     private void refreshItemsInventoryBar()
     {
-        for (int i = 0; i < this.player.getInventory().size(); i++)
-            this.player.getInventory().get(i).addListener((ListChangeListener<StowableObjectType>) c -> {
-                while(c.next())
-                    this.displayItemIntoInventoryBar();
-            });
+        for (int i = 0; i < Player.NB_LINES_INVENTORY; i++)
+            for (int j = 0; j < Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY; j++)
+                this.player.getInventory()[i][j].addListener((ListChangeListener<StowableObjectType>) c -> {
+                    while(c.next())
+                        this.displayItemIntoInventoryBar();
+                });
     }
 
     /** Affiche ou supprime les items qui rentrent ou sort de la barre d'inventaire  */
     private void displayItemIntoInventoryBar()
     {
+        int tileWidth = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
+        int tileHeight = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
+
         int itemInventoryWidth = (int) (tileWidth/1.5);
         int itemInventoryHeight = (int) (tileHeight/1.5);
 
@@ -116,34 +121,35 @@ public class HUDView
         int compteur = 0;
         for (int integer = 0 ; integer < nbElementDisplayed; integer++) {
             ImageView itemView = new ImageView();
-            Image item = null;
+            Image itemImg = null;
 
-            if (this.player.getInventory().get(integer).get(0) instanceof Dirt)
-                item = View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight);
-            else if (this.player.getInventory().get(integer).get(0) instanceof Stone)
-                item = View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight);
-            else if (this.player.getInventory().get(integer).get(0) instanceof TallGrass)
-                item = View.loadAnImage("tiles/tall-grass.png", itemInventoryWidth, itemInventoryHeight);
-            else if (this.player.getInventory().get(integer).get(0) instanceof Torch){
-                item = View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight);
+            ObservableList<StowableObjectType> item = this.player.getInventory()[player.getPosCursorVerticallyInventoryBar()][integer];
+            if (!item.isEmpty()) {
+                if (item.get(0) instanceof Dirt)
+                    itemImg = View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight);
+                else if (item.get(0) instanceof Stone)
+                    itemImg = View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight);
+                else if (item.get(0) instanceof TallGrass)
+                    itemImg = View.loadAnImage("tiles/tall-grass.png", itemInventoryWidth, itemInventoryHeight);
+                else if (item.get(0) instanceof Torch)
+                    itemImg = View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight);
             }
 
-
-            if (!Objects.isNull(item)) {
-                itemView.setImage(item);
-                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - item.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur));
-                itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - item.getHeight())/2));
+            if (!Objects.isNull(itemImg)) {
+                itemView.setImage(itemImg);
+                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/9) - itemImg.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/9)*compteur));
+                itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - itemImg.getHeight())/2));
 
                 int fontSize = (int) (5*scaleMultiplicatorWidth);
                 Label nbObjects = new Label();
                 nbObjects.setId("textInventoryBar");
                 nbObjects.setFont(new Font("Arial", fontSize));
-                nbObjects.setText(String.valueOf(this.player.getInventory().get(integer).size()));
+                nbObjects.setText(String.valueOf(this.player.getInventory()[player.getPosCursorHorizontallyInventoryBar()][integer].size()));
                 nbObjects.setLayoutX(itemView.getX());
-                nbObjects.setLayoutY(itemView.getY() + item.getHeight() - fontSize);
+                nbObjects.setLayoutY(itemView.getY() + itemImg.getHeight() - fontSize);
 
-                StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory().get(integer).size()));
-                this.player.getInventory().get(integer).addListener((ListChangeListener<StowableObjectType>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
+                StringProperty stringProperty = new SimpleStringProperty(String.valueOf(this.player.getInventory()[player.getPosCursorHorizontallyInventoryBar()][integer].size()));
+                this.player.getInventory()[player.getPosCursorHorizontallyInventoryBar()][integer].addListener((ListChangeListener<StowableObjectType>) c -> stringProperty.setValue(String.valueOf(c.getList().size())));
                 nbObjects.textProperty().bind(stringProperty);
 
                 display.getChildren().add(itemView);
@@ -169,10 +175,13 @@ public class HUDView
         this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 - scaleMultiplicatorWidth));
         this.cursorImgView.setY(((windowHeight - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
 
-        this.player.positionOfCursorInventoryBar.addListener((obs, oldV, newV) -> {
+        this.player.getPosCursorHorizontallyInventoryBarProperty().addListener((obs, oldV, newV) -> {
             this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth())/2 + ((inventoryBarImg.getWidth()/9) * newV.intValue() - scaleMultiplicatorWidth)));
-            if (newV.intValue() >= 0 && newV.intValue() < (Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY))
-                this.player.setItemSelected((!this.player.getInventory().get(newV.intValue()).isEmpty()) ? this.player.getInventory().get(newV.intValue()).get(0) : null);
+
+            if (newV.intValue() >= 0 && newV.intValue() < (Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)) {
+                ObservableList<StowableObjectType> stack = this.player.getInventory()[player.getPosCursorVerticallyInventoryBar()][newV.intValue()];
+                this.player.setItemSelected((!stack.isEmpty()) ? stack.get(0) : null);
+            }
         });
 
         display.getChildren().add(cursorImgView);

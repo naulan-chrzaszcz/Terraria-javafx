@@ -12,8 +12,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class Player extends Entity implements CollideObjectType, MovableObjectType
@@ -23,10 +23,11 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public static final int NB_CASES_MAX_INVENTORY = 27;
     public static final int NB_LINES_INVENTORY = 3;
 
-    private final Map<Integer, ObservableList<StowableObjectType>> inventory;
+    private final ObservableList<StowableObjectType>[][] inventory; // Tableau 2D qui correspond aux lignes de l'inventaire et ensuite le nombre de cases par ligene
     private final EnumMap<KeyCode, Boolean> keysInput;
 
-    public IntegerProperty positionOfCursorInventoryBar;
+    private final IntegerProperty posCursorHorizontallyInventoryBar;
+    private final IntegerProperty posCursorVerticallyInventoryBar;
 
     private StowableObjectType itemSelected;
 
@@ -44,11 +45,13 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
-        this.inventory = new HashMap<>();
-        this.positionOfCursorInventoryBar = new SimpleIntegerProperty(0);
+        this.inventory = new ObservableList[NB_LINES_INVENTORY][NB_CASES_MAX_INVENTORY/NB_LINES_INVENTORY];
+        this.posCursorHorizontallyInventoryBar = new SimpleIntegerProperty(0);
+        this.posCursorVerticallyInventoryBar = new SimpleIntegerProperty(2);
 
-        for (int i = 0; i < NB_CASES_MAX_INVENTORY; i++)
-            this.inventory.put(i, FXCollections.observableArrayList());
+        for (int i = 0; i < NB_LINES_INVENTORY; i++)
+            for (int j = 0; j < NB_CASES_MAX_INVENTORY/NB_LINES_INVENTORY; j++)
+                this.inventory[i][j] = FXCollections.observableArrayList();
     }
 
     public void updates()
@@ -81,7 +84,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
         if (!whereCollide.isEmpty()) {
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
-                this.offset[0] = 0;
+                this.offset[0] = Entity.IDLE;
         }
     }
 
@@ -93,7 +96,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public void worldLimit()
     {
         if (super.worldLimit(environment))
-            offset[0] = 0;
+            offset[0] = Entity.IDLE;
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
@@ -102,7 +105,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         this.keysInput.forEach((key, value) -> {
             if (Boolean.TRUE.equals(value)) {
                 if (key == KeyCode.Z || key == KeyCode.SPACE)
-                    if (this.offset[1] != -1) this.jump();
+                    if (this.offset[1] != Entity.IS_FALLING) this.jump();
 
                 if (key == KeyCode.D)
                     this.moveRight();
@@ -110,23 +113,23 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
                     this.moveLeft();
 
                 if (key == KeyCode.DIGIT1)
-                    this.positionOfCursorInventoryBar.set(0);
+                    this.posCursorHorizontallyInventoryBar.set(0);
                 else if (key == KeyCode.DIGIT2)
-                    this.positionOfCursorInventoryBar.set(1);
+                    this.posCursorHorizontallyInventoryBar.set(1);
                 else if (key == KeyCode.DIGIT3)
-                    this.positionOfCursorInventoryBar.set(2);
+                    this.posCursorHorizontallyInventoryBar.set(2);
                 else if (key == KeyCode.DIGIT4)
-                    this.positionOfCursorInventoryBar.set(3);
+                    this.posCursorHorizontallyInventoryBar.set(3);
                 else if (key == KeyCode.DIGIT5)
-                    this.positionOfCursorInventoryBar.set(4);
+                    this.posCursorHorizontallyInventoryBar.set(4);
                 else if (key == KeyCode.DIGIT6)
-                    this.positionOfCursorInventoryBar.set(5);
+                    this.posCursorHorizontallyInventoryBar.set(5);
                 else if (key == KeyCode.DIGIT7)
-                    this.positionOfCursorInventoryBar.set(6);
+                    this.posCursorHorizontallyInventoryBar.set(6);
                 else if (key == KeyCode.DIGIT8)
-                    this.positionOfCursorInventoryBar.set(7);
+                    this.posCursorHorizontallyInventoryBar.set(7);
                 else if (key == KeyCode.DIGIT9)
-                    this.positionOfCursorInventoryBar.set(8);
+                    this.posCursorHorizontallyInventoryBar.set(8);
             }
         });
     }
@@ -134,8 +137,9 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public int nbStacksIntoInventory()
     {
         int counter = 0;
-        for (int i = 0; i < inventory.size(); i++)
-            counter += (!this.inventory.get(i).isEmpty() && this.inventory.get(i).get(0) != null) ? 1 : 0;
+        for (int i = 0; i < NB_LINES_INVENTORY; i++)
+            for (int j = 0; j < NB_CASES_MAX_INVENTORY/NB_LINES_INVENTORY; j++)
+                counter += (!this.inventory[i][j].isEmpty() && !Objects.isNull(this.inventory[i][j].get(0))) ? 1 : 0;
 
         return counter;
     }
@@ -143,41 +147,43 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public void pickup(StowableObjectType pickupObject)
     {
         int nbStacksInventory = nbStacksIntoInventory();
-        boolean estComplet = false;
 
         if (nbStacksInventory < NB_CASES_MAX_INVENTORY) {
-            int i = 0;
-            while (i < this.inventory.size()) {
-                int beforeSize = this.inventory.get(i).size();
-                if (this.inventory.get(i).isEmpty()) {
-                    this.inventory.get(i).add(pickupObject);
-                    this.setItemSelected(pickupObject);
-                }
-                else if (this.inventory.get(i).size() == BLOCK_STACKING_MAX)
-                    estComplet = true;
-                else if (this.inventory.get(i).get(0) instanceof Dirt && pickupObject instanceof Dirt) {
-                    this.inventory.get(i).add(pickupObject);
-                    estComplet = false;
-                } else if (this.inventory.get(i).get(0) instanceof Stone && pickupObject instanceof Stone) {
-                    this.inventory.get(i).add(pickupObject);
-                    estComplet = false;
-                } else if (this.inventory.get(i).get(0) instanceof Torch && pickupObject instanceof Torch) {
-                    this.inventory.get(i).add(pickupObject);
-                    estComplet = false;
+            for (int i = NB_LINES_INVENTORY-1; i >= 0; i--) {
+                boolean isFull = false;
+                int j = 0;
+                while (j < NB_CASES_MAX_INVENTORY/NB_LINES_INVENTORY) {
+                    int beforeSize = this.inventory[i][j].size();
+                    if (this.inventory[i][j].isEmpty()) {
+                        this.inventory[i][j].add(pickupObject);
+                        this.setItemSelected(pickupObject);
+                    } else if (this.inventory[i][j].size() == BLOCK_STACKING_MAX)
+                        isFull = true;
+                    else if (this.inventory[i][j].get(0) instanceof Dirt && pickupObject instanceof Dirt)
+                        this.inventory[i][j].add(pickupObject);
+                    else if (this.inventory[i][j].get(0) instanceof Stone && pickupObject instanceof Stone)
+                        this.inventory[i][j].add(pickupObject);
+                    else if (this.inventory[i][j].get(0) instanceof Torch && pickupObject instanceof Torch)
+                        this.inventory[i][j].add(pickupObject);
+
+                    // Quand un objet a été mise dans l'inventaire, il arrête la fonction
+                    if (beforeSize != this.inventory[i][j].size())
+                        return;
+                    j++;
                 }
 
-                // Quand un objet a étais mise dans l'inventaire, il arrête la fonction
-                if (beforeSize != this.inventory.get(i).size()) return;
-                i++;
+                if (isFull)
+                    this.inventory[i][nbStacksInventory].add(pickupObject);
             }
-
-            if (estComplet)
-                this.inventory.get(nbStacksInventory).add(pickupObject);
         }
     }
 
 
-    public Map<Integer, ObservableList<StowableObjectType>> getInventory() { return inventory; }
+    public ObservableList<StowableObjectType>[][] getInventory() { return inventory; }
+    public IntegerProperty getPosCursorVerticallyInventoryBarProperty() { return this.posCursorVerticallyInventoryBar; }
+    public int getPosCursorVerticallyInventoryBar() { return this.posCursorVerticallyInventoryBar.get(); }
+    public IntegerProperty getPosCursorHorizontallyInventoryBarProperty() { return this.posCursorHorizontallyInventoryBar; }
+    public int getPosCursorHorizontallyInventoryBar() { return this.posCursorHorizontallyInventoryBar.get(); }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
     public StowableObjectType getItemSelected() { return itemSelected; }
 

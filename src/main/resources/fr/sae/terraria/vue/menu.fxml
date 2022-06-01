@@ -12,7 +12,8 @@
 <?import java.net.URL?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
+<BorderPane fx:id="root"
+            maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/11"
@@ -23,7 +24,7 @@
 
 
     <top>
-        <HBox id="textArea"
+        <HBox id="HBoxText"
               fx:id="title"
               prefHeight="25.0" prefWidth="1280"
               BorderPane.alignment="CENTER">
@@ -38,12 +39,14 @@
                    prefWidth="200.0"
                    BorderPane.alignment="CENTER">
             <BorderPane prefHeight="200.0"
-                        prefWidth="200.0">
+                        prefWidth="640.0">
                 <top>
-                    <HBox prefHeight="25.0"
-                          prefWidth="296.0"
+                    <HBox fx:id="HBoxTitle"
+                          prefHeight="25.0"
+                          prefWidth="640.0"
                           BorderPane.alignment="CENTER">
-                        <Text strokeType="OUTSIDE"
+                        <Text fx:id="TextHBoxTitle"
+                              strokeType="OUTSIDE"
                               strokeWidth="0.0"
                               text="Lexique"
                               textAlignment="CENTER"
@@ -57,40 +60,38 @@
 
                 <center>
                     <ScrollPane prefHeight="200.0"
-                                prefWidth="200.0"
+                                prefWidth="640.0"
                                 BorderPane.alignment="CENTER">
-                        <AnchorPane prefHeight="827.0"
-                                    prefWidth="620.0">
-                            <HBox layoutX="11.0"
-                                  prefHeight="50.0"
-                                  prefWidth="597.0"/>
+                        <AnchorPane fx:id="displayLexique"
+                                    prefHeight="900.0"
+                                    prefWidth="640.0">
+                            <HBox prefHeight="50.0"
+                                  prefWidth="625.0"/>
                             <Separator layoutY="50.0"
                                        prefHeight="5.0"
-                                       prefWidth="615.0"/>
-                            <HBox layoutX="5.0"
-                                  layoutY="55.0"
+                                       prefWidth="625.0"/>
+                            <HBox layoutY="55.0"
                                   prefHeight="50.0"
-                                  prefWidth="610.0"/>
-                            <Separator layoutX="-1.0"
-                                       layoutY="103.0"
+                                  prefWidth="625.0"/>
+                            <Separator layoutY="103.0"
                                        prefHeight="5.0"
-                                       prefWidth="618.0"/>
+                                       prefWidth="625.0"/>
                         </AnchorPane>
                     </ScrollPane>
                 </center>
             </BorderPane>
 
             <BorderPane prefHeight="200.0"
-                        prefWidth="200.0">
+                        prefWidth="640.0">
                 <top>
                     <HBox prefHeight="25.0"
-                          prefWidth="296.0"
+                          prefWidth="640.0"
                           BorderPane.alignment="CENTER">
                         <Text strokeType="OUTSIDE"
                               strokeWidth="0.0"
                               text="Inventaire"
                               textAlignment="CENTER"
-                              wrappingWidth="634.13671875">
+                              wrappingWidth="640">
                             <font>
                                 <Font size="16.0"/>
                             </font>
@@ -101,7 +102,7 @@
                 <center>
                     <Pane fx:id="displayInventory"
                           prefHeight="200.0"
-                          prefWidth="200.0"
+                          prefWidth="640.0"
                           BorderPane.alignment="CENTER"/>
                 </center>
             </BorderPane>

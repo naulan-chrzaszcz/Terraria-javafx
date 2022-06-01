@@ -60,10 +60,11 @@ public class Terraria extends Application
         stage.setResizable(false);
 
         BooleanProperty switchScene = new SimpleBooleanProperty();
+        // Change de scènes suivant les valeurs boolean
         switchScene.addListener((obs, oldB, newB) -> stage.setScene(newB.equals(Boolean.TRUE) ? game : menu));
 
         stage.setScene(game);
-        int[] timePressedKey = new int[1];
+        int[] timePressedKey = new int[1];  // Permet que le menu ne clignote pas et reste afficher même si le bouton 'M' est encore enfoncer.
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.M && timePressedKey[0] <= 1)
                 switchScene.set(!switchScene.get());
@@ -74,6 +75,7 @@ public class Terraria extends Application
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> timePressedKey[0] = 1);
         stage.sizeToScene();
 
+        // Sync les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
             if (switchScene.get()) {
                 if (!Objects.isNull(menuController.player)) {
@@ -89,6 +91,14 @@ public class Terraria extends Application
                 }
             }
         }));
+        stage.widthProperty().addListener((obs, oldV, newV) -> {
+            gameController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
+            menuController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
+        });
+        stage.heightProperty().addListener((obs, oldV, newV) -> {
+            gameController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+            menuController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+        });
 
         stage.show();
     }

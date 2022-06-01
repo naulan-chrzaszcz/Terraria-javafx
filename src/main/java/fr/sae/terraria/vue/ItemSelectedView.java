@@ -46,7 +46,7 @@ public class ItemSelectedView
         this.meatItemImg = View.loadAnImage("loots/viande.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
 
-        player.positionOfCursorInventoryBar.addListener((obs, oldItemSelected, newItemSelected) -> {
+        player.getPosCursorHorizontallyInventoryBarProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
             StowableObjectType item = player.getItemSelected();
 
             if (item instanceof Dirt)

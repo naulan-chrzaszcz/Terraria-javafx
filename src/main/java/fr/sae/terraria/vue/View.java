@@ -26,17 +26,18 @@ public class View
      * @param scaleMultiplicatorHeight Le multiplicateur en hauteur qui permet de redimensionner les images
      */
     public View(Environment environment,
+                Pane displayHostileBeings,
                 Pane displayTiledMap,
                 Pane displayHUD,
+                Pane filter,
                 double scaleMultiplicatorWidth,
-                double scaleMultiplicatorHeight,
-                Pane filter)
+                double scaleMultiplicatorHeight)
     {
-        TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, displayHostileBeings, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
         PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        playerView.displayPlayer(displayHUD);
+        playerView.displayPlayer(displayHostileBeings);
 
         LightView lightView = new LightView(environment.getGameClock(),filter,scaleMultiplicatorHeight,scaleMultiplicatorWidth);
         lightView.setLightElements();

@@ -36,10 +36,19 @@ public class TileMapsView
     private Image tallGrassImg;
 
 
-    public TileMapsView(Environment environment, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    /**
+     * @param environment Avoir des infos relatives à son environment
+     * @param displayTileMap Affiche la carte tuilée
+     * @param displayHostileBeings Affiche les êtres hostile (Animal, Joueur, ...)
+     */
+    public TileMapsView(Environment environment,
+                        Pane displayTileMap,
+                        Pane displayHostileBeings,
+                        double scaleMultiplicatorWidth,
+                        double scaleMultiplicatorHeight)
     {
         this.environment = environment;
-        this.display = display;
+        this.display = displayTileMap;
 
         this.tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
         this.tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
@@ -53,11 +62,7 @@ public class TileMapsView
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
-
-
-
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
-
             while (c.next()) if (c.wasAdded()) {
                 if (c.getList().get(0) instanceof Tree)
                     createTree((Tree) c.getList().get(0));
@@ -65,13 +70,15 @@ public class TileMapsView
                     createTallGrass((TallGrass) c.getList().get(0));
                 if (c.getList().get(0) instanceof Rabbit) {
                     RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-                    rabbitView.displayRabbit(display);
-                } if (c.getList().get(0) instanceof Torch) {
+                    rabbitView.displayRabbit(displayHostileBeings);
+                }
+
+                if (c.getList().get(0) instanceof Torch)
                     createTorch((Torch) c.getList().get(0));
-                } if (c.getList().get(0) instanceof Dirt)
-                    display.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
+                if (c.getList().get(0) instanceof Dirt)
+                    displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
                 if (c.getList().get(0) instanceof Stone)
-                    display.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
+                    displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
             }
         });
     }

@@ -31,6 +31,7 @@
                    BorderPane.alignment="CENTER">
             <Pane id="sky"
                   fx:id="displayTiledMap"/>
+            <Pane fx:id="displayHostileBeings"/>
             <Pane id="filter"
                   fx:id="filter"/>
             <Pane fx:id="displayHUD"/>
