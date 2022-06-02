@@ -135,8 +135,8 @@ public class GameController implements Initializable
             int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeWidth);
             int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeHeight);
             // La position correcte sur le Pane
-            double mouseX = click.getSceneX();
-            double mouseY = click.getSceneY()-title.getPrefHeight();
+            double mouseX = click.getSceneX()+((Rectangle) displayTiledMap.getParent().getClip()).getX();
+            double mouseY = (click.getSceneY()-title.getPrefHeight())+((Rectangle) displayTiledMap.getParent().getClip()).getY();
             Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);
             // Le bloc où la souris à clicker
             int xBlock = (int) (mouseX/tileWidth);

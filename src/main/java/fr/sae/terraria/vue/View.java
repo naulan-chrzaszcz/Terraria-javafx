@@ -48,7 +48,7 @@ public class View
         HUDView HUDView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         HUDView.display();
 
-        new MouseCursorView(displayCursorMouse, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new MouseCursorView(displayHUD, displayCursorMouse, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
     /** Essaye de trouver et de charger l'image sinon renvoie null */
