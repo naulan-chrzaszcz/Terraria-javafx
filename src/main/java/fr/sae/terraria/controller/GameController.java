@@ -3,7 +3,8 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.Torch;
@@ -91,19 +92,7 @@ public class GameController implements Initializable
             key.consume();
         });
 
-        stage.addEventFilter(ScrollEvent.SCROLL, scroll -> {
-            boolean scrollUp = scroll.getDeltaY() > 0;
-            if (scrollUp)
-                player.getPosCursorHorizontallyInventoryBarProperty().set(player.getPosCursorHorizontallyInventoryBar() + 1);
-            boolean scrollDown = scroll.getDeltaY() < 0;
-            if (scrollDown)
-                player.getPosCursorHorizontallyInventoryBarProperty().set(player.getPosCursorHorizontallyInventoryBar() - 1);
-
-            if (player.getPosCursorHorizontallyInventoryBar() > (Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)-1)
-                player.getPosCursorHorizontallyInventoryBarProperty().set(0);
-            if (player.getPosCursorHorizontallyInventoryBar() < 0)
-                player.getPosCursorHorizontallyInventoryBarProperty().set((Player.NB_CASES_MAX_INVENTORY/Player.NB_LINES_INVENTORY)-1);
-        });
+        player.getInventory().eventFilter(stage);
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
             double scaleMultiplicativeWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
@@ -127,6 +116,7 @@ public class GameController implements Initializable
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
             if (isOneBlockDistance)
             {
+                Inventory inventory = player.getInventory();
                 // Casse les blocs
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     // Commence a cherché l'entité ciblée
@@ -191,7 +181,7 @@ public class GameController implements Initializable
                                 player.getGravity().xInit = player.getX();
                             }
 
-                            ObservableList<StowableObjectType> stacksSelected = player.getInventory()[player.getPosCursorVerticallyInventoryBar()][player.getPosCursorHorizontallyInventoryBar()];
+                            ObservableList<StowableObjectType> stacksSelected = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorHorizontallyInventoryBar()];
                             stacksSelected.remove(player.getItemSelected());
                             if (stacksSelected.size()-1 >= 0) {
                                 int endLineStacks = stacksSelected.size()-1;

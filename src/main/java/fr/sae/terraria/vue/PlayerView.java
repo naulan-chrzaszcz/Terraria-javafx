@@ -1,6 +1,6 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.player.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
