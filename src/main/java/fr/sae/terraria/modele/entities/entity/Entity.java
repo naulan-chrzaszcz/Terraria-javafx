@@ -124,8 +124,7 @@ public abstract class Entity
             if (this.offset[1] == Entity.IS_FALLING) {
                 this.gravity.degInit = 0;
                 double futurePositionY = gravity.formulaOfTrajectory() ;
-
-                boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + this.rect.getHeight())/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
+                boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + this.rect.getHeight())/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE +this.rect.getHeight())/heightTile) != TileMaps.SKY;
                 if (isCollideBottom) {
                     this.gravity.setJumpPosInit(this);
                     this.gravity.timer = 0;
