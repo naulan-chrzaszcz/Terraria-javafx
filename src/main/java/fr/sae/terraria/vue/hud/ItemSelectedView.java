@@ -48,7 +48,7 @@ public class ItemSelectedView
         this.ironItemImg = View.loadAnImage("loots/iron.png", widthItem, heightItem);
         this.pierreItemImg = View.loadAnImage("loots/pierre.png", widthItem, heightItem);
         this.silexItemImg = View.loadAnImage("loots/silex.png", widthItem, heightItem);
-        this.meatItemImg = View.loadAnImage("loots/viande.png", widthItem, heightItem);
+        this.meatItemImg = View.loadAnImage("loots/meat.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
 
         player.getInventory().posCursorHorizontallyInventoryBarProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
@@ -60,7 +60,7 @@ public class ItemSelectedView
                 itemSelectedImgView.setImage(stoneItemImg);
             else if (item instanceof Coal)
                 itemSelectedImgView.setImage(coalItemImg);
-            else if (item instanceof Fibre)
+            else if (item instanceof Fiber)
                 itemSelectedImgView.setImage(fibreItemImg);
             else if (item instanceof Iron)
                 itemSelectedImgView.setImage(ironItemImg);

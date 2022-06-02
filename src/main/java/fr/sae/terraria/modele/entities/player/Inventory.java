@@ -4,12 +4,15 @@ import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Fiber;
+import fr.sae.terraria.modele.entities.items.Wood;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
+import java.security.Key;
 import java.util.EnumMap;
 import java.util.Objects;
 
@@ -17,11 +20,12 @@ import java.util.Objects;
 public class Inventory
 {
     public static final int BLOCK_STACKING_MAX = 16;
-    public static final int NB_CASES_MAX = 27;
+    public static final int NB_BOXES_MAX = 27;
     public static final int NB_LINES = 3;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final ObservableList<StowableObjectType>[][] value; // Tableau 2D qui correspond aux lignes de l'inventaire et ensuite le nombre de cases par ligene
+
     private final IntegerProperty posCursorHorizontallyInventoryBar;
     private final IntegerProperty posCursorVerticallyInventoryBar;
     private int scroll;
@@ -29,12 +33,10 @@ public class Inventory
 
     public Inventory(Player player)
     {
-        this.keysInput = new EnumMap<>(KeyCode.class);
-        this.scroll = 0;
-
-        this.value = new ObservableList[NB_LINES][NB_CASES_MAX/NB_LINES];
+        keysInput = new EnumMap<>(KeyCode.class);
+        this.value = new ObservableList[NB_LINES][NB_BOXES_MAX / NB_LINES];
         for (int i = 0; i < NB_LINES; i++)
-            for (int j = 0; j < NB_CASES_MAX/NB_LINES; j++)
+            for (int j = 0; j < NB_BOXES_MAX /NB_LINES; j++)
                 this.value[i][j] = FXCollections.observableArrayList();
 
         this.posCursorHorizontallyInventoryBar = new SimpleIntegerProperty(0);
@@ -42,7 +44,7 @@ public class Inventory
 
         // Change l'item de la main du joueur
         posCursorHorizontallyInventoryBarProperty().addListener((obs, oldV, newV) -> {
-            if (newV.intValue() >= 0 && newV.intValue() < (NB_CASES_MAX/NB_LINES)) {
+            if (newV.intValue() >= 0 && newV.intValue() < (NB_BOXES_MAX /NB_LINES)) {
                 ObservableList<StowableObjectType> stack = value[getPosCursorVerticallyInventoryBar()][newV.intValue()];
                 player.setItemSelected((!stack.isEmpty()) ? stack.get(0) : null);
             }
@@ -53,7 +55,7 @@ public class Inventory
     {
         int counter = 0;
         for (int i = 0; i < NB_LINES; i++)
-            for (int j = 0; j < NB_CASES_MAX/NB_LINES; j++)
+            for (int j = 0; j < NB_BOXES_MAX /NB_LINES; j++)
                 counter += (!this.value[i][j].isEmpty() && !Objects.isNull(this.value[i][j].get(0))) ? 1 : 0;
 
         return counter;
@@ -63,10 +65,10 @@ public class Inventory
     {
         int nbStacksInventory = nbStacksIntoInventory();
 
-        if (nbStacksInventory < NB_CASES_MAX) {
+        if (nbStacksInventory < NB_BOXES_MAX) {
             for (int i = 0; i < NB_LINES; i++) {
                 boolean isFull = false;
-                for (int j = 0; j < NB_CASES_MAX/NB_LINES; j++) {
+                for (int j = 0; j < NB_BOXES_MAX / NB_LINES; j++) {
                     int beforeSize = this.value[i][j].size();
                     if (this.value[i][j].isEmpty())
                         this.value[i][j].add(object);
@@ -77,6 +79,10 @@ public class Inventory
                     else if (this.value[i][j].get(0) instanceof Stone && object instanceof Stone)
                         this.value[i][j].add(object);
                     else if (this.value[i][j].get(0) instanceof Torch && object instanceof Torch)
+                        this.value[i][j].add(object);
+                    else if (this.value[i][j].get(0) instanceof Fiber && object instanceof Fiber)
+                        this.value[i][j].add(object);
+                    else if (this.value[i][j].get(0) instanceof Wood && object instanceof Wood)
                         this.value[i][j].add(object);
 
                     // Quand un objet a été mise dans l'inventaire, il arrête la fonction
@@ -101,10 +107,10 @@ public class Inventory
         else if (scrollDown)
             posCursorHorizontallyInventoryBar.set(getPosCursorHorizontallyInventoryBar() - 1);
 
-        if (getPosCursorHorizontallyInventoryBar() > (NB_CASES_MAX / NB_LINES)-1)
+        if (getPosCursorHorizontallyInventoryBar() > (NB_BOXES_MAX / NB_LINES)-1)
             posCursorHorizontallyInventoryBar.set(0);
         else if (getPosCursorHorizontallyInventoryBar() < 0)
-            posCursorHorizontallyInventoryBar.set((NB_CASES_MAX / NB_LINES)-1);
+            posCursorHorizontallyInventoryBar.set((NB_BOXES_MAX / NB_LINES)-1);
 
 
         keysInput.forEach((key, value) -> {

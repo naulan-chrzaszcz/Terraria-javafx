@@ -3,11 +3,17 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Fiber;
+import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.items.Wood;
 import fr.sae.terraria.modele.entities.player.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.View;
@@ -142,7 +148,14 @@ public class GameController implements Initializable
                         int yEntity = (int) (entity.getRect().get().getMinY());
 
                         if (entity.getRect().collideRect(rectangle)) {
-                            player.pickup((StowableObjectType) entity);
+                            if (entity instanceof Tree)
+                                player.pickup(new Wood());
+                            else if (entity instanceof TallGrass)
+                                player.pickup(new Fiber());
+                            else {
+                                player.pickup((StowableObjectType) entity);
+                                System.out.println(entity);
+                            }
 
                             Node nodeAtDelete = null; int i = 0;
                             // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
@@ -178,10 +191,11 @@ public class GameController implements Initializable
                             entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
                             environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                         } else if (player.getItemSelected() instanceof Torch) {
-                            if (environment.getTileMaps().getTile((int) mouseX/tileWidth, (int) (mouseY/tileHeight )+1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX/tileWidth, (int) (mouseY/tileHeight )) == TileMaps.SKY){
-                                environment.getEntities().add(0, new Torch(xBlock*tileWidth, yBlock*tileWidth));
+                            if (environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight) + 1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight)) == TileMaps.SKY) {
+                                environment.getEntities().add(0, new Torch(xBlock * tileWidth, yBlock * tileWidth));
                             }
-
+                        } else if (player.getItemSelected() instanceof Meat) {
+                            player.setPv(player.getPv() - 1);
                         }
 
                         if(!Objects.isNull(entity)) {
