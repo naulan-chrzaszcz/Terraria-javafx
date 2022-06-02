@@ -5,6 +5,7 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.items.Meat;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -85,8 +86,6 @@ public class TileMapsView
 
     public void displayMaps(TileMaps tiles)
     {
-        Torch torch = new Torch(0, 0);
-        this.environment.getPlayer().pickup(torch);
         for (int y = 0; y < tiles.getHeight() ; y++)
             for (int x = 0 ; x < tiles.getWidth() ; x++)
                 switch (tiles.getTile(x, y))

@@ -14,4 +14,6 @@ module fr.sae.terraria {
     opens fr.sae.terraria.modele.entities to javafx.fxml;
     exports fr.sae.terraria.modele.entities.entity;
     opens fr.sae.terraria.modele.entities.entity to javafx.fxml;
+    exports fr.sae.terraria.modele.entities.player;
+    opens fr.sae.terraria.modele.entities.player to javafx.fxml;
 }

@@ -1,7 +1,9 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 
-public class Stone extends Block
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+
+public class Stone extends Block implements StowableObjectType
 {
     /*
         TODO: Mettre en place un drop aléatoire de charbon

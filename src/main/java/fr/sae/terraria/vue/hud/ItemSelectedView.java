@@ -1,11 +1,12 @@
-package fr.sae.terraria.vue;
+package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
+import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.vue.View;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -27,9 +28,13 @@ public class ItemSelectedView
     private Image meatItemImg;
     private Image woodItemImg;
 
+    private Pane display;
+
 
     public ItemSelectedView(Pane display, Player player, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        this.display = display;
+
         int widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
         int heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
         int widthItem = widthTile/2;
@@ -43,10 +48,10 @@ public class ItemSelectedView
         this.ironItemImg = View.loadAnImage("loots/iron.png", widthItem, heightItem);
         this.pierreItemImg = View.loadAnImage("loots/pierre.png", widthItem, heightItem);
         this.silexItemImg = View.loadAnImage("loots/silex.png", widthItem, heightItem);
-        this.meatItemImg = View.loadAnImage("loots/viande.png", widthItem, heightItem);
+        this.meatItemImg = View.loadAnImage("loots/meat.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
 
-        player.getPosCursorHorizontallyInventoryBarProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
+        player.getInventory().posCursorHorizontallyInventoryBarProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
             StowableObjectType item = player.getItemSelected();
 
             if (item instanceof Dirt)
@@ -55,7 +60,7 @@ public class ItemSelectedView
                 itemSelectedImgView.setImage(stoneItemImg);
             else if (item instanceof Coal)
                 itemSelectedImgView.setImage(coalItemImg);
-            else if (item instanceof Fibre)
+            else if (item instanceof Fiber)
                 itemSelectedImgView.setImage(fibreItemImg);
             else if (item instanceof Iron)
                 itemSelectedImgView.setImage(ironItemImg);
@@ -74,6 +79,7 @@ public class ItemSelectedView
             itemSelectedImgView.setX(mouse.getX());
             itemSelectedImgView.setY(mouse.getY());
         });
-        display.getChildren().add(itemSelectedImgView);
     }
+
+    public void display() { display.getChildren().add(itemSelectedImgView); }
 }

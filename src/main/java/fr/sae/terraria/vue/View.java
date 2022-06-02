@@ -3,6 +3,8 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.vue.hud.HUDView;
+import fr.sae.terraria.vue.hud.MouseCursorView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -42,11 +44,8 @@ public class View
         LightView lightView = new LightView(environment.getGameClock(),filter,scaleMultiplicatorHeight,scaleMultiplicatorWidth);
         lightView.setLightElements();
 
-        HUDView hudView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        hudView.displayInventoryBar();
-        hudView.displayCursorInventoryBar();
-        hudView.displayHealthBar();
-        hudView.displayClock();
+        HUDView HUDView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        HUDView.display();
 
         new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }

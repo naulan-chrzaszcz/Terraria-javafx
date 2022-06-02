@@ -1,10 +1,13 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -61,6 +64,8 @@ public class Environment
     /** La boucle principale du jeu  */
     private void gameLoop()
     {
+        boolean[] caught= new boolean[]{false};
+
         this.loop = new Timeline();
         this.loop.setCycleCount(Animation.INDEFINITE);
 
@@ -68,7 +73,13 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             this.player.offset[0] = Entity.IDLE;
             this.player.eventInput();
-
+            if (!caught[0]) {
+                Torch torch = new Torch(0, 0);
+                player.pickup(torch);
+                Meat meat = new Meat();
+                player.pickup(meat);
+                caught[0] = true;
+            }
             // Ajoute les entités ReproductiveObjectType
             for (Entity entity : entitiesAtAdded)
                 this.entities.add(0, entity);

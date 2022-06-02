@@ -1,4 +1,4 @@
-package fr.sae.terraria.vue;
+package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.modele.TileMaps;
 import javafx.scene.input.MouseEvent;

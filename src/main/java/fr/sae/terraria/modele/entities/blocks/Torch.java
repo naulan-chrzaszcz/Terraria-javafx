@@ -1,6 +1,9 @@
 package fr.sae.terraria.modele.entities.blocks;
 
-public class Torch extends Block {
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+
+public class Torch extends Block implements StowableObjectType
+{
     public Torch(int x, int y){ super(x, y); }
 
     @Override

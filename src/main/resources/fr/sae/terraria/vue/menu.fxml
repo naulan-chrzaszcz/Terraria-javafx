@@ -24,8 +24,8 @@
 
 
     <top>
-        <HBox id="HBoxText"
-              fx:id="title"
+        <HBox id="textArea"
+              fx:id="HBoxText"
               prefHeight="25.0" prefWidth="1280"
               BorderPane.alignment="CENTER">
             <Text id="text"
