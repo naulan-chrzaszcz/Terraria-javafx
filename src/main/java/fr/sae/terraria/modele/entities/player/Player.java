@@ -2,10 +2,10 @@ package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -16,6 +16,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     public static final int BREAK_BLOCK_DISTANCE = 1;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
+    private final EnumMap<MouseButton, Boolean> mouseInput;
 
     private final ObjectProperty objectWasPickup;
 
@@ -38,6 +39,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
+        this.mouseInput = new EnumMap<>(MouseButton.class);
 
         this.objectWasPickup = new SimpleObjectProperty(null);
         this.objectWasPickup.addListener((obs, oldObject, newObject) -> this.inventory.put((StowableObjectType) newObject));
@@ -91,6 +93,8 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     /** Lie les inputs au clavier à une ou des actions. */
     public void eventInput()
     {
+        this.inventory.eventInput();
+
         this.keysInput.forEach((key, value) -> {
             if (Boolean.TRUE.equals(value)) {
                 if (key == KeyCode.Z || key == KeyCode.SPACE)
@@ -109,6 +113,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
     public Inventory getInventory() { return this.inventory; }
     public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
+    public Map<MouseButton, Boolean> getMouseInput() { return mouseInput; }
     public StowableObjectType getItemSelected() { return itemSelected; }
 
     public void setItemSelected(StowableObjectType itemSelected) { this.itemSelected = itemSelected; }

@@ -3,13 +3,13 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.player.Inventory;
-import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -81,18 +81,35 @@ public class GameController implements Initializable
     private void addKeysEventListener(Stage stage)
     {
         Player player = this.environment.getPlayer();
+        Inventory inventory = player.getInventory();
 
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             player.getKeysInput().put(key.getCode(), true);
+            inventory.getKeysInput().put(key.getCode(), true);
             key.consume();
         });
 
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
             player.getKeysInput().put(key.getCode(), false);
+            inventory.getKeysInput().put(key.getCode(), false);
             key.consume();
         });
 
-        player.getInventory().eventFilter(stage);
+        stage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouse -> {
+            player.getMouseInput().put(mouse.getButton(), true);
+            mouse.consume();
+        });
+
+        stage.addEventFilter(MouseEvent.MOUSE_RELEASED, mouse -> {
+            player.getMouseInput().put(mouse.getButton(), false);
+            mouse.consume();
+        });
+
+        stage.addEventFilter(ScrollEvent.SCROLL, scroll -> {
+            inventory.setScroll((int) scroll.getDeltaY());
+            scroll.consume();
+        });
+        inventory.eventInput();
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
             double scaleMultiplicativeWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
@@ -116,7 +133,6 @@ public class GameController implements Initializable
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
             if (isOneBlockDistance)
             {
-                Inventory inventory = player.getInventory();
                 // Casse les blocs
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     // Commence a cherché l'entité ciblée

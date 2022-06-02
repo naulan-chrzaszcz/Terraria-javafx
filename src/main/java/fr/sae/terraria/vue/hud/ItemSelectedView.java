@@ -1,11 +1,11 @@
 package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.View;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
