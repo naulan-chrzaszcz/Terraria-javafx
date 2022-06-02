@@ -5,13 +5,16 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.Rect;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Wood;
 import fr.sae.terraria.modele.entities.player.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.vue.Camera;
 import fr.sae.terraria.vue.View;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +27,8 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -44,7 +49,11 @@ public class GameController implements Initializable
     @FXML
     private Pane displayHostileBeings;
     @FXML
-    private  Pane filter;
+    private Pane filter;
+    @FXML
+    private Pane displayCursorMouse;
+    @FXML
+    private StackPane paneHadCamera;
 
     private Stage primaryStage;
 
@@ -70,8 +79,16 @@ public class GameController implements Initializable
 
         this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.player = this.environment.getPlayer();
-        new View(environment, displayHostileBeings, displayTiledMap, displayHUD, filter, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new View(environment,
+                displayHostileBeings,
+                displayTiledMap,
+                displayHUD,
+                displayCursorMouse,
+                filter,
+                scaleMultiplicatorWidth,
+                scaleMultiplicatorHeight);
 
+        Camera camera = new Camera(player, paneHadCamera, environment.getTileMaps());
         this.addKeysEventListener(primaryStage);
     }
 

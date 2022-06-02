@@ -31,6 +31,7 @@ public class View
                 Pane displayHostileBeings,
                 Pane displayTiledMap,
                 Pane displayHUD,
+                Pane displayCursorMouse,
                 Pane filter,
                 double scaleMultiplicatorWidth,
                 double scaleMultiplicatorHeight)
@@ -47,7 +48,7 @@ public class View
         HUDView HUDView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         HUDView.display();
 
-        new MouseCursorView(displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        new MouseCursorView(displayCursorMouse, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
     /** Essaye de trouver et de charger l'image sinon renvoie null */

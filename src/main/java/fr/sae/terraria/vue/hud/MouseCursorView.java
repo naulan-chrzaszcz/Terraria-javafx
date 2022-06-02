@@ -35,7 +35,6 @@ public class MouseCursorView
 
             mouseCursorRect.setX(xCursor);
             mouseCursorRect.setY(yCursor);
-
         });
         display.getChildren().add(mouseCursorRect);
     }

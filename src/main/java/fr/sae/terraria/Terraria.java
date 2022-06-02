@@ -6,9 +6,14 @@ import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
+import javafx.scene.ParallelCamera;
+import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.ZoomEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -51,6 +56,7 @@ public class Terraria extends Application
         FXMLLoader fxmlLoader = this.loadFXML("vue/game.fxml");
         fxmlLoader.setController(gameController);
         Scene game = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
+        game.setCursor(Cursor.NONE);
 
         fxmlLoader = this.loadFXML("vue/menu.fxml");
         fxmlLoader.setController(menuController);

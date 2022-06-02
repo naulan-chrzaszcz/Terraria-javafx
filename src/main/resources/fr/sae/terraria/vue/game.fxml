@@ -29,11 +29,15 @@
     <center>
         <StackPane prefWidth="1280"
                    BorderPane.alignment="CENTER">
-            <Pane id="sky"
-                  fx:id="displayTiledMap"/>
-            <Pane fx:id="displayHostileBeings"/>
-            <Pane id="filter"
-                  fx:id="filter"/>
+            <StackPane fx:id="paneHadCamera"
+                       prefWidth="1280">
+                <Pane id="sky"
+                      fx:id="displayTiledMap"/>
+                <Pane fx:id="displayHostileBeings"/>
+                <Pane id="filter"
+                      fx:id="filter"/>
+                <Pane fx:id="displayCursorMouse"/>
+            </StackPane>
             <Pane fx:id="displayHUD"/>
         </StackPane>
     </center>

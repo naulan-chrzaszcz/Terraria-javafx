@@ -82,8 +82,8 @@ public class InventoryView {
         int itemInventoryWidth = (int) (tileWidth / 1.5);
         int itemInventoryHeight = (int) (tileHeight / 1.5);
 
-        for (int i = 0; i < Inventory.NB_LINES; i++) {
-            for (int j = 0; j < Inventory.NB_BOXES_MAX / Inventory.NB_LINES; j++) {
+        for (int i = 0; i < Inventory.NB_LINES; i++)
+            for (int j = 0; j < Inventory.NB_BOXES_MAX / Inventory.NB_LINES; j++)
                 inventory.get()[i][j].addListener((ListChangeListener<? super StowableObjectType>) c -> {
                     while (c.next()) {
                         if (c.wasAdded()) {
@@ -92,8 +92,6 @@ public class InventoryView {
                                     inventoryStringProperty[inventory.getPosCursorVerticallyInventoryBar()][c.getAddedSize() - 1].set(String.valueOf(c.getAddedSize()));
                                     if (inventory.get()[ii][jj].equals(c.getList())) {
                                         ObservableList<StowableObjectType> item = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][jj];
-                                        System.out.println(item);
-                                        System.out.println(c.getAddedSize());
                                         if (item.size() == 1) {
                                             Image itemImg = null;
                                             if (item.get(0) instanceof Dirt)
@@ -110,11 +108,10 @@ public class InventoryView {
                                             if (!Objects.isNull(itemImg)) {
                                                 ImageView itemView = new ImageView();
                                                 itemView.setImage(itemImg);
-                                                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth() / 9) - itemImg.getWidth()) / 2) + ((inventoryBarImgView.getImage().getWidth() / 9) * (jj)));
+                                                itemView.setX(inventoryBarImgView.getX() + (((inventoryBarImgView.getImage().getWidth()/(Inventory.NB_BOXES_MAX/Inventory.NB_LINES)) - itemImg.getWidth())/2) + ((inventoryBarImgView.getImage().getWidth()/(Inventory.NB_BOXES_MAX/Inventory.NB_LINES)) * jj));
                                                 itemView.setY(inventoryBarImgView.getY() + ((inventoryBarImgView.getImage().getHeight() - itemImg.getHeight()) / 2));
 
                                                 display.getChildren().add(itemView);
-
                                             }
                                         }
                                     }
@@ -124,8 +121,6 @@ public class InventoryView {
                             inventoryStringProperty[inventory.getPosCursorVerticallyInventoryBar()][c.getRemovedSize() - 1].set(String.valueOf(c.getRemovedSize()));
                     }
                 });
-            }
-        }
     }
 
     /**

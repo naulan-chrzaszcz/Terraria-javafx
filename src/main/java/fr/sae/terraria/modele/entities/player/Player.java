@@ -59,7 +59,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
             this.gravity.timer = .0;
         }
 
-        this.worldLimit();
+        // this.worldLimit();
         this.move();
 
         if (this.rect != null)
