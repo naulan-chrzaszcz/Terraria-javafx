@@ -1,8 +1,6 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 
-import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-
 public class Tree extends Block
 {
     public static final int WHEN_SPAWN_A_TREE = 5_000;
