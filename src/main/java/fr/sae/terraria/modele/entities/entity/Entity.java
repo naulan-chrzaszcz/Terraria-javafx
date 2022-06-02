@@ -3,6 +3,8 @@ package fr.sae.terraria.modele.entities.entity;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -92,6 +94,7 @@ public abstract class Entity
      */
     protected Map<String, Boolean> collide(Environment environment)
     {
+
         int widthTile = environment.widthTile; int heightTile = environment.heightTile;
         TileMaps tileMaps = environment.getTileMaps();
         Map<String, Boolean> whereCollide = new HashMap<>();
@@ -133,19 +136,19 @@ public abstract class Entity
                 // Saute
             } else if (this.offset[1] == Entity.IS_JUMPING) {
                 double futurePositionY = gravity.formulaOfTrajectory();
-                this.air = true;
+
 
                 boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 
                 // Quand le joueur monte
-                if ((gravity.flightTime) >= gravity.timer && this.offset[1] == Entity.IS_JUMPING) {
+                if ((gravity.flightTime) >= gravity.timer ) {
                     if (isCollideTop) {
                         this.fall();
                         gravity.timer = 0;
                         gravity.setJumpPosInit(this);
                     } else setY(futurePositionY);
                     // Quand le joueur decent
-                } else if (this.offset[1] == Entity.IS_JUMPING) {
+                } else {
                     boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 
                     if (isCollideTop) {

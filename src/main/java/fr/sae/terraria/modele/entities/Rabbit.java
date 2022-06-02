@@ -60,8 +60,10 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         boolean mustJump = environment.getTicks()%Rabbit.JUMP_FREQUENCY == 0;
         if (mustJump) {
             boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
-            if (jumpOrNot && offset[1] != Entity.IS_FALLING)
+            if (jumpOrNot && offset[1] != Entity.IS_FALLING) {
                 this.jump();
+                this.gravity.degInit = -90;
+            }
         }
     }
 
