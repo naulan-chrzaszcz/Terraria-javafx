@@ -21,7 +21,7 @@ public class Camera
         int tileSize = (int) (environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE);
         int minScrollWidthCamera = 0; int minScrollHeightCamera = 0;
         int maxScrollWidthCamera = (int) ((tileMaps.getWidth()*tileSize) - clip.getWidth());
-        int maxScrollHeightCamera = (int) ((tileMaps.getHeight()*tileSize) - clip.getHeight()) - environment.heightTile;
+        int maxScrollHeightCamera = (int) ((tileMaps.getHeight()*tileSize) - clip.getHeight()) - environment.heightTile*5;
 
         clip.xProperty()
                 .bind(Bindings.createDoubleBinding(
@@ -32,7 +32,7 @@ public class Camera
 
         clip.yProperty()
                 .bind(Bindings.createDoubleBinding(
-                        () -> clampRange(player.getY() - (clip.getHeight()/2) - environment.heightTile, minScrollHeightCamera, maxScrollHeightCamera),
+                        () -> clampRange(player.getY() - (clip.getHeight()/2), minScrollHeightCamera, maxScrollHeightCamera),
                         player.getYProperty(), paneHadCamera.heightProperty()
                 )
         );
