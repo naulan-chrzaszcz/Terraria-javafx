@@ -10,7 +10,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class LightView {
-    private static final double opacityIter = 0.0017;
+    private static final int CIRCLE_RAY = 3;
+    private static final double OPACITY_ITER = 0.0017;
 
     private Clock clock;
     private Pane filterPane;
@@ -21,18 +22,21 @@ public class LightView {
     private Shape fade;
     private Shape tunnel;
 
-    public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth) {
+    private TileMaps tileMaps;
+
+    public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth, TileMaps tileMaps) {
 
         this.clock = clock;
         this.filterPane = filterPane;
+        this.tileMaps= tileMaps;
         opacityNightAir = new SimpleDoubleProperty(0.0);
         opacityNightFade = new SimpleDoubleProperty(0.8143);
 
-        torchLight = new Circle(scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*3);
+        torchLight = new Circle(scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*CIRCLE_RAY);
 
-        air = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*30 ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*19);
-        fade =  new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*30,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE+1);
-        tunnel = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*30,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
+        air = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getHeight());
+        fade =  new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE+1);
+        tunnel = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE* tileMaps.getHeight() - scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*15);
 
         air.setFill(Color.web("#0d0d38"));
 
@@ -62,12 +66,12 @@ public class LightView {
     private void updateOpacity(int minutes) {
         if (minutes >= Clock.FOUR_PM_INGAME || minutes <= Clock.EIGHT_AM_INGAME) {
             if (minutes >= Clock.FOUR_PM_INGAME && minutes < Clock.ONE_DAY_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()+opacityIter);
-                opacityNightFade.setValue(opacityNightFade.getValue()-opacityIter);
+                opacityNightAir.setValue(opacityNightAir.getValue()+ OPACITY_ITER);
+                opacityNightFade.setValue(opacityNightFade.getValue()- OPACITY_ITER);
             }
             else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()-opacityIter);
-                opacityNightFade.setValue(opacityNightFade.getValue()+opacityIter);
+                opacityNightAir.setValue(opacityNightAir.getValue()- OPACITY_ITER);
+                opacityNightFade.setValue(opacityNightFade.getValue()+ OPACITY_ITER);
             }
         }
     }
