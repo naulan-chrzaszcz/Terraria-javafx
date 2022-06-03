@@ -27,11 +27,11 @@
     </top>
 
     <center>
-        <StackPane prefWidth="1280"
+        <StackPane prefWidth="1280" id="sky"
                    BorderPane.alignment="CENTER">
             <StackPane fx:id="paneHadCamera"
                        prefWidth="1280">
-                <Pane id="sky"
+                <Pane
                       fx:id="displayTiledMap"/>
                 <Pane fx:id="displayHostileBeings"/>
                 <Pane id="filter"
