@@ -131,10 +131,9 @@ public abstract class Entity
                     this.gravity.timer = 0;
                     this.offset[1] = Entity.IDLE;
                 } else setY(futurePositionY);
-                // Saute
+            // Saute
             } else if (this.offset[1] == Entity.IS_JUMPING) {
                 double futurePositionY = gravity.formulaOfTrajectory();
-
 
                 boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 

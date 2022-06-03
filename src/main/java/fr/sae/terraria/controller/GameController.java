@@ -88,7 +88,7 @@ public class GameController implements Initializable
                 scaleMultiplicatorWidth,
                 scaleMultiplicatorHeight);
 
-        Camera camera = new Camera(player, paneHadCamera, environment.getTileMaps());
+        Camera camera = new Camera(environment, paneHadCamera);
         this.addKeysEventListener(primaryStage);
     }
 
