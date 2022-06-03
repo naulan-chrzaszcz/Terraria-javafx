@@ -32,7 +32,7 @@ public class Camera
 
         clip.yProperty()
                 .bind(Bindings.createDoubleBinding(
-                        () -> clampRange(player.getY() - clip.getHeight()/2, minScrollHeightCamera, maxScrollHeightCamera),
+                        () -> clampRange(player.getY() - (clip.getHeight()/2) - environment.heightTile, minScrollHeightCamera, maxScrollHeightCamera),
                         player.getYProperty(), paneHadCamera.heightProperty()
                 )
         );
