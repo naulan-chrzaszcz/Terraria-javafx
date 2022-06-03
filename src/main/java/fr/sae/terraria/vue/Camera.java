@@ -21,7 +21,7 @@ public class Camera
         int tileSize = (int) (environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE);
         int minScrollWidthCamera = 0; int minScrollHeightCamera = 0;
         int maxScrollWidthCamera = (int) ((tileMaps.getWidth()*tileSize) - clip.getWidth());
-        int maxScrollHeightCamera = (int) ((tileMaps.getHeight()*tileSize) - clip.getHeight());
+        int maxScrollHeightCamera = (int) ((tileMaps.getHeight()*tileSize) - clip.getHeight()) - environment.heightTile;
 
         clip.xProperty()
                 .bind(Bindings.createDoubleBinding(
