@@ -190,10 +190,10 @@ public abstract class Entity
      */
     protected boolean worldLimit(Environment environment)
     {
-        double widthScreen = (environment.scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
+        double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) -6;
 
         boolean exceedsScreenOnLeft = offset[0] == Entity.IS_MOVING_LEFT && getX() < 0;
-        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX() > (widthScreen - getRect().getWidth());
+        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX() > (widthMap - getRect().getWidth());
         return (exceedsScreenOnLeft || exceedsScreenOnRight);
     }
 

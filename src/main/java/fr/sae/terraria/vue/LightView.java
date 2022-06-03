@@ -12,6 +12,10 @@ import javafx.scene.shape.Shape;
 public class LightView {
     private static final int CIRCLE_RAY = 3;
     private static final double OPACITY_ITER = 0.0017;
+    private static  final Color NIGHT_COLOR = Color.web("#0d0d38");
+    private int delimitationDirtStone;
+    private double tileSize;
+    private double widthMap;
 
     private Clock clock;
     private Pane filterPane;
@@ -25,38 +29,43 @@ public class LightView {
     private TileMaps tileMaps;
 
     public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth, TileMaps tileMaps) {
+        tileSize =(int) (scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
+        widthMap =(int) (scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
 
         this.clock = clock;
         this.filterPane = filterPane;
         this.tileMaps= tileMaps;
+        delimitationDirtStone = fullStoneArea();
+
         opacityNightAir = new SimpleDoubleProperty(0.0);
         opacityNightFade = new SimpleDoubleProperty(0.8143);
 
-        torchLight = new Circle(scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*CIRCLE_RAY);
+        torchLight = new Circle(tileSize*CIRCLE_RAY);
+        air = new Rectangle(widthMap,tileSize*tileMaps.getHeight());
+        fade =  new Rectangle(widthMap,tileSize);
+        tunnel = new Rectangle(widthMap,tileSize* tileMaps.getHeight() - tileSize*delimitationDirtStone);
 
-        air = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getHeight());
-        fade =  new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE+1);
-        tunnel = new Rectangle(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth() ,scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE* tileMaps.getHeight() - scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*15);
+        air.setFill(NIGHT_COLOR);
 
-        air.setFill(Color.web("#0d0d38"));
-
-        Stop[] stops = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, Color.web("#0d0d38"))};
+        Stop[] stops = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
         LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
         fade.setFill(lg1);
 
-        Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, Color.web("#0d0d38"))};
-        RadialGradient rg2 = new RadialGradient(0,0.1,0,0,scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*5,false,CycleMethod.NO_CYCLE,stopsTorch);
+        Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
+        RadialGradient rg2 = new RadialGradient(0,0.1,0,0,tileSize*5,false,CycleMethod.NO_CYCLE,stopsTorch);
         torchLight.setFill(rg2);
 
-        tunnel.setFill(Color.web("#0d0d38"));
+        tunnel.setFill(NIGHT_COLOR);
 
-        fade.setLayoutY(scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*14);
-        tunnel.setLayoutY(scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE*15);
+
+        tunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
+        fade.setLayoutY(tunnel.getLayoutY()-tileSize);
 
         tunnel.opacityProperty().bind(opacityNightFade);
         fade.opacityProperty().bind(opacityNightFade);
         air.opacityProperty().bind(opacityNightAir);
         filterPane.getChildren().addAll(air,fade,tunnel);
+
     }
 
     public void setLightElements() {
@@ -74,6 +83,32 @@ public class LightView {
                 opacityNightFade.setValue(opacityNightFade.getValue()+ OPACITY_ITER);
             }
         }
+    }
+
+
+    private int fullStoneArea() {
+        int line = 0;
+        int column = 0;
+        boolean found = false;
+        boolean wrongLine = false;
+
+        while (line < tileMaps.getHeight() && !found) {
+
+            wrongLine = false;
+            column = 0;
+
+            while (column < tileMaps.getWidth() && !found && !wrongLine){
+
+                if (tileMaps.getTile(column,line) !=  TileMaps.STONE)
+                    wrongLine = true;
+                else if (column == tileMaps.getWidth() - 1)
+                    found = true;
+
+                column++;
+            }
+            line++;
+        }
+        return line-1;
     }
 }
 
