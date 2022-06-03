@@ -7,7 +7,9 @@ import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.items.Wood;
 import fr.sae.terraria.modele.entities.player.Inventory;
 import fr.sae.terraria.vue.View;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -104,6 +106,10 @@ public class InventoryView {
                                                 itemImg = View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight);
                                             else if (item.get(0) instanceof Meat)
                                                 itemImg = View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight);
+                                            else if (item.get(0) instanceof Fiber)
+                                                itemImg = View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight);
+                                            else if (item.get(0) instanceof Wood)
+                                                itemImg = View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight);
 
                                             if (!Objects.isNull(itemImg)) {
                                                 ImageView itemView = new ImageView();
@@ -137,6 +143,8 @@ public class InventoryView {
         for (int i = 0; i < inventory.NB_LINES; i++)
             for (int j = 0; j < inventory.NB_BOXES_MAX / inventory.NB_LINES; j++) {
                 inventoryStringProperty[i][j] = new SimpleStringProperty();
+                inventoryStringProperty[i][j].setValue(String.valueOf(inventory.get()[i][j].size()));
+                System.out.println(inventory.get()[i][j].size());
                 Label nbObjects = new Label();
                 nbObjects.setId("textInventoryBar");
                 int fontSize = (int) (5 * scaleMultiplicatorWidth);

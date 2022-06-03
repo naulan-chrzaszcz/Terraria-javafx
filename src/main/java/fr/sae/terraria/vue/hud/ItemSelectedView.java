@@ -3,6 +3,7 @@ package fr.sae.terraria.vue.hud;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
 import fr.sae.terraria.modele.entities.player.Player;
@@ -27,6 +28,7 @@ public class ItemSelectedView
     private Image silexItemImg;
     private Image meatItemImg;
     private Image woodItemImg;
+    private Image torchItemImg;
 
     private Pane display;
 
@@ -43,13 +45,16 @@ public class ItemSelectedView
         this.itemSelectedImgView = new ImageView();
         this.dirtItemImg = View.loadAnImage("tiles/floor-top.png", widthItem, heightItem);
         this.stoneItemImg = View.loadAnImage("tiles/rock-fill.png", widthItem, heightItem);
+        this.torchItemImg = View.loadAnImage("tiles/torch.png", widthItem, heightItem);
         this.coalItemImg = View.loadAnImage("loots/coal.png", widthItem, heightItem);
-        this.fibreItemImg = View.loadAnImage("loots/fibre.png", widthItem, heightItem);
+        this.fibreItemImg = View.loadAnImage("loots/fiber.png", widthItem, heightItem);
         this.ironItemImg = View.loadAnImage("loots/iron.png", widthItem, heightItem);
         this.pierreItemImg = View.loadAnImage("loots/pierre.png", widthItem, heightItem);
         this.silexItemImg = View.loadAnImage("loots/silex.png", widthItem, heightItem);
         this.meatItemImg = View.loadAnImage("loots/meat.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
+
+
 
         player.getInventory().posCursorHorizontallyInventoryBarProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
             StowableObjectType item = player.getItemSelected();
@@ -58,6 +63,8 @@ public class ItemSelectedView
                 itemSelectedImgView.setImage(dirtItemImg);
             else if (item instanceof Stone)
                 itemSelectedImgView.setImage(stoneItemImg);
+            else if (item instanceof Torch)
+                itemSelectedImgView.setImage(torchItemImg);
             else if (item instanceof Coal)
                 itemSelectedImgView.setImage(coalItemImg);
             else if (item instanceof Fiber)
@@ -72,6 +79,7 @@ public class ItemSelectedView
                 itemSelectedImgView.setImage(meatItemImg);
             else if (item instanceof Wood)
                 itemSelectedImgView.setImage(woodItemImg);
+
             else itemSelectedImgView.setImage(null);
         });
 

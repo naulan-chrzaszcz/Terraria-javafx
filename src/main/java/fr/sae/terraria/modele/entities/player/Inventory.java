@@ -68,28 +68,36 @@ public class Inventory
             for (int i = 0; i < NB_LINES; i++) {
                 boolean isFull = false;
                 for (int j = 0; j < NB_BOXES_MAX / NB_LINES; j++) {
+                    isFull = false;
                     int beforeSize = this.value[i][j].size();
                     if (this.value[i][j].isEmpty())
                         this.value[i][j].add(object);
                     else if (this.value[i][j].size() == BLOCK_STACKING_MAX)
                         isFull = true;
-                    else if (this.value[i][j].get(0) instanceof Dirt && object instanceof Dirt)
+                    else if (this.value[i][j].get(0) instanceof Dirt && object instanceof Dirt) {
                         this.value[i][j].add(object);
-                    else if (this.value[i][j].get(0) instanceof Stone && object instanceof Stone)
+                        isFull = false;
+                    }
+                    else if (this.value[i][j].get(0) instanceof Stone && object instanceof Stone) {
                         this.value[i][j].add(object);
-                    else if (this.value[i][j].get(0) instanceof Torch && object instanceof Torch)
+                        isFull = false;
+                    }
+                    else if (this.value[i][j].get(0) instanceof Torch && object instanceof Torch) {
                         this.value[i][j].add(object);
-                    else if (this.value[i][j].get(0) instanceof Fiber && object instanceof Fiber)
+                        isFull = false;
+                    }
+                    else if (this.value[i][j].get(0) instanceof Fiber && object instanceof Fiber) {
                         this.value[i][j].add(object);
-                    else if (this.value[i][j].get(0) instanceof Wood && object instanceof Wood)
+                        isFull = false;
+                    }
+                    else if (this.value[i][j].get(0) instanceof Wood && object instanceof Wood) {
                         this.value[i][j].add(object);
+                        isFull = false;
+                    }
 
                     // Quand un objet a été mise dans l'inventaire, il arrête la fonction
                     if (beforeSize != this.value[i][j].size())
                         return;
-
-                    if (isFull)
-                        this.value[i][nbStacksInventory].add(object);
                 }
             }
         }
