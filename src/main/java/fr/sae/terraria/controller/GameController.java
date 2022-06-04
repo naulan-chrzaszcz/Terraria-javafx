@@ -150,11 +150,6 @@ public class GameController implements Initializable
                         if (entity.getRect().collideRect(rectangle)) {
                             if (entity instanceof BreakableObjectType)
                                 ((BreakableObjectType) entity).breaks();
-                            if (entity instanceof Tree)
-                                player.pickup(new Wood());
-                            else if (entity instanceof TallGrass)
-                                player.pickup(new Fiber());
-                            else player.pickup((StowableObjectType) entity);
 
                             if (entity instanceof CollapsibleObjectType)
                                 ((CollapsibleObjectType) entity).hit();
@@ -188,10 +183,10 @@ public class GameController implements Initializable
                         if (environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY) {
                             Entity entity = null;
                             if (player.getItemSelected() instanceof Dirt) {
-                                entity = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
+                                entity = new Dirt(this.environment, xBlock*tileWidth, yBlock*tileHeight);
                                 environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
                             } else if (player.getItemSelected() instanceof Stone) {
-                                entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
+                                entity = new Stone(this.environment, xBlock*tileWidth, yBlock*tileHeight);
                                 environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                             } else if (player.getItemSelected() instanceof Torch) {
                                 entity = new Torch(xBlock * tileWidth, yBlock * tileHeight);

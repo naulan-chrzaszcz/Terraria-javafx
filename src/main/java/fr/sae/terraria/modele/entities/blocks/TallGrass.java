@@ -4,6 +4,7 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
+import fr.sae.terraria.modele.entities.items.Fiber;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -22,15 +23,18 @@ public class TallGrass extends Block implements ReproductiveObjectType
 
     private DoubleProperty tallGrassGrowth;
 
+    private Environment environment;
 
-    public TallGrass(int x, int y)
+
+    public TallGrass(Environment environment, int x, int y)
     {
         super(x, y);
+        this.environment = environment;
 
         this.tallGrassGrowth = new SimpleDoubleProperty(0);
     }
 
-    public TallGrass() { this(0, 0); }
+    public TallGrass(Environment environment) { this(environment, 0, 0); }
 
     public void updates()
     {
@@ -41,6 +45,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
     public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
+        this.environment.getPlayer().pickup(new Fiber());
     }
 
     public List<Entity> reproduction(Environment environment)
@@ -69,7 +74,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
 
             if ((x >= 0 && x < environment.getTileMaps().getWidth()) && (y >= 0 && y < environment.getTileMaps().getHeight())) {
                 if (environment.getTileMaps().getTile(x, y) != TileMaps.SKY) {
-                    TallGrass tallGrassChildren = new TallGrass((int) ((left == 0) ? (getX() - environment.widthTile) : (getX() + environment.widthTile)), (int) getY());
+                    TallGrass tallGrassChildren = new TallGrass(this.environment, (int) ((left == 0) ? (getX() - environment.widthTile) : (getX() + environment.widthTile)), (int) getY());
                     children.add(tallGrassChildren);
                 }
             }

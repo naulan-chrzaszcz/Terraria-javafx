@@ -7,11 +7,13 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 public class Dirt extends Block implements StowableObjectType, CollideObjectType
 {
+    private Environment environment;
 
 
-    public Dirt(int x, int y)
+    public Dirt(Environment environment, int x, int y)
     {
         super(x, y);
+        this.environment = environment;
     }
 
     public void updates() { /* TODO document why this method is empty */ }
@@ -21,5 +23,6 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
     public void breaks()
     {
         Environment.playSound("sound/grassyStep.wav", false);
+        this.environment.getPlayer().pickup(this);
     }
 }
