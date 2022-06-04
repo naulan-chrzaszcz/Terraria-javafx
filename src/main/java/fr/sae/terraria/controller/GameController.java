@@ -194,8 +194,9 @@ public class GameController implements Initializable
                                 entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
                                 environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                             } else if (player.getItemSelected() instanceof Torch) {
-                                if (environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight) + 1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight)) == TileMaps.SKY)
-                                    environment.getEntities().add(0, new Torch(xBlock * tileWidth, yBlock * tileWidth));
+                                entity = new Torch(xBlock * tileWidth, yBlock * tileHeight);
+                                environment.getEntities().add(0, entity);
+                                environment.getTorches().add(0, (Torch) entity);
                             } else if (player.getItemSelected() instanceof Meat)
                                 player.setPv(player.getPv() - 1);
 
