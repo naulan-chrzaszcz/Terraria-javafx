@@ -193,7 +193,7 @@ public abstract class Entity
      */
     protected boolean worldLimit(final Environment environment)
     {
-        double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) -6;
+        double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) ;
 
         boolean exceedsScreenOnLeft = offset[0] == Entity.IS_MOVING_LEFT && getX() < 0;
         boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX() > (widthMap - getRect().getWidth());
