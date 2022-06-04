@@ -1,25 +1,20 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 
+import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
-public class Stone extends Block implements StowableObjectType
+public class Stone extends Block implements StowableObjectType, CollideObjectType
 {
-    /*
-        TODO: Mettre en place un drop aléatoire de charbon
-             Si le joueur craft la Stone, il ne drop pas de charbon
-             Mettre une durabilité
-             Le nombre de pierre qui est drop est entre 1 et 4
-             (Optionnel) Faire un bruitage lorsque le joueur le casse
-             (Optionnel) Faire des particules de pierre lorsque on est en train de le casser
-    */
+
+
     public Stone(int x, int y){
         super(x, y);
 
     }
 
-    @Override
-    public void updates()
-    {
-    }
+    public void updates() { /* TODO document why this method is empty */ }
+
+
+    public void collide() { /* NE RIEN REMPLIR */ }
 }

@@ -4,6 +4,7 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.*;
+import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
@@ -117,7 +118,6 @@ public class GameController implements Initializable
             inventory.setScroll((int) scroll.getDeltaY());
             scroll.consume();
         });
-        inventory.eventInput();
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
             double scaleMultiplicativeWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
@@ -154,10 +154,7 @@ public class GameController implements Initializable
                                 player.pickup(new Wood());
                             else if (entity instanceof TallGrass)
                                 player.pickup(new Fiber());
-                            else {
-                                player.pickup((StowableObjectType) entity);
-                                System.out.println(entity);
-                            }
+                            else player.pickup((StowableObjectType) entity);
 
                             Node nodeAtDelete = null; int i = 0;
                             // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
@@ -206,7 +203,7 @@ public class GameController implements Initializable
 
                                 // Si on le pose sur le joueur
                                 boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
-                                if (isIntoABlock) {
+                                if (entity instanceof CollideObjectType && isIntoABlock) {
                                     // Place le joueur au-dessus du block posé.
                                     player.setY(entity.getY() - player.getRect().getHeight());
                                     player.getGravity().yInit = player.getY();
