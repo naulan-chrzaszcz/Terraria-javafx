@@ -1,13 +1,24 @@
 package fr.sae.terraria.modele.entities.blocks;
 
+import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 public class Torch extends Block implements StowableObjectType
 {
-    public Torch(int x, int y){ super(x, y); }
+    private Environment environment;
 
-    @Override
+
+    public Torch(Environment environment, int x, int y)
+    {
+        super(x, y);
+        this.environment = environment;
+    }
+
     public void updates() { }
 
-    public void breaks() { }
+    public void breaks()
+    {
+        this.environment.getEntities().remove(this);
+        this.environment.getTorches().remove(this);
+    }
 }

@@ -150,12 +150,11 @@ public class GameController implements Initializable
                         if (entity.getRect().collideRect(rectangle)) {
                             if (entity instanceof BreakableObjectType)
                                 ((BreakableObjectType) entity).breaks();
-
                             if (entity instanceof CollapsibleObjectType)
                                 ((CollapsibleObjectType) entity).hit();
 
-                            Node nodeAtDelete = null; int i = 0;
                             // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
+                            Node nodeAtDelete = null; int i = 0;
                             do {
                                 Node node = displayTiledMap.getChildren().get(i);
                                 int xNode = (int) (node.getTranslateX());
@@ -163,9 +162,6 @@ public class GameController implements Initializable
 
                                 if (xNode == xEntity && yNode == yEntity) {
                                     nodeAtDelete = node;
-                                    environment.getTileMaps().setTile(TileMaps.SKY, yNode/tileHeight, xNode/tileWidth);
-                                    // Supprime dans le modele et dans la vue
-                                    environment.getEntities().remove(entity);
                                     displayTiledMap.getChildren().remove(nodeAtDelete);
                                 }
                                 i++;
@@ -189,7 +185,7 @@ public class GameController implements Initializable
                                 entity = new Stone(this.environment, xBlock*tileWidth, yBlock*tileHeight);
                                 environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
                             } else if (player.getItemSelected() instanceof Torch) {
-                                entity = new Torch(xBlock * tileWidth, yBlock * tileHeight);
+                                entity = new Torch(this.environment, xBlock * tileWidth, yBlock * tileHeight);
                                 environment.getEntities().add(0, entity);
                                 environment.getTorches().add(0, (Torch) entity);
                             } else if (player.getItemSelected() instanceof Meat)

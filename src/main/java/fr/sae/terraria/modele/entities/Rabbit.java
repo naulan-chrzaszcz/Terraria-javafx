@@ -4,6 +4,7 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.items.Meat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,16 +103,17 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
+        this.environment.getPlayer().pickup(new Meat());
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */
-    public void moveRight() { offset[0] = Entity.IS_MOVING_RIGHT; }
+    public void moveRight() { super.moveRight(); }
     /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    public void moveLeft() { offset[0] = Entity.IS_MOVING_LEFT; }
+    public void moveLeft() { super.moveLeft(); }
     /** Modifie l'offset qui permet de le faire sauter */
-    public void jump() { offset[1] = Entity.IS_JUMPING; }
+    public void jump() { super.jump(); }
     /** Modifie l'offset qui permet de tomber */
-    public void fall() { offset[1] = Entity.IS_FALLING; }
+    public void fall() { super.fall(); }
 
     public void worldLimit()
     {

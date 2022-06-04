@@ -2,6 +2,7 @@ package fr.sae.terraria.modele.entities.blocks;
 
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.items.Wood;
 
 public class Tree extends Block
@@ -24,6 +25,8 @@ public class Tree extends Block
 
     public void breaks()
     {
+        // Environment.playSound("sound/grassyStep.wav", false);
         this.environment.getPlayer().pickup(new Wood());
+        this.environment.getEntities().remove(this);
     }
 }

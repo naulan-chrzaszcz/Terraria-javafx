@@ -79,10 +79,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         }
     }
 
-    public void hit()
-    {
-
-    }
+    public void hit() { }
 
     public void moveRight() { super.moveRight(); }
     public void moveLeft() { super.moveLeft(); }

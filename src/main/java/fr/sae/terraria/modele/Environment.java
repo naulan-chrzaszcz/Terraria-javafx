@@ -86,7 +86,7 @@ public class Environment
     private void gameLoop()
     {
         // TODO TEST
-        boolean[] caught= new boolean[]{false};
+        boolean[] caught = new boolean[] {false};
 
         this.loop = new Timeline();
         this.loop.setCycleCount(Animation.INDEFINITE);
@@ -98,7 +98,7 @@ public class Environment
 
             // TODO TEST
             if (!caught[0]) {
-                Torch torch = new Torch(0, 0);
+                Torch torch = new Torch(this, 0, 0);
                 player.pickup(torch);
                 Meat meat = new Meat();
                 player.pickup(meat);

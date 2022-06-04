@@ -46,6 +46,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
     {
         Environment.playSound("sound/cut.wav", false);
         this.environment.getPlayer().pickup(new Fiber());
+        this.environment.getEntities().remove(this);
     }
 
     public List<Entity> reproduction(Environment environment)
