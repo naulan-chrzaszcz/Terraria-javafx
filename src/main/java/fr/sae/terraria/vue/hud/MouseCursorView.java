@@ -1,14 +1,7 @@
 package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.Terraria;
-import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.blocks.Torch;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.Rect;
-import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
-import fr.sae.terraria.modele.entities.items.Meat;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -17,9 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MouseCursorView
@@ -46,7 +36,6 @@ public class MouseCursorView
         mouseCursorRect = new Rectangle(tileWidth, tileHeight);
         mouseCursorRect.setFill(Color.TRANSPARENT);
         mouseCursorRect.setStroke(Color.RED);
-        mouseCursorRect.setStrokeWidth(scaleMultiplicatorWidth);
         this.setCursorAnimation();
 
         HUD.addEventFilter(MouseEvent.MOUSE_MOVED, mouse -> {
@@ -63,10 +52,10 @@ public class MouseCursorView
     {
         Timeline loop = new Timeline();
         loop.setCycleCount(Animation.INDEFINITE);
+
         double[] time = new double[] {1};
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             mouseCursorRect.setStrokeWidth((Math.cos(time[0]) * scaleMultiplicatorWidth)+scaleMultiplicatorWidth);
-
             time[0] += .05;
         }));
         loop.getKeyFrames().add(keyFrame);

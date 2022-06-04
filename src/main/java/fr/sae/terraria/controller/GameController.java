@@ -5,7 +5,6 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.Rect;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -14,7 +13,6 @@ import fr.sae.terraria.modele.entities.player.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.Camera;
 import fr.sae.terraria.vue.View;
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,24 +36,16 @@ import java.util.ResourceBundle;
 
 public class GameController implements Initializable
 {
-    @FXML
-    public HBox title;
-    @FXML
-    private BorderPane root;
-    @FXML
-    private Pane displayHUD;
-    @FXML
-    private Pane displayTiledMap;
-    @FXML
-    private Pane displayHostileBeings;
-    @FXML
-    private Pane filter;
-    @FXML
-    private Pane displayCursorMouse;
-    @FXML
-    private StackPane paneHadCamera;
+    @FXML public HBox title;
+    @FXML public BorderPane root;
+    @FXML public Pane displayHUD;
+    @FXML public Pane displayTiledMap;
+    @FXML public Pane displayHostileBeings;
+    @FXML public Pane filter;
+    @FXML public Pane displayCursorMouse;
+    @FXML public StackPane paneHadCamera;
 
-    private Stage primaryStage;
+    public Stage primaryStage;
 
     // TODO: plutot mettre un DoubleProperty a c'est deux variables
     public double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran

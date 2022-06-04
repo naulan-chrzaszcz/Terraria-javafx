@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
 
 import java.util.ArrayList;
@@ -57,12 +58,22 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     {
         this.setX(this.x.get() + this.offset[0] * this.velocity);
 
-        boolean mustJump = environment.getTicks()%Rabbit.JUMP_FREQUENCY == 0;
-        if (mustJump) {
-            boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
-            if (jumpOrNot && offset[1] != Entity.IS_FALLING) {
-                this.jump();
-                this.gravity.degInit = -90;
+        if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
+            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.rect.getWidth()))/ environment.widthTile) + 1;
+            int yProbablyVoid = (int) ((getY() + this.rect.getHeight()) / environment.heightTile) + 2;
+
+            // Si du vide risque d'y avoir lors de son déplacement
+            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid) == TileMaps.SKY) {
+                this.offset[0] = (-1) * this.offset[0];
+            } else {
+                boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;
+                if (mustJump) {
+                    boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
+                    if (jumpOrNot) {
+                        this.jump();
+                        this.gravity.degInit = -90;
+                    }
+                }
             }
         }
     }

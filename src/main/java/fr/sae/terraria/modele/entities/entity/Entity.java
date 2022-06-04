@@ -1,10 +1,7 @@
 package fr.sae.terraria.modele.entities.entity;
 
-import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.player.Player;
-import fr.sae.terraria.modele.entities.Rabbit;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 

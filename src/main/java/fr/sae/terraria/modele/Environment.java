@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -22,33 +24,46 @@ import java.util.List;
 
 public class Environment
 {
-    private Clock clock;
+    // Permet d'update toutes les entités en une seule boucle.
     private final ObservableList<Entity> entities;
+    // Range des entities en plus pour permettre facilement de savoir combien son t-il sur la carte pour limiter leur apparition
+    private final ObservableList<Rabbit> rabbits;
+    private final ObservableList<Slime> slimes;
+    // Permet update facilement les lumieres des torches sur le filtre
+    private final ObservableList<Torch> torches;
 
     private final TileMaps tileMaps;
     private final Player player;
+    private final Clock clock;
+    private Timeline loop;
 
     public double scaleMultiplicatorWidth;
     public double scaleMultiplicatorHeight;
 
+    private int previousDays;
     public int widthTile;
     public int heightTile;
-    private int ticks = 0;
-    private Timeline loop;
+    private int ticks;
 
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
+        this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
+        this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
 
         this.tileMaps = new TileMaps();
         this.tileMaps.load(Terraria.SRC_PATH + "maps/map_0.json");
 
         this.clock = new Clock();
+        this.previousDays = -1;
+        this.ticks = 0;
+
         this.entities = FXCollections.observableArrayList();
-        this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
-        this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
+        this.rabbits = FXCollections.observableArrayList();
+        this.slimes = FXCollections.observableArrayList();
+        this.torches = FXCollections.observableArrayList();
 
         this.player = new Player(this, (5*widthTile), (3*heightTile));
         this.player.setVelocity(5);
@@ -89,9 +104,13 @@ public class Environment
             entitiesAtAdded.clear();
 
             // Génère aléatoirement des entités
-            GenerateEntity.tree(this);
-            GenerateEntity.tallGrass(this);
-            GenerateEntity.rabbit(this);
+            if (previousDays != clock.getDays())
+                for (int i = 0; i < 3; i++) // Génère par jour, 3 arbres
+                    GenerateEntity.tree(this);
+            if (clock.getMinutes() < (Clock.MINUTES_IN_A_DAY/2)) {  // Génère des lapins uniquement pendant le jour
+                GenerateEntity.rabbit(this);
+                GenerateEntity.tallGrass(this);
+            }
 
             for (Entity entity : entities) {
                 if (entity instanceof CollideObjectType)
@@ -105,6 +124,7 @@ public class Environment
             this.player.collide();
             this.player.updates();
 
+            this.previousDays = this.clock.getDays();
             this.clock.updates(ticks);
             this.ticks++;
         }));
@@ -115,6 +135,9 @@ public class Environment
 
 
     public ObservableList<Entity> getEntities() { return this.entities; }
+    public ObservableList<Rabbit> getRabbits() { return rabbits; }
+    public ObservableList<Torch> getTorches() { return torches; }
+    public ObservableList<Slime> getSlimes() { return slimes; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
     public Clock getGameClock() { return this.clock; }

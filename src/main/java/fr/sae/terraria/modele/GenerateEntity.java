@@ -7,6 +7,7 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
@@ -19,6 +20,7 @@ import static fr.sae.terraria.modele.entities.blocks.Tree.WHEN_SPAWN_A_TREE;
 
 public class GenerateEntity
 {
+    public static final int MAX_SPAWN_RABBIT = 100;
     private static final Random random = new Random();
 
 
@@ -29,7 +31,7 @@ public class GenerateEntity
      * @param whenSpawn Le nombre qui determine quand il doit spawn sur la carte
      * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit qu'on souhaite le placer
      */
-    private static void generateAnEntity(Environment environment, Entity e, int whenSpawn, double spawnRate)
+    private static Entity generateAnEntity(Environment environment, Entity e, int whenSpawn, double spawnRate)
     {
         List<Entity> entities = environment.getEntities();
         TileMaps maps = environment.getTileMaps();
@@ -54,7 +56,7 @@ public class GenerateEntity
                             for (Entity entity : entities)
                                 if (entity instanceof Tree && xEntity == entity.getX() && yEntity == entity.getY())
                                     // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                    return;
+                                    return null;
                             e.setX(xEntity);
                             e.setY(yEntity);
                             e.getGravity().setXInit(xEntity);
@@ -64,10 +66,11 @@ public class GenerateEntity
                             entities.add(0, e);
                         }
                         // Une fois l'arbre généré, il arrête complétement toute la fonction
-                        return;
+                        return e;
                     }
                     // Sinon on retourne vers la premiere boucle 'for'
                 }
+        return null;
     }
 
     /** Range les positions du sol sur la ligne 'y' */
@@ -89,5 +92,11 @@ public class GenerateEntity
     /** À un certain moment, grace au tick, il va générer des hautes herbes sur un sol */
     public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
     /** À un certain moment, grace au tick, il va générer des lapins sur un sol */
-    public static void rabbit(Environment environment) { generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE); }
+    public static void rabbit(Environment environment) {
+        if (environment.getRabbits().size() < MAX_SPAWN_RABBIT) {
+            Rabbit rabbit = (Rabbit) generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
+            if (!Objects.isNull(rabbit))
+                environment.getRabbits().add(rabbit);
+        }
+    }
 }

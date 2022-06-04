@@ -8,6 +8,7 @@ import javafx.beans.binding.Bindings;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
+
 public class Camera
 {
 
