@@ -185,39 +185,41 @@ public class GameController implements Initializable
                 if (click.getButton().equals(MouseButton.SECONDARY)) {
                     boolean haveAnItemOnHand = !Objects.isNull(player.getItemSelected());
                     if (haveAnItemOnHand) {
-                        Entity entity = null;
-                        if (player.getItemSelected() instanceof Dirt) {
-                            entity = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
-                            environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
-                        } else if (player.getItemSelected() instanceof Stone) {
-                            entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
-                            environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
-                        } else if (player.getItemSelected() instanceof Torch) {
-                            if (environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight) + 1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight)) == TileMaps.SKY) {
-                                environment.getEntities().add(0, new Torch(xBlock * tileWidth, yBlock * tileWidth));
-                            }
-                        } else if (player.getItemSelected() instanceof Meat) {
-                            player.setPv(player.getPv() - 1);
-                        }
-
-                        if(!Objects.isNull(entity)) {
-                            entity.setRect(tileWidth, tileHeight);
-                            environment.getEntities().add(0, entity);
-
-                            // Si on le pose sur le joueur
-                            boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
-                            if (isIntoABlock) {
-                                // Place le joueur au-dessus du block posé.
-                                player.setY(entity.getY() - player.getRect().getHeight());
-                                player.getGravity().yInit = player.getY();
-                                player.getGravity().xInit = player.getX();
+                        if (environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY) {
+                            Entity entity = null;
+                            if (player.getItemSelected() instanceof Dirt) {
+                                entity = new Dirt(xBlock*tileWidth, yBlock*tileHeight);
+                                environment.getTileMaps().setTile(TileMaps.DIRT, yBlock, xBlock);
+                            } else if (player.getItemSelected() instanceof Stone) {
+                                entity = new Stone(xBlock*tileWidth, yBlock*tileHeight);
+                                environment.getTileMaps().setTile(TileMaps.STONE, yBlock, xBlock);
+                            } else if (player.getItemSelected() instanceof Torch) {
+                                if (environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight) + 1) != TileMaps.SKY && environment.getTileMaps().getTile((int) mouseX / tileWidth, (int) (mouseY / tileHeight)) == TileMaps.SKY) {
+                                    environment.getEntities().add(0, new Torch(xBlock * tileWidth, yBlock * tileWidth));
+                                }
+                            } else if (player.getItemSelected() instanceof Meat) {
+                                player.setPv(player.getPv() - 1);
                             }
 
-                            ObservableList<StowableObjectType> stacksSelected = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorHorizontallyInventoryBar()];
-                            stacksSelected.remove(player.getItemSelected());
-                            if (stacksSelected.size()-1 >= 0) {
-                                int endLineStacks = stacksSelected.size()-1;
-                                player.setItemSelected(stacksSelected.get(endLineStacks));
+                            if(!Objects.isNull(entity)) {
+                                entity.setRect(tileWidth, tileHeight);
+                                environment.getEntities().add(0, entity);
+
+                                // Si on le pose sur le joueur
+                                boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
+                                if (isIntoABlock) {
+                                    // Place le joueur au-dessus du block posé.
+                                    player.setY(entity.getY() - player.getRect().getHeight());
+                                    player.getGravity().yInit = player.getY();
+                                    player.getGravity().xInit = player.getX();
+                                }
+
+                                ObservableList<StowableObjectType> stacksSelected = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorHorizontallyInventoryBar()];
+                                stacksSelected.remove(player.getItemSelected());
+                                if (stacksSelected.size()-1 >= 0) {
+                                    int endLineStacks = stacksSelected.size()-1;
+                                    player.setItemSelected(stacksSelected.get(endLineStacks));
+                                }
                             }
                         }
                     }
