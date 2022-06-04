@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele;
 
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -12,6 +13,8 @@ import java.util.Random;
 
 import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.Rabbit.WHEN_SPAWN_A_RABBIT;
+import static fr.sae.terraria.modele.entities.Slime.SLIME_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.Slime.WHEN_SPAWN_A_SLIME;
 import static fr.sae.terraria.modele.entities.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
 import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
@@ -21,6 +24,7 @@ import static fr.sae.terraria.modele.entities.blocks.Tree.WHEN_SPAWN_A_TREE;
 public class GenerateEntity
 {
     public static final int MAX_SPAWN_RABBIT = 100;
+    public static final int MAX_SPAWN_SLIME = 100;
     private static final Random random = new Random();
 
 
@@ -91,12 +95,22 @@ public class GenerateEntity
     public static void tree(Environment environment) { generateAnEntity(environment, new Tree(), WHEN_SPAWN_A_TREE, TREE_SPAWN_RATE); }
     /** À un certain moment, grace au tick, il va générer des hautes herbes sur un sol */
     public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
-    /** À un certain moment, grace au tick, il va générer des lapins sur un sol */
+
+    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol */
     public static void rabbit(Environment environment) {
         if (environment.getRabbits().size() < MAX_SPAWN_RABBIT) {
             Rabbit rabbit = (Rabbit) generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
             if (!Objects.isNull(rabbit))
                 environment.getRabbits().add(rabbit);
+        }
+    }
+
+    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol  */
+    public static void slime(Environment environment) {
+        if (environment.getSlimes().size() < MAX_SPAWN_SLIME) {
+            Slime slime = (Slime) generateAnEntity(environment, new Slime(environment), WHEN_SPAWN_A_SLIME, SLIME_SPAWN_RATE);
+            if (!Objects.isNull(slime))
+                environment.getSlimes().add(slime);
         }
     }
 }

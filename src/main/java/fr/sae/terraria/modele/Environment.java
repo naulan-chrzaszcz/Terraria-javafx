@@ -111,6 +111,8 @@ public class Environment
                 GenerateEntity.rabbit(this);
                 GenerateEntity.tallGrass(this);
             }
+            if (clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2)    // Génère des slimes uniquement pendant le soir
+                GenerateEntity.slime(this);
 
             for (Entity entity : entities) {
                 if (entity instanceof CollideObjectType)

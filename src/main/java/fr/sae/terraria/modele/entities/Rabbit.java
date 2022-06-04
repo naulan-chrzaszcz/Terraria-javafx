@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
 
@@ -81,7 +82,10 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();
-        // TODO les lapins doit se reproduire
+        if (environment.getRabbits().size() < GenerateEntity.MAX_SPAWN_RABBIT) {
+            // TODO les lapins doit se reproduire
+        }
+
         return children;
     }
 

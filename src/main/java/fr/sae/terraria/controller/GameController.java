@@ -46,13 +46,13 @@ public class GameController implements Initializable
     @FXML public Pane displayCursorMouse;
     @FXML public StackPane paneHadCamera;
 
-    public Stage primaryStage;
+    public final Stage primaryStage;
+    public Environment environment;
+    public Player player = null;
 
     // TODO: plutot mettre un DoubleProperty a c'est deux variables
     public double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
     public double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
-    public Environment environment;
-    public Player player = null;
 
 
     public GameController(Stage primaryStage)
