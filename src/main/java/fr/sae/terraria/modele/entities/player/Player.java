@@ -7,8 +7,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
+import javax.sound.sampled.Clip;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class Player extends Entity implements CollideObjectType, MovableObjectType

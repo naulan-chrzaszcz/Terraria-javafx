@@ -18,8 +18,17 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Environment
@@ -72,6 +81,8 @@ public class Environment
         this.player.setRect((int) image.getWidth(), (int) image.getHeight());
         image.cancel();
 
+        Environment.playSound("sound/Bird_Sound.wav", true);
+
         gameLoop();
     }
 
@@ -114,6 +125,7 @@ public class Environment
             if (clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2)    // Génère des slimes uniquement pendant le soir
                 GenerateEntity.slime(this);
 
+            // Updates toutes les entités
             for (Entity entity : entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
@@ -133,6 +145,23 @@ public class Environment
 
         this.loop.getKeyFrames().add(keyFrame);
         this.loop.play();
+    }
+
+    public static Clip playSound(String path, boolean loop)
+    {
+        Clip clip = null;
+        try {
+            clip = AudioSystem.getClip();
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Terraria.SRC_PATH + path).toURI().toURL());
+            clip.open(inputStream);
+        } catch (Exception e) { e.printStackTrace(); }
+
+        if (!Objects.isNull(clip)) {
+            clip.loop((loop) ? Clip.LOOP_CONTINUOUSLY : 0);
+            clip.start();
+        }
+
+        return clip;
     }
 
 

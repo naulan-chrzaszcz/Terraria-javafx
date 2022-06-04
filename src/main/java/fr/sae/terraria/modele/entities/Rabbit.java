@@ -61,10 +61,10 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
         if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
             int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.rect.getWidth()))/ environment.widthTile) + 1;
-            int yProbablyVoid = (int) ((getY() + this.rect.getHeight()) / environment.heightTile) + 2;
+            int yProbablyVoid = (int) ((getY() + (this.rect.getHeight()/2)) / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
-            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid) == TileMaps.SKY) {
+            if (environment.getTileMaps().getTile(xProbablyVoid+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 1 : (-1)), yProbablyVoid + 2) == TileMaps.SKY) {
                 this.offset[0] = (-1) * this.offset[0];
             } else {
                 boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;

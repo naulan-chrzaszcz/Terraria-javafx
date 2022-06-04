@@ -3,6 +3,7 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -150,11 +151,21 @@ public class GameController implements Initializable
                         int yEntity = (int) (entity.getRect().get().getMinY());
 
                         if (entity.getRect().collideRect(rectangle)) {
-                            if (entity instanceof Tree)
-                                player.pickup(new Wood());
-                            else if (entity instanceof TallGrass)
-                                player.pickup(new Fiber());
-                            else player.pickup((StowableObjectType) entity);
+                            if (entity instanceof StowableObjectType) {
+                                if (entity instanceof Dirt)
+                                    Environment.playSound("sound/grassyStep.wav", false);
+                                if (entity instanceof Stone)
+                                    Environment.playSound("sound/brick" + ((int) ((Math.random()*2)+1)) + ".wav", false);
+                                if (entity instanceof Tree)
+                                    player.pickup(new Wood());
+                                else if (entity instanceof TallGrass) {
+                                    Environment.playSound("sound/cut.wav", false);
+                                    player.pickup(new Fiber());
+                                } else player.pickup((StowableObjectType) entity);
+                            }
+
+                            if (entity instanceof Rabbit)
+                                Environment.playSound("sound/daggerswipe.wav", false);
 
                             Node nodeAtDelete = null; int i = 0;
                             // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
@@ -198,6 +209,7 @@ public class GameController implements Initializable
                                 player.setPv(player.getPv() - 1);
 
                             if(!Objects.isNull(entity)) {
+                                Environment.playSound("sound/axchop.wav", false);
                                 entity.setRect(tileWidth, tileHeight);
                                 environment.getEntities().add(0, entity);
 
