@@ -1,13 +1,13 @@
 package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.entities.entity.CollapsibleObjectType;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.MovableObjectType;
-import javafx.beans.property.SimpleDoubleProperty;
 
 
-public class Slime extends Entity implements CollideObjectType, MovableObjectType
+public class Slime extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType
 {
     public static final int WHEN_SPAWN_A_SLIME = 2500;
     public static final double SLIME_SPAWN_RATE = .2;
@@ -30,6 +30,11 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
     public void collide() { }
 
     public void move() { }
+
+    public void hit()
+    {
+        Environment.playSound("sound/daggerswipe.wav", false);
+    }
 
     public void moveRight() { super.moveRight(); }
 

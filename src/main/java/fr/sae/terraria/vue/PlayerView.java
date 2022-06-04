@@ -1,14 +1,11 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
-import javax.sound.sampled.Clip;
 
 
 public class PlayerView

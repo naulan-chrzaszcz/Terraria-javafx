@@ -8,4 +8,6 @@ public class Torch extends Block implements StowableObjectType
 
     @Override
     public void updates() { }
+
+    public void breaks() { }
 }

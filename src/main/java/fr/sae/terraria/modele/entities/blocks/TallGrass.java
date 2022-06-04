@@ -38,6 +38,11 @@ public class TallGrass extends Block implements ReproductiveObjectType
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 
+    public void breaks()
+    {
+        Environment.playSound("sound/cut.wav", false);
+    }
+
     public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();

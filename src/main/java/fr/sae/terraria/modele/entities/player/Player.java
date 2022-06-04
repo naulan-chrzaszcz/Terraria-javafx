@@ -7,14 +7,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import javax.sound.sampled.Clip;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 
-public class Player extends Entity implements CollideObjectType, MovableObjectType
+public class Player extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
 
@@ -80,6 +77,11 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.offset[0] = Entity.IDLE;
         }
+    }
+
+    public void hit()
+    {
+
     }
 
     public void moveRight() { super.moveRight(); }

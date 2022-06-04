@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType
+public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType, CollapsibleObjectType
 {
     public static final int WHEN_SPAWN_A_RABBIT = 2_500;
     public static final double RABBIT_SPAWN_RATE = .2;
@@ -97,6 +97,11 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.offset[0] = (-1) * this.offset[0];
         }
+    }
+
+    public void hit()
+    {
+        Environment.playSound("sound/daggerswipe.wav", false);
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */

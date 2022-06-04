@@ -1,9 +1,10 @@
 package fr.sae.terraria.modele.entities.blocks;
 
+import fr.sae.terraria.modele.entities.entity.BreakableObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 
 
-public abstract class  Block extends Entity
+public abstract class  Block extends Entity implements BreakableObjectType
 {
 
 
