@@ -23,9 +23,10 @@ public class View
      * Cette classe lors de l'initialisation, crée et génére toutes les views du jeux
      *  Contient des fonctions essentiels au chargement des images et des creations de vue
      */
-    public View(GameController gameController)
+    public View(final GameController gameController)
     {
         super();
+
         final Environment environment = gameController.environment;
         final Pane displayTiledMap = gameController.displayTiledMap;
         final Pane displayHostileBeings = gameController.displayHostileBeings;
@@ -51,7 +52,7 @@ public class View
     }
 
     /** Essaye de trouver et de charger l'image sinon renvoie null */
-    private static Image foundImage(String path)
+    private static Image foundImage(final String path)
     {
         Image img = null;
         try {
@@ -65,10 +66,10 @@ public class View
     }
 
     /** Charge une image avec une resolution carré (Ex: 16x16) */
-    public static Image loadAnImage(String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }
+    public static Image loadAnImage(final String path, int tileWidth, int tileHeight) { return new Image(View.foundImage(path).getUrl(), tileWidth, tileHeight, false, false, false); }
 
     /** Charge une image avec une resolution non carrée */
-    public static Image loadAnImage(String path, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    public static Image loadAnImage(final String path, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         Image img = View.foundImage(path);
         double width = img.getWidth();
@@ -80,7 +81,7 @@ public class View
         return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
     }
 
-    public static ImageView createImageView(Entity entity, Image img)
+    public static ImageView createImageView(final Entity entity, final Image img)
     {
         ImageView imageView = new ImageView(img);
         imageView.translateXProperty().bind(entity.getXProperty());

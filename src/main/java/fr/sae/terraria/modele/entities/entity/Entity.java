@@ -35,6 +35,8 @@ import java.util.Map;
  * @see StowableObjectType
  * @see BreakableObjectType
  * @see CollapsibleObjectType
+ * @see PlaceableObjectType
+ * @see EatableObjectType
  *
  * @author CHRZASZCZ Naulan
  */
@@ -141,15 +143,15 @@ public abstract class Entity
                 boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 
                 // Quand le joueur monte
-                if ((gravity.flightTime) >= gravity.timer ) {
+                if (this.gravity.flightTime >= this.gravity.timer ) {
                     if (isCollideTop) {
                         this.fall();
-                        gravity.timer = 0;
-                        gravity.setJumpPosInit(this);
-                    } else setY(futurePositionY);
+                        this.gravity.timer = 0;
+                        this.gravity.setJumpPosInit(this);
+                    } else this.setY(futurePositionY);
                     // Quand le joueur decent
                 } else {
-                    boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
+                    boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + this.rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + this.rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 
                     if (isCollideTop) {
                         this.fall();
@@ -158,7 +160,7 @@ public abstract class Entity
                         this.gravity.timer = 0;
                         this.offset[1] = Entity.IDLE;
                         this.air = false;
-                    } else setY(futurePositionY);
+                    } else this.setY(futurePositionY);
                 }
             }
         } else if (this.air) {

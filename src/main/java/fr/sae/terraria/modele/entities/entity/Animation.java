@@ -4,6 +4,12 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 
+/**
+ * <h1>Animation</h1>
+ * <h2><u>Description:</u></h2>
+ * <p>Gére uniquement la valeurs du frame pour que la vue sachent sur quel frame doit afficher l'image.</p>
+ * @see fr.sae.terraria.vue.PlayerView
+ */
 public class Animation
 {
     public static final double FRAME_SPEED = .1;

@@ -22,6 +22,7 @@ public interface ReproductiveObjectType
     /**
      * Reproduit les entités concernées.
      * @return Les enfants de l'entité
+     * @see fr.sae.terraria.modele.entities.blocks.TallGrass
      */
     List<Entity> reproduction(Environment environment);
 }
