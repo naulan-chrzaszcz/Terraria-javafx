@@ -3,14 +3,15 @@
 
 IUT de Montreuil Paris8 | BUT Informatique en 1er année.
 
+---
 
 ### Developpeurs sur le projet:
-- <img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/67024770?v=4"/> [CHRZASZCZ Naulan](https://github.com/NaulaN)
-- <img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/95338528?v=4"/> [NARCISO Tiago](https://github.com/almerion)
-- <img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/96045738?v=4"/> [BOUCHE Antoine](https://github.com/TheblackReaper060303)
+- <code><img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/67024770?v=4"/></code> [CHRZASZCZ Naulan](https://github.com/NaulaN)
+- <code><img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/95338528?v=4"/></code> [NARCISO Tiago](https://github.com/almerion)
+- <code><img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/96045738?v=4"/></code> [BOUCHE Antoine](https://github.com/TheblackReaper060303)
 
 ### Progression:
-[Les sprints](https://github.com/NaulaN/SAE-Terraria-Like/releases/tag/sprints)
+[Les sprints](https://github.com/NaulaN/SAE-Terraria-Like/releases)
 - [X] Sprint n°1
 - [X] Sprint n°2
 - [ ] Sprint n°3
@@ -21,8 +22,15 @@ Ce projet est la SAE de fin d'année de notre premiere année de formation en BU
 
 ### Concus avec:
 - JavaFX - Rendu graphique
+- Java 11
+
+### Comment le lancer ?
+Malheuresement, il n'y a pas de `.jar` pour pouvoir executé facilement le jeu.
 
 ### Sprites sheets:
-- Certaines proviennent de stardew valey comme pour les items, ...
-- La barre d'inventaire provient de Minecraft
-- Tiles Sheet concus par CHRZASZCZ Naulan
+- Certaines proviennent de [Stardew Valley](https://www.stardewvalley.net/) comme pour les items, ...
+- La barre d'inventaire provient de [Minecraft](https://www.minecraft.net/fr-fr).
+- Tiles Sheet concus par  [CHRZASZCZ Naulan](https://www.chrz-development.fr/).
+
+### Audios:
+- Proviennent de [Stardew Valley](https://www.stardewvalley.net/).
