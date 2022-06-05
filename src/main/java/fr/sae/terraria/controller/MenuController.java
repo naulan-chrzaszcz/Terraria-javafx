@@ -20,14 +20,10 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable
 {
-    @FXML
-    private Pane displayInventory;
-    @FXML
-    private AnchorPane displayLexique;
-    @FXML
-    private Pane root;
-    @FXML
-    private HBox HBoxText;
+    @FXML public Pane displayInventory;
+    @FXML public AnchorPane displayLexique;
+    @FXML public Pane root;
+    @FXML public HBox HBoxText;
 
     public Timeline loop;
     private Stage stage;

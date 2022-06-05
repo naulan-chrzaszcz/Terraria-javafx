@@ -86,7 +86,7 @@ public class Environment
     private void gameLoop()
     {
         // TODO TEST
-        boolean[] caught = new boolean[] {false};
+        boolean[] caught = new boolean[] { false };
 
         this.loop = new Timeline();
         this.loop.setCycleCount(Animation.INDEFINITE);
@@ -111,14 +111,16 @@ public class Environment
             entitiesAtAdded.clear();
 
             // Génère aléatoirement des entités
-            if (previousDays != clock.getDays())
+            boolean dayTime = clock.getMinutes() < (Clock.MINUTES_IN_A_DAY/2);
+            boolean nightTime = clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
+            boolean weHaveChangedDay = previousDays != clock.getDays();
+            if (weHaveChangedDay)
                 for (int i = 0; i < 3; i++) // Génère par jour, 3 arbres
                     GenerateEntity.tree(this);
-            if (clock.getMinutes() < (Clock.MINUTES_IN_A_DAY/2)) {  // Génère des lapins uniquement pendant le jour
+            if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbit(this);
                 GenerateEntity.tallGrass(this);
-            }
-            if (clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2)    // Génère des slimes uniquement pendant le soir
+            } else if (nightTime)    // Génère certaines entités uniquement pendant le soir
                 GenerateEntity.slime(this);
 
             // Updates toutes les entités

@@ -19,7 +19,7 @@ public class Clock
     public Clock()
     {
         minutes = new SimpleIntegerProperty(EIGHT_AM_INGAME+1);
-        days = new SimpleIntegerProperty(0);
+        days = new SimpleIntegerProperty(1);
     }
 
     public void updates(int ticks)

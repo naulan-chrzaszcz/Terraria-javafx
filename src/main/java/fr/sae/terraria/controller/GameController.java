@@ -48,7 +48,7 @@ public class GameController implements Initializable
     public Environment environment;
     public Player player = null;
 
-    // TODO: plutot mettre un DoubleProperty a c'est deux variables
+    // TODO plutot mettre un DoubleProperty a c'est deux variables
     public double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
     public double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
 
