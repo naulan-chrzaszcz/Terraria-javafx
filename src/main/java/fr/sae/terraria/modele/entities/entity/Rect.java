@@ -24,9 +24,9 @@ public class Rect
     }
 
     /** Permet de savoir si deux rectangles sont en collision */
-    public boolean collideRect(Rect rect) { return this.value.intersects(rect.get()) || this.value.contains(rect.get()); }
+    public boolean collideRect(final Rect rect) { return this.value.intersects(rect.get()) || this.value.contains(rect.get()); }
     /** Permet de savoir si deux rectangles sont en collision */
-    public boolean collideRect(Rectangle2D rect) { return this.value.intersects(rect) || this.value.contains(rect); }
+    public boolean collideRect(final Rectangle2D rect) { return this.value.intersects(rect) || this.value.contains(rect); }
 
     /** Permet d'avoir le Rectangle qui est géré par JavaFX */
     public Rectangle2D get() { return this.value; }

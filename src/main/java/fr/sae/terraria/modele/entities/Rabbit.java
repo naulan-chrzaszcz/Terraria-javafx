@@ -84,7 +84,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     {
         List<Entity> children = new ArrayList<>();
         if (environment.getRabbits().size() < GenerateEntity.MAX_SPAWN_RABBIT) {
-            // TODO les lapins doit se reproduire
+            // TODO les lapins doivent se reproduire
         }
 
         return children;
@@ -103,7 +103,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
-        this.environment.getPlayer().pickup(new Meat());
+        this.environment.getPlayer().pickup(new Meat(environment));
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */

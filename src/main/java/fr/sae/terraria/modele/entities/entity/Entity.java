@@ -91,7 +91,7 @@ public abstract class Entity
      *         left, right, top, bottom sera les clés qui peuvent être present lors d'une detection de collision.
      *         Il permettra de faire des actions personnalisées les actions faites par l'entité suivant d'où il rentre en collision avec son environment.
      */
-    protected Map<String, Boolean> collide(Environment environment)
+    protected Map<String, Boolean> collide(final Environment environment)
     {
 
         int widthTile = environment.widthTile; int heightTile = environment.heightTile;
@@ -187,7 +187,7 @@ public abstract class Entity
      *
      * @return false = ne sort pas | true = sort de l'écran soit vers la droite ou soit vers le bas
      */
-    protected boolean worldLimit(Environment environment)
+    protected boolean worldLimit(final Environment environment)
     {
         double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) -6;
 

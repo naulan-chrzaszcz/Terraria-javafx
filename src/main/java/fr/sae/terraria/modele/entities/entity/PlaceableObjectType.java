@@ -5,5 +5,5 @@ public interface PlaceableObjectType
 {
 
 
-    void place();
+    void place(final int x, final int y);
 }

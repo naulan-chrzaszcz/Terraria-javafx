@@ -1,12 +1,14 @@
 package fr.sae.terraria.modele.entities.blocks;
 
-
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
+import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
-public class Stone extends Block implements StowableObjectType, CollideObjectType
+
+public class Stone extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
     private Environment environment;
 
@@ -30,5 +32,15 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         int xIndexTile = (int) (getX()/environment.widthTile);
         this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
         this.environment.getEntities().remove(this);
+    }
+
+    public void place(int x, int y)
+    {
+        Environment.playSound("sound/axchop.wav", false);
+        Entity entity = new Stone(this.environment, x*environment.widthTile, y*environment.heightTile);
+        entity.setRect(environment.widthTile, environment.heightTile);
+
+        environment.getTileMaps().setTile(TileMaps.STONE, y, x);
+        environment.getEntities().add(0, entity);
     }
 }

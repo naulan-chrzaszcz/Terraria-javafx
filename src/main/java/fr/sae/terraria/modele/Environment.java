@@ -14,6 +14,7 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
@@ -77,8 +78,26 @@ public class Environment
         this.player.setRect((int) image.getWidth(), (int) image.getHeight());
         image.cancel();
 
-        Environment.playSound("sound/Bird_Sound.wav", true);
+        // Détecte si le joueur n'est pas dans un bloc lorsque qu'il met un block au sol
+        this.entities.addListener((ListChangeListener<? super Entity>) c -> {
+            while (c.next()) if (c.wasAdded()) {
+                Entity entity = c.getList().get(0);
 
+                if (!Objects.isNull(entity.getRect())) {
+                    // Si on le pose sur le joueur
+                    boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
+
+                    if (entity instanceof CollideObjectType && isIntoABlock) {
+                        // Place le joueur au-dessus du block posé.
+                        player.setY(entity.getY() - player.getRect().getHeight());
+                        player.getGravity().yInit = player.getY();
+                        player.getGravity().xInit = player.getX();
+                    }
+                }
+            }
+        });
+
+        Environment.playSound("sound/Bird_Sound.wav", true);
         gameLoop();
     }
 
@@ -100,7 +119,7 @@ public class Environment
             if (!caught[0]) {
                 Torch torch = new Torch(this, 0, 0);
                 player.pickup(torch);
-                Meat meat = new Meat();
+                Meat meat = new Meat(this);
                 player.pickup(meat);
                 caught[0] = true;
             }

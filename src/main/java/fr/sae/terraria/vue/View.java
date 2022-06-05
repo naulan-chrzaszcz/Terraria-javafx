@@ -1,6 +1,7 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.controller.GameController;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.vue.hud.HUDView;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 
 
 public class View
@@ -20,22 +22,18 @@ public class View
     /**
      * Cette classe lors de l'initialisation, crée et génére toutes les views du jeux
      *  Contient des fonctions essentiels au chargement des images et des creations de vue
-     *
-     * @param environment -
-     * @param displayTiledMap Le pane qui se charge d'afficher la carte
-     * @param displayHUD Le pane qui se charge d'afficher les elements du HUD
-     * @param scaleMultiplicatorWidth Le multiplicateur en largeur qui permet de redimensionner les images
-     * @param scaleMultiplicatorHeight Le multiplicateur en hauteur qui permet de redimensionner les images
      */
-    public View(Environment environment,
-                Pane displayHostileBeings,
-                Pane displayTiledMap,
-                Pane displayHUD,
-                Pane displayCursorMouse,
-                Pane filter,
-                double scaleMultiplicatorWidth,
-                double scaleMultiplicatorHeight)
+    public View(GameController gameController)
     {
+        final Environment environment = gameController.environment;
+        final Pane displayTiledMap = gameController.displayTiledMap;
+        final Pane displayHostileBeings = gameController.displayHostileBeings;
+        final Pane displayHUD = gameController.displayHUD;
+        final Pane displayCursorMouse = gameController.displayCursorMouse;
+        final Pane filter = gameController.filter;
+        double scaleMultiplicatorWidth = gameController.scaleMultiplicatorWidth;
+        double scaleMultiplicatorHeight = gameController.scaleMultiplicatorHeight;
+
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, displayHostileBeings, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
@@ -57,10 +55,10 @@ public class View
         Image img = null;
         try {
             URL pathImg = Terraria.class.getResource(path).toURI().toURL();
-            if (pathImg == null)
+            if (Objects.isNull(pathImg))
                 pathImg = new File(Terraria.SRC_PATH + path).toURI().toURL();
             img = new Image(pathImg.toString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) { }
 
         return img;
     }

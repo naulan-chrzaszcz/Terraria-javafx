@@ -38,8 +38,8 @@ public class MenuController implements Initializable
 
     public void initialize(URL location, ResourceBundle resources)
     {
-        scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-        scaleMultiplicatorHeight = ((root.getPrefHeight()-HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+        this.scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+        this.scaleMultiplicatorHeight = ((root.getPrefHeight()-HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
 
         this.loop = new Timeline();
