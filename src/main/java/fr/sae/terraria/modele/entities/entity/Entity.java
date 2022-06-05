@@ -33,6 +33,8 @@ import java.util.Map;
  * @see MovableObjectType
  * @see ReproductiveObjectType
  * @see StowableObjectType
+ * @see BreakableObjectType
+ * @see CollapsibleObjectType
  *
  * @author CHRZASZCZ Naulan
  */

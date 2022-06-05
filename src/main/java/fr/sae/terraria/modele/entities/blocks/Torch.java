@@ -3,9 +3,10 @@ package fr.sae.terraria.modele.entities.blocks;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
+
 public class Torch extends Block implements StowableObjectType
 {
-    private Environment environment;
+    private final Environment environment;
 
 
     public Torch(Environment environment, int x, int y)
@@ -14,7 +15,7 @@ public class Torch extends Block implements StowableObjectType
         this.environment = environment;
     }
 
-    public void updates() { }
+    public void updates() { /* TODO document why this method is empty */ }
 
     public void breaks()
     {

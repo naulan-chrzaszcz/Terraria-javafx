@@ -40,11 +40,4 @@ public class Gravity
 
     public void setXInit(double newXInit) { xInit = newXInit; }
     public void setYInit(double newYInit) { yInit = newYInit; }
-
-
-
-    public double calc(){
-        double timer2 = timer-SPEED;
-        return (((Gravity.VALUE/2) * (timer2 * timer2)) + ((Math.sin(degInit) * (vInit * amplitude)) * timer2)) + yInit;
-    }
 }

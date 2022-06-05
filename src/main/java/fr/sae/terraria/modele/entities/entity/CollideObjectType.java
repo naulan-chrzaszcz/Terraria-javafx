@@ -3,7 +3,8 @@ package fr.sae.terraria.modele.entities.entity;
 
 /**
  * <h1>CollideObjectType</h1>
- * <h2><u>Description:</u></h2>
+ * <h2>Interface utile à un objet qui hérite d'Entity</h2>
+ * <h3><u>Description:</u></h3>
  * <p>Permet de discerner les entités qui ne sont pas des objects qui doit rentré en collisions avec d'autre entité</p>
  * <p>Cela peut êtres utile sur les elements qui doit êtres au premier plan et d'autre element qui doit êtres à l'arrière plan</p>
  *

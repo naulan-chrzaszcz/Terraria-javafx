@@ -8,7 +8,7 @@ public class Grass extends Block
 
     public Grass(int x, int y) { super(x, y); }
 
-    public void updates() { }
+    public void updates() { /* TODO document why this method is empty */ }
 
     public void breaks()
     {

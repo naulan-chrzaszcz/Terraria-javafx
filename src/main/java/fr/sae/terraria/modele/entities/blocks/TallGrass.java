@@ -21,9 +21,9 @@ public class TallGrass extends Block implements ReproductiveObjectType
     public static final int GROWTH_TALL_GRASS_STEP = 6;
     public static final int LOOTS_FIBRE_MAX = 3;
 
-    private DoubleProperty tallGrassGrowth;
+    private final DoubleProperty tallGrassGrowth;
 
-    private Environment environment;
+    private final Environment environment;
 
 
     public TallGrass(Environment environment, int x, int y)
@@ -38,17 +38,22 @@ public class TallGrass extends Block implements ReproductiveObjectType
 
     public void updates()
     {
+        // L'animation de pousse
         if (tallGrassGrowth.get() < GROWTH_TALL_GRASS_STEP)
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 
+    /** Joue un son et donne au joueur entre 1 et 3 de fibre */
     public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
-        this.environment.getPlayer().pickup(new Fiber());
+
+        for (int loot = (int) (Math.random()*3)+1; loot < LOOTS_FIBRE_MAX; loot++)
+            this.environment.getPlayer().pickup(new Fiber());
         this.environment.getEntities().remove(this);
     }
 
+    /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */
     public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();
@@ -56,27 +61,42 @@ public class TallGrass extends Block implements ReproductiveObjectType
         boolean tallGrassMustReproduce = environment.getTicks()%TallGrass.REPRODUCTION_RATE == 0;
         if (tallGrassMustReproduce) {
             List<Entity> entities = environment.getEntities();
-
-            int left = 0;
-            int right = 0;
-            for (int x = 0; x < entities.size(); x++) {
-                if (entities.get(x).getX() == (getX() - environment.widthTile) && entities.get(x).getY() == getY())
-                    left++;
-                if (entities.get(x).getX() == (getX() + environment.widthTile) && entities.get(x).getY() == getY())
-                    right++;
-            }
+            int heightTile = environment.heightTile;
+            int widthTile = environment.widthTile;
+            int widthMaps = environment.getTileMaps().getWidth();
+            int heightMaps = environment.getTileMaps().getHeight();
 
             int x = -1;
-            int y = (int) (getY()/environment.heightTile)+1;
-            if (left == 0)
-                x = (int) (getX() - environment.widthTile)/environment.widthTile;
-            else if (right == 0)
-                x = (int) (getX() + environment.widthTile)/environment.widthTile;
+            int y = (int) (getY()/heightTile)+1;
 
-            if ((x >= 0 && x < environment.getTileMaps().getWidth()) && (y >= 0 && y < environment.getTileMaps().getHeight())) {
-                if (environment.getTileMaps().getTile(x, y) != TileMaps.SKY) {
-                    TallGrass tallGrassChildren = new TallGrass(this.environment, (int) ((left == 0) ? (getX() - environment.widthTile) : (getX() + environment.widthTile)), (int) getY());
-                    children.add(tallGrassChildren);
+            // Check si personne à côté
+            int left = 0; int right = 0;
+            for (Entity entity : entities) {
+                boolean haveAnEntityOnLeft = entity.getX() == (getX() - widthTile) && entity.getY() == getY();
+                boolean haveAnEntityOnRight = entity.getX() == (getX() + widthTile) && entity.getY() == getY();
+
+                if (haveAnEntityOnLeft) left++;
+                if (haveAnEntityOnRight) right++;
+            }
+
+            // Si les casses à côté sont libres
+            boolean leftIsAvailable = (left == 0);
+            boolean rightIsAvailable = (right == 0);
+            if (leftIsAvailable)
+                x = (int) (getX() - widthTile)/widthTile;
+            else if (rightIsAvailable)
+                x = (int) (getX() + widthTile)/widthTile;
+
+            // La place sur la carte
+            boolean isntOutTheMap = (x >= 0 && x < widthMaps) && (y >= 0 && y < heightMaps);
+            if (isntOutTheMap) {
+                boolean dontHaveTile = environment.getTileMaps().getTile(x, y) != TileMaps.SKY;
+
+                if (dontHaveTile) {
+                    int xTallGrassChildren = (int) ((left == 0) ? (getX() - widthTile) : (getX() + widthTile));
+                    int yTallGrassChildren = (int) getY();
+
+                    children.add(new TallGrass(this.environment, xTallGrassChildren, yTallGrassChildren));
                 }
             }
         }
