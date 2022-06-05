@@ -215,9 +215,9 @@ public abstract class Entity
 
     public void setRect(int width, int height) { this.rect = new Rect(x.get(), y.get(), width, height); }
     public void setVelocity(double velocity) { this.velocity = velocity; }
-    public void setPv(double pv) { this.pv.setValue(pv); this.pvMax = pv;}
-    public void setX(double x) { this.x.setValue(x); }
-    public void setY(double y) { this.y.setValue(y); }
+    public void setPv(double pv) { this.pv.set(pv); this.pvMax = pv;}
+    public void setX(double x) { this.x.set(x); }
+    public void setY(double y) { this.y.set(y); }
 }
 
 

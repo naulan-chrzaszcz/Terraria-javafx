@@ -140,34 +140,14 @@ public class GameController implements Initializable
     private void breakBlock(final Rectangle2D rectangle)
     {
         // Commence a cherché l'entité ciblée
-        for (Entity entity : this.environment.getEntities()) {
-            // La position de l'entité
-            int xEntity = (int) (entity.getRect().get().getMinX());
-            int yEntity = (int) (entity.getRect().get().getMinY());
+        for (Entity entity : this.environment.getEntities()) if (entity.getRect().collideRect(rectangle)) {
+            if (entity instanceof BreakableObjectType)
+                ((BreakableObjectType) entity).breaks();
+            if (entity instanceof CollapsibleObjectType)
+                ((CollapsibleObjectType) entity).hit();
 
-            if (entity.getRect().collideRect(rectangle)) {
-                if (entity instanceof BreakableObjectType)
-                    ((BreakableObjectType) entity).breaks();
-                if (entity instanceof CollapsibleObjectType)
-                    ((CollapsibleObjectType) entity).hit();
-
-                // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
-                Node nodeAtDelete = null; int i = 0;
-                do {
-                    Node node = this.displayTiledMap.getChildren().get(i);
-                    int xNode = (int) (node.getTranslateX());
-                    int yNode = (int) (node.getTranslateY());
-
-                    if (xNode == xEntity && yNode == yEntity) {
-                        nodeAtDelete = node;
-                        this.displayTiledMap.getChildren().remove(nodeAtDelete);
-                    }
-                    i++;
-                } while (i < this.displayTiledMap.getChildren().size() && Objects.isNull(nodeAtDelete));
-
-                // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
-                break;
-            }
+            // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
+            break;
         }
     }
 

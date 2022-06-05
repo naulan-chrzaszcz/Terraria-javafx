@@ -7,12 +7,14 @@ import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class TileMapsView
@@ -63,22 +65,44 @@ public class TileMapsView
 
         // Lorsqu'un élément est ajouté, il le dessine automatiquement à l'écran
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
-            while (c.next()) if (c.wasAdded()) {
-                if (c.getList().get(0) instanceof Tree)
-                    this.createTree((Tree) c.getList().get(0));
-                if (c.getList().get(0) instanceof TallGrass)
-                    this.createTallGrass((TallGrass) c.getList().get(0));
-                if (c.getList().get(0) instanceof Rabbit) {
-                    RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-                    rabbitView.displayRabbit(displayHostileBeings);
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    if (c.getList().get(0) instanceof Tree)
+                        this.createTree((Tree) c.getList().get(0));
+                    if (c.getList().get(0) instanceof TallGrass)
+                        this.createTallGrass((TallGrass) c.getList().get(0));
+                    if (c.getList().get(0) instanceof Rabbit) {
+                        RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+                        rabbitView.displayRabbit(displayHostileBeings);
+                    }
+
+                    if (c.getList().get(0) instanceof Torch)
+                        createTorch((Torch) c.getList().get(0));
+                    if (c.getList().get(0) instanceof Dirt)
+                        displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
+                    if (c.getList().get(0) instanceof Stone)
+                        displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
                 }
 
-                if (c.getList().get(0) instanceof Torch)
-                    createTorch((Torch) c.getList().get(0));
-                if (c.getList().get(0) instanceof Dirt)
-                    displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), floorTopImg));
-                if (c.getList().get(0) instanceof Stone)
-                    displayTileMap.getChildren().add(View.createImageView(c.getList().get(0), stoneImg));
+                if (c.wasRemoved()) {
+                    // La position de l'entité
+                    int xEntity = (int) (c.getRemoved().get(0).getRect().get().getMinX());
+                    int yEntity = (int) (c.getRemoved().get(0).getRect().get().getMinY());
+
+                    // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
+                    Node nodeAtDelete = null; int i = 0;
+                    do {
+                        Node node = display.getChildren().get(i);
+                        int xNode = (int) (node.getTranslateX());
+                        int yNode = (int) (node.getTranslateY());
+
+                        if (xNode == xEntity && yNode == yEntity) {
+                            nodeAtDelete = node;
+                            display.getChildren().remove(nodeAtDelete);
+                        }
+                        i++;
+                    } while (i < display.getChildren().size() && Objects.isNull(nodeAtDelete));
+                }
             }
         });
     }
