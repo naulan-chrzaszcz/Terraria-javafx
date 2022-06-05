@@ -9,6 +9,7 @@ import javafx.scene.input.MouseButton;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class Player extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType
@@ -22,9 +23,9 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
     private StowableObjectType itemSelected;
 
-    private Environment environment;
+    private final Environment environment;
 
-    private Inventory inventory;
+    private final Inventory inventory;
 
 
     /**
@@ -45,7 +46,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         this.objectWasPickup.addListener((obs, oldObject, newObject) -> this.inventory.put((StowableObjectType) newObject));
     }
 
-    public void updates()
+    @Override public void updates()
     {
         // Applique les déplacements selon les valeurs de l'offset
         // this.setX(this.x.get() + this.offset[0] * this.velocity);
@@ -62,14 +63,14 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         this.worldLimit();
         this.move();
 
-        if (this.rect != null)
+        if (!Objects.isNull(this.rect))
             this.rect.updates(x.get(), y.get());
-        animation.loop();
+        this.animation.loop();
     }
 
-    public void move() { this.setX(this.getX() + this.offset[0] * this.getVelocity()); }
+    @Override public void move() { this.setX(this.getX() + this.offset[0] * this.getVelocity()); }
 
-    public void collide()
+    @Override public void collide()
     {
         Map<String, Boolean> whereCollide = super.collide(this.environment);
 
@@ -79,17 +80,17 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         }
     }
 
-    public void hit() { }
+    @Override public void hit() { }
 
-    public void moveRight() { super.moveRight(); }
-    public void moveLeft() { super.moveLeft(); }
-    public void jump() { super.jump(); }
-    public void fall() { super.fall(); }
+    @Override public void moveRight() { super.moveRight(); }
+    @Override public void moveLeft() { super.moveLeft(); }
+    @Override public void jump() { super.jump(); }
+    @Override public void fall() { super.fall(); }
 
-    public void worldLimit()
+    @Override public void worldLimit()
     {
-        if (super.worldLimit(environment))
-            offset[0] = Entity.IDLE;
+        if (super.worldLimit(this.environment))
+            this.offset[0] = Entity.IDLE;
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
@@ -110,13 +111,13 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         });
     }
 
-    public void pickup(StowableObjectType pickupObject) { objectWasPickup.set(pickupObject); }
+    public void pickup(StowableObjectType pickupObject) { this.objectWasPickup.set(pickupObject); }
 
 
+    public Map<MouseButton, Boolean> getMouseInput() { return this.mouseInput; }
+    public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
+    public StowableObjectType getItemSelected() { return this.itemSelected; }
     public Inventory getInventory() { return this.inventory; }
-    public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-    public Map<MouseButton, Boolean> getMouseInput() { return mouseInput; }
-    public StowableObjectType getItemSelected() { return itemSelected; }
 
     public void setItemSelected(StowableObjectType itemSelected) { this.itemSelected = itemSelected; }
 }

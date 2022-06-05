@@ -10,5 +10,5 @@ public abstract class  Block extends Entity implements BreakableObjectType
 
     protected Block(int x, int y) { super(x, y); }
 
-    public abstract void updates();
+    @Override public abstract void updates();
 }

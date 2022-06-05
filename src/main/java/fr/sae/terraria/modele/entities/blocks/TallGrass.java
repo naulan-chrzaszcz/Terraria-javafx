@@ -36,7 +36,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
 
     public TallGrass(Environment environment) { this(environment, 0, 0); }
 
-    public void updates()
+    @Override public void updates()
     {
         // L'animation de pousse
         if (tallGrassGrowth.get() < GROWTH_TALL_GRASS_STEP)
@@ -44,7 +44,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
     }
 
     /** Joue un son et donne au joueur entre 1 et 3 de fibre */
-    public void breaks()
+    @Override public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
 
@@ -54,7 +54,7 @@ public class TallGrass extends Block implements ReproductiveObjectType
     }
 
     /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */
-    public List<Entity> reproduction(Environment environment)
+    @Override public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();
 

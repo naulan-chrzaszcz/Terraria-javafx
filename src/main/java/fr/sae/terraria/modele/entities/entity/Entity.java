@@ -46,9 +46,9 @@ public abstract class Entity
     public static final int IS_MOVING_RIGHT = 1;
     public static final int IDLE = 0;
 
-    protected DoubleProperty pv;
-    protected DoubleProperty x;
-    protected DoubleProperty y;
+    protected final DoubleProperty pv;
+    protected final DoubleProperty x;
+    protected final DoubleProperty y;
 
     protected final Gravity gravity = new Gravity();
     protected Animation animation = null;
@@ -66,11 +66,13 @@ public abstract class Entity
      */
     protected Entity(int x, int y)
     {
+        super();
+
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         this.pv = new SimpleDoubleProperty(0);
 
-        this.pvMax = pv.get();
+        this.pvMax = this.pv.get();
         this.air = false;
         this.offset = new int[2];
         this.velocity = 1;
@@ -99,8 +101,8 @@ public abstract class Entity
         Map<String, Boolean> whereCollide = new HashMap<>();
 
         // Detection vide en dessous
-        int yBottom = (int)  (getY()+getRect().getHeight()-CollideObjectType.COLLISION_TOLERANCE)/heightTile;
-        int posX = (int) ((getX()+((offset[0] < 0) ? CollideObjectType.COLLISION_TOLERANCE : -CollideObjectType.COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
+        int yBottom = (int)  (this.getY()+getRect().getHeight()-CollideObjectType.COLLISION_TOLERANCE)/heightTile;
+        int posX = (int) ((this.getX()+((this.offset[0] < 0) ? CollideObjectType.COLLISION_TOLERANCE : -CollideObjectType.COLLISION_TOLERANCE)) + ((this.offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
 
         boolean footInTheVoid = tileMaps.getTile(posX, yBottom) == TileMaps.SKY;
         if (footInTheVoid)

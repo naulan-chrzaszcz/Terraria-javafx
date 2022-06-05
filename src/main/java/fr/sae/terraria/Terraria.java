@@ -38,7 +38,7 @@ public class Terraria extends Application
     {
         URL pathGameFxml = Terraria.class.getResource(path);
         if (Objects.isNull(pathGameFxml)) try {
-            pathGameFxml = new File(SRC_PATH + path).toURI().toURL();
+            pathGameFxml = new File(Terraria.SRC_PATH + path).toURI().toURL();
         } catch (MalformedURLException e) { throw new RuntimeException(e); }
 
         return new FXMLLoader(pathGameFxml);

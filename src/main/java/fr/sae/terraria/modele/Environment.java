@@ -54,6 +54,8 @@ public class Environment
 
     public Environment(double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        super();
+
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
@@ -118,9 +120,9 @@ public class Environment
             // TODO TEST
             if (!caught[0]) {
                 Torch torch = new Torch(this, 0, 0);
-                player.pickup(torch);
+                this.player.pickup(torch);
                 Meat meat = new Meat(this);
-                player.pickup(meat);
+                this.player.pickup(meat);
                 caught[0] = true;
             }
 
@@ -130,9 +132,9 @@ public class Environment
             entitiesAtAdded.clear();
 
             // Génère aléatoirement des entités
-            boolean dayTime = clock.getMinutes() < (Clock.MINUTES_IN_A_DAY/2);
-            boolean nightTime = clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
-            boolean weHaveChangedDay = previousDays != clock.getDays();
+            boolean dayTime = this.clock.getMinutes() < (Clock.MINUTES_IN_A_DAY/2);
+            boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
+            boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
                 for (int i = 0; i < 3; i++) // Génère par jour, 3 arbres
                     GenerateEntity.tree(this);
@@ -143,7 +145,7 @@ public class Environment
                 GenerateEntity.slime(this);
 
             // Updates toutes les entités
-            for (Entity entity : entities) {
+            for (Entity entity : this.entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
 
@@ -156,7 +158,7 @@ public class Environment
             this.player.updates();
 
             this.previousDays = this.clock.getDays();
-            this.clock.updates(ticks);
+            this.clock.updates(this.ticks);
             this.ticks++;
         }));
 

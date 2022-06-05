@@ -1,8 +1,6 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
@@ -18,15 +16,15 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
         this.environment = environment;
     }
 
-    public void updates() { /* TODO document why this method is empty */ }
+    @Override public void updates() { /* TODO document why this method is empty */ }
 
-    public void breaks()
+    @Override public void breaks()
     {
         this.environment.getEntities().remove(this);
         this.environment.getTorches().remove(this);
     }
 
-    public void place(int x, int y)
+    @Override public void place(int x, int y)
     {
         Environment.playSound("sound/axchop.wav", false);
         Torch entity = new Torch(this.environment, x*environment.widthTile, y*environment.heightTile);

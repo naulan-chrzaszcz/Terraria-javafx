@@ -15,8 +15,9 @@ public class Camera
 
     public Camera(Environment environment, StackPane paneHadCamera)
     {
-        TileMaps tileMaps = environment.getTileMaps();
-        Player player = environment.getPlayer();
+        super();
+        final TileMaps tileMaps = environment.getTileMaps();
+        final Player player = environment.getPlayer();
         Rectangle clip = new Rectangle(0, 0, environment.scaleMultiplicatorWidth*Terraria.DISPLAY_RENDERING_WIDTH, environment.scaleMultiplicatorHeight*Terraria.DISPLAY_RENDERING_HEIGHT);
 
         int tileSize = (int) (environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE);

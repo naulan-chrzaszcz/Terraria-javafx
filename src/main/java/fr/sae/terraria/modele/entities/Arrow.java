@@ -12,7 +12,7 @@ public class Arrow extends Entity implements StowableObjectType, MovableObjectTy
     private final Environment environment;
 
 
-    public Arrow(Environment environment, int x, int y, int velocity)
+    public Arrow(final Environment environment, int x, int y, int velocity)
     {
         super(x, y);
         this.environment = environment;
@@ -20,13 +20,13 @@ public class Arrow extends Entity implements StowableObjectType, MovableObjectTy
         this.velocity = velocity;
     }
 
-    public void updates() { /* TODO document why this method is empty */ }
-    public void move() { /* TODO document why this method is empty */ }
-    public void collide() { /* TODO document why this method is empty */ }
+    @Override public void updates() { /* TODO document why this method is empty */ }
+    @Override public void move() { /* TODO document why this method is empty */ }
+    @Override public void collide() { /* TODO document why this method is empty */ }
 
-    public void moveRight() { super.moveRight(); }
-    public void moveLeft() { super.moveLeft(); }
-    public void jump() { /* UNE FLECHE NE PEUT SAUTER */ }
-    public void fall() { super.fall(); }
-    public void worldLimit() { super.worldLimit(environment); }
+    @Override public void moveRight() { super.moveRight(); }
+    @Override public void moveLeft() { super.moveLeft(); }
+    @Override public void jump() { /* UNE FLECHE NE PEUT SAUTER */ }
+    @Override public void fall() { super.fall(); }
+    @Override public void worldLimit() { super.worldLimit(this.environment); }
 }

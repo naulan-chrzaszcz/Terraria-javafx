@@ -50,55 +50,56 @@ public class GameController implements Initializable
     public double scaleMultiplicatorHeight = .0;   // Permet de scale correctement une image selon la hauteur de l'écran
 
 
-    public GameController(Stage primaryStage)
+    public GameController(final Stage primaryStage)
     {
+        super();
         this.primaryStage = primaryStage;
 
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> this.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
         primaryStage.heightProperty().addListener((obs, oldV, newV) -> this.scaleMultiplicatorHeight = ((newV.intValue()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
     }
 
-    public void initialize(URL location, ResourceBundle resources)
+    @Override public void initialize(URL location, ResourceBundle resources)
     {
         this.scaleMultiplicatorWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
         this.scaleMultiplicatorHeight = ((this.root.getPrefHeight()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
-        this.environment = new Environment(scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        this.environment = new Environment(this.scaleMultiplicatorWidth, this.scaleMultiplicatorHeight);
         this.player = this.environment.getPlayer();
 
         new View(this);
-        new Camera(environment, paneHadCamera);
+        new Camera(this.environment, this.paneHadCamera);
 
-        this.addKeysEventListener(primaryStage);
+        this.addKeysEventListener(this.primaryStage);
     }
 
     /**
      * Ajoute la fonctionnalité des listeners des event du clavier
      * @param stage Specifier l'application
      */
-    private void addKeysEventListener(Stage stage)
+    private void addKeysEventListener(final Stage stage)
     {
-        final Inventory inventory = player.getInventory();
+        final Inventory inventory = this.player.getInventory();
 
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
-            player.getKeysInput().put(key.getCode(), true);
+            this.player.getKeysInput().put(key.getCode(), true);
             inventory.getKeysInput().put(key.getCode(), true);
             key.consume();
         });
 
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> {
-            player.getKeysInput().put(key.getCode(), false);
+            this.player.getKeysInput().put(key.getCode(), false);
             inventory.getKeysInput().put(key.getCode(), false);
             key.consume();
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouse -> {
-            player.getMouseInput().put(mouse.getButton(), true);
+            this.player.getMouseInput().put(mouse.getButton(), true);
             mouse.consume();
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_RELEASED, mouse -> {
-            player.getMouseInput().put(mouse.getButton(), false);
+            this.player.getMouseInput().put(mouse.getButton(), false);
             mouse.consume();
         });
 
@@ -108,20 +109,20 @@ public class GameController implements Initializable
         });
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
-            final double scaleMultiplicativeWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-            final double scaleMultiplicativeHeight = ((root.getPrefHeight()-title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+            final double scaleMultiplicativeWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+            final double scaleMultiplicativeHeight = ((this.root.getPrefHeight()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
             final int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeWidth);
             final int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeHeight);
             // La position correcte sur le Pane
-            double mouseX = click.getSceneX()+((Rectangle) displayTiledMap.getParent().getClip()).getX();
-            double mouseY = (click.getSceneY()-title.getPrefHeight())+((Rectangle) displayTiledMap.getParent().getClip()).getY();
+            double mouseX = click.getSceneX()+((Rectangle) this.displayTiledMap.getParent().getClip()).getX();
+            double mouseY = (click.getSceneY()-this.title.getPrefHeight())+((Rectangle) this.displayTiledMap.getParent().getClip()).getY();
             // Le bloc où la souris à clicker
             int xBlock = (int) (mouseX/tileWidth);
             int yBlock = (int) (mouseY/tileHeight);
             Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);
             // La position du joueur
-            int xPlayer = (int) ((player.getX()+(tileWidth/2))/tileWidth);
-            int yPlayer = (int) ((player.getY()+(tileHeight/2))/tileHeight);
+            int xPlayer = (int) ((this.player.getX()+(tileWidth/2))/tileWidth);
+            int yPlayer = (int) ((this.player.getY()+(tileHeight/2))/tileHeight);
             // La distance entre le bloc et le joueur
             int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
@@ -136,10 +137,10 @@ public class GameController implements Initializable
         });
     }
 
-    private void breakBlock(Rectangle2D rectangle)
+    private void breakBlock(final Rectangle2D rectangle)
     {
         // Commence a cherché l'entité ciblée
-        for (Entity entity : environment.getEntities()) {
+        for (Entity entity : this.environment.getEntities()) {
             // La position de l'entité
             int xEntity = (int) (entity.getRect().get().getMinX());
             int yEntity = (int) (entity.getRect().get().getMinY());
@@ -153,16 +154,16 @@ public class GameController implements Initializable
                 // Tant qu'on n'a pas trouvé l'objet sur le Pane, il continue la boucle.
                 Node nodeAtDelete = null; int i = 0;
                 do {
-                    Node node = displayTiledMap.getChildren().get(i);
+                    Node node = this.displayTiledMap.getChildren().get(i);
                     int xNode = (int) (node.getTranslateX());
                     int yNode = (int) (node.getTranslateY());
 
                     if (xNode == xEntity && yNode == yEntity) {
                         nodeAtDelete = node;
-                        displayTiledMap.getChildren().remove(nodeAtDelete);
+                        this.displayTiledMap.getChildren().remove(nodeAtDelete);
                     }
                     i++;
-                } while (i < displayTiledMap.getChildren().size() && Objects.isNull(nodeAtDelete));
+                } while (i < this.displayTiledMap.getChildren().size() && Objects.isNull(nodeAtDelete));
 
                 // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
                 break;
@@ -170,28 +171,26 @@ public class GameController implements Initializable
         }
     }
 
-    private void placeBlock(Inventory inventory, int xBlock, int yBlock)
+    private void placeBlock(final Inventory inventory, int xBlock, int yBlock)
     {
-        boolean haveAnItemOnHand = !Objects.isNull(player.getItemSelected());
-        boolean goodPlace = environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
+        boolean haveAnItemOnHand = !Objects.isNull(this.player.getItemSelected());
+        boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
         if (haveAnItemOnHand && goodPlace) {
-            Object entity;
-            if (player.getItemSelected() instanceof PlaceableObjectType || player.getItemSelected() instanceof EatableObjectType)
-                entity = player.getItemSelected();
-            else return;
+            if (!(this.player.getItemSelected() instanceof PlaceableObjectType) && !(this.player.getItemSelected() instanceof EatableObjectType))
+                return;
 
-            if (player.getItemSelected() instanceof PlaceableObjectType)
-               ((PlaceableObjectType) player.getItemSelected()).place(xBlock, yBlock);
-            else if (player.getItemSelected() instanceof EatableObjectType) {
-                ((EatableObjectType) player.getItemSelected()).eat();
+            if (this.player.getItemSelected() instanceof PlaceableObjectType)
+               ((PlaceableObjectType) this.player.getItemSelected()).place(xBlock, yBlock);
+            else if (this.player.getItemSelected() instanceof EatableObjectType) {
+                ((EatableObjectType) this.player.getItemSelected()).eat();
                 return;
             }
 
             ObservableList<StowableObjectType> stacksSelected = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorHorizontallyInventoryBar()];
-            stacksSelected.remove(player.getItemSelected());
+            stacksSelected.remove(this.player.getItemSelected());
             if (stacksSelected.size()-1 >= 0) {
                 int endLineStacks = stacksSelected.size()-1;
-                player.setItemSelected(stacksSelected.get(endLineStacks));
+                this.player.setItemSelected(stacksSelected.get(endLineStacks));
             }
         }
     }

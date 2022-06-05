@@ -14,7 +14,9 @@ public class Animation
 
     public Animation()
     {
-        this.frame = new SimpleDoubleProperty();
+        super();
+
+        this.frame = new SimpleDoubleProperty(0);
         this.endFrame = 3;
     }
 
@@ -27,7 +29,7 @@ public class Animation
     }
 
     /** Revient au début du Sprite Sheet */
-    public void reset() { frame.set(0); }
+    public void reset() { this.frame.set(0); }
 
 
     public double getFrame() { return this.frame.get(); }

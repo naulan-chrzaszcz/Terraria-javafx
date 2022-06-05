@@ -9,6 +9,7 @@ import fr.sae.terraria.modele.entities.items.Meat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType, CollapsibleObjectType
@@ -20,11 +21,11 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
-    private Environment environment;
-    private Animation animation;
+    private final Environment environment;
+    private final Animation animation;
 
 
-    public Rabbit(Environment environment, int x, int y)
+    public Rabbit(final Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
@@ -35,11 +36,11 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         this.gravity.amplitude = 40;
     }
 
-    public Rabbit(Environment environment) { this(environment, 0, 0); }
+    public Rabbit(final Environment environment) { this(environment, 0, 0); }
 
-    public void updates()
+    @Override public void updates()
     {
-        if (this.offset[1] == Entity.IDLE && !air) {
+        if (this.offset[1] == Entity.IDLE && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -51,17 +52,17 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         this.move();
         this.worldLimit();
 
-        if (this.rect != null)
+        if (!Objects.isNull(this.rect))
             this.rect.updates(x.get(), y.get());
         this.animation.loop();
     }
 
-    public void move()
+    @Override public void move()
     {
         this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
-            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.rect.getWidth()))/ environment.widthTile) + 1;
+            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.rect.getWidth()))/ this.environment.widthTile) + 1;
             int yProbablyVoid = (int) ((getY() + (this.rect.getHeight()/2)) / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
@@ -80,7 +81,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         }
     }
 
-    public List<Entity> reproduction(Environment environment)
+    @Override public List<Entity> reproduction(final Environment environment)
     {
         List<Entity> children = new ArrayList<>();
         if (environment.getRabbits().size() < GenerateEntity.MAX_SPAWN_RABBIT) {
@@ -90,9 +91,9 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         return children;
     }
 
-    public void collide()
+    @Override public void collide()
     {
-        Map<String, Boolean> whereCollide = super.collide(environment);
+        Map<String, Boolean> whereCollide = super.collide(this.environment);
 
         if (!whereCollide.isEmpty()) {
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
@@ -100,31 +101,27 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         }
     }
 
-    public void hit()
+    @Override public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
-        this.environment.getPlayer().pickup(new Meat(environment));
+        this.environment.getPlayer().pickup(new Meat(this.environment));
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */
-    public void moveRight() { super.moveRight(); }
+    @Override public void moveRight() { super.moveRight(); }
     /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    public void moveLeft() { super.moveLeft(); }
+    @Override public void moveLeft() { super.moveLeft(); }
     /** Modifie l'offset qui permet de le faire sauter */
-    public void jump() { super.jump(); }
+    @Override public void jump() { super.jump(); }
     /** Modifie l'offset qui permet de tomber */
-    public void fall() { super.fall(); }
+    @Override public void fall() { super.fall(); }
 
-    public void worldLimit()
+    @Override public void worldLimit()
     {
-        if (super.worldLimit(environment))
-            offset[0] = (-1) * offset[0];
+        if (super.worldLimit(this.environment))
+            this.offset[0] = (-1) * this.offset[0];
     }
 
 
-    public Animation getAnimation() { return animation; }
+    @Override public Animation getAnimation() { return this.animation; }
 }
-
-
-
-

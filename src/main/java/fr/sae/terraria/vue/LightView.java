@@ -9,16 +9,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-public class LightView {
+public class LightView
+{
+    private static final Color NIGHT_COLOR = Color.web("#0d0d38");
+    private static final double OPACITY_ITER = .0017;
     private static final int CIRCLE_RAY = 3;
-    private static final double OPACITY_ITER = 0.0017;
-    private static  final Color NIGHT_COLOR = Color.web("#0d0d38");
-    private int delimitationDirtStone;
+
     private double tileSize;
     private double widthMap;
+    private int delimitationDirtStone;
 
     private Clock clock;
-    private Pane filterPane;
     private SimpleDoubleProperty opacityNightAir;
     private SimpleDoubleProperty opacityNightFade;
     private Circle torchLight;
@@ -28,80 +29,78 @@ public class LightView {
 
     private TileMaps tileMaps;
 
-    public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth, TileMaps tileMaps) {
-        tileSize =(int) (scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
-        widthMap =(int) (scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
+
+    public LightView(Clock clock, Pane filterPane, double scaleMultiplicatorHeight, double scaleMultiplicatorWidth, TileMaps tileMaps)
+    {
+        super();
+        this.tileSize = (int) (scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
+        this.widthMap = (int) (scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
 
         this.clock = clock;
-        this.filterPane = filterPane;
         this.tileMaps= tileMaps;
-        delimitationDirtStone = fullStoneArea();
+        this.delimitationDirtStone = fullStoneArea();
 
-        opacityNightAir = new SimpleDoubleProperty(0.0);
-        opacityNightFade = new SimpleDoubleProperty(0.8143);
+        this.opacityNightAir = new SimpleDoubleProperty(.0);
+        this.opacityNightFade = new SimpleDoubleProperty(.8143);
 
-        torchLight = new Circle(tileSize*CIRCLE_RAY);
-        air = new Rectangle(widthMap,tileSize*tileMaps.getHeight());
-        fade =  new Rectangle(widthMap,tileSize);
-        tunnel = new Rectangle(widthMap,tileSize* tileMaps.getHeight() - tileSize*delimitationDirtStone);
+        this.torchLight = new Circle(this.tileSize*LightView.CIRCLE_RAY);
+        this.air = new Rectangle(this.widthMap, this.tileSize*tileMaps.getHeight());
+        this.fade =  new Rectangle(this.widthMap, this.tileSize);
+        this.tunnel = new Rectangle(this.widthMap, this.tileSize*tileMaps.getHeight() - this.tileSize*this.delimitationDirtStone);
 
-        air.setFill(NIGHT_COLOR);
+        this.air.setFill(NIGHT_COLOR);
 
-        Stop[] stops = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
+        final Stop[] stops = new Stop[] { new Stop(0,new Color(0, 0, 0, 0) ), new Stop(1, LightView.NIGHT_COLOR)};
         LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-        fade.setFill(lg1);
+        this.fade.setFill(lg1);
 
-        Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
-        RadialGradient rg2 = new RadialGradient(0,0.1,0,0,tileSize*5,false,CycleMethod.NO_CYCLE,stopsTorch);
-        torchLight.setFill(rg2);
+        final Stop[] stopsTorch = new Stop[] { new Stop(0, new Color(0, 0, 0, 0)), new Stop(1, LightView.NIGHT_COLOR)};
+        RadialGradient rg2 = new RadialGradient(0, .1, 0, 0, this.tileSize*5, false, CycleMethod.NO_CYCLE, stopsTorch);
+        this.torchLight.setFill(rg2);
 
-        tunnel.setFill(NIGHT_COLOR);
+        this.tunnel.setFill(LightView.NIGHT_COLOR);
+        this.tunnel.setLayoutY(this.tileSize*(this.delimitationDirtStone+1));
+        this.fade.setLayoutY(this.tunnel.getLayoutY()-this.tileSize);
 
-
-        tunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
-        fade.setLayoutY(tunnel.getLayoutY()-tileSize);
-
-        tunnel.opacityProperty().bind(opacityNightFade);
-        fade.opacityProperty().bind(opacityNightFade);
-        air.opacityProperty().bind(opacityNightAir);
-        filterPane.getChildren().addAll(air,fade,tunnel);
-
+        this.tunnel.opacityProperty().bind(this.opacityNightFade);
+        this.fade.opacityProperty().bind(this.opacityNightFade);
+        this.air.opacityProperty().bind(this.opacityNightAir);
+        filterPane.getChildren().addAll(this.air, this.fade, this.tunnel);
     }
 
-    public void setLightElements() {
-        clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity(newV.intValue())));
-    }
+    public void setLightElements() { this.clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity(newV.intValue()))); }
 
-    private void updateOpacity(int minutes) {
+    private void updateOpacity(int minutes)
+    {
         if (minutes >= Clock.FOUR_PM_INGAME || minutes <= Clock.EIGHT_AM_INGAME) {
             if (minutes >= Clock.FOUR_PM_INGAME && minutes < Clock.ONE_DAY_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()+ OPACITY_ITER);
-                opacityNightFade.setValue(opacityNightFade.getValue()- OPACITY_ITER);
-            }
-            else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()- OPACITY_ITER);
-                opacityNightFade.setValue(opacityNightFade.getValue()+ OPACITY_ITER);
+                this.opacityNightAir.setValue(this.opacityNightAir.getValue()+LightView.OPACITY_ITER);
+                this.opacityNightFade.setValue(this.opacityNightFade.getValue()-LightView.OPACITY_ITER);
+            } else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME) {
+                this.opacityNightAir.setValue(this.opacityNightAir.getValue()-LightView.OPACITY_ITER);
+                this.opacityNightFade.setValue(this.opacityNightFade.getValue()+LightView.OPACITY_ITER);
             }
         }
     }
 
 
-    private int fullStoneArea() {
+    private int fullStoneArea()
+    {
         int line = 0;
         int column = 0;
         boolean found = false;
         boolean wrongLine = false;
 
-        while (line < tileMaps.getHeight() && !found) {
+        while (line < this.tileMaps.getHeight() && !found) {
 
             wrongLine = false;
             column = 0;
 
-            while (column < tileMaps.getWidth() && !found && !wrongLine){
+            while (column < this.tileMaps.getWidth() && !found && !wrongLine){
 
-                if (tileMaps.getTile(column,line) !=  TileMaps.STONE)
+                if (this.tileMaps.getTile(column,line) !=  TileMaps.STONE)
                     wrongLine = true;
-                else if (column == tileMaps.getWidth() - 1)
+                else if (column == this.tileMaps.getWidth() - 1)
                     found = true;
 
                 column++;
@@ -112,7 +111,7 @@ public class LightView {
     }
 }
 
-/** Pour le futur listener:
+/* Pour le futur listener:
  *
  * while (c.next){
  *     if(c.wasadded()){

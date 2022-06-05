@@ -20,9 +20,9 @@ public class Tree extends Block
 
     public Tree(Environment environment) { this(environment, 0, 0); }
 
-    public void updates() { /* TODO document why this method is empty */ }
+    @Override public void updates() { /* TODO document why this method is empty */ }
 
-    public void breaks()
+    @Override public void breaks()
     {
         // Environment.playSound("sound/grassyStep.wav", false);
         this.environment.getPlayer().pickup(new Wood());

@@ -25,6 +25,7 @@ public class View
      */
     public View(GameController gameController)
     {
+        super();
         final Environment environment = gameController.environment;
         final Pane displayTiledMap = gameController.displayTiledMap;
         final Pane displayHostileBeings = gameController.displayHostileBeings;

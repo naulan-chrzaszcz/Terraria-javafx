@@ -16,6 +16,8 @@ public class Gravity
     public int amplitude = 10;
 
 
+    public Gravity() { super(); }
+
     public double formulaOfTrajectory()
     {
         flightTime = calcFlightTime();

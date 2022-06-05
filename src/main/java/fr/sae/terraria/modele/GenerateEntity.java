@@ -28,6 +28,8 @@ public class GenerateEntity
     private static final Random random = new Random();
 
 
+    public GenerateEntity() { super(); }
+
     /**
      * Génère une entité selon de quand il spawn et du pourcent de change qu'il spawn réellement.
      *

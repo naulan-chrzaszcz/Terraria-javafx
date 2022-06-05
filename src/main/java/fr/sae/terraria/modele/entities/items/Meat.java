@@ -13,10 +13,11 @@ public class Meat extends Item implements EatableObjectType
 
     public Meat(final Environment environment)
     {
+        super();
         this.environment = environment;
     }
 
-    public void eat()
+    @Override public void eat()
     {
         Player player = environment.getPlayer();
 

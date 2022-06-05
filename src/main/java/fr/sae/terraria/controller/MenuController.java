@@ -7,7 +7,6 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -20,9 +19,9 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable
 {
-    @FXML public Pane displayInventory;
-    @FXML public AnchorPane displayLexique;
     @FXML public Pane root;
+    @FXML public Pane displayInventory;
+    @FXML public Pane displayLexique;
     @FXML public HBox HBoxText;
 
     public Timeline loop;
@@ -32,22 +31,23 @@ public class MenuController implements Initializable
     public double scaleMultiplicatorHeight;
 
 
-    public MenuController(Stage stage) {
+    public MenuController(final Stage stage)
+    {
+        super();
         this.stage = stage;
     }
 
-    public void initialize(URL location, ResourceBundle resources)
+    @Override public void initialize(URL location, ResourceBundle resources)
     {
-        this.scaleMultiplicatorWidth = (root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-        this.scaleMultiplicatorHeight = ((root.getPrefHeight()-HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-
+        this.scaleMultiplicatorWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+        this.scaleMultiplicatorHeight = ((this.root.getPrefHeight()-this.HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
 
         this.loop = new Timeline();
         this.loop.setCycleCount(Animation.INDEFINITE);
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            if (!Objects.isNull(player)) {
-                System.out.println(player.getInventory());
+            if (!Objects.isNull(this.player)) {
+                System.out.println(this.player.getInventory());
             }
         }));
 

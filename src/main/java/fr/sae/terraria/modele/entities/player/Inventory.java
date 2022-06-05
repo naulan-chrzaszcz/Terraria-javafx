@@ -31,12 +31,15 @@ public class Inventory
     private int scroll;
 
 
-    public Inventory(Player player)
+    public Inventory(final Player player)
     {
-        keysInput = new EnumMap<>(KeyCode.class);
-        this.value = new ObservableList[NB_LINES][NB_BOXES_MAX / NB_LINES];
-        for (int i = 0; i < NB_LINES; i++)
-            for (int j = 0; j < NB_BOXES_MAX /NB_LINES; j++)
+        super();
+        int nbElementOnOneLineOfInventory = (Inventory.NB_BOXES_MAX / Inventory.NB_LINES);
+
+        this.keysInput = new EnumMap<>(KeyCode.class);
+        this.value = new ObservableList[Inventory.NB_LINES][nbElementOnOneLineOfInventory];
+        for (int i = 0; i < Inventory.NB_LINES; i++)
+            for (int j = 0; j < nbElementOnOneLineOfInventory; j++)
                 this.value[i][j] = FXCollections.observableArrayList();
 
         this.posCursorHorizontallyInventoryBar = new SimpleIntegerProperty(0);
@@ -44,7 +47,7 @@ public class Inventory
 
         // Change l'item de la main du joueur
         posCursorHorizontallyInventoryBarProperty().addListener((obs, oldV, newV) -> {
-            boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < (NB_BOXES_MAX /NB_LINES);
+            boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
 
             if (isntOutOfInventoryBar) {
                 ObservableList<StowableObjectType> stack = this.get()[getPosCursorVerticallyInventoryBar()][newV.intValue()];
@@ -56,8 +59,8 @@ public class Inventory
     private int nbStacksIntoInventory()
     {
         int counter = 0;
-        for (int i = 0; i < NB_LINES; i++)
-            for (int j = 0; j < NB_BOXES_MAX /NB_LINES; j++)
+        for (int i = 0; i < Inventory.NB_LINES; i++)
+            for (int j = 0; j < Inventory.NB_BOXES_MAX / Inventory.NB_LINES; j++)
                 counter += (!this.value[i][j].isEmpty() && !Objects.isNull(this.value[i][j].get(0))) ? 1 : 0;
 
         return counter;
@@ -110,40 +113,40 @@ public class Inventory
     /** Les évènements du clavier qui sont liée à l'inventaire. */
     public void eventInput()
     {
-        boolean scrollUp = scroll > 0;
-        boolean scrollDown = scroll < 0;
+        boolean scrollUp = this.scroll > 0;
+        boolean scrollDown = this.scroll < 0;
         if (scrollUp)
-            posCursorHorizontallyInventoryBar.set(getPosCursorHorizontallyInventoryBar() + 1);
+            this.posCursorHorizontallyInventoryBar.set(this.getPosCursorHorizontallyInventoryBar() + 1);
         else if (scrollDown)
-            posCursorHorizontallyInventoryBar.set(getPosCursorHorizontallyInventoryBar() - 1);
+            this.posCursorHorizontallyInventoryBar.set(this.getPosCursorHorizontallyInventoryBar() - 1);
 
-        boolean outOfInventoryBarOnRight = getPosCursorHorizontallyInventoryBar() > (NB_BOXES_MAX / NB_LINES)-1;
-        boolean outOfInventoryBarOnLeft = getPosCursorHorizontallyInventoryBar() < 0;
+        boolean outOfInventoryBarOnRight = this.getPosCursorHorizontallyInventoryBar() > (NB_BOXES_MAX / NB_LINES)-1;
+        boolean outOfInventoryBarOnLeft = this.getPosCursorHorizontallyInventoryBar() < 0;
         if (outOfInventoryBarOnRight)
-            posCursorHorizontallyInventoryBar.set(0);
+            this.posCursorHorizontallyInventoryBar.set(0);
         else if (outOfInventoryBarOnLeft)
-            posCursorHorizontallyInventoryBar.set((NB_BOXES_MAX / NB_LINES)-1);
+            this.posCursorHorizontallyInventoryBar.set((NB_BOXES_MAX / NB_LINES)-1);
 
-        keysInput.forEach((key, value) -> {
+        this.keysInput.forEach((key, value) -> {
             if (value.equals(Boolean.TRUE)) {
                 if (key.equals(KeyCode.DIGIT1))
-                    posCursorHorizontallyInventoryBar.set(0);
+                    this.posCursorHorizontallyInventoryBar.set(0);
                 else if (key.equals(KeyCode.DIGIT2))
-                    posCursorHorizontallyInventoryBar.set(1);
+                    this.posCursorHorizontallyInventoryBar.set(1);
                 else if (key.equals(KeyCode.DIGIT3))
-                    posCursorHorizontallyInventoryBar.set(2);
+                    this.posCursorHorizontallyInventoryBar.set(2);
                 else if (key.equals(KeyCode.DIGIT4))
-                    posCursorHorizontallyInventoryBar.set(3);
+                    this.posCursorHorizontallyInventoryBar.set(3);
                 else if (key.equals(KeyCode.DIGIT5))
-                    posCursorHorizontallyInventoryBar.set(4);
+                    this.posCursorHorizontallyInventoryBar.set(4);
                 else if (key.equals(KeyCode.DIGIT6))
-                    posCursorHorizontallyInventoryBar.set(5);
+                    this.posCursorHorizontallyInventoryBar.set(5);
                 else if (key.equals(KeyCode.DIGIT7))
-                    posCursorHorizontallyInventoryBar.set(6);
+                    this.posCursorHorizontallyInventoryBar.set(6);
                 else if (key.equals(KeyCode.DIGIT8))
-                    posCursorHorizontallyInventoryBar.set(7);
+                    this.posCursorHorizontallyInventoryBar.set(7);
                 else if (key.equals(KeyCode.DIGIT9))
-                    posCursorHorizontallyInventoryBar.set(8);
+                    this.posCursorHorizontallyInventoryBar.set(8);
             }
         });
 
@@ -151,12 +154,12 @@ public class Inventory
     }
 
 
-    public IntegerProperty posCursorHorizontallyInventoryBarProperty() { return posCursorHorizontallyInventoryBar; }
-    public IntegerProperty posCursorVerticallyInventoryBarProperty() { return posCursorVerticallyInventoryBar; }
-    public void setScroll(int newScroll) { this.scroll = newScroll; }
+    public IntegerProperty posCursorHorizontallyInventoryBarProperty() { return this.posCursorHorizontallyInventoryBar; }
+    public IntegerProperty posCursorVerticallyInventoryBarProperty() { return this.posCursorVerticallyInventoryBar; }
+    public int getPosCursorHorizontallyInventoryBar() { return this.posCursorHorizontallyInventoryBar.get(); }
+    public int getPosCursorVerticallyInventoryBar() { return this.posCursorVerticallyInventoryBar.get(); }
+    public ObservableList<StowableObjectType>[][] get() { return this.value; }
+    public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
 
-    public ObservableList<StowableObjectType>[][] get() { return value; }
-    public Map<KeyCode, Boolean> getKeysInput() { return keysInput; }
-    public int getPosCursorHorizontallyInventoryBar() { return posCursorHorizontallyInventoryBar.get(); }
-    public int getPosCursorVerticallyInventoryBar() { return posCursorVerticallyInventoryBar.get(); }
+    public void setScroll(int newScroll) { this.scroll = newScroll; }
 }

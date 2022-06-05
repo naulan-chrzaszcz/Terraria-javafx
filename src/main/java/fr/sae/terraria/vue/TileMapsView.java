@@ -11,21 +11,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TileMapsView
 {
-    private Pane display;
-
-    private Environment environment;
-
-    private int tileWidth;
-    private int tileHeight;
-    private Clock clock;
-
     private Image torchImg;
     private Image floorTopImg;
     private Image floorLeftImg;
@@ -34,6 +25,13 @@ public class TileMapsView
     private Image stoneImg;
     private Image dirtImg;
     private Image tallGrassImg;
+
+    private final Pane display;
+
+    private final Environment environment;
+
+    private int tileWidth;
+    private int tileHeight;
 
 
     /**
@@ -47,6 +45,7 @@ public class TileMapsView
                         double scaleMultiplicatorWidth,
                         double scaleMultiplicatorHeight)
     {
+        super();
         this.environment = environment;
         this.display = displayTileMap;
 
@@ -62,12 +61,13 @@ public class TileMapsView
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
+        // Lorsqu'un élément est ajouté, il le dessine automatiquement à l'écran
         environment.getEntities().addListener((ListChangeListener<Entity>) c -> {
             while (c.next()) if (c.wasAdded()) {
                 if (c.getList().get(0) instanceof Tree)
-                    createTree((Tree) c.getList().get(0));
+                    this.createTree((Tree) c.getList().get(0));
                 if (c.getList().get(0) instanceof TallGrass)
-                    createTallGrass((TallGrass) c.getList().get(0));
+                    this.createTallGrass((TallGrass) c.getList().get(0));
                 if (c.getList().get(0) instanceof Rabbit) {
                     RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
                     rabbitView.displayRabbit(displayHostileBeings);
@@ -83,6 +83,7 @@ public class TileMapsView
         });
     }
 
+    /** Decompose la carte pour afficher un à un les tiles à l'écran */
     public void displayMaps(TileMaps tiles)
     {
         for (int y = 0; y < tiles.getHeight() ; y++)
@@ -106,112 +107,127 @@ public class TileMapsView
                 }
     }
 
-    private void createTree(Tree tree)
+    /** Crée et affiche un block de type arbre, il sera +/- grand */
+    private void createTree(final Tree tree)
     {
         List<ImageView> imagesTree = new ArrayList<>();
 
         int nbFoliage = ((int) (Math.random()*2))+1;
         int nbTrunk = ((int) (Math.random()*3))+1;
 
-        Rectangle2D viewportFirstFrame = new Rectangle2D(0, 0, tileWidth, tileHeight);
+        Rectangle2D viewportFirstFrame = new Rectangle2D(0, 0, this.tileWidth, this.tileHeight);
         ImageView firstFrameView = new ImageView();
-        firstFrameView.setImage(treeImg);
+        firstFrameView.setImage(this.treeImg);
         firstFrameView.setViewport(viewportFirstFrame);
         imagesTree.add(firstFrameView);
         for (int f = 0; f < nbFoliage; f++) {
-            Rectangle2D viewportSecondFrame = new Rectangle2D(0, tileHeight, tileWidth, tileHeight);
+            Rectangle2D viewportSecondFrame = new Rectangle2D(0, this.tileHeight, this.tileWidth, this.tileHeight);
             ImageView secondFrameView = new ImageView();
-            secondFrameView.setImage(treeImg);
+            secondFrameView.setImage(this.treeImg);
             secondFrameView.setViewport(viewportSecondFrame);
             imagesTree.add(secondFrameView);
         }
 
         if (nbTrunk > 1) {
-            Rectangle2D viewportEndTrunk = new Rectangle2D(0, (tileHeight*2), tileWidth, tileHeight);
+            Rectangle2D viewportEndTrunk = new Rectangle2D(0, (this.tileHeight*2), this.tileWidth, this.tileHeight);
             ImageView endTrunkView = new ImageView();
-            endTrunkView.setImage(treeImg);
+            endTrunkView.setImage(this.treeImg);
             endTrunkView.setViewport(viewportEndTrunk);
             imagesTree.add(endTrunkView);
 
             for (int t = 0; t < nbTrunk-1; t++) {
-                Rectangle2D viewportTrunk = new Rectangle2D(tileWidth, (tileHeight*2), tileWidth, tileHeight);
+                Rectangle2D viewportTrunk = new Rectangle2D(this.tileWidth, (this.tileHeight*2), this.tileWidth, this.tileHeight);
                 ImageView trunkView = new ImageView();
-                trunkView.setImage(treeImg);
+                trunkView.setImage(this.treeImg);
                 trunkView.setViewport(viewportTrunk);
                 imagesTree.add(trunkView);
             }
         } else {
-            Rectangle2D viewportTrunk = new Rectangle2D(0, (tileHeight*2), tileWidth, tileHeight);
+            Rectangle2D viewportTrunk = new Rectangle2D(0, (this.tileHeight*2), this.tileWidth, this.tileHeight);
             ImageView trunkView = new ImageView();
-            trunkView.setImage(treeImg);
+            trunkView.setImage(this.treeImg);
             trunkView.setViewport(viewportTrunk);
             imagesTree.add(trunkView);
         }
-        Rectangle2D viewportTrunkFoot = new Rectangle2D(0, (tileHeight*3), tileWidth, tileHeight);
+        Rectangle2D viewportTrunkFoot = new Rectangle2D(0, (this.tileHeight*3), this.tileWidth, this.tileHeight);
         ImageView trunkFootView = new ImageView();
-        trunkFootView.setImage(treeImg);
+        trunkFootView.setImage(this.treeImg);
         trunkFootView.setViewport(viewportTrunkFoot);
         imagesTree.add(trunkFootView);
 
         for (int i = 0; i < imagesTree.size(); i++) {
             ImageView treeView = imagesTree.get(i);
 
-            treeView.setY((int) (((tree.getY() + tileHeight) + (i * tileHeight)) - (tileHeight * imagesTree.size())));
+            treeView.setY((int) (((tree.getY() + this.tileHeight) + (i * this.tileHeight)) - (this.tileHeight * imagesTree.size())));
             treeView.setX((int) tree.getX());
 
-            display.getChildren().add(treeView);
+            this.display.getChildren().add(treeView);
         }
 
-        tree.setRect(tileWidth, (2+nbFoliage+nbTrunk)*tileHeight);
+        tree.setRect(this.tileWidth, (2+nbFoliage+nbTrunk)*this.tileHeight);
     }
 
-    private void createTallGrass(TallGrass tallGrass)
+    /**
+     * Crée et affiche un block de type Haute Herbe.
+     *  Applique une animation de pousse à la haute herbe
+     */
+    private void createTallGrass(final TallGrass tallGrass)
     {
-        ImageView tallGrassView = new ImageView(tallGrassImg);
-        tallGrass.setRect(tileWidth, tileHeight);
+        ImageView tallGrassView = new ImageView(this.tallGrassImg);
+        tallGrass.setRect(this.tileWidth, this.tileHeight);
         tallGrassView.setX(tallGrass.getX());
         tallGrassView.setY(tallGrass.getY());
 
         // L'animation de la pousse de la haute herbe
         tallGrass.getTallGrassGrowthProperty().addListener(((observable, oldValue, newValue) -> {
-            tallGrassView.setViewport(new Rectangle2D(0, 0, tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()));
-            tallGrassView.setY((tallGrass.getY() - (tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()) + tileHeight);
+            tallGrassView.setViewport(new Rectangle2D(0, 0, this.tallGrassImg.getWidth(), (newValue.intValue() < 1) ? 1 : (this.tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()));
+            tallGrassView.setY((tallGrass.getY() - (this.tallGrassImg.getHeight()/TallGrass.GROWTH_TALL_GRASS_STEP)*newValue.intValue()) + this.tileHeight);
         }));
 
-        display.getChildren().add(tallGrassView);
+        this.display.getChildren().add(tallGrassView);
     }
 
+    /** Crée et affiche un tile de type pierre */
     private void createStone(int x, int y)
     {
-        Stone stoneEntity = new Stone(environment, x*tileWidth, y*tileHeight);
-        stoneEntity.setRect(tileWidth, tileHeight);
-        display.getChildren().add(View.createImageView(stoneEntity, stoneImg));
-        environment.getEntities().add(stoneEntity);
+        Stone stoneEntity = new Stone(this.environment, x*this.tileWidth, y*this.tileHeight);
+        stoneEntity.setRect(this.tileWidth, this.tileHeight);
+
+        this.display.getChildren().add(View.createImageView(stoneEntity, this.stoneImg));
+        this.environment.getEntities().add(stoneEntity);
     }
 
-    private void createTorch(Torch torch)
+    /** Crée et affiche un block de type Torch */
+    private void createTorch(final Torch torch)
     {
-        torch.setRect(tileWidth, tileHeight);
-        display.getChildren().add(View.createImageView(torch, torchImg));
+        torch.setRect(this.tileWidth, this.tileHeight);
+        this.display.getChildren().add(View.createImageView(torch, this.torchImg));
     }
 
+    /** Crée et affiche un tile de type terre */
     private void createDirt(int x, int y)
     {
-        Dirt dirtSprite = new Dirt(this.environment, x*tileWidth, y*tileHeight);
-        dirtSprite.setRect(tileWidth, tileHeight);
-        display.getChildren().add(View.createImageView(dirtSprite, dirtImg));
-        environment.getEntities().add(dirtSprite);
+        Dirt dirtSprite = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
+        dirtSprite.setRect(this.tileWidth, this.tileHeight);
+
+        this.display.getChildren().add(View.createImageView(dirtSprite, this.dirtImg));
+        this.environment.getEntities().add(dirtSprite);
     }
 
+    /**
+     * Crée et affiche un tile de type sol
+     * @param typeOfFloor Quel face du tile doit être affiché
+     */
     private void createFloor(int typeOfFloor, int x, int y)
     {
-        Dirt floorEntity = new Dirt(this.environment, x*tileWidth, y*tileHeight);
-        Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? floorRightImg : floorLeftImg;
-        floorEntity.setRect(tileWidth, tileHeight);
-        display.getChildren().add(View.createImageView(floorEntity, floorImg));
+        Dirt floorEntity = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
+        Image floorImg = (typeOfFloor == TileMaps.FLOOR_TOP) ? this.floorTopImg : (typeOfFloor == TileMaps.FLOOR_RIGHT) ? this.floorRightImg : this.floorLeftImg;
+        floorEntity.setRect(this.tileWidth, this.tileHeight);
 
-        environment.getEntities().add(floorEntity);
+        this.display.getChildren().add(View.createImageView(floorEntity, floorImg));
+        this.environment.getEntities().add(floorEntity);
     }
 
-    private void errorTile(int tile) { if (tile != TileMaps.SKY) System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
+    /** Affiche une erreur au cas où si un developer a fait une erreur lors de la saisie d'un tile sur le fichier .json */
+    private void errorTile(final int tile) { if (tile != TileMaps.SKY) System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
 }

@@ -22,13 +22,15 @@ public class TileMaps
     private int h;
 
 
+    public TileMaps() { super(); }
+
     /**
      * Compte la taille de la carte et ensuite la charge dans
      *  la variable maps
      *
      *  @param path Le chemin depuis le root (src)
      */
-    public void load(String path)
+    public void load(final String path)
     {
         boolean widthSave = false;
         int i = 0;
@@ -41,14 +43,14 @@ public class TileMaps
             // Déduit la taille de la carte.
             while (jsonReader.hasNext())
             {
-                h++;
+                this.h++;
 
                 jsonReader.nextName();
 
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()) {
                     jsonReader.nextInt();
-                    if (!widthSave) w++;
+                    if (!widthSave) this.w++;
                 }
                 jsonReader.endArray();
 
@@ -61,7 +63,7 @@ public class TileMaps
         try (FileReader fileReader = new FileReader(path);
              JsonReader jsonReader = new JsonReader(fileReader))
         {
-            maps = new int[h][w];
+            this.maps = new int[this.h][this.w];
             // Ecrit la carte dans la mémoire.
             jsonReader.beginObject();
             while (jsonReader.hasNext())
@@ -70,7 +72,7 @@ public class TileMaps
 
                 jsonReader.beginArray();
                 while (jsonReader.hasNext()) {
-                    maps[i][j] = jsonReader.nextInt();
+                    this.maps[i][j] = jsonReader.nextInt();
                     j++;
                 }
                 jsonReader.endArray();
@@ -83,9 +85,9 @@ public class TileMaps
     }
 
 
-    public int getHeight() { return maps.length; }
-    public int getWidth() { return maps[0].length; }
-    public int getTile(int x, int y) { return maps[y][x]; }
+    public int getHeight() { return this.maps.length; }
+    public int getWidth() { return this.maps[0].length; }
+    public int getTile(int x, int y) { return this.maps[y][x]; }
 
-    public void setTile(int tileIndex, int y, int x) { maps[y][x] = tileIndex; }
+    public void setTile(int tileIndex, int y, int x) { this.maps[y][x] = tileIndex; }
 }

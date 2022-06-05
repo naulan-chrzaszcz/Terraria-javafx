@@ -11,38 +11,36 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
 {
     public static final int WHEN_SPAWN_A_SLIME = 2500;
     public static final double SLIME_SPAWN_RATE = .2;
-    private Environment environment;
+
+    private final Environment environment;
 
 
-    public Slime(int x, int y)
+    public Slime(Environment environment, int x, int y)
     {
         super(x, y);
-    }
-
-    public Slime(Environment environment)
-    {
-        this(0, 0);
         this.environment = environment;
     }
 
-    public void updates() { }
+    public Slime(Environment environment) { this(environment, 0, 0); }
 
-    public void collide() { }
+    @Override public void updates() { /* TODO document why this method is empty */ }
 
-    public void move() { }
+    @Override public void collide() { /* TODO document why this method is empty */ }
 
-    public void hit()
+    @Override public void move() { /* TODO document why this method is empty */ }
+
+    @Override public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
     }
 
-    public void moveRight() { super.moveRight(); }
+    @Override public void moveRight() { super.moveRight(); }
 
-    public void moveLeft() { super.moveLeft(); }
+    @Override public void moveLeft() { super.moveLeft(); }
 
-    public void jump() { super.jump(); }
+    @Override public void jump() { super.jump(); }
 
-    public void fall() { super.fall(); }
+    @Override public void fall() { super.fall(); }
 
-    public void worldLimit() { super.worldLimit(environment); }
+    @Override public void worldLimit() { super.worldLimit(this.environment); }
 }

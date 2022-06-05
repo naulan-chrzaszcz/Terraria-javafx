@@ -8,7 +8,12 @@ public class Rect
     private Rectangle2D value;
 
 
-    public Rect(double x, double y, int width, int height) { this.value = new Rectangle2D(x, y, width, height); }
+    public Rect(double x, double y, int width, int height)
+    {
+        super();
+
+        this.value = new Rectangle2D(x, y, width, height);
+    }
 
     /**
      * Mets à jour la position du rectangle géré par JavaFX

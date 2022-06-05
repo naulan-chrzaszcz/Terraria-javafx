@@ -10,7 +10,7 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 public class Stone extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
-    private Environment environment;
+    private final Environment environment;
 
 
     public Stone(Environment environment, int x, int y)
@@ -19,11 +19,11 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         this.environment = environment;
     }
 
-    public void updates() { /* TODO document why this method is empty */ }
+    @Override public void updates() { /* TODO document why this method is empty */ }
 
-    public void collide() { /* NE RIEN REMPLIR */ }
+    @Override public void collide() { /* NE RIEN REMPLIR */ }
 
-    public void breaks()
+    @Override public void breaks()
     {
         Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
         this.environment.getPlayer().pickup(this);
@@ -34,7 +34,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         this.environment.getEntities().remove(this);
     }
 
-    public void place(int x, int y)
+    @Override public void place(int x, int y)
     {
         Environment.playSound("sound/axchop.wav", false);
         Entity entity = new Stone(this.environment, x*environment.widthTile, y*environment.heightTile);

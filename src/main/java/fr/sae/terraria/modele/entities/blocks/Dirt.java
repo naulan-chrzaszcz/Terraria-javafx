@@ -19,11 +19,11 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
         this.environment = environment;
     }
 
-    public void updates() { /* TODO document why this method is empty */ }
+    @Override public void updates() { /* TODO document why this method is empty */ }
 
-    public void collide() { /* NE RIEN REMPLIR */ }
+    @Override public void collide() { /* NE RIEN REMPLIR */ }
 
-    public void breaks()
+    @Override public void breaks()
     {
         Environment.playSound("sound/grassyStep.wav", false);
         this.environment.getPlayer().pickup(this);
@@ -34,7 +34,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
         this.environment.getEntities().remove(this);
     }
 
-    public void place(final int x, final int y)
+    @Override public void place(final int x, final int y)
     {
         Environment.playSound("sound/axchop.wav", false);
         Entity entity = new Dirt(this.environment, x*environment.widthTile, y*environment.heightTile);

@@ -62,7 +62,7 @@ public class PlayerView
     }
 
     /** Synchronise les coordonnées en x et y du joueur avec l'image et ensuite l'affiche sur le Pane */
-    public void displayPlayer(Pane display)
+    public void displayPlayer(final Pane display)
     {
         this.setAnimation();
         display.getChildren().add(playerImgView);

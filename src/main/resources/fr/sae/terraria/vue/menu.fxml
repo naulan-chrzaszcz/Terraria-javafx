@@ -3,7 +3,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -62,21 +61,36 @@
                     <ScrollPane prefHeight="200.0"
                                 prefWidth="640.0"
                                 BorderPane.alignment="CENTER">
-                        <AnchorPane fx:id="displayLexique"
-                                    prefHeight="900.0"
-                                    prefWidth="640.0">
-                            <HBox prefHeight="50.0"
-                                  prefWidth="625.0"/>
-                            <Separator layoutY="50.0"
-                                       prefHeight="5.0"
-                                       prefWidth="625.0"/>
-                            <HBox layoutY="55.0"
+                        <Pane fx:id="displayLexique"
+                              prefHeight="900.0"
+                              prefWidth="640.0">
+                            <HBox id="notAvailable"
+                                  fx:id="lexique1"
                                   prefHeight="50.0"
-                                  prefWidth="625.0"/>
-                            <Separator layoutY="103.0"
-                                       prefHeight="5.0"
-                                       prefWidth="625.0"/>
-                        </AnchorPane>
+                                  prefWidth="625.0">
+                                <Text text="Pioche en fer" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="50.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexique2"
+                                  layoutY="55.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Hache en fer" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="103.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexique3"
+                                  layoutY="108.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Epée en fer" textAlignment="CENTER"/>
+                                <Text text="1 Bâton | 2 Minerais de fer"/>
+                            </HBox>
+                            <Separator layoutY="158.0" prefHeight="5.0" prefWidth="625.0"/>
+                        </Pane>
                     </ScrollPane>
                 </center>
             </BorderPane>
