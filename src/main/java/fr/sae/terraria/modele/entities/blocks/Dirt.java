@@ -10,6 +10,8 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 public class Dirt extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
+    public static final int BREAK_RESISTANCE = 2;
+
     private final Environment environment;
 
 
@@ -17,6 +19,8 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
     {
         super(x, y);
         this.environment = environment;
+
+        this.pv.set(Dirt.BREAK_RESISTANCE);
     }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
@@ -26,12 +30,17 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
     @Override public void breaks()
     {
         Environment.playSound("sound/grassyStep.wav", false);
-        this.environment.getPlayer().pickup(this);
+        Block.breakAnimation(environment, this);
 
-        int yIndexTile = (int) (getY()/environment.heightTile);
-        int xIndexTile = (int) (getX()/environment.widthTile);
-        this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
-        this.environment.getEntities().remove(this);
+        if (this.getPv() <= 0) {
+            this.environment.getPlayer().pickup(this);
+
+            int yIndexTile = (int) (getY()/environment.heightTile);
+            int xIndexTile = (int) (getX()/environment.widthTile);
+            this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
+            this.environment.getEntities().remove(this);
+        }
+        this.setPv(this.getPv() - 1);
     }
 
     @Override public void place(final int x, final int y)

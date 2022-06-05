@@ -1,24 +1,17 @@
 package fr.sae.terraria.modele.entities.blocks;
 
-import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
-import javafx.util.Duration;
-
-import javax.swing.*;
 
 
 public class Stone extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
+    public static final int BREAK_RESISTANCE = 5;
+
     private final Environment environment;
 
 
@@ -27,7 +20,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         super(x, y);
         this.environment = environment;
 
-        this.pv.set(3);
+        this.pv.set(Stone.BREAK_RESISTANCE);
     }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
@@ -37,28 +30,12 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
     @Override public void breaks()
     {
         Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
-        this.environment.getPlayer().pickup(this);
+        Block.breakAnimation(environment, this);
 
-        // Animation de cassure du bloc
-        Timeline timeline = new Timeline();
-        timeline.setCycleCount(5);
-        int[] time = new int[1];
-        double xInit = this.getX(); double yInit = this.getY();
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            this.setX(xInit + (Math.cos(time[0])*this.environment.scaleMultiplicatorWidth));
-            this.setY(yInit + (-Math.sin(time[0]*this.environment.scaleMultiplicatorHeight)));
-
-            time[0]++;
-        }));
-        timeline.getKeyFrames().add(keyFrame);
-        // Faire revenir le bloc à sa position initiale
-        timeline.statusProperty().addListener(c -> {
-            this.setX(xInit);
-            this.setY(yInit);
-        });
-        timeline.play();
-
+        // Une fois le bloc détruit, il donne la pierre et le supprime de la TileMaps
         if (this.getPv() <= 0) {
+            this.environment.getPlayer().pickup(this);
+
             int yIndexTile = (int) (getY()/environment.heightTile);
             int xIndexTile = (int) (getX()/environment.widthTile);
             this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);

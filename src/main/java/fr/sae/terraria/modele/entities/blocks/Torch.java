@@ -20,6 +20,8 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
 
     @Override public void breaks()
     {
+        Block.breakAnimation(environment, this);
+
         this.environment.getEntities().remove(this);
         this.environment.getTorches().remove(this);
     }
