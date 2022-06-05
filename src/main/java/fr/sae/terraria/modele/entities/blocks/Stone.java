@@ -6,6 +6,8 @@ import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.tools.Pickaxe;
+import fr.sae.terraria.modele.entities.tools.Tool;
 
 
 public class Stone extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
@@ -14,11 +16,17 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
 
     private final Environment environment;
 
+    private final double xOrigin;
+    private final double yOrigin;
+
 
     public Stone(Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
+
+        this.xOrigin = x;
+        this.yOrigin = y;
 
         this.pv.set(Stone.BREAK_RESISTANCE);
     }
@@ -30,7 +38,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
     @Override public void breaks()
     {
         Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
-        Block.breakAnimation(environment, this);
+        this.breakAnimation(environment, this, xOrigin, yOrigin);
 
         // Une fois le bloc détruit, il donne la pierre et le supprime de la TileMaps
         if (this.getPv() <= 0) {
@@ -41,7 +49,12 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
             this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
         }
-        this.setPv(this.getPv() - 1);
+
+        // S'il utilise le bon outil, il commencera à casser le bloc sinon use l'outil sans casser le bloc.
+        if (environment.getPlayer().getItemSelected() instanceof Pickaxe)
+            this.setPv(this.getPv() - 1);
+        if (environment.getPlayer().getItemSelected() instanceof Tool)
+            ((Tool) environment.getPlayer().getItemSelected()).use();
     }
 
     @Override public void place(int x, int y)

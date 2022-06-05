@@ -9,18 +9,24 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
 {
     private final Environment environment;
 
+    private double xOrigin;
+    private double yOrigin;
+
 
     public Torch(Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
+
+        this.xOrigin = x;
+        this.yOrigin = y;
     }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
 
     @Override public void breaks()
     {
-        Block.breakAnimation(environment, this);
+        this.breakAnimation(environment, this, xOrigin, yOrigin);
 
         this.environment.getEntities().remove(this);
         this.environment.getTorches().remove(this);

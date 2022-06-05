@@ -30,6 +30,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         super(x, y);
         this.environment = environment;
 
+        this.setPv(3);
         this.animation = new Animation();
         this.velocity = 1;
         this.offset[0] = (Math.random() <= .5) ? Entity.IS_MOVING_RIGHT : Entity.IS_MOVING_LEFT;
@@ -104,7 +105,14 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     @Override public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
-        this.environment.getPlayer().pickup(new Meat(this.environment));
+
+        if (this.getPv() <= 0) {
+            this.environment.getPlayer().pickup(new Meat(this.environment));
+
+            this.environment.getRabbits().remove(this);
+            this.environment.getEntities().remove(this);
+        }
+        this.setPv(this.getPv() - 1);
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */

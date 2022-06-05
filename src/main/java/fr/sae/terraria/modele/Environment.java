@@ -9,6 +9,7 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -123,6 +124,8 @@ public class Environment
                 this.player.pickup(torch);
                 Meat meat = new Meat(this);
                 this.player.pickup(meat);
+
+                this.player.pickup(new Pickaxe());
                 caught[0] = true;
             }
 

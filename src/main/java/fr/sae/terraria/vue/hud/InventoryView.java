@@ -11,6 +11,7 @@ import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Wood;
 import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.vue.View;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -110,6 +111,8 @@ public class InventoryView {
                                                 itemImg = View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight);
                                             else if (item.get(0) instanceof Wood)
                                                 itemImg = View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight);
+                                            else if (item.get(0) instanceof Pickaxe)
+                                                itemImg = View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight);
 
                                             if (!Objects.isNull(itemImg)) {
                                                 ImageView itemView = new ImageView();

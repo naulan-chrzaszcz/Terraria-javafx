@@ -14,11 +14,17 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
 
     private final Environment environment;
 
+    private final double xOrigin;
+    private final double yOrigin;
+
 
     public Dirt(Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
+
+        this.xOrigin = x;
+        this.yOrigin = y;
 
         this.pv.set(Dirt.BREAK_RESISTANCE);
     }
@@ -30,7 +36,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
     @Override public void breaks()
     {
         Environment.playSound("sound/grassyStep.wav", false);
-        Block.breakAnimation(environment, this);
+        this.breakAnimation(environment, this, xOrigin, yOrigin);
 
         if (this.getPv() <= 0) {
             this.environment.getPlayer().pickup(this);
