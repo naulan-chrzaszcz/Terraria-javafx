@@ -129,8 +129,6 @@ public class InventoryView {
 
                         this.display.getChildren().add(view);
                     }
-                } else if (c.wasRemoved()) {
-                    this.display.getChildren().remove(c.getRemoved().get(0));
                 }
             }
         });

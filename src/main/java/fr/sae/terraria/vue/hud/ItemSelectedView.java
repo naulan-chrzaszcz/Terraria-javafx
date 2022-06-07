@@ -1,14 +1,21 @@
 package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
+import fr.sae.terraria.modele.entities.tools.Axe;
+import fr.sae.terraria.modele.entities.tools.Bow;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
+import fr.sae.terraria.modele.entities.tools.Sword;
 import fr.sae.terraria.vue.View;
+import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -58,6 +65,14 @@ public class ItemSelectedView
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
         this.pickaxeItemImg = View.loadAnImage("tools/pickaxe.png", widthItem, heightItem);
 
+        // Reset
+        player.getInventory().get().addListener((ListChangeListener<? super Stack>) c -> {
+            while (c.next()) {
+                if (c.wasRemoved())
+                    this.itemSelectedImgView.setImage(null);
+            }
+        });
+
         player.getInventory().posCursorProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
             this.itemSelectedImgView.setImage(null);
             if (!Objects.isNull(player.getStackSelected())) {
@@ -67,6 +82,8 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.dirtItemImg);
                 else if (item instanceof Stone)
                     this.itemSelectedImgView.setImage(this.stoneItemImg);
+                else if (item instanceof TallGrass)
+                    this.itemSelectedImgView.setImage(null);
                 else if (item instanceof Torch)
                     this.itemSelectedImgView.setImage(this.torchItemImg);
                 else if (item instanceof Coal)
@@ -75,16 +92,24 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.fibreItemImg);
                 else if (item instanceof Iron)
                     this.itemSelectedImgView.setImage(this.ironItemImg);
+                else if (item instanceof Meat)
+                    this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Pierre)
                     this.itemSelectedImgView.setImage(this.pierreItemImg);
                 else if (item instanceof Silex)
                     this.itemSelectedImgView.setImage(this.silexItemImg);
-                else if (item instanceof Meat)
-                    this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Wood)
                     this.itemSelectedImgView.setImage(this.woodItemImg);
+                else if (item instanceof Axe)
+                    this.itemSelectedImgView.setImage(null);
+                else if (item instanceof Bow)
+                    this.itemSelectedImgView.setImage(null);
                 else if (item instanceof Pickaxe)
-                    this.itemSelectedImgView.setImage(pickaxeItemImg);
+                    this.itemSelectedImgView.setImage(this.pickaxeItemImg);
+                else if (item instanceof Sword)
+                    this.itemSelectedImgView.setImage(null);
+                else if (item instanceof Arrow)
+                    this.itemSelectedImgView.setImage(null);
             }
         });
 

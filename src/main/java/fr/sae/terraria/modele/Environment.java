@@ -10,12 +10,14 @@ import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
+import fr.sae.terraria.vue.View;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 import javax.sound.sampled.AudioInputStream;
