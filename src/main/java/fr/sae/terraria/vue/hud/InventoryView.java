@@ -41,6 +41,7 @@ public class InventoryView
     private final Inventory inventory;
     private final Pane display;
 
+    private List<ImageView> itemsView;
     private List<Text> texts;
 
     private double scaleMultiplicatorWidth;
@@ -58,6 +59,7 @@ public class InventoryView
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
 
+        this.itemsView = new ArrayList<>();
         this.texts = new ArrayList<>();
 
         this.windowWidth = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
@@ -141,8 +143,16 @@ public class InventoryView
                         view.setX(this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth));
                         view.setY(this.inventoryBarImgView.getY());
 
+                        this.itemsView.add(view);
                         this.display.getChildren().add(view);
                     }
+                }
+
+                if (c.wasRemoved()) {
+                    this.display.getChildren().remove(this.itemsView.get(c.getTo()));
+                    this.itemsView.remove(c.getTo());
+                    for (int i = c.getTo(); i < itemsView.size(); i++)
+                        this.itemsView.get(i).setX(this.itemsView.get(i).getX() - boxeInventoryWidth);
                 }
             }
         });
