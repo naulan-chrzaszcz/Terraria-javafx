@@ -17,16 +17,21 @@ import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.modele.entities.tools.Sword;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
-public class InventoryView {
+public class InventoryView
+{
     private final ImageView inventoryBarImgView;
     private final ImageView cursorImgView;
 
@@ -36,6 +41,8 @@ public class InventoryView {
     private final Inventory inventory;
     private final Pane display;
 
+    private List<Text> texts;
+
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
     private double windowWidth;
@@ -44,11 +51,14 @@ public class InventoryView {
     private int tileHeight;
 
 
-    public InventoryView(Inventory inventory, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight) {
+    public InventoryView(Inventory inventory, Pane display, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    {
         this.inventory = inventory;
         this.display = display;
         this.scaleMultiplicatorHeight = scaleMultiplicatorHeight;
         this.scaleMultiplicatorWidth = scaleMultiplicatorWidth;
+
+        this.texts = new ArrayList<>();
 
         this.windowWidth = (scaleMultiplicatorWidth * Terraria.DISPLAY_RENDERING_WIDTH);
         this.windowHeight = (scaleMultiplicatorHeight * Terraria.DISPLAY_RENDERING_HEIGHT);
@@ -89,6 +99,10 @@ public class InventoryView {
                     ImageView view = new ImageView();
                     Stack stack = c.getAddedSubList().get(0);
                     StowableObjectType item = stack.getItem();
+
+                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> {
+                        this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue()));
+                    });
 
                     if (item instanceof Dirt)
                         view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
@@ -137,7 +151,8 @@ public class InventoryView {
     /**
      * Affiche la barre d'inventaire
      */
-    private void displayInventoryBar() {
+    private void displayInventoryBar()
+    {
         this.inventoryBarImgView.setX(((this.windowWidth - this.inventoryBarImg.getWidth()) / 2));
         this.inventoryBarImgView.setY((this.windowHeight - this.inventoryBarImg.getHeight()) - this.tileHeight);
 
@@ -148,7 +163,8 @@ public class InventoryView {
     /**
      * Affiche un carré qui se superpose sur la barre d'inventaire qui permet de savoir où on se situe
      */
-    private void displayCursorInventoryBar() {
+    private void displayCursorInventoryBar()
+    {
         this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth()) / 2 - scaleMultiplicatorWidth));
         this.cursorImgView.setY(((windowHeight - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
         this.inventory.posCursorProperty().addListener((obs, oldV, newV) -> this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth()) / 2 + ((inventoryBarImg.getWidth() / 9) * newV.intValue() - scaleMultiplicatorWidth))));
@@ -156,10 +172,25 @@ public class InventoryView {
         this.display.getChildren().add(cursorImgView);
     }
 
-    public void display() {
+    public void display()
+    {
         this.displayInventoryBar();
-        this.displayItemIntoInventoryBar();
         this.displayCursorInventoryBar();
+
+        int boxeInventoryWidth = (int) (this.inventoryBarImg.getWidth()/(Inventory.NB_BOXES_MAX/Inventory.NB_LINES));
+        for (int i = 0; i < (Inventory.NB_BOXES_MAX/Inventory.NB_LINES); i++) {
+            Text text = new Text();
+            text.setX(this.inventoryBarImgView.getX() + (boxeInventoryWidth*i));
+            text.setY(this.inventoryBarImgView.getY() + boxeInventoryWidth);
+            text.setFont(new Font("Arial", 5*scaleMultiplicatorWidth));
+            text.setText("0");
+            text.setFill(Color.WHITE);
+            text.setStroke(Color.BLACK);
+            text.setStrokeWidth(1);
+            this.texts.add(text);
+            this.display.getChildren().add(text);
+        }
+        this.displayItemIntoInventoryBar();
     }
 
 
