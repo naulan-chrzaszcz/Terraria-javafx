@@ -100,10 +100,6 @@ public class InventoryView
                     Stack stack = c.getAddedSubList().get(0);
                     StowableObjectType item = stack.getItem();
 
-                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> {
-                        this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue()));
-                    });
-
                     if (item instanceof Dirt)
                         view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Stone)
@@ -136,6 +132,10 @@ public class InventoryView
                         view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
                         view.setImage(null);
+
+                    // Actualise le nombre d'item à l'écran
+                    this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
+                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue())));
 
                     if (!Objects.isNull(view.getImage())) {
                         view.setX(this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth));
@@ -184,6 +184,7 @@ public class InventoryView
             text.setY(this.inventoryBarImgView.getY() + boxeInventoryWidth);
             text.setFont(new Font("Arial", 5*scaleMultiplicatorWidth));
             text.setText("0");
+            text.setSelectionFill(Color.WHITE);
             text.setFill(Color.WHITE);
             text.setStroke(Color.BLACK);
             text.setStrokeWidth(1);
