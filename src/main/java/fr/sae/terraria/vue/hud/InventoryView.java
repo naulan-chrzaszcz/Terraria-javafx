@@ -7,7 +7,6 @@ import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
@@ -17,17 +16,12 @@ import fr.sae.terraria.modele.entities.tools.Bow;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.modele.entities.tools.Sword;
 import fr.sae.terraria.vue.View;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 
 import java.util.Objects;
 
@@ -132,8 +126,11 @@ public class InventoryView {
                     if (!Objects.isNull(view.getImage())) {
                         view.setX(this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth));
                         view.setY(this.inventoryBarImgView.getY());
+
                         this.display.getChildren().add(view);
                     }
+                } else if (c.wasRemoved()) {
+                    this.display.getChildren().remove(c.getRemoved().get(0));
                 }
             }
         });

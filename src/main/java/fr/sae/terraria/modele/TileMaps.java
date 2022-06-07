@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele;
 
 import com.google.gson.stream.JsonReader;
-import fr.sae.terraria.Terraria;
 
 import java.io.FileReader;
 

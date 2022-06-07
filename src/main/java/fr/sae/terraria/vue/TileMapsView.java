@@ -3,7 +3,6 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
-import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;

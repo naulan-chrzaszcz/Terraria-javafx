@@ -14,8 +14,6 @@ import fr.sae.terraria.modele.entities.tools.Sword;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
-import java.util.Objects;
-
 
 /**
  * <h1>Stack</h1>
@@ -37,8 +35,6 @@ public class Stack
 
         this.nbItems = new SimpleIntegerProperty(0);
     }
-
-    public IntegerProperty nbItemsProperty() { return this.nbItems; }
 
     public boolean isSameItem(StowableObjectType object)
     {
@@ -76,6 +72,8 @@ public class Stack
             return true;
         else return false;
     }
+
+    public IntegerProperty nbItemsProperty() { return this.nbItems; }
 
     public boolean isFull() { return this.getNbItems() >= Stack.MAX; }
     public void add() { if (this.getNbItems() < Stack.MAX) this.nbItems.set(this.getNbItems() + 1); }

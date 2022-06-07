@@ -10,7 +10,6 @@ import javafx.scene.input.KeyCode;
 
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 public class Inventory
@@ -45,7 +44,7 @@ public class Inventory
                 Stack stack = null;
                 if (this.getPosCursor() < this.get().size())
                     stack = this.get().get(this.getPosCursor());
-                player.setStackSelected(stack);
+                this.player.setStackSelected(stack);
             }
         });
     }
@@ -58,11 +57,17 @@ public class Inventory
      */
     public void put(StowableObjectType item)
     {
-        int nbStacksInventory = nbStacksIntoInventory();
+        int nbStacksInventory = this.nbStacksIntoInventory();
 
         if (nbStacksInventory < NB_BOXES_MAX) {
             if (nbStacksInventory == 0) {
                 Stack stack = new Stack();
+                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue.intValue() <= 0) {
+                        this.value.remove(stack);
+                        this.player.setStackSelected(null);
+                    }
+                });
                 stack.setItem(item);
                 stack.add();
                 this.value.add(stack);
@@ -70,7 +75,6 @@ public class Inventory
             } else {
                 for (Stack stack : this.value) {
                     int beforeSize = stack.getNbItems();
-
                     if (!stack.isFull() && stack.isSameItem(item))
                         stack.add();
 
@@ -80,8 +84,14 @@ public class Inventory
                         return;
                 }
 
-                // Si tous les stacks present sont plein ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
+                // Si tous les stacks present sont pleins ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
                 Stack stack = new Stack();
+                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue.intValue() <= 0) {
+                        this.value.remove(stack);
+                        this.player.setStackSelected(null);
+                    }
+                });
                 stack.setItem(item);
                 stack.add();
                 this.value.add(stack);

@@ -4,8 +4,8 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
-import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.vue.Camera;
 import fr.sae.terraria.vue.View;
 import javafx.fxml.FXML;
@@ -128,13 +128,11 @@ public class GameController implements Initializable
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
             if (this.player.getStackSelected() instanceof EatableObjectType) {
                 ((EatableObjectType) this.player.getStackSelected()).eat();
-                return;
-            }
-            if (isOneBlockDistance) {
+            } else if (isOneBlockDistance) {
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     this.breakBlock(rectangle);
                 if (click.getButton().equals(MouseButton.SECONDARY))
-                    this.placeBlock(inventory, xBlock, yBlock);
+                    this.placeBlock(xBlock, yBlock);
             }
         });
     }
@@ -145,7 +143,7 @@ public class GameController implements Initializable
         for (Entity entity : this.environment.getEntities()) if (entity.getRect().collideRect(rectangle)) {
             if (entity instanceof BreakableObjectType)
                 ((BreakableObjectType) entity).breaks();
-            if (entity instanceof CollapsibleObjectType)
+            if (entity instanceof CollapsibleObjectType)    // TODO TEMP, à déplacer
                 ((CollapsibleObjectType) entity).hit();
 
             // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
@@ -153,7 +151,7 @@ public class GameController implements Initializable
         }
     }
 
-    private void placeBlock(final Inventory inventory, int xBlock, int yBlock)
+    private void placeBlock(int xBlock, int yBlock)
     {
         boolean haveAnItemOnHand = !Objects.isNull(this.player.getStackSelected());
         boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
