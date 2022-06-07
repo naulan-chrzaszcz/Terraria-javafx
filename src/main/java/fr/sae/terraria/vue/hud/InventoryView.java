@@ -123,15 +123,15 @@ public class InventoryView
                     else if (item instanceof Wood)
                         view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Axe)
-                        view.setImage(null);
+                        view.setImage(null);    // TODO
                     else if (item instanceof Bow)
-                        view.setImage(null);
+                        view.setImage(null);    // TODO
                     else if (item instanceof Pickaxe)
                         view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Sword)
                         view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
-                        view.setImage(null);
+                        view.setImage(null);    // TODO
 
                     // Actualise le nombre d'item à l'écran
                     this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
@@ -177,33 +177,27 @@ public class InventoryView
         this.displayInventoryBar();
         this.displayCursorInventoryBar();
 
+        // Range et affiche tous les compteurs d'item de l'inventaire
         int boxeInventoryWidth = (int) (this.inventoryBarImg.getWidth()/(Inventory.NB_BOXES_MAX/Inventory.NB_LINES));
         for (int i = 0; i < (Inventory.NB_BOXES_MAX/Inventory.NB_LINES); i++) {
-            Text text = new Text();
+            Text text = new Text("0");
             text.setX(this.inventoryBarImgView.getX() + (boxeInventoryWidth*i));
             text.setY(this.inventoryBarImgView.getY() + boxeInventoryWidth);
             text.setFont(new Font("Arial", 5*scaleMultiplicatorWidth));
-            text.setText("0");
-            text.setSelectionFill(Color.WHITE);
-            text.setFill(Color.WHITE);
-            text.setStroke(Color.BLACK);
+            text.setStroke(Color.WHITE);    // TODO Bizarre cette histoire de bordure qui fait la couleur final du Font
             text.setStrokeWidth(1);
+
             this.texts.add(text);
             this.display.getChildren().add(text);
         }
+
         this.displayItemIntoInventoryBar();
     }
 
 
-    public double getX() {
-        return this.inventoryBarImgView.getX();
-    }
+    public double getX() { return this.inventoryBarImgView.getX(); }
 
-    public double getY() {
-        return this.inventoryBarImgView.getY();
-    }
+    public double getY() { return this.inventoryBarImgView.getY(); }
 
-    public Image getInventoryBarImg() {
-        return inventoryBarImg;
-    }
+    public Image getInventoryBarImg() { return inventoryBarImg; }
 }
