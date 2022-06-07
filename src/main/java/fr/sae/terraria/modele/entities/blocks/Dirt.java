@@ -6,6 +6,10 @@ import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
+
+import java.util.Objects;
 
 
 public class Dirt extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
@@ -52,10 +56,18 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
     @Override public void place(final int x, final int y)
     {
         Environment.playSound("sound/axchop.wav", false);
-        Entity entity = new Dirt(this.environment, x*environment.widthTile, y*environment.heightTile);
-        entity.setRect(environment.widthTile, environment.heightTile);
+        int widthTile = this.environment.widthTile;
+        int heightTile = this.environment.heightTile;
+        
+        Entity entity = new Dirt(this.environment, x*widthTile, y*heightTile);
+        entity.setRect(widthTile, heightTile);
 
-        environment.getTileMaps().setTile(TileMaps.DIRT, y, x);
-        environment.getEntities().add(0, entity);
+        Player player = this.environment.getPlayer();
+        Inventory inventory = player.getInventory();
+        if (!Objects.isNull(player.getStackSelected()))
+            inventory.get().get(inventory.getPosCursor()).remove();
+
+        this.environment.getTileMaps().setTile(TileMaps.DIRT, y, x);
+        this.environment.getEntities().add(0, entity);
     }
 }

@@ -25,7 +25,7 @@ public class Meat extends Item implements EatableObjectType
             Inventory inventory = player.getInventory();
 
             player.setPv(player.getPv() + 1);
-            inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorVerticallyInventoryBar()].remove(this);
+            inventory.get().get(inventory.getPosCursor()).remove();
         }
     }
 }

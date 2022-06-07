@@ -3,6 +3,7 @@ package fr.sae.terraria.modele.entities.player;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -24,11 +25,11 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
     private final ObjectProperty objectWasPickup;
 
-    private StowableObjectType itemSelected;
 
     private final Environment environment;
 
     private final Inventory inventory;
+    private Stack stackSelected;
 
 
     public Player(final Environment environment)
@@ -128,8 +129,8 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
     public Map<MouseButton, Boolean> getMouseInput() { return this.mouseInput; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
-    public StowableObjectType getItemSelected() { return this.itemSelected; }
+    public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
 
-    public void setItemSelected(StowableObjectType itemSelected) { this.itemSelected = itemSelected; }
+    public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
 }

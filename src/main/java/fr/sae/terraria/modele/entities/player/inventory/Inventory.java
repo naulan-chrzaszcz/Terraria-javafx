@@ -1,11 +1,6 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
-import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-import fr.sae.terraria.modele.entities.items.Fiber;
-import fr.sae.terraria.modele.entities.items.Wood;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,93 +15,77 @@ import java.util.Objects;
 
 public class Inventory
 {
-    public static final int BLOCK_STACKING_MAX = 16;
     public static final int NB_BOXES_MAX = 27;
     public static final int NB_LINES = 3;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
-    private final ObservableList<StowableObjectType>[][] value; // Tableau 2D qui correspond aux lignes de l'inventaire et ensuite le nombre de cases par ligne
+    private final ObservableList<Stack> value;
 
-    private final IntegerProperty posCursorHorizontallyInventoryBar;
-    private final IntegerProperty posCursorVerticallyInventoryBar;
+    private final IntegerProperty posCursor;
+    private final Player player;
     private int scroll;
 
 
     public Inventory(final Player player)
     {
         super();
+        this.player = player;
+
         int nbElementOnOneLineOfInventory = (Inventory.NB_BOXES_MAX / Inventory.NB_LINES);
-
         this.keysInput = new EnumMap<>(KeyCode.class);
-        this.value = new ObservableList[Inventory.NB_LINES][nbElementOnOneLineOfInventory];
-        for (int i = 0; i < Inventory.NB_LINES; i++)
-            for (int j = 0; j < nbElementOnOneLineOfInventory; j++)
-                this.value[i][j] = FXCollections.observableArrayList();
+        this.value = FXCollections.observableArrayList();
 
-        this.posCursorHorizontallyInventoryBar = new SimpleIntegerProperty(0);
-        this.posCursorVerticallyInventoryBar = new SimpleIntegerProperty(0);
+        this.posCursor = new SimpleIntegerProperty(0);
 
         // Change l'item de la main du joueur
-        posCursorHorizontallyInventoryBarProperty().addListener((obs, oldV, newV) -> {
+        this.posCursorProperty().addListener((obs, oldV, newV) -> {
             boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
 
             if (isntOutOfInventoryBar) {
-                ObservableList<StowableObjectType> stack = this.get()[getPosCursorVerticallyInventoryBar()][newV.intValue()];
-                player.setItemSelected((!stack.isEmpty()) ? stack.get(0) : null);
+                Stack stack = null;
+                if (this.getPosCursor() < this.get().size())
+                    stack = this.get().get(this.getPosCursor());
+                player.setStackSelected(stack);
             }
         });
     }
 
-    private int nbStacksIntoInventory()
-    {
-        int counter = 0;
-        for (int i = 0; i < Inventory.NB_LINES; i++)
-            for (int j = 0; j < Inventory.NB_BOXES_MAX / Inventory.NB_LINES; j++)
-                counter += (!this.value[i][j].isEmpty() && !Objects.isNull(this.value[i][j].get(0))) ? 1 : 0;
-
-        return counter;
-    }
+    private int nbStacksIntoInventory() { return this.value.size(); }
 
     /**
      * Place des objets de type rangeable dans l'inventaire.
-     * @param object Un objet de type rangeable à mettre dans l'inventaire.
+     * @param item Un objet de type rangeable à mettre dans l'inventaire.
      */
-    public void put(StowableObjectType object)
+    public void put(StowableObjectType item)
     {
         int nbStacksInventory = nbStacksIntoInventory();
 
-        /* TODO MES YEUX */
-        if (nbStacksInventory < NB_BOXES_MAX) for (int i = 0; i < NB_LINES; i++) {
-            boolean isFull = false; // TODO Il n'est pas utilisé
-            for (int j = 0; j < NB_BOXES_MAX / NB_LINES; j++) {
-                isFull = false;     // TODO Il n'est pas utilisé, et pourquoi le mettre en false deux fois de suite ?.
-                int beforeSize = this.value[i][j].size();
+        if (nbStacksInventory < NB_BOXES_MAX) {
+            if (nbStacksInventory == 0) {
+                Stack stack = new Stack();
+                stack.setItem(item);
+                stack.add();
+                this.value.add(stack);
+                this.player.setStackSelected(stack);
+            } else {
+                for (Stack stack : this.value) {
+                    int beforeSize = stack.getNbItems();
 
-                // TODO: des conditions qui peuvent êtres simplifié.
-                if (this.value[i][j].isEmpty())
-                    this.value[i][j].add(object);
-                else if (this.value[i][j].size() == BLOCK_STACKING_MAX)
-                    isFull = true;  // TODO unused
-                else if (this.value[i][j].get(0) instanceof Dirt && object instanceof Dirt) {
-                    this.value[i][j].add(object);
-                    isFull = false; // TODO unused
-                } else if (this.value[i][j].get(0) instanceof Stone && object instanceof Stone) {
-                    this.value[i][j].add(object);
-                    isFull = false; // TODO unused
-                } else if (this.value[i][j].get(0) instanceof Torch && object instanceof Torch) {
-                    this.value[i][j].add(object);
-                    isFull = false; // TODO unused
-                } else if (this.value[i][j].get(0) instanceof Fiber && object instanceof Fiber) {
-                    this.value[i][j].add(object);
-                    isFull = false; // TODO unused
-                } else if (this.value[i][j].get(0) instanceof Wood && object instanceof Wood) {
-                    this.value[i][j].add(object);
-                    isFull = false; // TODO unused
+                    if (!stack.isFull() && stack.isSameItem(item))
+                        stack.add();
+
+                    // Quand un objet a été mise dans l'inventaire, il arrête la fonction
+                    int afterSize = stack.getNbItems();
+                    if (beforeSize != afterSize)
+                        return;
                 }
 
-                // Quand un objet a été mise dans l'inventaire, il arrête la fonction
-                if (beforeSize != this.value[i][j].size())
-                    return;
+                // Si tous les stacks present sont plein ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
+                Stack stack = new Stack();
+                stack.setItem(item);
+                stack.add();
+                this.value.add(stack);
+                this.player.setStackSelected(stack);
             }
         }
     }
@@ -117,49 +96,48 @@ public class Inventory
         boolean scrollUp = this.scroll > 0;
         boolean scrollDown = this.scroll < 0;
         if (scrollUp)
-            this.posCursorHorizontallyInventoryBar.set(this.getPosCursorHorizontallyInventoryBar() + 1);
+            this.posCursor.set(this.getPosCursor() + 1);
         else if (scrollDown)
-            this.posCursorHorizontallyInventoryBar.set(this.getPosCursorHorizontallyInventoryBar() - 1);
+            this.posCursor.set(this.getPosCursor() - 1);
 
-        boolean outOfInventoryBarOnRight = this.getPosCursorHorizontallyInventoryBar() > (NB_BOXES_MAX / NB_LINES)-1;
-        boolean outOfInventoryBarOnLeft = this.getPosCursorHorizontallyInventoryBar() < 0;
+        boolean outOfInventoryBarOnRight = this.getPosCursor() > (NB_BOXES_MAX / NB_LINES)-1;
+        boolean outOfInventoryBarOnLeft = this.getPosCursor() < 0;
         if (outOfInventoryBarOnRight)
-            this.posCursorHorizontallyInventoryBar.set(0);
+            this.posCursor.set(0);
         else if (outOfInventoryBarOnLeft)
-            this.posCursorHorizontallyInventoryBar.set((NB_BOXES_MAX / NB_LINES)-1);
+            this.posCursor.set((NB_BOXES_MAX / NB_LINES)-1);
 
         this.keysInput.forEach((key, value) -> {
             if (value.equals(Boolean.TRUE)) {
                 if (key.equals(KeyCode.DIGIT1))
-                    this.posCursorHorizontallyInventoryBar.set(0);
+                    this.posCursor.set(0);
                 else if (key.equals(KeyCode.DIGIT2))
-                    this.posCursorHorizontallyInventoryBar.set(1);
+                    this.posCursor.set(1);
                 else if (key.equals(KeyCode.DIGIT3))
-                    this.posCursorHorizontallyInventoryBar.set(2);
+                    this.posCursor.set(2);
                 else if (key.equals(KeyCode.DIGIT4))
-                    this.posCursorHorizontallyInventoryBar.set(3);
+                    this.posCursor.set(3);
                 else if (key.equals(KeyCode.DIGIT5))
-                    this.posCursorHorizontallyInventoryBar.set(4);
+                    this.posCursor.set(4);
                 else if (key.equals(KeyCode.DIGIT6))
-                    this.posCursorHorizontallyInventoryBar.set(5);
+                    this.posCursor.set(5);
                 else if (key.equals(KeyCode.DIGIT7))
-                    this.posCursorHorizontallyInventoryBar.set(6);
+                    this.posCursor.set(6);
                 else if (key.equals(KeyCode.DIGIT8))
-                    this.posCursorHorizontallyInventoryBar.set(7);
+                    this.posCursor.set(7);
                 else if (key.equals(KeyCode.DIGIT9))
-                    this.posCursorHorizontallyInventoryBar.set(8);
+                    this.posCursor.set(8);
             }
         });
 
         this.scroll = 0;
     }
 
+    public IntegerProperty posCursorProperty() { return this.posCursor; }
 
-    public IntegerProperty posCursorHorizontallyInventoryBarProperty() { return this.posCursorHorizontallyInventoryBar; }
-    public IntegerProperty posCursorVerticallyInventoryBarProperty() { return this.posCursorVerticallyInventoryBar; }
-    public int getPosCursorHorizontallyInventoryBar() { return this.posCursorHorizontallyInventoryBar.get(); }
-    public int getPosCursorVerticallyInventoryBar() { return this.posCursorVerticallyInventoryBar.get(); }
-    public ObservableList<StowableObjectType>[][] get() { return this.value; }
+
+    public int getPosCursor() { return this.posCursor.get(); }
+    public ObservableList<Stack> get() { return this.value; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
 
     public void setScroll(int newScroll) { this.scroll = newScroll; }

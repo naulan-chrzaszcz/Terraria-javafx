@@ -8,7 +8,6 @@ import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.Camera;
 import fr.sae.terraria.vue.View;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
@@ -127,8 +126,8 @@ public class GameController implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
-            if (this.player.getItemSelected() instanceof EatableObjectType) {
-                ((EatableObjectType) this.player.getItemSelected()).eat();
+            if (this.player.getStackSelected() instanceof EatableObjectType) {
+                ((EatableObjectType) this.player.getStackSelected()).eat();
                 return;
             }
             if (isOneBlockDistance) {
@@ -156,21 +155,15 @@ public class GameController implements Initializable
 
     private void placeBlock(final Inventory inventory, int xBlock, int yBlock)
     {
-        boolean haveAnItemOnHand = !Objects.isNull(this.player.getItemSelected());
+        boolean haveAnItemOnHand = !Objects.isNull(this.player.getStackSelected());
         boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
+
         if (haveAnItemOnHand && goodPlace) {
-            if (!(this.player.getItemSelected() instanceof PlaceableObjectType) && !(this.player.getItemSelected() instanceof EatableObjectType))
+            if (!(this.player.getStackSelected() instanceof PlaceableObjectType) && !(this.player.getStackSelected() instanceof EatableObjectType))
                 return;
 
-            if (this.player.getItemSelected() instanceof PlaceableObjectType)
-               ((PlaceableObjectType) this.player.getItemSelected()).place(xBlock, yBlock);
-
-            ObservableList<StowableObjectType> stacksSelected = inventory.get()[inventory.getPosCursorVerticallyInventoryBar()][inventory.getPosCursorHorizontallyInventoryBar()];
-            stacksSelected.remove(this.player.getItemSelected());
-            if (stacksSelected.size()-1 >= 0) {
-                int endLineStacks = stacksSelected.size()-1;
-                this.player.setItemSelected(stacksSelected.get(endLineStacks));
-            }
+            if (this.player.getStackSelected() instanceof PlaceableObjectType)
+                ((PlaceableObjectType) this.player.getStackSelected()).place(xBlock, yBlock);
         }
     }
 }
