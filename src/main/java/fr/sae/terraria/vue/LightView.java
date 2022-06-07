@@ -19,8 +19,8 @@ public class LightView {
     private static final Color NIGHT_COLOR = Color.web("#0d0d38");
     private static final Stop[] STOPS_FADE = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
     private static final LinearGradient GRADIENT_FADE = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, STOPS_FADE);
-    private static final Stop[] STOPS_TORCH = new Stop[] { new Stop(0, Color.web("#FAC539")), new Stop(1,new Color(0,0,0,0))};
-    private static final RadialGradient GRADIENT_TORCH = new RadialGradient(0,0.1,0,0,200,false,CycleMethod.NO_CYCLE, STOPS_TORCH);
+    private static final Stop[] STOPS_TORCH = new Stop[] {  new Stop(0, Color.RED),new Stop(0.1, Color.web("#fbff00")), new Stop(1,new Color(0.9843,1,0,0.2))};
+    private static final RadialGradient GRADIENT_TORCH = new RadialGradient(0,0,.5,.5,0.3,true,CycleMethod.NO_CYCLE, STOPS_TORCH);
     private static int delimitationDirtStone;
     private static int widthMap;
     private static int tileSize;
@@ -67,7 +67,7 @@ public class LightView {
 
                     for (int i = 0; i < environment.getTorches().size(); i++){
                         torchLight.setLayoutX(environment.getTorches().get(i).getX() + (tileSize/2));
-                        torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/8));
+                        torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/3));
 
                         actualAir = Shape.subtract(actualAir,torchLight);
                         actualFade = Shape.subtract(actualFade,torchLight);
@@ -79,7 +79,7 @@ public class LightView {
 
                     for (int i = 0; i < c.getAddedSubList().size(); i++) {
                         torchLight.setLayoutX(((Torch) c.getAddedSubList().get(i)).getX() + (tileSize/2));
-                        torchLight.setLayoutY(((Torch) c.getAddedSubList().get(i)).getY()+ (tileSize/8));
+                        torchLight.setLayoutY(((Torch) c.getAddedSubList().get(i)).getY()+ (tileSize/3));
 
                         actualAir = Shape.subtract(actualAir, torchLight);
                         actualFade = Shape.subtract(actualFade, torchLight);
@@ -155,7 +155,7 @@ public class LightView {
             Circle torchLight = new Circle(tileSize*CIRCLE_RAY);
 
             torchLight.setLayoutX(environment.getTorches().get(i).getX() + (tileSize/2));
-            torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/8));
+            torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/3));
 
             torchLight.setFill(GRADIENT_TORCH);
             torchLight.setOpacity(0.5);
