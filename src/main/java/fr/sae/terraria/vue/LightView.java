@@ -88,21 +88,9 @@ public class LightView {
                 }
                 addEffects();
 
-//                addTorchLight();
                 filterPane.getChildren().addAll(actualTunnel,actualAir,actualFade);
             }});
     }
-
-//    private void addTorchLight() {
-//        for (int i = 0; i < environment.getTorches().size(); i ++){
-//            Shape torchLight = Shape.union(this.torchLight,this.torchLight);
-//            Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
-//            RadialGradient rg2 = new RadialGradient(0,0.1,0,0,tileSize*5,false,CycleMethod.NO_CYCLE,stopsTorch);
-//            torchLight.setFill(rg2);
-//            torchLight.setOpacity(0.5);
-//            filterPane.getChildren().add(torchLight);
-//        }
-//    }
 
 
     private void updateOpacity(int minutes) {
