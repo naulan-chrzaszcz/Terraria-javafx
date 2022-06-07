@@ -159,11 +159,11 @@ public class GameController implements Initializable
         boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
 
         if (haveAnItemOnHand && goodPlace) {
-            if (!(this.player.getStackSelected() instanceof PlaceableObjectType) && !(this.player.getStackSelected() instanceof EatableObjectType))
+            if (!(this.player.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.player.getStackSelected() instanceof EatableObjectType))
                 return;
 
-            if (this.player.getStackSelected() instanceof PlaceableObjectType)
-                ((PlaceableObjectType) this.player.getStackSelected()).place(xBlock, yBlock);
+            if (this.player.getStackSelected().getItem() instanceof PlaceableObjectType)
+                ((PlaceableObjectType) this.player.getStackSelected().getItem()).place(xBlock, yBlock);
         }
     }
 }
