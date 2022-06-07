@@ -79,7 +79,7 @@ public class LightView {
 
                     for (int i = 0; i < c.getAddedSubList().size(); i++) {
                         torchLight.setLayoutX(((Torch) c.getAddedSubList().get(i)).getX() + (tileSize/2));
-                        torchLight.setLayoutY(((Torch) c.getAddedSubList().get(i)).getY()+(tileSize/8));
+                        torchLight.setLayoutY(((Torch) c.getAddedSubList().get(i)).getY()+ (tileSize/8));
 
                         actualAir = Shape.subtract(actualAir, torchLight);
                         actualFade = Shape.subtract(actualFade, torchLight);
@@ -121,9 +121,9 @@ public class LightView {
 
     private int fullStoneArea() {
         int line = 0;
-        int column = 0;
+        int column;
         boolean found = false;
-        boolean wrongLine = false;
+        boolean wrongLine;
 
         while (line < tileMaps.getHeight() && !found) {
 
