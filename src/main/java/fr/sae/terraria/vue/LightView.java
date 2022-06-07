@@ -16,15 +16,18 @@ import javafx.scene.shape.Shape;
 public class LightView {
     private static final int CIRCLE_RAY = 3;
     private static final double OPACITY_ITER = 0.0017;
-    private static  final Color NIGHT_COLOR = Color.web("#0d0d38");
-    private Clock clock;
+    private static final Color NIGHT_COLOR = Color.web("#0d0d38");
+    private static final Stop[] STOPS_FADE = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
+    private static final LinearGradient GRADIENT_FADE = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, STOPS_FADE);
+    private static final Stop[] STOPS_TORCH = new Stop[] { new Stop(0, Color.web("#FAC539")), new Stop(1,new Color(0,0,0,0))};
+    private static final RadialGradient GRADIENT_TORCH = new RadialGradient(0,0.1,0,0,200,false,CycleMethod.NO_CYCLE, STOPS_TORCH);
+    private static int delimitationDirtStone;
+    private static int widthMap;
+    private static int tileSize;
     private Pane filterPane;
     private SimpleDoubleProperty opacityNightAir;
     private SimpleDoubleProperty opacityNightFade;
     private Circle torchLight;
-    private Shape baseAir;
-    private Shape baseFade;
-    private Shape baseTunnel;
     private Shape actualAir;
     private Shape actualFade;
     private Shape actualTunnel;
@@ -34,66 +37,37 @@ public class LightView {
 
     public LightView(Clock clock, Pane filterPane, Environment env) {
         this.environment = env;
-        this.clock = clock;
         this.filterPane = filterPane;
         this.tileMaps= env.getTileMaps();
-        int tileSize =(int) (env.scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
-        int widthMap =(int) (env.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
-        int delimitationDirtStone = fullStoneArea();
+        tileSize =(int) (env.scaleMultiplicatorHeight*TileMaps.TILE_DEFAULT_SIZE);
+        widthMap =(int) (env.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
+        delimitationDirtStone = fullStoneArea();
 
         opacityNightAir = new SimpleDoubleProperty(0.0);
         opacityNightFade = new SimpleDoubleProperty(0.8143);
 
         torchLight = new Circle(tileSize*CIRCLE_RAY);
-        baseAir = new Rectangle(widthMap,tileSize*tileMaps.getHeight());
-        baseFade =  new Rectangle(widthMap,tileSize);
-        baseTunnel = new Rectangle(widthMap,tileSize* tileMaps.getHeight() - tileSize*delimitationDirtStone);
 
+        resetShapes();
+        addEffects();
 
-        Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
-        RadialGradient rg2 = new RadialGradient(0,0.1,0,0,tileSize*5,false,CycleMethod.NO_CYCLE,stopsTorch);
-        torchLight.setFill(rg2);
-
-
-        baseTunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
-        baseFade.setLayoutY(baseTunnel.getLayoutY()-tileSize);
         clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity(newV.intValue())));
 
-        init();
-        initTochListener(env.getTorches());
-    }
-
-    public void init(){
-        actualAir = Shape.union(baseAir,baseAir);
-        actualFade = Shape.union(baseFade,baseFade);
-        actualTunnel = Shape.union(baseTunnel,baseTunnel);
-
-        Stop[] stops = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
-        LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-        actualFade.setFill(lg1);
-        actualAir.setFill(NIGHT_COLOR);
-        actualTunnel.setFill(NIGHT_COLOR);
-
-        actualTunnel.opacityProperty().bind(opacityNightFade);
-        actualFade.opacityProperty().bind(opacityNightFade);
-        actualAir.opacityProperty().bind(opacityNightAir);
-
         filterPane.getChildren().addAll(actualTunnel,actualFade,actualAir);
+        initTochListener(env.getTorches());
     }
 
     private void initTochListener(ObservableList<Torch> torches) {
         torches.addListener((ListChangeListener) c -> {
             while(c.next()){
                 filterPane.getChildren().clear();
-
+                addTochLights();
                 if (c.wasRemoved()){
-                    actualTunnel = Shape.union(baseTunnel,baseTunnel);
-                    actualFade = Shape.union(baseFade,baseFade);
-                    actualAir = Shape.union(baseAir,baseAir);
+                    resetShapes();
 
                     for (int i = 0; i < environment.getTorches().size(); i++){
-                        torchLight.setLayoutX(environment.getTorches().get(i).getX());
-                        torchLight.setLayoutY(environment.getTorches().get(i).getY());
+                        torchLight.setLayoutX(environment.getTorches().get(i).getX() + (tileSize/2));
+                        torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/8));
 
                         actualAir = Shape.subtract(actualAir,torchLight);
                         actualFade = Shape.subtract(actualFade,torchLight);
@@ -102,38 +76,33 @@ public class LightView {
 
                 }
                 else if (c.wasAdded()){
-                    Shape newAir = Shape.union(actualAir,actualAir);
-                    Shape newFade = Shape.union(actualFade,actualFade);
-                    Shape newTunnel = Shape.union(actualTunnel,actualTunnel);
 
-                    for (int i = 0; i < c.getAddedSubList().size(); i++){
-                        torchLight.setLayoutX(((Torch)c.getAddedSubList().get(i)).getX());
-                        torchLight.setLayoutY(((Torch)c.getAddedSubList().get(i)).getY());
+                    for (int i = 0; i < c.getAddedSubList().size(); i++) {
+                        torchLight.setLayoutX(((Torch) c.getAddedSubList().get(i)).getX() + (tileSize/2));
+                        torchLight.setLayoutY(((Torch) c.getAddedSubList().get(i)).getY()+(tileSize/8));
 
-                        newAir = Shape.subtract(newAir,torchLight);
-                        newFade = Shape.subtract(newFade,torchLight);
-                        newTunnel = Shape.subtract(newTunnel, torchLight);
+                        actualAir = Shape.subtract(actualAir, torchLight);
+                        actualFade = Shape.subtract(actualFade, torchLight);
+                        actualTunnel = Shape.subtract(actualTunnel, torchLight);
                     }
-
-                    actualAir = newAir;
-                    actualFade = newFade;
-                    actualTunnel = newTunnel;
                 }
-                Stop[] stops = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
-                LinearGradient lg1 = new LinearGradient(0, 0, 0, 1, true, CycleMethod.NO_CYCLE, stops);
-                actualFade.setFill(lg1);
-                actualAir.setFill(NIGHT_COLOR);
-                actualTunnel.setFill(NIGHT_COLOR);
+                addEffects();
 
-                actualTunnel.opacityProperty().bind(opacityNightFade);
-                actualFade.opacityProperty().bind(opacityNightFade);
-                actualAir.opacityProperty().bind(opacityNightAir);
-
+//                addTorchLight();
                 filterPane.getChildren().addAll(actualTunnel,actualAir,actualFade);
             }});
     }
 
-
+//    private void addTorchLight() {
+//        for (int i = 0; i < environment.getTorches().size(); i ++){
+//            Shape torchLight = Shape.union(this.torchLight,this.torchLight);
+//            Stop[] stopsTorch = new Stop[] { new Stop(0,new Color(0,0,0,0) ), new Stop(1, NIGHT_COLOR)};
+//            RadialGradient rg2 = new RadialGradient(0,0.1,0,0,tileSize*5,false,CycleMethod.NO_CYCLE,stopsTorch);
+//            torchLight.setFill(rg2);
+//            torchLight.setOpacity(0.5);
+//            filterPane.getChildren().add(torchLight);
+//        }
+//    }
 
 
     private void updateOpacity(int minutes) {
@@ -150,8 +119,6 @@ public class LightView {
     }
 
 
-
-
     private int fullStoneArea() {
         int line = 0;
         int column = 0;
@@ -163,9 +130,9 @@ public class LightView {
             wrongLine = false;
             column = 0;
 
-            while (column < tileMaps.getWidth() && !found && !wrongLine){
+            while (column < tileMaps.getWidth() && !found && !wrongLine) {
 
-                if (tileMaps.getTile(column,line) !=  TileMaps.STONE)
+                if (tileMaps.getTile(column, line) != TileMaps.STONE)
                     wrongLine = true;
                 else if (column == tileMaps.getWidth() - 1)
                     found = true;
@@ -174,33 +141,38 @@ public class LightView {
             }
             line++;
         }
-        return line-1;
+        return line - 1;
+    }
+
+    private void resetShapes(){
+        actualAir = new Rectangle(widthMap,tileSize*tileMaps.getHeight());
+        actualFade =  new Rectangle(widthMap,tileSize);
+        actualTunnel = new Rectangle(widthMap,tileSize* tileMaps.getHeight() - tileSize*delimitationDirtStone);
+
+
+        actualTunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
+        actualFade.setLayoutY(actualTunnel.getLayoutY()-tileSize);
+    }
+    private void addEffects(){
+        actualFade.setFill(GRADIENT_FADE);
+        actualAir.setFill(NIGHT_COLOR);
+        actualTunnel.setFill(NIGHT_COLOR);
+
+        actualTunnel.opacityProperty().bind(opacityNightFade);
+        actualFade.opacityProperty().bind(opacityNightFade);
+        actualAir.opacityProperty().bind(opacityNightAir);
+    }
+    private void addTochLights() {
+        for (int i = 0; i < environment.getTorches().size() ; i ++){
+            Circle torchLight = new Circle(tileSize*CIRCLE_RAY);
+
+            torchLight.setLayoutX(environment.getTorches().get(i).getX() + (tileSize/2));
+            torchLight.setLayoutY(environment.getTorches().get(i).getY() + (tileSize/8));
+
+            torchLight.setFill(GRADIENT_TORCH);
+            torchLight.setOpacity(0.5);
+
+            filterPane.getChildren().add(torchLight);
+        }
     }
 }
-
-/* Pour le futur listener:
- *
- * while (c.next){
- *     if(c.wasadded()){
- *          for( Torch t : c.getAdded(){
- *              torchLight.setLayoutY(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*t.getY());
- *              torchLight.setLayoutX(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*t.getX());
- *              air = Shape.substract(ait,torchLight);
- *              fade = Shape.substract(ait,torchLight);
- *              tunnel = Shape.substract(ait,torchLight);
- *          }
- *     }
- *
- *     if(c.wasRemoved()){
- *         filterpane.getchildren.clear();
- *
- *         for(Torch t : listTorch){
- *             torchLight.setLayoutY(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*t.getY());
- *             torchLight.setLayoutX(scaleMultiplicatorWidth* TileMaps.TILE_DEFAULT_SIZE*t.getX());
- *             air = Shape.substract(ait,torchLight);
- *             fade = Shape.substract(ait,torchLight);
- *             tunnel = Shape.substract(ait,torchLight);
- *         }
- *     }
- * }
- */
