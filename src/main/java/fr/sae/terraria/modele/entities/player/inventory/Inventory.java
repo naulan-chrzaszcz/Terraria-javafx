@@ -1,4 +1,4 @@
-package fr.sae.terraria.modele.entities.player;
+package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.blocks.Stone;
@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Wood;
+import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;

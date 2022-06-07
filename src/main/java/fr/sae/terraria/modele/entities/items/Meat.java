@@ -2,7 +2,7 @@ package fr.sae.terraria.modele.entities.items;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.EatableObjectType;
-import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.Player;
 
 

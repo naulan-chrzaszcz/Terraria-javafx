@@ -1,13 +1,12 @@
 package fr.sae.terraria.modele.entities;
 
+import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.entity.CollapsibleObjectType;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.MovableObjectType;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.entity.*;
 
 
-public class Slime extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType
+public class Slime extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_SLIME = 2500;
     public static final double SLIME_SPAWN_RATE = .2;
@@ -32,6 +31,17 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
     @Override public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
+    }
+
+    @Override public void spawn(int x, int y)
+    {
+        this.setX(x);
+        this.setY(y);
+        this.getGravity().setXInit(x);
+        this.getGravity().setYInit(y);
+
+        this.environment.getEntities().add(0, this);
+        this.environment.getSlimes().add(0, this);
     }
 
     @Override public void moveRight() { super.moveRight(); }

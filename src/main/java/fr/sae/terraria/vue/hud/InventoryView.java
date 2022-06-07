@@ -10,7 +10,7 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Wood;
-import fr.sae.terraria.modele.entities.player.Inventory;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.vue.View;
 import javafx.beans.property.SimpleIntegerProperty;

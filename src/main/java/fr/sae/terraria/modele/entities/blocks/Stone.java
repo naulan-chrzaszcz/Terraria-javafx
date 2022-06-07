@@ -60,8 +60,11 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
     @Override public void place(int x, int y)
     {
         Environment.playSound("sound/axchop.wav", false);
-        Entity entity = new Stone(this.environment, x*environment.widthTile, y*environment.heightTile);
-        entity.setRect(environment.widthTile, environment.heightTile);
+        int widthTile = environment.widthTile;
+        int heightTile = environment.heightTile;
+
+        Entity entity = new Stone(this.environment, x*widthTile, y*heightTile);
+        entity.setRect(widthTile, heightTile);
 
         environment.getTileMaps().setTile(TileMaps.STONE, y, x);
         environment.getEntities().add(0, entity);

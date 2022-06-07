@@ -3,6 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
@@ -19,14 +20,14 @@ import java.util.Objects;
 
 public class TileMapsView
 {
-    private Image torchImg;
-    private Image floorTopImg;
-    private Image floorLeftImg;
-    private Image floorRightImg;
-    private Image treeImg;
-    private Image stoneImg;
-    private Image dirtImg;
-    private Image tallGrassImg;
+    private final Image torchImg;
+    private final Image floorTopImg;
+    private final Image floorLeftImg;
+    private final Image floorRightImg;
+    private final Image treeImg;
+    private final Image stoneImg;
+    private final Image dirtImg;
+    private final Image tallGrassImg;
 
     private final Pane display;
 

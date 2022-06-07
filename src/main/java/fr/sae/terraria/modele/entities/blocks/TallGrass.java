@@ -4,6 +4,7 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
+import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TallGrass extends Block implements ReproductiveObjectType
+public class TallGrass extends Block implements ReproductiveObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
     public static final double TALL_GRASS_SPAWN_RATE = .3;
@@ -102,6 +103,13 @@ public class TallGrass extends Block implements ReproductiveObjectType
         }
 
         return children;
+    }
+
+    @Override public void spawn(int x, int y)
+    {
+        this.setX(x);
+        this.setY(y);
+        this.environment.getEntities().add(0, this);
     }
 
 

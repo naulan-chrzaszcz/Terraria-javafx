@@ -2,8 +2,11 @@ package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
+import fr.sae.terraria.vue.View;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
@@ -12,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Player extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType
+public class Player extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
 
@@ -28,13 +31,9 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     private final Inventory inventory;
 
 
-    /**
-     * @param x La position du joueur en X
-     * @param y La position du joueur en Y
-     */
-    public Player(Environment environment, int x, int y)
+    public Player(final Environment environment)
     {
-        super(x, y);
+        super();
         this.environment = environment;
         this.inventory = new Inventory(this);
 
@@ -81,6 +80,19 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
     }
 
     @Override public void hit() { }
+
+    @Override public void spawn(int x, int y)
+    {
+        this.setX(x);
+        this.setY(y);
+
+        Image image = View.loadAnImage("sprites/player/player_idle.png", environment.scaleMultiplicatorWidth, environment.scaleMultiplicatorHeight);
+        this.setRect((int) image.getWidth(), (int) image.getHeight());
+        image.cancel();
+
+        this.getGravity().setXInit(x);
+        this.getGravity().setYInit(y);
+    }
 
     @Override public void moveRight() { super.moveRight(); }
     @Override public void moveLeft() { super.moveLeft(); }

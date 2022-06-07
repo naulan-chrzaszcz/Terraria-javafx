@@ -80,6 +80,7 @@ public abstract class Entity
         this.velocity = 1;
     }
 
+    protected Entity() { this(0, 0); }
 
     /**
      * Il permet à chaque passage de la boucle du jeu, de faire diverses fonctions liée à l'Entité.

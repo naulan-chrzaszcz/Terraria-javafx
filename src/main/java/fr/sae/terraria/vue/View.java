@@ -17,6 +17,7 @@ import java.util.Objects;
 
 public class View
 {
+    private static Environment environment;
 
 
     /**
@@ -27,7 +28,7 @@ public class View
     {
         super();
 
-        final Environment environment = gameController.environment;
+        environment = gameController.environment;
         final Pane displayTiledMap = gameController.displayTiledMap;
         final Pane displayHostileBeings = gameController.displayHostileBeings;
         final Pane displayHUD = gameController.displayHUD;

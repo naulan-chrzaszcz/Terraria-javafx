@@ -5,10 +5,10 @@ import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
@@ -37,7 +37,7 @@ public class GenerateEntity
      * @param whenSpawn Le nombre qui determine quand il doit spawn sur la carte
      * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit qu'on souhaite le placer
      */
-    private static Entity generateAnEntity(Environment environment, Entity e, int whenSpawn, double spawnRate)
+    private static void generateAnEntity(Environment environment, SpawnableObjectType e, int whenSpawn, double spawnRate)
     {
         List<Entity> entities = environment.getEntities();
         TileMaps maps = environment.getTileMaps();
@@ -60,23 +60,16 @@ public class GenerateEntity
                         // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
                         if (maps.getTile(targetFloor, y - 1) == TileMaps.SKY) {
                             for (Entity entity : entities)
-                                if (entity instanceof Tree && xEntity == entity.getX() && yEntity == entity.getY())
-                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
-                                    return null;
-                            e.setX(xEntity);
-                            e.setY(yEntity);
-                            e.getGravity().setXInit(xEntity);
-                            e.getGravity().setYInit(yEntity);
-                            e.setRect(widthTile, heightTile);
-                            // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                            entities.add(0, e);
+                                // Une entité est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                if (xEntity == entity.getX() && yEntity == entity.getY())
+                                    return;
+                            e.spawn(xEntity, yEntity);
                         }
-                        // Une fois l'arbre généré, il arrête complétement toute la fonction
-                        return e;
+                        // Une fois l'entité générée, il arrête complétement toute la fonction
+                        return;
                     }
                     // Sinon on retourne vers la premiere boucle 'for'
                 }
-        return null;
     }
 
     /** Range les positions du sol sur la ligne 'y' */
@@ -99,20 +92,16 @@ public class GenerateEntity
     public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(environment), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
 
     /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol */
-    public static void rabbit(Environment environment) {
-        if (environment.getRabbits().size() < MAX_SPAWN_RABBIT) {
-            Rabbit rabbit = (Rabbit) generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
-            if (!Objects.isNull(rabbit))
-                environment.getRabbits().add(rabbit);
-        }
+    public static void rabbit(Environment environment)
+    {
+        if (environment.getRabbits().size() < MAX_SPAWN_RABBIT)
+            generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
     }
 
     /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol  */
-    public static void slime(Environment environment) {
-        if (environment.getSlimes().size() < MAX_SPAWN_SLIME) {
-            Slime slime = (Slime) generateAnEntity(environment, new Slime(environment), WHEN_SPAWN_A_SLIME, SLIME_SPAWN_RATE);
-            if (!Objects.isNull(slime))
-                environment.getSlimes().add(slime);
-        }
+    public static void slime(Environment environment)
+    {
+        if (environment.getSlimes().size() < MAX_SPAWN_SLIME)
+            generateAnEntity(environment, new Slime(environment), WHEN_SPAWN_A_SLIME, SLIME_SPAWN_RATE);
     }
 }

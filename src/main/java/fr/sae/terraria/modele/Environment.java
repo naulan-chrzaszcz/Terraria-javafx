@@ -36,7 +36,7 @@ public class Environment
     // Range des entities en plus pour permettre facilement de savoir combien son t-il sur la carte pour limiter leur apparition
     private final ObservableList<Rabbit> rabbits;
     private final ObservableList<Slime> slimes;
-    // Permet update facilement les lumieres des torches sur le filtre
+    // Permet update facilement les lumières des torches sur le filtre
     private final ObservableList<Torch> torches;
 
     private final TileMaps tileMaps;
@@ -74,12 +74,10 @@ public class Environment
         this.slimes = FXCollections.observableArrayList();
         this.torches = FXCollections.observableArrayList();
 
-        this.player = new Player(this, (5*widthTile), (3*heightTile));
+        this.player = new Player(this);
         this.player.setVelocity(5);
         this.player.setPv(4);
-        Image image = View.loadAnImage("sprites/player/player_idle.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        this.player.setRect((int) image.getWidth(), (int) image.getHeight());
-        image.cancel();
+        this.player.spawn(5*widthTile, 3*heightTile);
 
         // Détecte si le joueur n'est pas dans un bloc lorsque qu'il met un block au sol
         this.entities.addListener((ListChangeListener<? super Entity>) c -> {
@@ -151,7 +149,7 @@ public class Environment
             for (Entity entity : this.entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
-
+                // Ajoute les enfants des entités parent.
                 if (entity instanceof ReproductiveObjectType)
                     entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
                 entity.updates();
