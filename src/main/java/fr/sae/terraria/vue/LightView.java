@@ -97,7 +97,7 @@ public class LightView {
 
     private void updateOpacity(int minutes) {
         if (this.clock.getMinutes() > Clock.MINUTES_IN_A_DAY/2)
-            this.opacityNightAir.set((((double) (this.clock.getMinutes()*2))/Clock.MINUTES_IN_A_DAY) - 1.25);
+            this.opacityNightAir.set((((double) (this.clock.getMinutes()*2))/Clock.MINUTES_IN_A_DAY) - 1.1);
         else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME)
             opacityNightAir.setValue(opacityNightAir.getValue() - OPACITY_ITER);
     }
