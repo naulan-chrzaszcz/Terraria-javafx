@@ -35,12 +35,8 @@ public class SlimeView
     private void setAnimation()
     {
         this.slime.getAnimation().getFrameProperty().addListener((obs, oldV, newV) -> {
-            this.slimeImgView.setViewport(new Rectangle2D(0, 0, this.widthTile, this.heightTile));
-            if (this.slime.offset[0] != Entity.IDLE) {
-                Rectangle2D frameRect = new Rectangle2D(newV.intValue() * this.widthTile, 0, this.widthTile, this.heightTile);
-
-                this.slimeImgView.setViewport(frameRect);
-            }
+            Rectangle2D frameRect = new Rectangle2D(newV.intValue() * this.widthTile, 0, this.widthTile, this.heightTile);
+            this.slimeImgView.setViewport(frameRect);
         });
     }
 

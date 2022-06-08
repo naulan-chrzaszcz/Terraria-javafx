@@ -2,6 +2,7 @@ package fr.sae.terraria.modele.entities.entity;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Slime;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -142,7 +143,6 @@ public abstract class Entity
                 double futurePositionY = gravity.formulaOfTrajectory();
 
                 boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-
                 // Quand le joueur monte
                 if (this.gravity.flightTime >= this.gravity.timer ) {
                     if (isCollideTop) {

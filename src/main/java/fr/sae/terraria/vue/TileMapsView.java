@@ -3,6 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.collections.ListChangeListener;
@@ -74,6 +75,10 @@ public class TileMapsView
                     if (c.getList().get(0) instanceof Rabbit) {
                         RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
                         rabbitView.displayRabbit(displayHostileBeings);
+                    }
+                    if (c.getList().get(0) instanceof Slime) {
+                        SlimeView slimeView = new SlimeView((Slime) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+                        slimeView.displaySlime(displayHostileBeings);
                     }
 
                     if (c.getList().get(0) instanceof Torch)

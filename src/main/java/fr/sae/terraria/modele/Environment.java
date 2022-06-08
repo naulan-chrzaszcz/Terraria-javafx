@@ -147,7 +147,7 @@ public class Environment
             for (Entity entity : this.entities) {
                 if (entity instanceof CollideObjectType)
                     ((CollideObjectType) entity).collide();
-                // Ajoute les enfants des entités parent.
+                // ajoute les enfants des entités parent.
                 if (entity instanceof ReproductiveObjectType)
                     entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
                 entity.updates();
