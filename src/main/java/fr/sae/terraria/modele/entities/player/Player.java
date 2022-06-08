@@ -60,6 +60,9 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
             this.gravity.timer = .0;
         }
 
+        this.offset[0] = Entity.IDLE;
+        this.eventInput();
+        this.collide();
         this.worldLimit();
         this.move();
 

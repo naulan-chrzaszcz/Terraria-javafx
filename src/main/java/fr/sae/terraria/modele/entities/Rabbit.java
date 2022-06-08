@@ -50,6 +50,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
             this.gravity.timer = .0;
         }
 
+        this.collide();
         this.move();
         this.worldLimit();
 
@@ -63,11 +64,11 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         this.setX(this.x.get() + this.offset[0] * this.velocity);
 
         if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
-            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.rect.getWidth()))/ this.environment.widthTile) + 1;
-            int yProbablyVoid = (int) ((getY() + (this.rect.getHeight()/2)) / environment.heightTile);
+            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
+            int yProbablyVoid = (int) (getY() / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
-            if (environment.getTileMaps().getTile(xProbablyVoid+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 1 : (-1)), yProbablyVoid + 2) == TileMaps.SKY) {
+            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid + 2) == TileMaps.SKY) {
                 this.offset[0] = (-1) * this.offset[0];
             } else {
                 boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;

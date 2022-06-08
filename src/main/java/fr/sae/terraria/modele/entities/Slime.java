@@ -9,11 +9,10 @@ import java.util.Objects;
 
 public class Slime extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
 {
-    public static final int WHEN_SPAWN_A_SLIME = 100;
+    public static final int WHEN_SPAWN_A_SLIME = 2_500;
     public static final double SLIME_SPAWN_RATE = .2;
 
     private final Environment environment;
-    private int nbIdle=0;
 
 
     public Slime(Environment environment, int x, int y)
@@ -31,7 +30,7 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
 
     public Slime(Environment environment) { this(environment, 0, 0); }
 
-    @Override public void updates() { /* TODO document why this method is empty */
+    @Override public void updates() {
         if (this.offset[1] == Entity.IDLE && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
@@ -40,7 +39,16 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
             this.gravity.timer = .0;
         }
 
+        this.offset[0] = Entity.IDLE;
+        if (this.offset[1] == Entity.IS_JUMPING) {
+            if (environment.getPlayer().getX() > this.x.getValue())
+                this.offset[0] = Entity.IS_MOVING_RIGHT;
+            else if (environment.getPlayer().getX() < this.x.getValue())
+                this.offset[0] = Entity.IS_MOVING_LEFT;
+        }
+
         this.move();
+        this.collide();     // FIXME: 08/06/2022 : idk pourquoi le collide pose probleme pour le saut du slime
         this.worldLimit();
 
         if (!Objects.isNull(this.rect))
@@ -51,28 +59,17 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
     @Override public void collide() {
         Map<String, Boolean> whereCollide = super.collide(this.environment);
 
-        if (!whereCollide.isEmpty()) {
+        if (!whereCollide.isEmpty())
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.offset[0] = Entity.IDLE;
-        }
     }
 
     @Override public void move()
     {
-        if (environment.getPlayer().getX() > this.x.getValue())
-            this.offset[0] = IS_MOVING_RIGHT;
-        else if (environment.getPlayer().getX() < this.x.getValue())
-            this.offset[0] = IS_MOVING_LEFT;
-        else this.offset[0] = IDLE;
-
         if (((int) (this.animation.getFrame()) == 3))
-            this.jump();
-
-        if (this.offset[1] == Entity.IS_JUMPING)
-            this.setX(this.getX() + this.offset[0] * this.velocity);
+            if (this.offset[1] != Entity.IS_FALLING) this.jump();
+        this.setX(this.getX() + (this.offset[0] * this.velocity));
     }
-
-
 
     @Override public void hit()
     {
@@ -99,6 +96,4 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
     @Override public void fall() { super.fall(); }
 
     @Override public void worldLimit() { super.worldLimit(this.environment); }
-
-
 }

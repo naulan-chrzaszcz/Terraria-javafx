@@ -111,9 +111,6 @@ public class Environment
 
         List<Entity> entitiesAtAdded = new ArrayList<>();
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            this.player.offset[0] = Entity.IDLE;
-            this.player.eventInput();
-
             // TODO TEST
             if (!caught[0]) {
                 Torch torch = new Torch(this, 0, 0);
@@ -145,15 +142,11 @@ public class Environment
 
             // Updates toutes les entités
             for (Entity entity : this.entities) {
-                if (entity instanceof CollideObjectType)
-                    ((CollideObjectType) entity).collide();
                 // ajoute les enfants des entités parent.
                 if (entity instanceof ReproductiveObjectType)
                     entitiesAtAdded.addAll(((ReproductiveObjectType) entity).reproduction(this));
                 entity.updates();
             }
-
-            this.player.collide();
             this.player.updates();
 
             this.previousDays = this.clock.getDays();
