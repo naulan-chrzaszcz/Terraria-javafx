@@ -11,10 +11,7 @@ import fr.sae.terraria.vue.View;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -82,6 +79,12 @@ public class GameController implements Initializable
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             this.player.getKeysInput().put(key.getCode(), true);
             inventory.getKeysInput().put(key.getCode(), true);
+
+            // DEBUG ZONE
+            // Met la nuit
+            if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.N))
+                this.environment.getGameClock().setMinutes(1000);
+
             key.consume();
         });
 

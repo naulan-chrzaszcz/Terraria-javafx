@@ -26,6 +26,7 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
         this.animation = new Animation();
 
         this.gravity.amplitude = 25;
+        this.gravity.degInit = -90;
     }
 
     public Slime(Environment environment) { this(environment, 0, 0); }
@@ -53,7 +54,6 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
         if (!whereCollide.isEmpty()) {
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.offset[0] = Entity.IDLE;
-
         }
     }
 
@@ -65,15 +65,11 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
             this.offset[0] = IS_MOVING_LEFT;
         else this.offset[0] = IDLE;
 
-        if (((int) (this.animation.getFrame()) == 3)){
+        if (((int) (this.animation.getFrame()) == 3))
             this.jump();
-            this.gravity.degInit = -90;
-        }
 
         if (this.offset[1] == Entity.IS_JUMPING)
             this.setX(this.getX() + this.offset[0] * this.velocity);
-
-
     }
 
 

@@ -57,7 +57,7 @@ public class Camera
                     centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
             }
 
-            // décale "proprement" la caméra vers le haut
+            // Décale "proprement" la caméra vers le haut
             if (player.offset[1] == Entity.IDLE && gap[0] > 0) {
                 gap[0] /= 2;
                 centerPlayerOnYIntoCamera[0] = (player.getY() + gap[0]) - midHeightCamera;

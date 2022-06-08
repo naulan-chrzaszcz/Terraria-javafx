@@ -28,7 +28,7 @@ public class Clock
     public void updates(int ticks)
     {
         // si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes
-        if (ticks%Clock.ONE_MINUTE_INGAME == 0) {
+        if (ticks%1 == 0) {
             if (this.getMinutes()+1 == Clock.ONE_DAY_INGAME) {
                 this.days.setValue(getDays()+1);
                 this.minutes.setValue(0);
@@ -42,4 +42,6 @@ public class Clock
 
     public int getMinutes() { return this.minutes.get(); }
     public int getDays() { return this.days.get(); }
+
+    public void setMinutes(int newMinutes) { this.minutes.set(newMinutes); }
 }

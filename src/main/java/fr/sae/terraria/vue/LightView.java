@@ -35,7 +35,10 @@ public class LightView {
 
     private TileMaps tileMaps;
 
+    private Clock clock;
+
     public LightView(Clock clock, Pane filterPane, Environment env) {
+        this.clock = clock;
         this.environment = env;
         this.filterPane = filterPane;
         this.tileMaps= env.getTileMaps();
@@ -92,17 +95,12 @@ public class LightView {
             }});
     }
 
-
     private void updateOpacity(int minutes) {
-        if (minutes >= Clock.FOUR_PM_INGAME || minutes <= Clock.EIGHT_AM_INGAME) {
-            if (minutes >= Clock.FOUR_PM_INGAME && minutes < Clock.ONE_DAY_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()+ OPACITY_ITER);
-                opacityNightFade.setValue(opacityNightFade.getValue()- OPACITY_ITER);
-            }
-            else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME) {
-                opacityNightAir.setValue(opacityNightAir.getValue()- OPACITY_ITER);
-                opacityNightFade.setValue(opacityNightFade.getValue()+ OPACITY_ITER);
-            }
+        if (this.clock.getMinutes() > Clock.MINUTES_IN_A_DAY/2)
+            this.opacityNightAir.set((((double) (this.clock.getMinutes()*2))/Clock.MINUTES_IN_A_DAY) - 1.25);
+        else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME) {
+            opacityNightAir.setValue(opacityNightAir.getValue() - OPACITY_ITER);
+            opacityNightFade.setValue(opacityNightFade.getValue() + OPACITY_ITER);
         }
     }
 
@@ -141,6 +139,7 @@ public class LightView {
         actualTunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
         actualFade.setLayoutY(actualTunnel.getLayoutY()-tileSize);
     }
+
     private void addEffects(){
         actualFade.setFill(GRADIENT_FADE);
         actualAir.setFill(NIGHT_COLOR);
@@ -150,6 +149,7 @@ public class LightView {
         actualFade.opacityProperty().bind(opacityNightFade);
         actualAir.opacityProperty().bind(opacityNightAir);
     }
+
     private void addTochLights() {
         for (int i = 0; i < environment.getTorches().size() ; i ++){
             Circle torchLight = new Circle(tileSize*CIRCLE_RAY);
