@@ -83,7 +83,9 @@ public class GameController implements Initializable
             // DEBUG ZONE
             // Met la nuit
             if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.N))
-                this.environment.getGameClock().setMinutes(1000);
+                this.environment.getGameClock().setMinutes(0);
+            if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.J))
+                this.environment.getGameClock().setMinutes(400);
 
             key.consume();
         });

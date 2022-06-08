@@ -54,7 +54,7 @@ public class LightView {
         resetShapes();
         addEffects();
 
-        clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity(newV.intValue())));
+        clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity()));
 
         filterPane.getChildren().addAll(actualTunnel,actualFade,actualAir);
         initTochListener(env.getTorches());
@@ -95,12 +95,11 @@ public class LightView {
             }});
     }
 
-    private void updateOpacity(int minutes)
+    private void updateOpacity()
     {
         if (this.clock.getMinutes() > Clock.MINUTES_IN_A_DAY/2)
-            this.opacityNightAir.set((((double) (this.clock.getMinutes()*(2 /* Compensation */)))/Clock.MINUTES_IN_A_DAY) - (1.1 /* Décallage */));
-        else if (minutes > Clock.MIDNIGHT_INGAME && minutes <= Clock.EIGHT_AM_INGAME)
-            opacityNightAir.setValue(opacityNightAir.getValue() - OPACITY_ITER);
+            this.opacityNightAir.set((((double) (this.clock.getMinutes()*(2 /* Compensation temps */)))/Clock.MINUTES_IN_A_DAY) - (1.1 /* Décallage */));
+        else this.opacityNightAir.set(((double) (Clock.MINUTES_IN_A_DAY - (this.clock.getMinutes()*(4 /* Compensation temps */)))/Clock.MINUTES_IN_A_DAY) - (.1 /* Décallage */));
     }
 
 
