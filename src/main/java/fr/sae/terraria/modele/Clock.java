@@ -21,7 +21,7 @@ public class Clock
     {
         super();
 
-        this.minutes = new SimpleIntegerProperty(Clock.FOUR_PM_INGAME);
+        this.minutes = new SimpleIntegerProperty(Clock.EIGHT_AM_INGAME);
         this.days = new SimpleIntegerProperty(1);
     }
 
