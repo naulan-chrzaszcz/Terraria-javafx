@@ -41,8 +41,8 @@ public class InventoryView
     private final Inventory inventory;
     private final Pane display;
 
-    private List<ImageView> itemsView;
-    private List<Text> texts;
+    private final List<ImageView> itemsView;
+    private final List<Text> texts;
 
     private double scaleMultiplicatorWidth;
     private double scaleMultiplicatorHeight;
@@ -151,6 +151,7 @@ public class InventoryView
                 if (c.wasRemoved()) {
                     this.display.getChildren().remove(this.itemsView.get(c.getTo()));
                     this.itemsView.remove(c.getTo());
+
                     for (int i = c.getTo(); i < itemsView.size(); i++)
                         this.itemsView.get(i).setX(this.itemsView.get(i).getX() - boxeInventoryWidth);
                 }

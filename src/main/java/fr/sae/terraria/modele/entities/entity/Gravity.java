@@ -20,10 +20,10 @@ public class Gravity
 
     public double formulaOfTrajectory()
     {
-        flightTime = calcFlightTime();
+        this.flightTime = this.calcFlightTime();
         // Formule de type ax²+bx+c ( c = yInit )
         double yValue = (((Gravity.VALUE/2) * (timer * timer)) + ((Math.sin(degInit) * (vInit * amplitude)) * timer)) + yInit;
-        this.timer += SPEED;
+        this.timer += Gravity.SPEED;
 
         return yValue;
     }
@@ -31,9 +31,9 @@ public class Gravity
     private double calcFlightTime()
     {
         // résolution de l'équation f'(x) = 0
-        if (degInit < 0)
-            return ((vInit * amplitude) * Math.sin(-degInit)) / Gravity.VALUE;
-        return ((vInit * amplitude) * Math.sin(degInit)) / Gravity.VALUE;
+        if (this.degInit < 0)
+            return ((this.vInit * this.amplitude) * Math.sin(-this.degInit)) / Gravity.VALUE;
+        return ((this.vInit * this.amplitude) * Math.sin(this.degInit)) / Gravity.VALUE;
     }
 
     /** Modifie le xInit et le yInit pour modifier le point de départ du saut ou de là où il tombe */
