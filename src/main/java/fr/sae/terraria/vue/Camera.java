@@ -44,20 +44,30 @@ public class Camera
         );
 
         // Evite que la caméra suit le joueur quand il saute sauf en cas de besoin
-        double midCamera = (this.clip.getHeight()/2);
-        double[] centerCameraY = new double[1];
+        double midHeightCamera = (this.clip.getHeight()/2);
+        double[] centerPlayerOnYIntoCamera = new double[1];
+        double[] gap = new double[1];
         player.getYProperty().addListener((obs, oldX, newX) -> {
+            // Suit le joueur
+            centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
             if (player.offset[1] == Entity.IS_JUMPING) {
-                if (player.getGravity().timer > player.getGravity().flightTime*2 /* Légère bidouille */) {
-                    centerCameraY[0] = player.getY() - midCamera;
-                } else centerCameraY[0] = player.getGravity().yInit - midCamera;
-            } else centerCameraY[0] = player.getY() - midCamera;
+                gap[0] = player.getGravity().yInit - player.getY();
+                centerPlayerOnYIntoCamera[0] = player.getGravity().yInit - midHeightCamera;
+                if (player.getGravity().timer > player.getGravity().flightTime*2 /* Légère bidouille */)
+                    centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
+            }
+
+            // décale "proprement" la caméra vers le haut
+            if (player.offset[1] == Entity.IDLE && gap[0] > 0) {
+                gap[0] /= 2;
+                centerPlayerOnYIntoCamera[0] = (player.getY() + gap[0]) - midHeightCamera;
+            }
         });
 
         // Suit le joueur en 'y'
         this.clip.yProperty().bind(
                 Bindings.createDoubleBinding(
-                        () -> clampRange(centerCameraY[0], minScrollHeightCamera, maxScrollHeightCamera),
+                        () -> clampRange(centerPlayerOnYIntoCamera[0], minScrollHeightCamera, maxScrollHeightCamera),
                         player.getYProperty(), paneHadCamera.heightProperty()
                 )
         );
