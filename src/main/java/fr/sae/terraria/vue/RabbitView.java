@@ -2,6 +2,7 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -21,8 +22,9 @@ public class RabbitView
     private int heightTile;
 
 
-    public RabbitView(Rabbit rabbit, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
+    public RabbitView(final Rabbit rabbit, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        super();
         this.rabbit = rabbit;
 
         this.widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
@@ -37,26 +39,26 @@ public class RabbitView
     {
         // Change la limite de frame de l'animation selon le sprite sheet chargé
         this.rabbitImgView.imageProperty().addListener((obs, oldImg, newImg) -> {
-            int newEndFrame = (int) (newImg.getWidth() / widthTile);
+            int newEndFrame = (int) (newImg.getWidth() / this.widthTile);
             if (this.rabbit.getAnimation().getFrame() >= newEndFrame)
                 this.rabbit.getAnimation().reset();
             this.rabbit.getAnimation().setEndFrame(newEndFrame);
         });
 
         this.rabbit.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
-            this.rabbitImgView.setViewport(new Rectangle2D(0, 0, widthTile, heightTile));
-            if (rabbit.offset[0] == 1 || rabbit.offset[0] == -1) {
-                Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * widthTile), 0, widthTile, heightTile);
+            this.rabbitImgView.setViewport(new Rectangle2D(0, 0, this.widthTile, this.heightTile));
+            if (this.rabbit.offset[0] == Entity.IS_MOVING_RIGHT || this.rabbit.offset[0] == Entity.IS_MOVING_LEFT) {
+                Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * this.widthTile), 0, this.widthTile, this.heightTile);
 
-                rabbitImgView.setViewport(frameRect);
-                rabbitImgView.setImage((rabbit.offset[0] == -1) ? rabbitLeftImg : rabbitRightImg);
+                this.rabbitImgView.setViewport(frameRect);
+                this.rabbitImgView.setImage((this.rabbit.offset[0] == -1) ? this.rabbitLeftImg : this.rabbitRightImg);
             }
         });
     }
 
-    public void displayRabbit(Pane display)
+    public void displayRabbit(final Pane display)
     {
         this.setAnimation();
-        display.getChildren().add(rabbitImgView);
+        display.getChildren().add(this.rabbitImgView);
     }
 }

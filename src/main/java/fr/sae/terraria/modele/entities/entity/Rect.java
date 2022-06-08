@@ -8,7 +8,12 @@ public class Rect
     private Rectangle2D value;
 
 
-    public Rect(double x, double y, int width, int height) { this.value = new Rectangle2D(x, y, width, height); }
+    public Rect(double x, double y, int width, int height)
+    {
+        super();
+
+        this.value = new Rectangle2D(x, y, width, height);
+    }
 
     /**
      * Mets à jour la position du rectangle géré par JavaFX
@@ -24,9 +29,9 @@ public class Rect
     }
 
     /** Permet de savoir si deux rectangles sont en collision */
-    public boolean collideRect(Rect rect) { return this.value.intersects(rect.get()) || this.value.contains(rect.get()); }
+    public boolean collideRect(final Rect rect) { return this.value.intersects(rect.get()) || this.value.contains(rect.get()); }
     /** Permet de savoir si deux rectangles sont en collision */
-    public boolean collideRect(Rectangle2D rect) { return this.value.intersects(rect) || this.value.contains(rect); }
+    public boolean collideRect(final Rectangle2D rect) { return this.value.intersects(rect) || this.value.contains(rect); }
 
     /** Permet d'avoir le Rectangle qui est géré par JavaFX */
     public Rectangle2D get() { return this.value; }

@@ -1,0 +1,27 @@
+#textArea
+{
+    -fx-background-color: black;
+    -fx-font-family: Impact;
+    -fx-alignment: center;
+}
+
+#text
+{
+    -fx-fill: white;
+    -fx-font-size: 23px;
+}
+
+#textInventoryBar
+{
+    -fx-text-fill: white;
+}
+
+#notAvailable
+{
+    -fx-background-color: #ff7b7b;
+}
+
+#available
+{
+    -fx-background-color: #91f086;
+}

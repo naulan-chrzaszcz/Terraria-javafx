@@ -6,32 +6,38 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class Clock
 {
     public static final int ONE_MINUTE_INGAME = 37;
-    public static final int ONE_DAY_INGAME = 1440;
+    public static final int MINUTES_IN_A_DAY = 1440;
+    public static final int EIGHT_AM_INGAME = 480;
+
     private final SimpleIntegerProperty minutes;
     private final SimpleIntegerProperty days;
 
 
     public Clock()
     {
-        minutes = new SimpleIntegerProperty(0);
-        days = new SimpleIntegerProperty(0);
+        super();
+
+        this.minutes = new SimpleIntegerProperty(Clock.EIGHT_AM_INGAME);
+        this.days = new SimpleIntegerProperty(1);
     }
 
     public void updates(int ticks)
     {
         // si environ 1 minute passe irl, le timer dans le jeu augmente de 10 minutes
         if (ticks%Clock.ONE_MINUTE_INGAME == 0) {
-            if (getMinutes()+1 == ONE_DAY_INGAME) {
-                days.setValue(getDays()+1);
-                minutes.setValue(0);
-            } else minutes.setValue(getMinutes()+1);
+            if (this.getMinutes()+1 == Clock.MINUTES_IN_A_DAY) {
+                this.days.setValue(getDays()+1);
+                this.minutes.setValue(0);
+            } else this.minutes.setValue(getMinutes()+1);
         }
     }
 
-    public SimpleIntegerProperty minutesProperty() { return minutes; }
-    public SimpleIntegerProperty daysProperty() { return days; }
+    public SimpleIntegerProperty minutesProperty() { return this.minutes; }
+    public SimpleIntegerProperty daysProperty() { return this.days; }
 
 
-    public int getMinutes() { return minutes.get(); }
-    public int getDays() { return days.get(); }
+    public int getMinutes() { return this.minutes.get(); }
+    public int getDays() { return this.days.get(); }
+
+    public void setMinutes(int newMinutes) { this.minutes.set(newMinutes); }
 }

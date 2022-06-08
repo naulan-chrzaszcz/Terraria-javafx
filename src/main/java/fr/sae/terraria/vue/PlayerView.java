@@ -1,6 +1,7 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.entities.Player;
+import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.player.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -48,10 +49,10 @@ public class PlayerView
 
         player.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
             this.playerImgView.setViewport(new Rectangle2D(0, 0, widthPlayer, heightPlayer));
-            if (player.offset[0] == 0 && player.offset[1] == 0)
+            if (player.offset[0] == Entity.IDLE && player.offset[1] == Entity.IDLE)
                 this.playerImgView.setImage(this.playerIdleImg);
 
-            if (player.offset[0] == 1 || player.offset[0] == -1) {
+            if (player.offset[0] == Entity.IS_MOVING_RIGHT || player.offset[0] == Entity.IS_MOVING_LEFT) {
                 Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * widthPlayer), 0, widthPlayer, heightPlayer);
 
                 this.playerImgView.setViewport(frameRect);
@@ -61,7 +62,7 @@ public class PlayerView
     }
 
     /** Synchronise les coordonnées en x et y du joueur avec l'image et ensuite l'affiche sur le Pane */
-    public void displayPlayer(Pane display)
+    public void displayPlayer(final Pane display)
     {
         this.setAnimation();
         display.getChildren().add(playerImgView);

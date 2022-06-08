@@ -1,17 +1,18 @@
 package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.Animation;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
-import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
+import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.items.Meat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
-public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType
+public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_RABBIT = 2_500;
     public static final double RABBIT_SPAWN_RATE = .2;
@@ -20,26 +21,27 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
-    private Environment environment;
-    private Animation animation;
+    private final Environment environment;
+    private final Animation animation;
 
 
-    public Rabbit(Environment environment, int x, int y)
+    public Rabbit(final Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
 
+        this.setPv(3);
         this.animation = new Animation();
         this.velocity = 1;
         this.offset[0] = (Math.random() <= .5) ? Entity.IS_MOVING_RIGHT : Entity.IS_MOVING_LEFT;
         this.gravity.amplitude = 40;
     }
 
-    public Rabbit(Environment environment) { this(environment, 0, 0); }
+    public Rabbit(final Environment environment) { this(environment, 0, 0); }
 
-    public void updates()
+    @Override public void updates()
     {
-        if (this.offset[1] == Entity.IDLE && !air) {
+        if (this.offset[1] == Entity.IDLE && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -48,111 +50,100 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
             this.gravity.timer = .0;
         }
 
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        this.collide();
+        this.move();
+        this.worldLimit();
 
-        if (this.rect != null)
+        if (!Objects.isNull(this.rect))
             this.rect.updates(x.get(), y.get());
         this.animation.loop();
     }
 
-    public List<Entity> reproduction(Environment environment)
+    @Override public void move()
+    {
+        this.setX(this.x.get() + this.offset[0] * this.velocity);
+
+        if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
+            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
+            int yProbablyVoid = (int) (getY() / environment.heightTile);
+
+            // Si du vide risque d'y avoir lors de son déplacement
+            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid + 2) == TileMaps.SKY) {
+                this.offset[0] = (-1) * this.offset[0];
+            } else {
+                boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;
+                if (mustJump) {
+                    boolean jumpOrNot = Math.random() < Rabbit.LUCK_OF_JUMPING;
+                    if (jumpOrNot) {
+                        this.jump();
+                        this.gravity.degInit = -90;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override public List<Entity> reproduction(final Environment environment)
     {
         List<Entity> children = new ArrayList<>();
+        if (environment.getRabbits().size() < GenerateEntity.MAX_SPAWN_RABBIT) {
+            // TODO les lapins doivent se reproduire
+        }
 
         return children;
     }
 
-    public void collide()
+    @Override public void collide()
     {
-        int widthTile = environment.widthTile; int heightTile = environment.heightTile;
-        TileMaps tileMaps = environment.getTileMaps();
+        Map<String, Boolean> whereCollide = super.collide(this.environment);
 
-        // Detection vide en dessous
-        int yBottom = (int)  (getY()+getRect().getHeight()-COLLISION_TOLERANCE)/heightTile;
-        int posX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
-
-        boolean footInTheVoid = tileMaps.getTile(posX, yBottom+1) == TileMaps.SKY;
-        if (footInTheVoid)
-            this.air = true;
-
-        // Detection collision gauche droite
-        if (this.offset[0] != Entity.IDLE) {
-            int yTop = (int) (getY()+COLLISION_TOLERANCE)/heightTile;
-            int futurePositionX = (int) ((getX()+((offset[0] < 0) ? COLLISION_TOLERANCE : -COLLISION_TOLERANCE)+(velocity*offset[0])) + ((offset[0] > 0) ? getRect().getWidth() : 0))/widthTile;
-
-            // Il gère les deux car futurePositionX change dynamiquement suivant l'offset
-            boolean isCollideLeftOrRight = tileMaps.getTile(futurePositionX, yTop) != TileMaps.SKY || tileMaps.getTile(futurePositionX, yBottom) != TileMaps.SKY;
-            if (isCollideLeftOrRight)
+        if (!whereCollide.isEmpty()) {
+            if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.offset[0] = (-1) * this.offset[0];
         }
+    }
 
-        // Detection collision en bas et en haut
-        if (this.offset[1] != Entity.IDLE) {
-            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
-            int xRight = (int) ((getX()+getRect().getWidth())-COLLISION_TOLERANCE)/widthTile;
+    @Override public void hit()
+    {
+        Environment.playSound("sound/daggerswipe.wav", false);
 
-            // Tombe
-            if (this.offset[1] == Entity.IS_FALLING) {
-                this.gravity.degInit = 0;
-                double futurePositionY = gravity.formulaOfTrajectory() + rect.getHeight();
+        if (this.getPv() <= 0) {
+            this.environment.getPlayer().pickup(new Meat(this.environment));
 
-                boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-                if (isCollideBottom) {
-                    this.setJumpPosInit();
-                    this.gravity.timer = 0;
-                    this.offset[1] = Entity.IDLE;
-                } else setY(futurePositionY);
-                // Saute
-            } else if (this.offset[1] == Entity.IS_JUMPING) {
-                double futurePositionY = gravity.formulaOfTrajectory();
-                this.air = true;
-
-                boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-
-                // Quand le joueur monte
-                if ((gravity.flightTime/2) >= gravity.timer) {
-                    if (isCollideTop) {
-                        this.fall();
-                    } else setY(futurePositionY);
-                    // Quand le joueur decent
-                } else {
-                    boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + rect.getHeight()) - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-
-                    if (isCollideTop) {
-                        this.fall();
-                    } else if (isCollideBottom) {
-                        this.setJumpPosInit();
-                        this.gravity.timer = 0;
-                        this.offset[1] = Entity.IDLE;
-                        this.air = false;
-                    } else setY(futurePositionY);
-                }
-            }
-        } else if (this.air) {
-            this.gravity.degInit = 0;
-            int xLeft = (int) (getX()+COLLISION_TOLERANCE)/widthTile;
-            int xRight = (int) (getX()-COLLISION_TOLERANCE+getRect().getWidth())/widthTile;
-            double futurePositionY = this.gravity.formulaOfTrajectory() + this.rect.getHeight();
-
-            boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY - COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
-            if (isCollideBottom) {
-                this.setJumpPosInit();
-                this.offset[1] = Entity.IDLE;
-                this.air = false;
-            } else setY(futurePositionY - this.rect.getHeight());
+            this.environment.getRabbits().remove(this);
+            this.environment.getEntities().remove(this);
         }
+        this.setPv(this.getPv() - 1);
+    }
 
-        // TODO: Ce n'est pas parfait
-        /*
-        if (environment.getPlayer().getRect().collideRect(rect))
-            offset[0] = (-1) * offset[0];
-         */
+    @Override public void spawn(final int x, final int y)
+    {
+        Environment.playSound("sound/Rabbit_Spawn.wav", false);
+
+        this.setX(x);
+        this.setY(y);
+        this.getGravity().setXInit(x);
+        this.getGravity().setYInit(y);
+        this.setRect(environment.widthTile, environment.heightTile);
+        this.environment.getEntities().add(0, this);
+        this.environment.getRabbits().add(0, this);
+    }
+
+    /** Modifie l'offset qui permet de le déplacer vers la droite */
+    @Override public void moveRight() { super.moveRight(); }
+    /** Modifie l'offset qui permet de le déplacer vers la gauche */
+    @Override public void moveLeft() { super.moveLeft(); }
+    /** Modifie l'offset qui permet de le faire sauter */
+    @Override public void jump() { super.jump(); }
+    /** Modifie l'offset qui permet de tomber */
+    @Override public void fall() { super.fall(); }
+
+    @Override public void worldLimit()
+    {
+        if (super.worldLimit(this.environment))
+            this.offset[0] = (-1) * this.offset[0];
     }
 
 
-    public Animation getAnimation() { return animation; }
+    @Override public Animation getAnimation() { return this.animation; }
 }
-
-
-
-

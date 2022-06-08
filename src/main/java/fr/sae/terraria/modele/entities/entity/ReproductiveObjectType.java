@@ -6,17 +6,23 @@ import java.util.List;
 
 
 /**
- * Permet de regrouper les entités qui peuvent se reproduire et d'implémenter cette fonctionnalité.
+ * <h1>Reproduction Object Type</h1>
+ * <h2>Interface utile à un objet qui hérite d'Entity</h2>
+ * <h3><u>Description:</u></h3>
+ * <p>Il permet de savoir si l'entité qui implementer cette interface est une entité qui peut se reproduire entre eux.</p>
  *
  * @see fr.sae.terraria.modele.entities.Rabbit
- * @see fr.sae.terraria.modele.blocks.TallGrass
+ * @see fr.sae.terraria.modele.entities.blocks.TallGrass
+ * @author CHRZASZCZ Naulan
  */
 public interface ReproductiveObjectType
 {
 
+
     /**
      * Reproduit les entités concernées.
      * @return Les enfants de l'entité
+     * @see fr.sae.terraria.modele.entities.blocks.TallGrass
      */
     List<Entity> reproduction(Environment environment);
 }

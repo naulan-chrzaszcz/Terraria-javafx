@@ -1,26 +1,34 @@
 package fr.sae.terraria.modele;
 
-import fr.sae.terraria.modele.blocks.TallGrass;
-import fr.sae.terraria.modele.blocks.Tree;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.Slime;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static fr.sae.terraria.modele.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
-import static fr.sae.terraria.modele.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
-import static fr.sae.terraria.modele.blocks.Tree.TREE_SPAWN_RATE;
-import static fr.sae.terraria.modele.blocks.Tree.WHEN_SPAWN_A_TREE;
 import static fr.sae.terraria.modele.entities.Rabbit.RABBIT_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.Rabbit.WHEN_SPAWN_A_RABBIT;
+import static fr.sae.terraria.modele.entities.Slime.SLIME_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.Slime.WHEN_SPAWN_A_SLIME;
+import static fr.sae.terraria.modele.entities.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
+import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
+import static fr.sae.terraria.modele.entities.blocks.Tree.WHEN_SPAWN_A_TREE;
 
 
 public class GenerateEntity
 {
+    public static final int MAX_SPAWN_RABBIT = 100;
+    public static final int MAX_SPAWN_SLIME = 100;
     private static final Random random = new Random();
 
+
+    public GenerateEntity() { super(); }
 
     /**
      * Génère une entité selon de quand il spawn et du pourcent de change qu'il spawn réellement.
@@ -29,7 +37,7 @@ public class GenerateEntity
      * @param whenSpawn Le nombre qui determine quand il doit spawn sur la carte
      * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit qu'on souhaite le placer
      */
-    private static void generateAnEntity(Environment environment, Entity e, int whenSpawn, double spawnRate)
+    private static void generateAnEntity(Environment environment, SpawnableObjectType e, int whenSpawn, double spawnRate)
     {
         List<Entity> entities = environment.getEntities();
         TileMaps maps = environment.getTileMaps();
@@ -52,18 +60,12 @@ public class GenerateEntity
                         // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
                         if (maps.getTile(targetFloor, y - 1) == TileMaps.SKY) {
                             for (Entity entity : entities)
-                                if (entity instanceof Tree && xEntity == entity.getX() && yEntity == entity.getY())
-                                    // Un arbre est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                // Une entité est déjà present ? Il ne le génère pas et arrête complétement la fonction
+                                if (xEntity == entity.getX() && yEntity == entity.getY())
                                     return;
-                            e.setX(xEntity);
-                            e.setY(yEntity);
-                            e.getGravity().setXInit(xEntity);
-                            e.getGravity().setYInit(yEntity);
-                            e.setRect(widthTile, heightTile);
-                            // Une fois une position trouvée, on l'ajoute en tant qu'entité pour qu'il puisse ensuite l'affiché
-                            entities.add(0, e);
+                            e.spawn(xEntity, yEntity);
                         }
-                        // Une fois l'arbre généré, il arrête complétement toute la fonction
+                        // Une fois l'entité générée, il arrête complétement toute la fonction
                         return;
                     }
                     // Sinon on retourne vers la premiere boucle 'for'
@@ -85,9 +87,21 @@ public class GenerateEntity
     }
 
     /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
-    public static void tree(Environment environment) { generateAnEntity(environment, new Tree(), WHEN_SPAWN_A_TREE, TREE_SPAWN_RATE); }
+    public static void tree(Environment environment) { generateAnEntity(environment, new Tree(environment), WHEN_SPAWN_A_TREE, TREE_SPAWN_RATE); }
     /** À un certain moment, grace au tick, il va générer des hautes herbes sur un sol */
-    public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
-    /** À un certain moment, grace au tick, il va générer des lapins sur un sol */
-    public static void rabbit(Environment environment) { generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE); }
+    public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(environment), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
+
+    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol */
+    public static void rabbit(Environment environment)
+    {
+        if (environment.getRabbits().size() < MAX_SPAWN_RABBIT)
+            generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
+    }
+
+    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol  */
+    public static void slime(Environment environment)
+    {
+        if (environment.getSlimes().size() < MAX_SPAWN_SLIME)
+            generateAnEntity(environment, new Slime(environment), WHEN_SPAWN_A_SLIME, SLIME_SPAWN_RATE);
+    }
 }

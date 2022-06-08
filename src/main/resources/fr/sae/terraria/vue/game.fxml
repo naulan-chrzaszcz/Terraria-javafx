@@ -11,31 +11,34 @@
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/11"
             xmlns:fx="http://javafx.com/fxml/1">
-   <stylesheets>
-      <URL value="@./game.css" />
-   </stylesheets>
+    <stylesheets>
+        <URL value="@./game.css" />
+    </stylesheets>
 
 
-   <top>
-      <HBox id="textArea"
-            fx:id="title"
-            prefHeight="25.0" prefWidth="1280"
-            BorderPane.alignment="CENTER">
-         <children>
+    <top>
+        <HBox id="textArea"
+              fx:id="title"
+              prefHeight="25.0" prefWidth="1280"
+              BorderPane.alignment="CENTER">
             <Text id="text"
-                  text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago" />
-         </children>
-      </HBox>
-   </top>
+                  text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago"/>
+        </HBox>
+    </top>
 
-   <center>
-      <StackPane prefWidth="1280"
-                 BorderPane.alignment="CENTER">
-         <children>
-            <Pane id="sky"
-                  fx:id="displayTiledMap" />
+    <center>
+        <StackPane prefWidth="1280" id="sky"
+                   BorderPane.alignment="CENTER">
+            <StackPane fx:id="paneHadCamera"
+                       prefWidth="1280">
+                <Pane
+                      fx:id="displayTiledMap"/>
+                <Pane fx:id="displayHostileBeings"/>
+                <Pane id="filter"
+                      fx:id="filter"/>
+                <Pane fx:id="displayCursorMouse"/>
+            </StackPane>
             <Pane fx:id="displayHUD"/>
-         </children>
-      </StackPane>
-   </center>
+        </StackPane>
+    </center>
 </BorderPane>
