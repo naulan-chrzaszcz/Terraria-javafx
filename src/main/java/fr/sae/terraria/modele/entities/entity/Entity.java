@@ -90,7 +90,7 @@ public abstract class Entity
     public abstract void updates();
 
     /**
-     * Permet de detectés les collisions sur la carte et de son environment.
+     * Permet de detecter les collisions sur la carte et de son environment.
      *
      * @param environment Permet de savoir les tailles des tiles et d'avoir la matrixe de données de la carte.
      * @return Il vas retourner une HashMap qui ne contiendra pas de clé ou 4 clés maximum
@@ -197,7 +197,7 @@ public abstract class Entity
         double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) ;
 
         boolean exceedsScreenOnLeft = offset[0] == Entity.IS_MOVING_LEFT && getX() < 0;
-        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX() > (widthMap - getRect().getWidth());
+        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX()+CollideObjectType.COLLISION_TOLERANCE+velocity + getRect().getWidth() + 3 >= widthMap;
         return (exceedsScreenOnLeft || exceedsScreenOnRight);
     }
 
