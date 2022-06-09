@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Player extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
+public class Player extends EntityMovable implements CollideObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
 
@@ -25,17 +25,13 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
 
     private final ObjectProperty objectWasPickup;
 
-
-    private final Environment environment;
-
     private final Inventory inventory;
     private Stack stackSelected;
 
 
     public Player(final Environment environment)
     {
-        super();
-        this.environment = environment;
+        super(0, 0, environment);
         this.inventory = new Inventory(this);
 
         this.animation = new Animation();
@@ -98,12 +94,7 @@ public class Player extends Entity implements CollideObjectType, MovableObjectTy
         this.getGravity().setYInit(y);
     }
 
-    @Override public void moveRight() { super.moveRight(); }
-    @Override public void moveLeft() { super.moveLeft(); }
-    @Override public void jump() { super.jump(); }
-    @Override public void fall() { super.fall(); }
-
-    @Override public void worldLimit()
+    public void worldLimit()
     {
         if (super.worldLimit(this.environment))
             this.offset[0] = Entity.IDLE;

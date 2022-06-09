@@ -7,18 +7,15 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Slime extends Entity implements CollideObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
+public class Slime extends EntityMovable implements CollideObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_SLIME = 2_500;
     public static final double SLIME_SPAWN_RATE = .2;
 
-    private final Environment environment;
-
 
     public Slime(Environment environment, int x, int y)
     {
-        super(x, y);
-        this.environment = environment;
+        super(x, y, environment);
         this.velocity = 2;
 
         this.setPv(3);
@@ -41,7 +38,7 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
 
         this.offset[0] = Entity.IDLE;
         if (this.offset[1] == Entity.IS_JUMPING) {
-            if (environment.getPlayer().getX() > this.x.getValue())
+            if (this.environment.getPlayer().getX() > this.x.getValue())
                 this.offset[0] = Entity.IS_MOVING_RIGHT;
             else if (environment.getPlayer().getX() < this.x.getValue())
                 this.offset[0] = Entity.IS_MOVING_LEFT;
@@ -95,5 +92,5 @@ public class Slime extends Entity implements CollideObjectType, MovableObjectTyp
 
     @Override public void fall() { super.fall(); }
 
-    @Override public void worldLimit() { super.worldLimit(this.environment); }
+    public void worldLimit() { super.worldLimit(this.environment); }
 }

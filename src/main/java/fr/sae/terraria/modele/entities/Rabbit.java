@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
+public class Rabbit extends EntityMovable implements CollideObjectType, ReproductiveObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_RABBIT = 2_500;
     public static final double RABBIT_SPAWN_RATE = .2;
@@ -27,7 +27,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
     public Rabbit(final Environment environment, int x, int y)
     {
-        super(x, y);
+        super(x, y, environment);
         this.environment = environment;
 
         this.setPv(3);
@@ -138,7 +138,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     /** Modifie l'offset qui permet de tomber */
     @Override public void fall() { super.fall(); }
 
-    @Override public void worldLimit()
+    public void worldLimit()
     {
         if (super.worldLimit(this.environment))
             this.offset[0] = (-1) * this.offset[0];
