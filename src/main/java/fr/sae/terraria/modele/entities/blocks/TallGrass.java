@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TallGrass extends Block implements ReproductiveObjectType, SpawnableObjectType
 {
-    public static final int WHEN_SPAWN_A_TALL_GRASS = 50;
+    public static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
     public static final double TALL_GRASS_SPAWN_RATE = .8;
     public static final double REPRODUCTION_RATE = 500;
     public static final double GROWTH_SPEED = .5;
@@ -45,18 +45,21 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 
-    /** Joue un son et donne au joueur entre 1 et 3 de fibre */
+    /**
+     * Joue un son et donne au joueur entre 1 et 3 de fibre avec un pourcentage de chance d'avoir un easter egg
+     */
     @Override public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
 
         for (int loot = (int) (Math.random()*3)+1; loot < LOOTS_FIBRE_MAX; loot++)
             this.environment.getPlayer().pickup(new Fiber());
-        this.environment.getEntities().remove(this);
 
-        if (Math.random() < 0.5){
-            this.environment.getPlayer().pickup(new Vodka());
-        }
+        boolean mustDropVodka = Math.random() < Vodka.DROP_RATE;
+        if (mustDropVodka)
+            this.environment.getPlayer().pickup(new Vodka(environment));
+
+        this.environment.getEntities().remove(this);
     }
 
     /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */
