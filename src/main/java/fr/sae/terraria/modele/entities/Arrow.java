@@ -8,13 +8,11 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 
 public class Arrow extends EntityMovable implements StowableObjectType, CollideObjectType
 {
-    private final Environment environment;
 
 
     public Arrow(final Environment environment, int x, int y, int velocity)
     {
         super(x, y, environment);
-        this.environment = environment;
 
         this.velocity = velocity;
     }

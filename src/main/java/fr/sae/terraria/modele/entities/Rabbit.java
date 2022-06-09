@@ -21,14 +21,12 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
-    private final Environment environment;
     private final Animation animation;
 
 
     public Rabbit(final Environment environment, int x, int y)
     {
         super(x, y, environment);
-        this.environment = environment;
 
         this.setPv(3);
         this.animation = new Animation();
