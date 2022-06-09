@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
 import fr.sae.terraria.modele.entities.items.Fiber;
+import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -15,10 +16,10 @@ import java.util.List;
 
 public class TallGrass extends Block implements ReproductiveObjectType, SpawnableObjectType
 {
-    public static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
-    public static final double TALL_GRASS_SPAWN_RATE = .3;
+    public static final int WHEN_SPAWN_A_TALL_GRASS = 50;
+    public static final double TALL_GRASS_SPAWN_RATE = .8;
     public static final double REPRODUCTION_RATE = 500;
-    public static final double GROWTH_SPEED = .0005;
+    public static final double GROWTH_SPEED = .5;
     public static final int GROWTH_TALL_GRASS_STEP = 6;
     public static final int LOOTS_FIBRE_MAX = 3;
 
@@ -52,6 +53,10 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
         for (int loot = (int) (Math.random()*3)+1; loot < LOOTS_FIBRE_MAX; loot++)
             this.environment.getPlayer().pickup(new Fiber());
         this.environment.getEntities().remove(this);
+
+        if (Math.random() < 0.5){
+            this.environment.getPlayer().pickup(new Vodka());
+        }
     }
 
     /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */

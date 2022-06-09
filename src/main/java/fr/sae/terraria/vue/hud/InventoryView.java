@@ -134,6 +134,8 @@ public class InventoryView
                         view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
                         view.setImage(null);    // TODO
+                    else if (item instanceof Vodka)
+                        view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
 
                     // Actualise le nombre d'item à l'écran
                     this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
