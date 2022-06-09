@@ -25,8 +25,7 @@ public class LightView {
     private static int widthMap;
     private static int tileSize;
 
-    private final SimpleDoubleProperty opacityNightAir;
-    private final SimpleDoubleProperty opacityNightFade;
+
     private final Environment environment;
     private final TileMaps tileMaps;
     private final Circle torchLight;
@@ -47,15 +46,12 @@ public class LightView {
         widthMap = (int) (env.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
         delimitationDirtStone = fullStoneArea();
 
-        this.opacityNightAir = new SimpleDoubleProperty(.0);
-        this.opacityNightFade = new SimpleDoubleProperty(.8143);
 
         this.torchLight = new Circle(this.tileSize*CIRCLE_RAY);
 
         this.resetShapes();
         this.addEffects();
 
-        this.clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity()));
 
         this.filterPane.getChildren().addAll(this.actualTunnel, this.actualFade, this.actualAir);
         this.initTochListener(env.getTorches());
@@ -96,14 +92,6 @@ public class LightView {
             }});
     }
 
-    private void updateOpacity()
-    {
-        if (this.clock.getMinutes() > Clock.MINUTES_IN_A_DAY/2)
-            this.opacityNightAir.set(((this.clock.getMinutes()*(2. /* Compensation temps */))/Clock.MINUTES_IN_A_DAY) - (1.1 /* Décallage */));
-        else this.opacityNightAir.set(((Clock.MINUTES_IN_A_DAY - (this.clock.getMinutes()*(4. /* Compensation temps */)))/Clock.MINUTES_IN_A_DAY) - (.1 /* Décallage */));
-    }
-
-
     private int fullStoneArea()
     {
         int line = 0;
@@ -143,9 +131,7 @@ public class LightView {
         this.actualAir.setFill(NIGHT_COLOR);
         this.actualTunnel.setFill(NIGHT_COLOR);
 
-        this.actualTunnel.opacityProperty().bind(this.opacityNightFade);
-        this.actualFade.opacityProperty().bind(this.opacityNightFade);
-        this.actualAir.opacityProperty().bind(this.opacityNightAir);
+        this.actualAir.opacityProperty().bind(this.clock.opacityNightFilterProperty());
     }
 
     private void addTochLights()
