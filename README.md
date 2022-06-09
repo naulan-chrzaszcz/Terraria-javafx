@@ -14,7 +14,7 @@ IUT de Montreuil Paris8 | BUT Informatique en 1er année.
 [Les sprints](https://github.com/NaulaN/SAE-Terraria-Like/releases)
 - [X] [Sprint n°1](https://github.com/NaulaN/SAE-Terraria-Like/pull/2)
 - [X] [Sprint n°2](https://github.com/NaulaN/SAE-Terraria-Like/pull/8)
-- [ ] [Sprint n°3](https://github.com/NaulaN/SAE-Terraria-Like/pull/14)
+- [X] [Sprint n°3](https://github.com/NaulaN/SAE-Terraria-Like/pull/14)
 - [ ] Sprint n°4
 
 ### Qu'est-ce que c'est ce projet ?
