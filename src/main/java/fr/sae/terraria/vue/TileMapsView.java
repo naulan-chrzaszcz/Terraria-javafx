@@ -20,6 +20,8 @@ import java.util.Objects;
 
 public class TileMapsView
 {
+    private final List<ImageView> rabbitsView = new ArrayList<>();
+
     private final Image torchImg;
     private final Image floorTopImg;
     private final Image floorLeftImg;
@@ -29,6 +31,7 @@ public class TileMapsView
     private final Image dirtImg;
     private final Image tallGrassImg;
 
+    private final Pane displayHostileBeings;
     private final Pane display;
 
     private final Environment environment;
@@ -51,6 +54,7 @@ public class TileMapsView
         super();
         this.environment = environment;
         this.display = displayTileMap;
+        this.displayHostileBeings = displayHostileBeings;
 
         this.tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorHeight);
         this.tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicatorWidth);
@@ -72,10 +76,6 @@ public class TileMapsView
                         this.createTree((Tree) c.getList().get(0));
                     if (c.getList().get(0) instanceof TallGrass)
                         this.createTallGrass((TallGrass) c.getList().get(0));
-                    if (c.getList().get(0) instanceof Rabbit) {
-                        RabbitView rabbitView = new RabbitView((Rabbit) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-                        rabbitView.displayRabbit(displayHostileBeings);
-                    }
                     if (c.getList().get(0) instanceof Slime) {
                         SlimeView slimeView = new SlimeView((Slime) c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
                         slimeView.displaySlime(displayHostileBeings);
@@ -107,6 +107,19 @@ public class TileMapsView
                         }
                         i++;
                     } while (i < display.getChildren().size() && Objects.isNull(nodeAtDelete));
+                }
+            }
+        });
+
+        this.environment.getRabbits().addListener((ListChangeListener<? super Rabbit>) c -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    RabbitView rabbitView = new RabbitView(c.getList().get(0), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+                    rabbitView.displayRabbit(this.displayHostileBeings);
+                    this.rabbitsView.add(rabbitView.getRabbitImgView());
+                } else if (c.wasRemoved()) {
+                    this.displayHostileBeings.getChildren().remove(this.rabbitsView.get(c.getTo()));
+                    this.rabbitsView.remove(c.getTo());
                 }
             }
         });

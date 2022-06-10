@@ -124,7 +124,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
         this.getGravity().setYInit(y);
         this.setRect(environment.widthTile, environment.heightTile);
         this.environment.getEntities().add(0, this);
-        this.environment.getRabbits().add(0, this);
+        this.environment.getRabbits().add(this);
     }
 
     /** Modifie l'offset qui permet de le déplacer vers la droite */

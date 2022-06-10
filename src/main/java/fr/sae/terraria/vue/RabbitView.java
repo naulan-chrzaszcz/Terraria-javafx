@@ -61,4 +61,7 @@ public class RabbitView
         this.setAnimation();
         display.getChildren().add(this.rabbitImgView);
     }
+
+
+    public ImageView getRabbitImgView() { return this.rabbitImgView; }
 }
