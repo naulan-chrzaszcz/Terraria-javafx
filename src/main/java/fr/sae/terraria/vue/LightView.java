@@ -4,7 +4,6 @@ import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.blocks.Torch;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
@@ -54,10 +53,10 @@ public class LightView {
 
 
         this.filterPane.getChildren().addAll(this.actualTunnel, this.actualFade, this.actualAir);
-        this.initTochListener(env.getTorches());
+        this.initTorchListener(env.getTorches());
     }
 
-    private void initTochListener(ObservableList<Torch> torches) {
+    private void initTorchListener(ObservableList<Torch> torches) {
         torches.addListener((ListChangeListener<? super Torch>) c -> {
             while(c.next()){
                 this.filterPane.getChildren().clear();

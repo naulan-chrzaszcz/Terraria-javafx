@@ -29,5 +29,6 @@ public class Vodka extends Item implements EatableObjectType
         Player player = environment.getPlayer();
         Inventory inventory = player.getInventory();
         inventory.get().get(inventory.getPosCursor()).remove();
+        player.drunkProperty().set(true);
     }
 }

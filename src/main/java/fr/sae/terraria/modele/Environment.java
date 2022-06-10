@@ -8,6 +8,7 @@ import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import javafx.animation.Animation;
@@ -119,7 +120,9 @@ public class Environment
                 this.player.pickup(meat);
 
                 this.player.pickup(new Pickaxe());
+                this.player.pickup(new Vodka(this));
                 caught[0] = true;
+
             }
 
             // Ajoute les entités ReproductiveObjectType

@@ -5,7 +5,9 @@ import fr.sae.terraria.modele.entities.entity.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -19,6 +21,7 @@ import java.util.Objects;
 public class Player extends EntityMovable implements CollideObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
+    public static final int DRUNK_EFFECT_TIME = 600;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;
@@ -27,11 +30,13 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     private final Inventory inventory;
     private Stack stackSelected;
+    private SimpleBooleanProperty drunk;
 
 
     public Player(final Environment environment)
     {
         super(0, 0, environment);
+        drunk = new SimpleBooleanProperty(false);
         this.inventory = new Inventory(this);
 
         this.animation = new Animation();
@@ -125,6 +130,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
     public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
-
+    public boolean isDrunk() {return drunk.get();}
+    public SimpleBooleanProperty drunkProperty() {return drunk;}
     public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
 }
