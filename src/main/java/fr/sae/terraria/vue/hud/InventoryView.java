@@ -142,8 +142,8 @@ public class InventoryView
                     stack.nbItemsProperty().addListener((obs, oldV, newV) -> this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue())));
 
                     if (!Objects.isNull(view.getImage())) {
-                        view.setX(this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth));
-                        view.setY(this.inventoryBarImgView.getY());
+                        view.setX((this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth)) + ((boxeInventoryWidth/2) - (itemInventoryWidth/2)));
+                        view.setY(this.inventoryBarImgView.getY() + ((boxeInventoryWidth/2) - (itemInventoryHeight/2)));
 
                         this.itemsView.add(view);
                         this.display.getChildren().add(view);
