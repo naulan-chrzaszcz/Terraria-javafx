@@ -131,8 +131,8 @@ public class GameController implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
-            if (this.player.getStackSelected() instanceof EatableObjectType) {
-                ((EatableObjectType) this.player.getStackSelected()).eat();
+            if (this.player.getStackSelected().getItem() instanceof EatableObjectType) {
+                ((EatableObjectType) this.player.getStackSelected().getItem()).eat();
             } else if (isOneBlockDistance) {
                 if (click.getButton().equals(MouseButton.PRIMARY))
                     this.breakBlock(rectangle);

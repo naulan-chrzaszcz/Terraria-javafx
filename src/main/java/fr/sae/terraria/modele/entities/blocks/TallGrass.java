@@ -45,9 +45,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
     }
 
-    /**
-     * Joue un son et donne au joueur entre 1 et 3 de fibre avec un pourcentage de chance d'avoir un easter egg
-     */
+    /** Joue un son et donne au joueur entre 1 et 3 de fibre */
     @Override public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
@@ -60,6 +58,10 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             this.environment.getPlayer().pickup(new Vodka(environment));
 
         this.environment.getEntities().remove(this);
+
+        if (Math.random() < 0.5){
+            this.environment.getPlayer().pickup(new Vodka(environment));
+        }
     }
 
     /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */

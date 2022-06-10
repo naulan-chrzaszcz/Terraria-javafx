@@ -39,6 +39,7 @@ public class ItemSelectedView
     private final Image woodItemImg;
     private final Image torchItemImg;
     private final Image pickaxeItemImg;
+    private final Image vodkaItemImg;
 
     private final Pane display;
 
@@ -53,6 +54,7 @@ public class ItemSelectedView
         int heightItem = heightTile/2;
 
         this.itemSelectedImgView = new ImageView();
+        this.vodkaItemImg = View.loadAnImage("loots/vodka.png",widthItem,heightItem);
         this.dirtItemImg = View.loadAnImage("tiles/floor-top.png", widthItem, heightItem);
         this.stoneItemImg = View.loadAnImage("tiles/rock-fill.png", widthItem, heightItem);
         this.torchItemImg = View.loadAnImage("tiles/torch.png", widthItem, heightItem);
@@ -94,6 +96,8 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.ironItemImg);
                 else if (item instanceof Meat)
                     this.itemSelectedImgView.setImage(this.meatItemImg);
+                else if (item instanceof Vodka)
+                    this.itemSelectedImgView.setImage(this.vodkaItemImg);
                 else if (item instanceof Pierre)
                     this.itemSelectedImgView.setImage(this.pierreItemImg);
                 else if (item instanceof Silex)
