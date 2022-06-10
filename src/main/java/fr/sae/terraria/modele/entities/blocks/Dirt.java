@@ -20,6 +20,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
 
     private final double xOrigin;
     private final double yOrigin;
+    private int typeOfFloor;
 
 
     public Dirt(Environment environment, int x, int y)
@@ -49,6 +50,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
             int xIndexTile = (int) (getX()/environment.widthTile);
             this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
+            this.environment.getBlocks().remove(this);
         }
         this.setPv(this.getPv() - 1);
     }
@@ -58,7 +60,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
         Environment.playSound("sound/axchop.wav", false);
         int widthTile = this.environment.widthTile;
         int heightTile = this.environment.heightTile;
-        
+
         Entity entity = new Dirt(this.environment, x*widthTile, y*heightTile);
         entity.setRect(widthTile, heightTile);
 
@@ -68,6 +70,12 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
             inventory.get().get(inventory.getPosCursor()).remove();
 
         this.environment.getTileMaps().setTile(TileMaps.DIRT, y, x);
-        this.environment.getEntities().add(0, entity);
+        this.environment.getEntities().add(entity);
+        this.environment.getBlocks().add((Dirt) entity);
     }
+
+
+    public int getTypeOfFloor() { return this.typeOfFloor; }
+
+    public void setTypeOfFloor(int type) { this.typeOfFloor = type; }
 }

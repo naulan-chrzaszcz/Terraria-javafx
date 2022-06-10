@@ -80,8 +80,8 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
         this.getGravity().setXInit(x);
         this.getGravity().setYInit(y);
         this.setRect(environment.widthTile, environment.heightTile);
-        this.environment.getEntities().add(0, this);
-        this.environment.getSlimes().add(0, this);
+        this.environment.getEntities().add(this);
+        this.environment.getSlimes().add(this);
     }
 
     @Override public void moveRight() { super.moveRight(); }

@@ -44,4 +44,7 @@ public class SlimeView
         this.setAnimation();
         display.getChildren().add(this.slimeImgView);
     }
+
+
+    public ImageView getSlimeImgView() { return this.slimeImgView; }
 }

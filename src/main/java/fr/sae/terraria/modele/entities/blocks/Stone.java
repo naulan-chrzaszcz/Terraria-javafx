@@ -54,14 +54,17 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
             int xIndexTile = (int) (getX()/this.environment.widthTile);
             this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
+            this.environment.getBlocks().remove(this);
         }
 
         // S'il utilise le bon outil, il commencera à casser le bloc sinon use l'outil sans casser le bloc.
         Stack stack = player.getStackSelected();
-        if (stack.getItem() instanceof Pickaxe)
-            this.setPv(this.getPv() - 1);
-        if (stack.getItem() instanceof Tool)
-            ((Tool) stack.getItem()).use();
+        if (!Objects.isNull(stack.getItem())) {
+            if (stack.getItem() instanceof Pickaxe)
+                this.setPv(this.getPv() - 1);
+            if (stack.getItem() instanceof Tool)
+                ((Tool) stack.getItem()).use();
+        }
     }
 
     @Override public void place(int x, int y)
@@ -79,6 +82,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
             inventory.get().get(inventory.getPosCursor()).remove();
 
         this.environment.getTileMaps().setTile(TileMaps.STONE, y, x);
-        this.environment.getEntities().add(0, entity);
+        this.environment.getEntities().add(entity);
+        this.environment.getBlocks().add((Block) entity);
     }
 }

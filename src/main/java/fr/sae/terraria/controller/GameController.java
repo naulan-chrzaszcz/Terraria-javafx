@@ -150,7 +150,6 @@ public class GameController implements Initializable
                 ((BreakableObjectType) entity).breaks();
             if (entity instanceof CollapsibleObjectType)    // TODO TEMP, à déplacer
                 ((CollapsibleObjectType) entity).hit();
-
             // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
             break;
         }

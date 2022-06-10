@@ -18,8 +18,8 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
 {
     public static final int WHEN_SPAWN_A_TALL_GRASS = 2_500;
     public static final double TALL_GRASS_SPAWN_RATE = .8;
-    public static final double REPRODUCTION_RATE = 500;
-    public static final double GROWTH_SPEED = .5;
+    public static final double REPRODUCTION_RATE = 1_250;
+    public static final double GROWTH_SPEED = .01;
     public static final int GROWTH_TALL_GRASS_STEP = 6;
     public static final int LOOTS_FIBRE_MAX = 3;
 
@@ -41,8 +41,8 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
     @Override public void updates()
     {
         // L'animation de pousse
-        if (tallGrassGrowth.get() < GROWTH_TALL_GRASS_STEP)
-            tallGrassGrowth.set(tallGrassGrowth.get() + GROWTH_SPEED);
+        if (((int) (tallGrassGrowth.get())) < TallGrass.GROWTH_TALL_GRASS_STEP)
+            tallGrassGrowth.set(tallGrassGrowth.get() + TallGrass.GROWTH_SPEED);
     }
 
     /**
@@ -60,6 +60,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             this.environment.getPlayer().pickup(new Vodka(environment));
 
         this.environment.getEntities().remove(this);
+        this.environment.getBlocks().remove(this);
     }
 
     /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */
@@ -105,7 +106,9 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
                     int xTallGrassChildren = (int) ((left == 0) ? (getX() - widthTile) : (getX() + widthTile));
                     int yTallGrassChildren = (int) getY();
 
-                    children.add(new TallGrass(this.environment, xTallGrassChildren, yTallGrassChildren));
+                    TallGrass tallGrassChildren = new TallGrass(this.environment, xTallGrassChildren, yTallGrassChildren);
+                    tallGrassChildren.setRect(widthTile, heightTile);
+                    children.add(tallGrassChildren);
                 }
             }
         }
@@ -117,7 +120,10 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
     {
         this.setX(x);
         this.setY(y);
-        this.environment.getEntities().add(0, this);
+        this.setRect(this.environment.widthTile, this.environment.heightTile);
+
+        this.environment.getEntities().add(this);
+        this.environment.getBlocks().add(this);
     }
 
 

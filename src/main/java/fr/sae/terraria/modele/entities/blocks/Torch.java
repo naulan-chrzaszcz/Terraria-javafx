@@ -36,6 +36,7 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
 
         this.environment.getEntities().remove(this);
         this.environment.getTorches().remove(this);
+        this.environment.getBlocks().remove(this);
     }
 
     @Override public void place(int x, int y)
@@ -50,7 +51,8 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
         if (!Objects.isNull(player.getStackSelected()))
             inventory.get().get(inventory.getPosCursor()).remove();
 
-        environment.getEntities().add(0, entity);
+        environment.getEntities().add(entity);
         environment.getTorches().add(0, entity);
+        environment.getBlocks().add(entity);
     }
 }

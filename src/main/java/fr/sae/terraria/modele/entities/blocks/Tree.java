@@ -28,12 +28,14 @@ public class Tree extends Block implements SpawnableObjectType
         // Environment.playSound("sound/grassyStep.wav", false);
         this.environment.getPlayer().pickup(new Wood());
         this.environment.getEntities().remove(this);
+        this.environment.getTrees().remove(this);
     }
 
     @Override public void spawn(int x, int y)
     {
         this.setX(x);
         this.setY(y);
-        this.environment.getEntities().add(0, this);
+        this.environment.getEntities().add(this);
+        this.environment.getTrees().add(this);
     }
 }

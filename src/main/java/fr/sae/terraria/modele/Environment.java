@@ -3,7 +3,9 @@ package fr.sae.terraria.modele;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
@@ -29,7 +31,9 @@ import java.util.Objects;
 
 public class Environment
 {
-    // Permet d'update toutes les entités en une seule boucle.
+    private final ObservableList<Tree> trees;
+    private final ObservableList<Block> blocks;
+    // Permet update toutes les entités en une seule boucle.
     private final ObservableList<Entity> entities;
     // Range des entities en plus pour permettre facilement de savoir combien son t-il sur la carte pour limiter leur apparition
     private final ObservableList<Rabbit> rabbits;
@@ -71,6 +75,8 @@ public class Environment
         this.rabbits = FXCollections.observableArrayList();
         this.slimes = FXCollections.observableArrayList();
         this.torches = FXCollections.observableArrayList();
+        this.blocks = FXCollections.observableArrayList();
+        this.trees = FXCollections.observableArrayList();
 
         this.player = new Player(this);
         this.player.setVelocity(5);
@@ -123,8 +129,11 @@ public class Environment
             }
 
             // Ajoute les entités ReproductiveObjectType
-            for (Entity entity : entitiesAtAdded)
-                this.entities.add(0, entity);
+            for (Entity entity : entitiesAtAdded) {
+                this.entities.add(entity);
+                if (entity instanceof Block)
+                    this.blocks.add((Block) entity);
+            }
             entitiesAtAdded.clear();
 
             // Génère aléatoirement des entités
@@ -132,7 +141,7 @@ public class Environment
             boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
-                for (int i = 0; i < 3; i++) // Génère par jour, 3 arbres
+                for (int i = 0; i < 3; i++); // Génère par jour, 3 arbres
                     GenerateEntity.tree(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbit(this);
@@ -176,10 +185,12 @@ public class Environment
     }
 
 
+    public ObservableList<Block> getBlocks() { return this.blocks; }
+    public ObservableList<Tree> getTrees() { return this.trees; }
     public ObservableList<Entity> getEntities() { return this.entities; }
-    public ObservableList<Rabbit> getRabbits() { return rabbits; }
-    public ObservableList<Torch> getTorches() { return torches; }
-    public ObservableList<Slime> getSlimes() { return slimes; }
+    public ObservableList<Rabbit> getRabbits() { return this.rabbits; }
+    public ObservableList<Torch> getTorches() { return this.torches; }
+    public ObservableList<Slime> getSlimes() { return this.slimes; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
     public Clock getGameClock() { return this.clock; }
