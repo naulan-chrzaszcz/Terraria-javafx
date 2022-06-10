@@ -44,6 +44,7 @@ public class View
         playerView.displayPlayer(displayHostileBeings);
 
         LightView lightView = new LightView(environment.getGameClock(),filter,environment);
+        DrunkView drunkView = new DrunkView(environment,gameController.paneHadCamera);
 
         HUDView HUDView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         HUDView.display();
