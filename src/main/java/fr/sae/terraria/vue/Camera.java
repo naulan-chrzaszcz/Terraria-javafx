@@ -3,7 +3,6 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.binding.Bindings;
 import javafx.scene.layout.StackPane;
@@ -50,7 +49,7 @@ public class Camera
         player.getYProperty().addListener((obs, oldX, newX) -> {
             // Suit le joueur
             centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
-            if (player.offset[1] == Entity.IS_JUMPING) {
+            if (player.isJumping()) {
                 gap[0] = player.getGravity().yInit - player.getY();
                 centerPlayerOnYIntoCamera[0] = player.getGravity().yInit - midHeightCamera;
                 if (player.getGravity().timer > player.getGravity().flightTime*2 /* Légère bidouille */)
@@ -58,7 +57,7 @@ public class Camera
             }
 
             // Décale "proprement" la caméra vers le haut
-            if (player.offset[1] == Entity.IDLE && gap[0] > 0) {
+            if (player.isIDLEonY() && gap[0] > 0) {
                 gap[0] /= 2;
                 centerPlayerOnYIntoCamera[0] = (player.getY() + gap[0]) - midHeightCamera;
             }

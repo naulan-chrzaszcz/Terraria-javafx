@@ -1,6 +1,5 @@
 package fr.sae.terraria.vue;
 
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -49,14 +48,14 @@ public class PlayerView
 
         player.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
             this.playerImgView.setViewport(new Rectangle2D(0, 0, widthPlayer, heightPlayer));
-            if (player.offset[0] == Entity.IDLE && player.offset[1] == Entity.IDLE)
+            if (this.player.isIDLEonX() && this.player.isIDLEonY())
                 this.playerImgView.setImage(this.playerIdleImg);
 
-            if (player.offset[0] == Entity.IS_MOVING_RIGHT || player.offset[0] == Entity.IS_MOVING_LEFT) {
+            if (this.player.isMoving()) {
                 Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * widthPlayer), 0, widthPlayer, heightPlayer);
 
                 this.playerImgView.setViewport(frameRect);
-                this.playerImgView.setImage((player.offset[0] == -1) ? playerMoveLeftImg : playerMoveRightImg);
+                this.playerImgView.setImage((this.player.isMovingLeft()) ? playerMoveLeftImg : playerMoveRightImg);
             }
         });
     }
@@ -65,6 +64,6 @@ public class PlayerView
     public void displayPlayer(final Pane display)
     {
         this.setAnimation();
-        display.getChildren().add(playerImgView);
+        display.getChildren().add(this.playerImgView);
     }
 }

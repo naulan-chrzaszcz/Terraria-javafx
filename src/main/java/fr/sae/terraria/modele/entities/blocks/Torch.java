@@ -17,7 +17,7 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
     private double yOrigin;
 
 
-    public Torch(Environment environment, int x, int y)
+    public Torch(final Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
@@ -25,6 +25,8 @@ public class Torch extends Block implements StowableObjectType, PlaceableObjectT
         this.xOrigin = x;
         this.yOrigin = y;
     }
+
+    public Torch(final Environment environment) { this(environment, 0, 0); }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
 

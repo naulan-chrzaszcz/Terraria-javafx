@@ -15,7 +15,7 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
     public Slime(Environment environment, int x, int y)
     {
-        super(x, y, environment);
+        super(environment, x, y);
         this.velocity = 2;
 
         this.setPv(3);
@@ -28,7 +28,7 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
     public Slime(Environment environment) { this(environment, 0, 0); }
 
     @Override public void updates() {
-        if (this.offset[1] == Entity.IDLE && !this.air) {
+        if (this.isIDLEonY() && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -36,12 +36,12 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
             this.gravity.timer = .0;
         }
 
-        this.offset[0] = Entity.IDLE;
-        if (this.offset[1] == Entity.IS_JUMPING) {
+        this.idleOnX();
+        if (this.isJumping()) {
             if (this.environment.getPlayer().getX() > this.x.getValue())
-                this.offset[0] = Entity.IS_MOVING_RIGHT;
+                this.moveRight();
             else if (environment.getPlayer().getX() < this.x.getValue())
-                this.offset[0] = Entity.IS_MOVING_LEFT;
+                this.moveLeft();
         }
 
         this.move();
@@ -58,14 +58,14 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
         if (!whereCollide.isEmpty())
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
-                this.offset[0] = Entity.IDLE;
+                this.idleOnX();
     }
 
     @Override public void move()
     {
         if (((int) (this.animation.getFrame()) == 3))
-            if (this.offset[1] != Entity.IS_FALLING) this.jump();
-        this.setX(this.getX() + (this.offset[0] * this.velocity));
+            if (this.isNotFalling()) this.jump();
+        this.setX(this.getX() + (this.getOffsetMoveX() * this.velocity));
     }
 
     @Override public void hit()
@@ -80,17 +80,10 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
         this.getGravity().setXInit(x);
         this.getGravity().setYInit(y);
         this.setRect(environment.widthTile, environment.heightTile);
+
         this.environment.getEntities().add(this);
         this.environment.getSlimes().add(this);
     }
-
-    @Override public void moveRight() { super.moveRight(); }
-
-    @Override public void moveLeft() { super.moveLeft(); }
-
-    @Override public void jump() { super.jump(); }
-
-    @Override public void fall() { super.fall(); }
 
     public void worldLimit() { super.worldLimit(this.environment); }
 }

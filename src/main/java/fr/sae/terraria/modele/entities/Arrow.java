@@ -12,7 +12,7 @@ public class Arrow extends EntityMovable implements StowableObjectType, CollideO
 
     public Arrow(final Environment environment, int x, int y, int velocity)
     {
-        super(x, y, environment);
+        super(environment, x, y);
 
         this.velocity = velocity;
     }

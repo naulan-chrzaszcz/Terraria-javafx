@@ -12,12 +12,13 @@ public abstract class EntityMovable extends Entity
     protected final Environment environment;
     protected final Gravity gravity;
 
+    public final int[] offset;
+
     protected double velocity;
     protected boolean air;
-    public int[] offset;
 
 
-    protected EntityMovable(int x, int y, final Environment environment)
+    protected EntityMovable(final Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
@@ -28,7 +29,7 @@ public abstract class EntityMovable extends Entity
         this.velocity = 1;
     }
 
-    protected EntityMovable(final Environment environment) { this(0, 0, environment); }
+    protected EntityMovable(final Environment environment) { this(environment, 0, 0); }
 
     @Override public abstract void updates();
     public abstract void move();
@@ -41,7 +42,7 @@ public abstract class EntityMovable extends Entity
      *         left, right, top, bottom sera les clés qui peuvent être present lors d'une detection de collision.
      *         Il permettra de faire des actions personnalisées les actions faites par l'entité suivant d'où il rentre en collision avec son environment.
      */
-    protected Map<String, Boolean> collide(final Environment environment)
+    public Map<String, Boolean> collide(final Environment environment)
     {
         int widthTile = environment.widthTile; int heightTile = environment.heightTile;
         TileMaps tileMaps = environment.getTileMaps();
@@ -56,7 +57,7 @@ public abstract class EntityMovable extends Entity
             this.air = true;
 
         // Detection collision gauche droite
-        if (this.offset[0] != Entity.IDLE) {
+        if (this.isMoving()) {
             int yTop = (int) (getY()+CollideObjectType.COLLISION_TOLERANCE)/heightTile;
             int futurePositionXLeft = (int) ((getX()+CollideObjectType.COLLISION_TOLERANCE)+(velocity*offset[0]))/widthTile;
             int futurePositionXRight = (int) ((getX()+(-CollideObjectType.COLLISION_TOLERANCE)+(velocity*offset[0])) + (getRect().getWidth()))/widthTile;
@@ -72,17 +73,17 @@ public abstract class EntityMovable extends Entity
 
 
             // Tombe
-            if (this.offset[1] == Entity.IS_FALLING) {
+            if (this.isFalling()) {
                 this.gravity.degInit = 0;
                 double futurePositionY = gravity.formulaOfTrajectory() ;
                 boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY + this.rect.getHeight())/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE +this.rect.getHeight())/heightTile) != TileMaps.SKY;
                 if (isCollideBottom) {
                     this.gravity.setJumpPosInit(this);
                     this.gravity.timer = 0;
-                    this.offset[1] = Entity.IDLE;
+                    this.idleOnY();
                 } else setY(futurePositionY);
                 // Saute
-            } else if (this.offset[1] == Entity.IS_JUMPING) {
+            } else if (this.isJumping()) {
                 double futurePositionY = gravity.formulaOfTrajectory();
 
                 boolean isCollideTop = tileMaps.getTile(xLeft, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY + CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
@@ -102,7 +103,7 @@ public abstract class EntityMovable extends Entity
                     } else if (isCollideBottom) {
                         this.gravity.setJumpPosInit(this);
                         this.gravity.timer = 0;
-                        this.offset[1] = Entity.IDLE;
+                        this.idleOnY();
                         this.air = false;
                     } else this.setY(futurePositionY);
                 }
@@ -115,7 +116,7 @@ public abstract class EntityMovable extends Entity
 
             boolean isCollideBottom = tileMaps.getTile(xLeft, (int) (futurePositionY - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight, (int) (futurePositionY - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
             if (isCollideBottom) {
-                this.offset[1] = Entity.IDLE;
+                this.idleOnY();
                 this.air = false;
                 this.gravity.setJumpPosInit(this);
             } else setY(futurePositionY - this.rect.getHeight());
@@ -124,10 +125,23 @@ public abstract class EntityMovable extends Entity
         return whereCollide;
     }
 
-    protected void moveRight() { this.offset[0] = Entity.IS_MOVING_RIGHT; }
-    protected void moveLeft() { this.offset[0] = Entity.IS_MOVING_LEFT; }
-    protected void jump() { this.offset[1] = Entity.IS_JUMPING; }
-    protected void fall() { this.offset[1] = Entity.IS_FALLING; }
+    public void moveRight() { this.offset[0] = Entity.IS_MOVING_RIGHT; }
+    public void moveLeft() { this.offset[0] = Entity.IS_MOVING_LEFT; }
+    public void jump() { this.offset[1] = Entity.IS_JUMPING; }
+    public void fall() { this.offset[1] = Entity.IS_FALLING; }
+    public void idleOnX() { this.offset[0] = Entity.IDLE; }
+    public void idleOnY() { this.offset[1] = Entity.IDLE; }
+
+    public boolean isMovingRight() { return this.offset[0] == Entity.IS_MOVING_RIGHT; }
+    public boolean isMovingLeft() { return this.offset[0] == Entity.IS_MOVING_LEFT; }
+    public boolean isMoving() { return this.offset[0] != Entity.IDLE; }
+    public boolean isJumping() { return this.offset[1] == Entity.IS_JUMPING; }
+    public boolean isFalling() { return this.offset[1] == Entity.IS_FALLING; }
+    public boolean isNotFalling() { return this.offset[1] != Entity.IS_FALLING; }
+    /** Quand l'entité ne bouge plus sur l'axes des X */
+    public boolean isIDLEonX() { return this.offset[0] == Entity.IDLE; }
+    /** Quand l'entité ne bouge plus sur l'axes des Y */
+    public boolean isIDLEonY() { return this.offset[1] == Entity.IDLE; }
 
     /**
      * Lorsque le joueur sort de l'ecran et/ou de la carte, la fonction retourne une valeurs boolean qui sera manipulable sur les classes qui l'héritera.
@@ -135,18 +149,20 @@ public abstract class EntityMovable extends Entity
      *
      * @return false = ne sort pas | true = sort de l'écran soit vers la droite ou soit vers le bas
      */
-    protected boolean worldLimit(final Environment environment)
+    public boolean worldLimit(final Environment environment)
     {
         double widthMap = (environment.getTileMaps().getWidth()*environment.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE) ;
 
-        boolean exceedsScreenOnLeft = offset[0] == Entity.IS_MOVING_LEFT && getX() < 0;
-        boolean exceedsScreenOnRight = offset[0] == Entity.IS_MOVING_RIGHT && getX()+CollideObjectType.COLLISION_TOLERANCE+velocity + getRect().getWidth() + 3 >= widthMap;
+        boolean exceedsScreenOnLeft = this.isMovingLeft() && this.getX() < 0;
+        boolean exceedsScreenOnRight = this.isMovingRight() && this.getX()+CollideObjectType.COLLISION_TOLERANCE+this.velocity + this.getRect().getWidth() + 3 >= widthMap;
         return (exceedsScreenOnLeft || exceedsScreenOnRight);
     }
 
 
     public double getVelocity() { return this.velocity; }
     public Gravity getGravity() { return this.gravity; }
+    public int getOffsetMoveX() { return this.offset[0]; }
+    public int getOffsetMoveY() { return this.offset[1]; }
 
     public void setVelocity(double velocity) { this.velocity = velocity; }
 }

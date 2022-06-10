@@ -120,15 +120,12 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             // TODO TEST
             if (!caught[0]) {
-                Torch torch = new Torch(this, 0, 0);
-                this.player.pickup(torch);
-                Meat meat = new Meat(this);
-                this.player.pickup(meat);
-
+                this.player.pickup(new Torch(this));
+                this.player.pickup(new Meat(this));
                 this.player.pickup(new Pickaxe());
                 this.player.pickup(new Vodka(this));
-                caught[0] = true;
 
+                caught[0] = true;
             }
 
             // Ajoute les entités ReproductiveObjectType

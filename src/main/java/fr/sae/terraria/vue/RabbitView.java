@@ -2,7 +2,6 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -47,11 +46,11 @@ public class RabbitView
 
         this.rabbit.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
             this.rabbitImgView.setViewport(new Rectangle2D(0, 0, this.widthTile, this.heightTile));
-            if (this.rabbit.offset[0] == Entity.IS_MOVING_RIGHT || this.rabbit.offset[0] == Entity.IS_MOVING_LEFT) {
+            if (this.rabbit.isMoving()) {
                 Rectangle2D frameRect = new Rectangle2D((newFrame.intValue() * this.widthTile), 0, this.widthTile, this.heightTile);
 
                 this.rabbitImgView.setViewport(frameRect);
-                this.rabbitImgView.setImage((this.rabbit.offset[0] == -1) ? this.rabbitLeftImg : this.rabbitRightImg);
+                this.rabbitImgView.setImage((this.rabbit.isMovingLeft()) ? this.rabbitLeftImg : this.rabbitRightImg);
             }
         });
     }

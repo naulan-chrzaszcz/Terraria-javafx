@@ -26,7 +26,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
 
     public Rabbit(final Environment environment, int x, int y)
     {
-        super(x, y, environment);
+        super(environment, x, y);
 
         this.setPv(3);
         this.animation = new Animation();
@@ -39,7 +39,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
 
     @Override public void updates()
     {
-        if (this.offset[1] == Entity.IDLE && !this.air) {
+        if (this.isIDLEonY() && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -59,15 +59,15 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
 
     @Override public void move()
     {
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        this.setX(this.x.get() + this.getOffsetMoveX() * this.velocity);
 
-        if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
-            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
+        if (this.isIDLEonY() && this.isMoving()) {
+            int xProbablyVoid = (int) ((getX()+((this.isMovingLeft()) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
             int yProbablyVoid = (int) (getY() / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
             if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid + 2) == TileMaps.SKY) {
-                this.offset[0] = (-1) * this.offset[0];
+                this.offset[0] = (-1) * this.getOffsetMoveX();
             } else {
                 boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;
                 if (mustJump) {
@@ -97,7 +97,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
 
         if (!whereCollide.isEmpty()) {
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
-                this.offset[0] = (-1) * this.offset[0];
+                this.offset[0] = (-1) * this.getOffsetMoveX();
         }
     }
 
@@ -123,23 +123,15 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
         this.getGravity().setXInit(x);
         this.getGravity().setYInit(y);
         this.setRect(environment.widthTile, environment.heightTile);
+
         this.environment.getEntities().add(0, this);
         this.environment.getRabbits().add(this);
     }
 
-    /** Modifie l'offset qui permet de le déplacer vers la droite */
-    @Override public void moveRight() { super.moveRight(); }
-    /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    @Override public void moveLeft() { super.moveLeft(); }
-    /** Modifie l'offset qui permet de le faire sauter */
-    @Override public void jump() { super.jump(); }
-    /** Modifie l'offset qui permet de tomber */
-    @Override public void fall() { super.fall(); }
-
     public void worldLimit()
     {
         if (super.worldLimit(this.environment))
-            this.offset[0] = (-1) * this.offset[0];
+            this.offset[0] = (-1) * this.getOffsetMoveX();
     }
 
 
