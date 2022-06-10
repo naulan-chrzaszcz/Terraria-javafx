@@ -62,6 +62,8 @@ public class Stack
             return true;
         else if (object instanceof Axe && this.item instanceof Axe)
             return true;
+        else if (object instanceof Vodka && this.item instanceof Vodka)
+            return true;
         else if (object instanceof Bow && this.item instanceof Bow)
             return true;
         else if (object instanceof Pickaxe && this.item instanceof Pickaxe)

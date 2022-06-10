@@ -45,9 +45,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             tallGrassGrowth.set(tallGrassGrowth.get() + TallGrass.GROWTH_SPEED);
     }
 
-    /**
-     * Joue un son et donne au joueur entre 1 et 3 de fibre avec un pourcentage de chance d'avoir un easter egg
-     */
+    /** Joue un son et donne au joueur entre 1 et 3 de fibre */
     @Override public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);

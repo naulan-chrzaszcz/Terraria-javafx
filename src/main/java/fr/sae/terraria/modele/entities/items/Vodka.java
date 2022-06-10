@@ -2,6 +2,8 @@ package fr.sae.terraria.modele.entities.items;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.EatableObjectType;
+import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 
 
 /**
@@ -24,6 +26,8 @@ public class Vodka extends Item implements EatableObjectType
 
     @Override public void eat()
     {
-
+        Player player = environment.getPlayer();
+        Inventory inventory = player.getInventory();
+        inventory.get().get(inventory.getPosCursor()).remove();
     }
 }
