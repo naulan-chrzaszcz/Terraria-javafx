@@ -122,6 +122,7 @@ public class LightView {
 
         this.actualTunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
         this.actualFade.setLayoutY(this.actualTunnel.getLayoutY()-tileSize);
+
     }
 
     private void addEffects()
@@ -131,6 +132,8 @@ public class LightView {
         this.actualTunnel.setFill(NIGHT_COLOR);
 
         this.actualAir.opacityProperty().bind(this.clock.opacityNightFilterProperty());
+        this.actualFade.setOpacity(0.8);
+        this.actualTunnel.setOpacity(0.8);
     }
 
     private void addTochLights()

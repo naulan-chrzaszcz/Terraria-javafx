@@ -59,7 +59,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
 
         // S'il utilise le bon outil, il commencera à casser le bloc sinon use l'outil sans casser le bloc.
         Stack stack = player.getStackSelected();
-        if (!Objects.isNull(stack.getItem())) {
+        if (!Objects.isNull(stack)) {
             if (stack.getItem() instanceof Pickaxe)
                 this.setPv(this.getPv() - 1);
             if (stack.getItem() instanceof Tool)
