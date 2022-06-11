@@ -35,12 +35,12 @@ public abstract class EntityMovable extends Entity
     public abstract void move();
 
     /**
-     * Permet de detectés les collisions sur la carte et de son environment.
+     * Permet de detectéer les collisions avec son environnement.
      *
      * @param environment Permet de savoir les tailles des tiles et d'avoir la matrixe de données de la carte.
-     * @return Il vas retourner une HashMap qui ne contiendra pas de clé ou 4 clés maximum
-     *         left, right, top, bottom sera les clés qui peuvent être present lors d'une detection de collision.
-     *         Il permettra de faire des actions personnalisées les actions faites par l'entité suivant d'où il rentre en collision avec son environment.
+     * @return Elle va retourner une HashMap qui ne contiendra pas de clé ou 4 clés maximum
+     *         left, right, top, bottom seront les clés qui peuvent être presentes lors d'une detection de collision.
+     *         Elle permettra de faire des actions personnalisées selon l'endroit où l'entité rentre en collision.
      */
     public Map<String, Boolean> collide(final Environment environment)
     {
@@ -66,7 +66,7 @@ public abstract class EntityMovable extends Entity
             whereCollide.put("left", tileMaps.getTile(futurePositionXLeft, yTop) != TileMaps.SKY || tileMaps.getTile(futurePositionXLeft, yBottom) != TileMaps.SKY);
         }
 
-        // Detection collision en bas et en haut
+        // Detection collision bas et haut
         if (this.offset[1] != Entity.IDLE) {
             int xLeft = (int) (getX()+CollideObjectType.COLLISION_TOLERANCE)/widthTile;
             int xRight = (int) ((getX()+getRect().getWidth())-CollideObjectType.COLLISION_TOLERANCE)/widthTile;
@@ -93,7 +93,7 @@ public abstract class EntityMovable extends Entity
                         this.gravity.timer = 0;
                         this.gravity.setJumpPosInit(this);
                     } else this.setY(futurePositionY);
-                    // Quand le joueur decent
+                    // Quand le joueur descends
                 } else {
                     boolean isCollideBottom = tileMaps.getTile(xLeft, (int) ((futurePositionY + this.rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY || tileMaps.getTile(xRight,(int) ((futurePositionY + this.rect.getHeight()) - CollideObjectType.COLLISION_TOLERANCE)/heightTile) != TileMaps.SKY;
 
@@ -143,10 +143,10 @@ public abstract class EntityMovable extends Entity
     public boolean isIDLEonY() { return this.offset[1] == Entity.IDLE; }
 
     /**
-     * Lorsque le joueur sort de l'ecran et/ou de la carte, la fonction retourne une valeurs boolean qui sera manipulable sur les classes qui l'héritera.
-     * @param environment Permet d'avoir les informations naicessaire sur la carte et l'écran pour que l'entité ne sorte pas.
+     * Lorsque le joueur sort de l'ecran et/ou de la carte, la fonction retourne une valeur boolean qui sera manipulable sur les classes qui heriteront EntityMovable.
+     * @param environment Permet d'avoir les informations nécessaires sur la carte et l'écran pour que l'entité ne sorte pas.
      *
-     * @return false = ne sort pas | true = sort de l'écran soit vers la droite ou soit vers le bas
+     * @return false = ne sort pas | true = sort de l'écran soit vers la droite ou la gauche
      */
     public boolean worldLimit(final Environment environment)
     {

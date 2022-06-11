@@ -45,7 +45,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             tallGrassGrowth.set(tallGrassGrowth.get() + TallGrass.GROWTH_SPEED);
     }
 
-    /** Joue un son et donne au joueur entre 1 et 3 de fibre */
+    /** Joue un son et donne au joueur entre 1 et 3 fibres */
     @Override public void breaks()
     {
         Environment.playSound("sound/cut.wav", false);
@@ -61,7 +61,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
         this.environment.getBlocks().remove(this);
     }
 
-    /** Reproduit les hautes herbes à gauche et à droite de la haute herbe parente */
+    /** Reproduit des hautes herbes à gauche et à droite de celle parente */
     @Override public List<Entity> reproduction(Environment environment)
     {
         List<Entity> children = new ArrayList<>();
@@ -77,7 +77,7 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             int x = -1;
             int y = (int) (getY()/heightTile)+1;
 
-            // Check si personne à côté
+            // Check si aucune entité ne se trouve à coté
             int left = 0; int right = 0;
             for (Entity entity : entities) {
                 boolean haveAnEntityOnLeft = entity.getX() == (getX() - widthTile) && entity.getY() == getY();

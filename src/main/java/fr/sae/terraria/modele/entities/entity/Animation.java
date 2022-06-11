@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 /**
  * <h1>Animation</h1>
  * <h2><u>Description:</u></h2>
- * <p>Gére uniquement la valeurs du frame pour que la vue sachent sur quel frame doit afficher l'image.</p>
+ * <p>Gère uniquement la valeur du frame pour que la vue sache sur quel frame elle doit se placer</p>
  * @see PlayerView
  */
 public class Animation
@@ -42,6 +42,6 @@ public class Animation
     public double getFrame() { return this.frame.get(); }
     public DoubleProperty getFrameProperty() { return this.frame; }
 
-    /** Spécifie quand l'animation sur le Sprite Sheet doit s'arrêter */
+    /** Spécifie à quelle frame l'animation sur le Sprite Sheet doit s'arrêter */
     public void setEndFrame(int newEndFrame) { this.endFrame = newEndFrame; }
 }

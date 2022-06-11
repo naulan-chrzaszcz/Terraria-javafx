@@ -32,7 +32,7 @@ public abstract class Block extends Entity implements BreakableObjectType
             time[0]++;
         }));
         timeline.getKeyFrames().add(keyFrame);
-        // Faire revenir le bloc à sa position initiale lorsque l'animation est arrêté
+        // Faire revenir le bloc à sa position initiale lorsque l'animation est terminée
         timeline.statusProperty().addListener(c -> {
             block.setX(xOrigin);
             block.setY(yOrigin);

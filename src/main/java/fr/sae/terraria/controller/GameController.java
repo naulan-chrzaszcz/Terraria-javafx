@@ -109,7 +109,7 @@ public class GameController implements Initializable
             // La position correcte sur le Pane
             double mouseX = mouse.getSceneX()+((Rectangle) this.displayTiledMap.getParent().getClip()).getX();
             double mouseY = (mouse.getSceneY()-this.title.getPrefHeight())+((Rectangle) this.displayTiledMap.getParent().getClip()).getY();
-            // Le bloc où la souris à clicker
+            // Le bloc où la souris à clickée
             int xBlock = (int) (mouseX/tileWidth);
             int yBlock = (int) (mouseY/tileHeight);
             Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);

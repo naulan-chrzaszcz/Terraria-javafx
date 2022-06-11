@@ -45,7 +45,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
         this.breakAnimation(this.environment, this, this.xOrigin, this.yOrigin);
 
-        // Une fois le bloc détruit, il donne la pierre et le supprime de la TileMaps
+        // Une fois le bloc cassé, de la pierre est ramassée et le bloc se supprime du Pane
         Player player = this.environment.getPlayer();
         if (this.getPv() <= 0) {
             player.pickup(this);
@@ -57,7 +57,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
             this.environment.getBlocks().remove(this);
         }
 
-        // S'il utilise le bon outil, il commencera à casser le bloc sinon use l'outil sans casser le bloc.
+        // Peu importe l'outil qu'utilise le joueur, si c'est un outil, il perdra de la durabilité, mais le bloc ne peut que se casser avec une pioche
         Stack stack = player.getStackSelected();
         if (!Objects.isNull(stack)) {
             if (stack.getItem() instanceof Pickaxe)

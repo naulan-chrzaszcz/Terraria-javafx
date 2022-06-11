@@ -57,7 +57,7 @@ public abstract class Entity
 
     /**
      * Il permet à chaque passage de la boucle du jeu, de faire diverses fonctions liée à l'Entité.
-     *  Certaine fonction qui sera implementé grâce à des interfaces sera probablement obligatoirement mise dans cette fonction.
+     *  Certaine fonction qui seront implementés grâce à des interfaces seront obligatoirement mise dans cette fonction.
      */
     public abstract void updates();
 

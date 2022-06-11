@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class Terraria extends Application
 {
-    // Constants
+    // Constantes
     public static final String SRC_PATH = "src/main/resources/fr/sae/terraria/";
     public static final double TARGET_FPS = .017;
     public static final int DISPLAY_RENDERING_WIDTH = 465;
