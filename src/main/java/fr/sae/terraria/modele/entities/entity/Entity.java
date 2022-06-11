@@ -15,7 +15,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @see BreakableObjectType
  * @see CollapsibleObjectType
  * @see PlaceableObjectType
- * @see EatableObjectType
+ * @see ConsumableObjectType
  *
  *
  * @author CHRZASZCZ Naulan

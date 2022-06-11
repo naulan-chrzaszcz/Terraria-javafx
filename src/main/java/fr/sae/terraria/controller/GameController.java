@@ -3,7 +3,7 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.EatableObjectType;
+import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.vue.Camera;
@@ -117,8 +117,8 @@ public class GameController implements Initializable
             int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
 
             boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
-            if (this.player.getStackSelected() != null && this.player.getStackSelected().getItem() instanceof EatableObjectType ) {
-                ((EatableObjectType) this.player.getStackSelected().getItem()).eat();
+            if (this.player.getStackSelected() != null && this.player.getStackSelected().getItem() instanceof ConsumableObjectType) {
+                ((ConsumableObjectType) this.player.getStackSelected().getItem()).consumes();
             } else if (isOneBlockDistance) {
                 if (mouse.getButton().equals(MouseButton.PRIMARY))
                     this.player.interactWithBlock(rectangle);

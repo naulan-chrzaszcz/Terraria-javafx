@@ -130,7 +130,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
 
         if (haveAnItemOnHand && goodPlace) {
-            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected() instanceof EatableObjectType))
+            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected() instanceof ConsumableObjectType))
                 return;
 
             if (this.getStackSelected().getItem() instanceof PlaceableObjectType)
