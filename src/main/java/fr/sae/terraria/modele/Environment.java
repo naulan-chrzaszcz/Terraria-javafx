@@ -79,6 +79,7 @@ public class Environment
         this.blocks = FXCollections.observableArrayList();
         this.trees = FXCollections.observableArrayList();
 
+        // Fait apparaitre le joueur.
         this.player = new Player(this);
         this.player.setVelocity(5);
         this.player.setPv(4);
@@ -141,7 +142,7 @@ public class Environment
             boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
-                for (int i = 0; i < 3; i++); // Génère par jour, 3 arbres
+                for (int i = 0; i < 10; i++) // Génère par jour, 3 arbres
                     GenerateEntity.tree(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbit(this);

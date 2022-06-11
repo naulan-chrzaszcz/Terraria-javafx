@@ -21,6 +21,10 @@ import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.blocks.Tree.WHEN_SPAWN_A_TREE;
 
 
+/**
+ * <h1>Generate Entity</h1>
+ * <h2>Une classe qui permet de génère aléatoirement des entités</h2>
+ */
 public class GenerateEntity
 {
     public static final int MAX_SPAWN_RABBIT = 100;

@@ -5,6 +5,15 @@ import com.google.gson.stream.JsonReader;
 import java.io.FileReader;
 
 
+/**
+ * <h1>Tile maps</h1>
+ * <h2>Génère à l'écran la carte tuilé</h2>
+ * <h3><u>Description:</u></h3>
+ * <p>Cette classes permet à partir d'un fichier <code>.json</code> de chargé les données de la carte</p>
+ * <p>Il est conservé dans la variable <code>maps</code></p>
+ *
+ * @author CHRZASZCZ Naulan
+ */
 public class TileMaps
 {
     // Constantes
@@ -89,5 +98,12 @@ public class TileMaps
     public int getWidth() { return this.maps[0].length; }
     public int getTile(int x, int y) { return this.maps[y][x]; }
 
+    /**
+     * Remplace grâce aux coordonnées entrées, un tile par celui qui est mis dans l'argument
+     *
+     * @param tileIndex Le tile qui doit remplacer une autre.
+     * @param x la position horizontal de là où le tile doit être écrit
+     * @param y la position vertical de là où le tile doit être écrit
+     */
     public void setTile(int tileIndex, int y, int x) { this.maps[y][x] = tileIndex; }
 }
