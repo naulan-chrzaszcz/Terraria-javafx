@@ -30,8 +30,8 @@ public abstract class EntityView
         this.entity = entity;
 
         this.imgView = new ImageView();
-        this.imgView.translateXProperty().bind(entity.getXProperty());
-        this.imgView.translateYProperty().bind(entity.getYProperty());
+        this.imgView.translateXProperty().bind(entity.xProperty());
+        this.imgView.translateYProperty().bind(entity.yProperty());
     }
 
     /** l'endroit où il va avoir les animations qui vont êtres programmer. */

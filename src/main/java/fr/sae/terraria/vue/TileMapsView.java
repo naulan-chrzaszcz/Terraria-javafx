@@ -134,8 +134,8 @@ public class TileMapsView
                 }
 
                 if (!Objects.isNull(blockView.getImage())) {
-                    blockView.translateXProperty().bind(block.getXProperty());
-                    blockView.translateYProperty().bind(block.getYProperty());
+                    blockView.translateXProperty().bind(block.xProperty());
+                    blockView.translateYProperty().bind(block.yProperty());
 
                     this.display.getChildren().add(blockView);
                     this.blocksView.add(blockView);

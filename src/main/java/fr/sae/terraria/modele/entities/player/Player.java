@@ -22,7 +22,6 @@ import java.util.Objects;
 public class Player extends EntityMovable implements CollideObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int BREAK_BLOCK_DISTANCE = 1;
-    public static final int DRUNK_EFFECT_TIME = 600;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;

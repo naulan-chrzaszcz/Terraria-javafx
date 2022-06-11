@@ -88,8 +88,8 @@ public class View
     public static ImageView createImageView(final Entity entity, final Image img)
     {
         ImageView imageView = new ImageView(img);
-        imageView.translateXProperty().bind(entity.getXProperty());
-        imageView.translateYProperty().bind(entity.getYProperty());
+        imageView.translateXProperty().bind(entity.xProperty());
+        imageView.translateYProperty().bind(entity.yProperty());
 
         return imageView;
     }

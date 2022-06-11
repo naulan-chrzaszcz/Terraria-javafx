@@ -7,8 +7,8 @@ import fr.sae.terraria.modele.entities.items.Wood;
 
 public class Tree extends Block implements SpawnableObjectType
 {
-    public static final int WHEN_SPAWN_A_TREE = 5_000;
     public static final double TREE_SPAWN_RATE = .2;
+    public static final double TREE_CLUSTER = 10;
 
     private final Environment environment;
 

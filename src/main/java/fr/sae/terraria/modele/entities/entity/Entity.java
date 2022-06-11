@@ -61,9 +61,11 @@ public abstract class Entity
      */
     public abstract void updates();
 
-    public DoubleProperty getPvProperty() { return this.pv; }
-    public DoubleProperty getXProperty() { return this.x; }
-    public DoubleProperty getYProperty(){ return this.y; }
+    public DoubleProperty pvProperty() { return this.pv; }
+    public DoubleProperty xProperty() { return this.x; }
+    public DoubleProperty yProperty(){ return this.y; }
+
+
     public Animation getAnimation() { return this.animation; }
     public Rect getRect() { return this.rect; }
     public double getPvMax() { return this.pv.get(); }

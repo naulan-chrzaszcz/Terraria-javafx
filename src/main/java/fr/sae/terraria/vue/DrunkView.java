@@ -1,6 +1,7 @@
 package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -16,6 +17,7 @@ public class DrunkView {
 
     private static final int WIDTH_COS = 50;
     private static final int HEIGHT_COS = 100;
+
     private FloatMap floatMap;
     private ObjectProperty<DisplacementMap> displacementMap;
     private int startTick;
@@ -64,7 +66,7 @@ public class DrunkView {
         }
         timer += 0.03;
 
-        if (startTick+ Player.DRUNK_EFFECT_TIME <= environment.getTicks()){
+        if (startTick+ Vodka.DRUNK_EFFECT_TIME <= environment.getTicks()){
             environment.getPlayer().drunkProperty().set(false);
         }
 

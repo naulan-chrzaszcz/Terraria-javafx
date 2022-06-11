@@ -38,7 +38,7 @@ public class Camera
         this.clip.xProperty().bind(
                 Bindings.createDoubleBinding(
                         () -> clampRange(player.getX() - this.clip.getWidth()/2, minScrollWidthCamera, maxScrollWidthCamera),
-                        player.getXProperty(), paneHadCamera.widthProperty()
+                        player.xProperty(), paneHadCamera.widthProperty()
                 )
         );
 
@@ -46,7 +46,7 @@ public class Camera
         double midHeightCamera = (this.clip.getHeight()/2);
         double[] centerPlayerOnYIntoCamera = new double[1];
         double[] gap = new double[1];
-        player.getYProperty().addListener((obs, oldX, newX) -> {
+        player.yProperty().addListener((obs, oldX, newX) -> {
             // Suit le joueur
             centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
             if (player.isJumping()) {
@@ -67,7 +67,7 @@ public class Camera
         this.clip.yProperty().bind(
                 Bindings.createDoubleBinding(
                         () -> clampRange(centerPlayerOnYIntoCamera[0], minScrollHeightCamera, maxScrollHeightCamera),
-                        player.getYProperty(), paneHadCamera.heightProperty()
+                        player.yProperty(), paneHadCamera.heightProperty()
                 )
         );
 

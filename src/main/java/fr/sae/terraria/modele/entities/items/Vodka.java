@@ -13,6 +13,7 @@ import fr.sae.terraria.modele.entities.player.inventory.Inventory;
  */
 public class Vodka extends Item implements EatableObjectType
 {
+    public static final int DRUNK_EFFECT_TIME = 600;
     public static final double DROP_RATE = .1;
 
     private final Environment environment;

@@ -44,7 +44,7 @@ public class HealthBarView
         }
 
         // Modifie le cœur selon la vie du joueur
-        player.getPvProperty().addListener((obs, oldPv, newPv) -> {
+        player.pvProperty().addListener((obs, oldPv, newPv) -> {
             if (oldPv.intValue() >= 0) {
                 ImageView healthView = healths[oldPv.intValue()-1];
 
