@@ -19,11 +19,21 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * <h1>Tile maps View</h1>
+ * <h2>Une classes qui se gère de l'affichage de la carte et de ces élèments aditionnel </h2>
+ * <h3><u>Description:</u></h3>
+ * <p>Cette classe permet d'afficher, de supprimer les élèments visible à l'écran</p>
+ *
+ * @author CHRZASZCZ Naulan
+ */
 public class TileMapsView
 {
     private final List<ImageView> rabbitsView;
     private final List<ImageView> blocksView;
     private final List<ImageView> slimesView;
+    // Cette liste marche differement à cause de la classes Group, cette liste conserve un groupe d'images
+    // La classes Group contient plus ou moins d'images selon du fait de comment il génère l'arbre.
     private final List<Group> treesView;
 
     private final Image torchImg;
@@ -68,6 +78,7 @@ public class TileMapsView
         this.slimesView = new ArrayList<>();
         this.treesView = new ArrayList<>();
 
+        // Génération des images
         this.floorTopImg = View.loadAnImage("tiles/floor-top.png", tileWidth, tileHeight);
         this.floorLeftImg = View.loadAnImage("tiles/floor-left.png", tileWidth, tileHeight);
         this.floorRightImg = View.loadAnImage("tiles/floor-right.png", tileWidth, tileHeight);
@@ -83,9 +94,17 @@ public class TileMapsView
         this.environment.getRabbits().addListener((ListChangeListener<? super Rabbit>) this::updatesRabbitView);
         // Ajoute et supprime les elements de l'écran qui concerne les slimes
         this.environment.getSlimes().addListener((ListChangeListener<? super Slime>) this::updatesSlimeView);
+        // Ajoute et supprime un groupe d'élèments de l'écran qui concerne les arbres
         this.environment.getTrees().addListener((ListChangeListener<? super Tree>) this::updatesTreeView);
     }
 
+    /**
+     * Supprime ou affiche les blocs qui sont ajouté dans la liste d'entité <code>List<Block> blocks;</code>
+     *  Une fois affiché, la fonction range l'imageView crée dans la liste <code>List<ImageView> blocksView;</code> de cette classes
+     *
+     *  @param c Cet argument est present car on passe cette fonction en tant que reference (this::updatesBlocksView),
+     *          l'argument est là pour obtenir les informations concernant les modifications dans liste <code>List<Block> blocks;</code>
+     */
     private void updatesBlocksView(ListChangeListener.Change<? extends Block> c)
     {
         while (c.next()) {
@@ -130,6 +149,13 @@ public class TileMapsView
         }
     }
 
+    /**
+     * Supprime ou affiche les lapins qui sont ajouté dans la liste d'entité <code>List<Rabbit> rabbits;</code>
+     *  Une fois affiché, la fonction range l'imageView crée dans la liste <code>List<ImageView> rabbitsView;</code> de cette classe
+     *
+     *  @param c Cet argument est present car on passe cette fonction en tant que reference (this::updatesRabbitsView),
+     *          l'argument est là pour obtenir les informations concernant les modifications dans liste <code>List<Block> rabbits;</code>
+     */
     private void updatesRabbitView(ListChangeListener.Change<? extends Rabbit> c)
     {
         while (c.next()) {
@@ -146,6 +172,13 @@ public class TileMapsView
         }
     }
 
+    /**
+     * Supprime ou affiche les slimes qui sont ajoutés dans la liste d'entité <code>List<Slime> slimes;</code>
+     *  Une fois affiché, la fonction range l'imageView crée dans la liste <code>List<ImageView> slimesView;</code> de cette classe
+     *
+     *  @param c Cet argument est present car on passe cette fonction en tant que reference (this::updatesSlimesView),
+     *          l'argument est là pour obtenir les informations concernant les modifications dans liste <code>List<Slime> slimes;</code>
+     */
     private void updatesSlimeView(ListChangeListener.Change<? extends Slime> c)
     {
         while (c.next()) {
@@ -162,13 +195,23 @@ public class TileMapsView
         }
     }
 
+    /**
+     * Supprime ou affiche les groupes d'image de l'arbre qui sont ajouté dans la liste d'entité <code>List<Tree> trees;</code>
+     * Génère une image plus ou moins grande selon le <code>Math.random</code> obtenue.
+     *  Une fois affiché, la fonction range l'imageView crée dans la liste <code>List<ImageView> treesView;</code> de cette classe
+     *
+     *  @param c Cet argument est present car on passe cette fonction en tant que reference (this::updatesRabbitsView),
+     *          l'argument est là pour obtenir les informations concernant les modifications dans liste <code>List<Block> rabbits;</code>
+     */
     private void updatesTreeView(ListChangeListener.Change<? extends Tree> c)
     {
         while (c.next()) {
             if (c.wasAdded()) {
                 Group group = new Group();
 
+                // La hauteur des feuillages
                 int nbFoliage = ((int) (Math.random()*2))+1;
+                // La hauteur du tronc
                 int nbTrunk = ((int) (Math.random()*3))+1;
 
                 Rectangle2D viewportFirstFrame = new Rectangle2D(0, 0, this.tileWidth, this.tileHeight);
