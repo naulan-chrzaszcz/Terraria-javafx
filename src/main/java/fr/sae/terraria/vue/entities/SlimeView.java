@@ -5,8 +5,6 @@ import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.vue.View;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 
 public class SlimeView extends EntityView

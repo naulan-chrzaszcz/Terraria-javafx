@@ -1,6 +1,7 @@
 package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
@@ -8,6 +9,7 @@ import fr.sae.terraria.vue.View;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
@@ -103,6 +105,38 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     {
         if (super.worldLimit(this.environment))
             this.idleOnX();
+    }
+
+    public void interactWithBlock(final Rectangle2D rectangle)
+    {
+        int i = 0;
+
+        Entity entity = this.environment.getEntities().get(i);
+        while (i < this.environment.getEntities().size() && !entity.getRect().collideRect(rectangle)) {
+            entity = this.environment.getEntities().get(i);
+            i++;
+        }
+
+        if (i < this.environment.getEntities().size()) {
+            if (entity instanceof BreakableObjectType)
+                ((BreakableObjectType) entity).breaks();
+            if (entity instanceof CollapsibleObjectType)
+                ((CollapsibleObjectType) entity).hit();
+        }
+    }
+
+    public void placeBlock(int xBlock, int yBlock)
+    {
+        boolean haveAnItemOnHand = !Objects.isNull(this.getStackSelected());
+        boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
+
+        if (haveAnItemOnHand && goodPlace) {
+            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected() instanceof EatableObjectType))
+                return;
+
+            if (this.getStackSelected().getItem() instanceof PlaceableObjectType)
+                ((PlaceableObjectType) this.getStackSelected().getItem()).place(xBlock, yBlock);
+        }
     }
 
     /** Lie les inputs au clavier à une ou des actions. */
