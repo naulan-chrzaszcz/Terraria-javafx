@@ -5,6 +5,8 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.*;
+import fr.sae.terraria.vue.entities.RabbitView;
+import fr.sae.terraria.vue.entities.SlimeView;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -133,8 +135,8 @@ public class TileMapsView
         while (c.next()) {
             if (c.wasAdded()) {
                 RabbitView rabbitView = new RabbitView(c.getAddedSubList().get(0), environment.scaleMultiplicatorWidth, environment.scaleMultiplicatorHeight);
-                rabbitView.displayRabbit(this.displayHostileBeings);
-                this.rabbitsView.add(rabbitView.getRabbitImgView());
+                rabbitView.display(this.displayHostileBeings);
+                this.rabbitsView.add(rabbitView.getImgView());
             }
 
             if (c.wasRemoved()) {
@@ -149,8 +151,8 @@ public class TileMapsView
         while (c.next()) {
             if (c.wasAdded()) {
                 SlimeView slimeView = new SlimeView(c.getAddedSubList().get(0), environment.scaleMultiplicatorWidth, environment.scaleMultiplicatorHeight);
-                slimeView.displaySlime(this.displayHostileBeings);
-                this.slimesView.add(slimeView.getSlimeImgView());
+                slimeView.display(this.displayHostileBeings);
+                this.slimesView.add(slimeView.getImgView());
             }
 
             if (c.wasRemoved()) {

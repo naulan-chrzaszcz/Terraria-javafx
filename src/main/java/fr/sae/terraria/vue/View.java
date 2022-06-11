@@ -4,6 +4,8 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.controller.GameController;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.Entity;
+import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.vue.entities.PlayerView;
 import fr.sae.terraria.vue.hud.HUDView;
 import fr.sae.terraria.vue.hud.MouseCursorView;
 import javafx.scene.image.Image;
@@ -17,7 +19,7 @@ import java.util.Objects;
 
 public class View
 {
-    private static Environment environment;
+    private Environment environment;
 
 
     /**
@@ -40,8 +42,9 @@ public class View
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, displayHostileBeings, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
-        PlayerView playerView = new PlayerView(environment.getPlayer(), scaleMultiplicatorWidth, scaleMultiplicatorHeight);
-        playerView.displayPlayer(displayHostileBeings);
+        Player player = this.environment.getPlayer();
+        PlayerView playerView = new PlayerView(player, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
+        playerView.display(displayHostileBeings);
 
         LightView lightView = new LightView(environment.getGameClock(),filter,environment);
         DrunkView drunkView = new DrunkView(environment,gameController.paneHadCamera);
