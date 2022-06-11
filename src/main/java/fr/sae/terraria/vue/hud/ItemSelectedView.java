@@ -40,6 +40,7 @@ public class ItemSelectedView
     private final Image torchItemImg;
     private final Image pickaxeItemImg;
     private final Image vodkaItemImg;
+    private final Image swordItemImg;
 
     private final Pane display;
 
@@ -66,6 +67,7 @@ public class ItemSelectedView
         this.meatItemImg = View.loadAnImage("loots/meat.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
         this.pickaxeItemImg = View.loadAnImage("tools/pickaxe.png", widthItem, heightItem);
+        this.swordItemImg = View.loadAnImage("tools/sword.png", widthItem, heightItem);
 
         // Reset
         player.getInventory().get().addListener((ListChangeListener<? super Stack>) c -> {
@@ -111,7 +113,7 @@ public class ItemSelectedView
                 else if (item instanceof Pickaxe)
                     this.itemSelectedImgView.setImage(this.pickaxeItemImg);
                 else if (item instanceof Sword)
-                    this.itemSelectedImgView.setImage(null);
+                    this.itemSelectedImgView.setImage(this.swordItemImg);
                 else if (item instanceof Arrow)
                     this.itemSelectedImgView.setImage(null);
             }

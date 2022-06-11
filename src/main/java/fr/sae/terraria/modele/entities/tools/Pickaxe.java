@@ -10,9 +10,5 @@ public class Pickaxe extends Tool
         super(Tool.DEFAULT_DURABILITY);
     }
 
-    @Override public void use()
-    {
-        if (this.durability.get() > 0)
-            this.durability.set(this.durability.get() - 1);
-    }
+    @Override public void use() { Tool.DEFAULT_WEAR(this); }
 }

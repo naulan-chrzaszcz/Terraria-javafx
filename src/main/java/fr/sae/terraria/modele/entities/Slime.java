@@ -2,6 +2,8 @@ package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
+import fr.sae.terraria.modele.entities.tools.Sword;
 
 import java.util.Map;
 import java.util.Objects;
@@ -45,7 +47,7 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
         }
 
         this.move();
-        this.collide();     // FIXME: 08/06/2022 : idk pourquoi le collide pose probleme pour le saut du slime
+        this.collide();
         this.worldLimit();
 
         if (!Objects.isNull(this.rect))
@@ -65,12 +67,28 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
     {
         if (((int) (this.animation.getFrame()) == 3))
             if (this.isNotFalling()) this.jump();
+
         this.setX(this.getX() + (this.getOffsetMoveX() * this.velocity));
     }
 
     @Override public void hit()
     {
         Environment.playSound("sound/daggerswipe.wav", false);
+
+        if (this.getPv() <= 0) {
+            // this.environment.getPlayer().pickup(new SlimeBall());
+
+            this.environment.getSlimes().remove(this);
+            this.environment.getEntities().remove(this);
+        }
+
+        Stack stack = this.environment.getPlayer().getStackSelected();
+        if (!Objects.isNull(stack)) {
+            if (stack.getItem() instanceof Sword) {
+                Sword sword = (Sword) stack.getItem();
+                this.setPv(this.getPv() - (Sword.DEFAULT_DAMAGE*sword.getMaterial()));
+            }
+        } else this.setPv(this.getPv() - .5);
     }
 
     @Override public void spawn(int x, int y)

@@ -26,7 +26,7 @@ public class Stack
     public static final int MAX = 16;
 
     private StowableObjectType item = null;
-    private IntegerProperty nbItems;
+    private final IntegerProperty nbItems;
 
 
     public Stack()
@@ -71,6 +71,8 @@ public class Stack
         else if (object instanceof Sword && this.item instanceof Sword)
             return true;
         else if (object instanceof Arrow && this.item instanceof Arrow)
+            return true;
+        else if (object instanceof Sword && this.item instanceof Sword)
             return true;
         else return false;
     }

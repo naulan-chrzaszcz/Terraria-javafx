@@ -5,13 +5,7 @@ public class Axe extends Tool
 {
 
 
-    public Axe()
-    {
-        super(Tool.DEFAULT_DURABILITY);
-    }
+    public Axe() { super(Tool.DEFAULT_DURABILITY); }
 
-    @Override public void use()
-    {
-
-    }
+    @Override public void use() { Tool.DEFAULT_WEAR(this); }
 }

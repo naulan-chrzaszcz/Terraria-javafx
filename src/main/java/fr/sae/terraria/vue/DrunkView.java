@@ -2,7 +2,6 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.items.Vodka;
-import fr.sae.terraria.modele.entities.player.Player;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

@@ -13,6 +13,8 @@ import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.tools.Pickaxe;
+import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -125,6 +127,7 @@ public class Environment
                 this.player.pickup(new Meat(this));
                 this.player.pickup(new Pickaxe());
                 this.player.pickup(new Vodka(this));
+                this.player.pickup(new Sword(Tool.CRAFTED_WITH_WOOD));
 
                 caught[0] = true;
             }
@@ -143,12 +146,12 @@ public class Environment
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
                 for (int i = 0; i < Tree.TREE_CLUSTER; i++) // Génère par jour, 3 arbres
-                    GenerateEntity.tree(this);
+                    GenerateEntity.treeRandomly(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
-                GenerateEntity.rabbit(this);
-                GenerateEntity.tallGrass(this);
+                GenerateEntity.rabbitRandomly(this);
+                GenerateEntity.tallGrassRandomly(this);
             } else if (nightTime)    // Génère certaines entités uniquement pendant le soir
-                GenerateEntity.slime(this);
+                GenerateEntity.slimeRandomly(this);
 
             // Updates toutes les entités
             for (Entity entity : this.entities) {

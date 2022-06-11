@@ -71,7 +71,6 @@ public abstract class EntityMovable extends Entity
             int xLeft = (int) (getX()+CollideObjectType.COLLISION_TOLERANCE)/widthTile;
             int xRight = (int) ((getX()+getRect().getWidth())-CollideObjectType.COLLISION_TOLERANCE)/widthTile;
 
-
             // Tombe
             if (this.isFalling()) {
                 this.gravity.degInit = 0;

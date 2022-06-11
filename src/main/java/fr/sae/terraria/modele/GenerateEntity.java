@@ -90,21 +90,23 @@ public class GenerateEntity
     }
 
     /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */
-    public static void tree(Environment environment) { generateAnEntity(environment, new Tree(environment), 1, TREE_SPAWN_RATE); }
+    public static void treeRandomly(Environment environment) { generateAnEntity(environment, new Tree(environment), 1, TREE_SPAWN_RATE); }
     /** À un certain moment, grace au tick, il va générer des hautes herbes sur un sol */
-    public static void tallGrass(Environment environment) { generateAnEntity(environment, new TallGrass(environment), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
+    public static void tallGrassRandomly(Environment environment) { generateAnEntity(environment, new TallGrass(environment), WHEN_SPAWN_A_TALL_GRASS, TALL_GRASS_SPAWN_RATE); }
 
     /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol */
-    public static void rabbit(Environment environment)
+    public static void rabbitRandomly(Environment environment)
     {
         if (environment.getRabbits().size() < MAX_SPAWN_RABBIT)
             generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
     }
 
     /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol  */
-    public static void slime(Environment environment)
+    public static void slimeRandomly(Environment environment)
     {
         if (environment.getSlimes().size() < MAX_SPAWN_SLIME)
             generateAnEntity(environment, new Slime(environment), WHEN_SPAWN_A_SLIME, SLIME_SPAWN_RATE);
     }
+
+    public static void slime(Environment environment) { generateAnEntity(environment, new Slime(environment), 1, 1); }
 }

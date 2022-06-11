@@ -2,6 +2,7 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
@@ -85,6 +86,9 @@ public class GameController implements Initializable
                 this.environment.getGameClock().setMinutes(1_000);
             if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.J))
                 this.environment.getGameClock().setMinutes(400);
+            // Fait apparaitre un slime
+            if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.P))
+                GenerateEntity.slime(this.environment);
 
             key.consume();
         });
