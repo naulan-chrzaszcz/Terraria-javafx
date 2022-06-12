@@ -3,10 +3,7 @@ package fr.sae.terraria.vue.hud;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Rock;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.*;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
@@ -102,7 +99,7 @@ public class InventoryView
                     Stack stack = c.getAddedSubList().get(0);
                     StowableObjectType item = stack.getItem();
 
-                    if (item instanceof Dirt)
+                    if (Block.isDirt(item))
                         view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Rock)
                         view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
@@ -110,20 +107,8 @@ public class InventoryView
                         view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Torch)
                         view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Coal)
-                        view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Fiber)
-                        view.setImage(View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Iron)
-                        view.setImage(View.loadAnImage("loots/iron.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Meat)
                         view.setImage(View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Stone)
-                        view.setImage(View.loadAnImage("loots/pierre.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Silex)
-                        view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Wood)
-                        view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Axe)
                         view.setImage(null);    // TODO
                     else if (item instanceof Bow)
@@ -136,6 +121,20 @@ public class InventoryView
                         view.setImage(null);    // TODO
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
+                    else if (item instanceof Item) {
+                        if (Item.isCoal(item))
+                            view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isFiber(item))
+                            view.setImage(View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isIron(item))
+                            view.setImage(View.loadAnImage("loots/iron.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isStone(item))
+                            view.setImage(View.loadAnImage("loots/pierre.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isSilex(item))
+                            view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isWood(item))
+                            view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
+                    }
 
                     // Actualise le nombre d'item à l'écran
                     this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));

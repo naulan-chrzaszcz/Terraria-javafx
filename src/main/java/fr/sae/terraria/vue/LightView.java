@@ -3,6 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -103,7 +104,7 @@ public class LightView {
             column = 0;
 
             while (column < this.tileMaps.getWidth() && !found && !wrongLine) {
-                if (this.tileMaps.getTile(column, line) != TileMaps.STONE)
+                if (this.tileMaps.isRockTile(column, line))
                     wrongLine = true;
                 else if (column == this.tileMaps.getWidth() - 1)
                     found = true;

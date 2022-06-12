@@ -43,17 +43,17 @@ public class GenerateEntity
     private static void generateAnEntity(Environment environment, SpawnableObjectType e, int whenSpawn, double spawnRate)
     {
         List<Entity> entities = environment.getEntities();
-        TileMaps maps = environment.getTileMaps();
+        TileMaps tileMaps = environment.getTileMaps();
         int widthTile = environment.widthTile;
         int heightTile = environment.heightTile;
         int ticks = environment.getTicks();
 
         // Fréquence d'apparition
         if (ticks%whenSpawn == 0)
-            for (int y = 0; y < maps.getHeight(); y++)
+            for (int y = 0; y < tileMaps.getHeight(); y++)
                 // Est-ce que l'arbre doit spawn sur ce 'y'
                 if (Math.random() < spawnRate) {
-                    List<Integer> locFloorsOnAxisX = findFloors(maps, y);
+                    List<Integer> locFloorsOnAxisX = findFloors(tileMaps, y);
                     // Si il y a du sol sur la ligne
                     if (!locFloorsOnAxisX.isEmpty()) {
                         int onWhichFloor = random.nextInt(locFloorsOnAxisX.size());
@@ -61,7 +61,7 @@ public class GenerateEntity
                         int xEntity = targetFloor * widthTile;
                         int yEntity = ((y == 0) ? y : (y - 1)) * heightTile;
                         // Verifies au cas où si le tile au-dessus de lui est bien une casse vide (Du ciel)
-                        if (maps.getTile(targetFloor, y - 1) == TileMaps.SKY) {
+                        if (tileMaps.isSkyTile(targetFloor, y-1)) {
                             for (Entity entity : entities)
                                 // Une entité est déjà present ? Il ne le génère pas et arrête complétement la fonction
                                 if (xEntity == entity.getX() && yEntity == entity.getY())
@@ -76,15 +76,12 @@ public class GenerateEntity
     }
 
     /** Range les positions du sol sur la ligne 'y' */
-    private static List<Integer> findFloors(TileMaps maps, int y)
+    private static List<Integer> findFloors(TileMaps tileMaps, int y)
     {
         List<Integer> localisation = new ArrayList<>();
-        for (int x = 0; x < maps.getWidth(); x++) {
-            int targetTile = maps.getTile(x, y);
-
-            if (targetTile == TileMaps.FLOOR_TOP || targetTile == TileMaps.FLOOR_RIGHT || targetTile == TileMaps.FLOOR_LEFT)
+        for (int x = 0; x < tileMaps.getWidth(); x++)
+            if (tileMaps.isFloorTopTile(x, y) || tileMaps.isFloorRightTile(x, y) || tileMaps.isFloorLeftTile(x, y))
                 localisation.add(x);
-        }
 
         return localisation;
     }

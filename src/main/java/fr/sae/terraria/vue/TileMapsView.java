@@ -2,6 +2,7 @@ package fr.sae.terraria.vue;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.*;
@@ -114,16 +115,15 @@ public class TileMapsView
 
                 blockView.setImage(null);
                 if (block instanceof Dirt) {
-                    if (((Dirt) block).getTypeOfFloor() == TileMaps.FLOOR_TOP)
+                    Dirt dirt = (Dirt) block;
+                    if (TileSet.isFloorTopTile(dirt.getTypeOfFloor()))
                         blockView.setImage(this.floorTopImg);
-                    else if (((Dirt) block).getTypeOfFloor() == TileMaps.FLOOR_LEFT)
+                    else if (TileSet.isFloorLeftTile(dirt.getTypeOfFloor()))
                         blockView.setImage(this.floorLeftImg);
-                    else if (((Dirt) block).getTypeOfFloor() == TileMaps.FLOOR_RIGHT)
+                    else if (TileSet.isFloorRightTile(dirt.getTypeOfFloor()))
                         blockView.setImage(this.floorRightImg);
-                    else if (((Dirt) block).getTypeOfFloor() == TileMaps.DIRT)
+                    else if (TileSet.isDirtTile(dirt.getTypeOfFloor()))
                         blockView.setImage(this.dirtImg);
-                    else if (((Dirt) block).getTypeOfFloor() == 0)
-                        blockView.setImage(this.floorTopImg);
                 } else if (block instanceof Rock) {
                     blockView.setImage(this.stoneImg);
                 } else if (block instanceof TallGrass) {
@@ -277,43 +277,31 @@ public class TileMapsView
 
     }
 
-    /** Affiche une erreur si un developer a fait une erreur lors de la saisie d'un tile dans le fichier .json */
-    private void errorTile(final int tile) { if (tile != TileMaps.SKY) System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
-
     /** Decompose la carte pour afficher une à une les tiles à l'écran */
     public void displayMaps(TileMaps tiles)
     {
         for (int y = 0; y < tiles.getHeight() ; y++)
             for (int x = 0 ; x < tiles.getWidth() ; x++)
-                switch (tiles.getTile(x, y)) {
-                    case TileMaps.STONE:
-                        Rock rockEntity = new Rock(this.environment, x*this.tileWidth, y*this.tileHeight);
-                        rockEntity.setRect(this.tileWidth, this.tileHeight);
+                if (tiles.isRockTile(x, y)) {
+                    Rock rockEntity = new Rock(this.environment, x*this.tileWidth, y*this.tileHeight);
+                    rockEntity.setRect(this.tileWidth, this.tileHeight);
 
-                        this.environment.getEntities().add(rockEntity);
-                        this.environment.getBlocks().add(rockEntity);
-                        break;
-                    case TileMaps.DIRT:
-                        Dirt dirtSprite = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
-                        dirtSprite.setTypeOfFloor(TileMaps.DIRT);
-                        dirtSprite.setRect(this.tileWidth, this.tileHeight);
+                    this.environment.getEntities().add(rockEntity);
+                    this.environment.getBlocks().add(rockEntity);
+                } else if (tiles.isDirtTile(x, y)) {
+                    Dirt dirtSprite = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
+                    dirtSprite.setTypeOfFloor(TileSet.DIRT);
+                    dirtSprite.setRect(this.tileWidth, this.tileHeight);
 
-                        this.environment.getEntities().add(dirtSprite);
-                        this.environment.getBlocks().add(dirtSprite);
-                        break;
-                    case TileMaps.FLOOR_TOP:
-                    case TileMaps.FLOOR_LEFT:
-                    case TileMaps.FLOOR_RIGHT:
-                        Dirt floorEntity = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
-                        floorEntity.setTypeOfFloor(tiles.getTile(x, y));
-                        floorEntity.setRect(this.tileWidth, this.tileHeight);
+                    this.environment.getEntities().add(dirtSprite);
+                    this.environment.getBlocks().add(dirtSprite);
+                } else if (tiles.isFloorTopTile(x, y) || tiles.isFloorLeftTile(x, y) || tiles.isFloorRightTile(x, y)) {
+                    Dirt floorEntity = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
+                    floorEntity.setTypeOfFloor((tiles.isFloorTopTile(x, y)) ? TileSet.FLOOR_TOP : (tiles.isFloorRightTile(x, y)) ? TileSet.FLOOR_RIGHT : TileSet.FLOOR_LEFT);
+                    floorEntity.setRect(this.tileWidth, this.tileHeight);
 
-                        this.environment.getEntities().add(floorEntity);
-                        this.environment.getBlocks().add(floorEntity);
-                        break;
-                    default:
-                        this.errorTile(tiles.getTile(x, y));
-                        break;
+                    this.environment.getEntities().add(floorEntity);
+                    this.environment.getBlocks().add(floorEntity);
                 }
     }
 }

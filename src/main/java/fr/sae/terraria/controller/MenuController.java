@@ -3,7 +3,7 @@ package fr.sae.terraria.controller;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.blocks.Rock;
-import fr.sae.terraria.modele.entities.items.Stone;
+import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import javafx.animation.Animation;
@@ -65,11 +65,11 @@ public class MenuController implements Initializable
         this.lexique4.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED")) {
                 int i = this.player.getInventory().get().size()-1;
-                while (i > 0 && !(this.player.getInventory().get().get(i).getItem() instanceof Stone) && this.player.getInventory().get().get(i).getNbItems() >= Rock.STONE_LOOTS)
+                while (i > 0 && !(this.player.getInventory().get().get(i).getItem().equals(Item.STONE)) && this.player.getInventory().get().get(i).getNbItems() >= Rock.STONE_LOOTS)
                     i--;
 
                 Stack stack = this.player.getInventory().get().get(i);
-                if (stack.getItem() instanceof Stone) {
+                if (stack.getItem() instanceof Item && stack.getItem().equals(Item.STONE)) {
                     for (int j = 0; j < Rock.STONE_LOOTS; j++)
                         stack.remove();
                     this.player.pickup(new Rock(this.environment));

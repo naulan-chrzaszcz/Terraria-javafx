@@ -2,11 +2,11 @@ package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-import fr.sae.terraria.modele.entities.items.Stone;
+import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
@@ -53,11 +53,11 @@ public class Rock extends Block implements StowableObjectType, CollideObjectType
         Player player = this.environment.getPlayer();
         if (this.getPv() <= 0) {
             for (int i = 0; i < 3; i++)
-                player.pickup(new Stone());
+                player.pickup(Item.STONE);
 
             int yIndexTile = (int) (getY()/this.environment.heightTile);
             int xIndexTile = (int) (getX()/this.environment.widthTile);
-            this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
+            this.environment.getTileMaps().setTile(TileSet.SKY.ordinal(), yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
             this.environment.getBlocks().remove(this);
         }
@@ -78,7 +78,7 @@ public class Rock extends Block implements StowableObjectType, CollideObjectType
         int widthTile = this.environment.widthTile;
         int heightTile = this.environment.heightTile;
 
-        Entity entity = new Rock(this.environment, x*widthTile, y*heightTile);
+        Block entity = new Rock(this.environment, x*widthTile, y*heightTile);
         entity.setRect(widthTile, heightTile);
 
         Player player = this.environment.getPlayer();
@@ -86,8 +86,8 @@ public class Rock extends Block implements StowableObjectType, CollideObjectType
         if (!Objects.isNull(player.getStackSelected()))
             inventory.get().get(inventory.getPosCursor()).remove();
 
-        this.environment.getTileMaps().setTile(TileMaps.STONE, y, x);
+        this.environment.getTileMaps().setTile(TileSet.ROCK.ordinal(), y, x);
         this.environment.getEntities().add(entity);
-        this.environment.getBlocks().add((Block) entity);
+        this.environment.getBlocks().add(entity);
     }
 }

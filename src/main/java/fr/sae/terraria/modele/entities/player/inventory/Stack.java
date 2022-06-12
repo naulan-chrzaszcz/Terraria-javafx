@@ -36,45 +36,45 @@ public class Stack
         this.nbItems = new SimpleIntegerProperty(1);
     }
 
-    public boolean isSameItem(StowableObjectType object)
+    public boolean isSameItem(StowableObjectType obj)
     {
-        if (object instanceof Dirt && this.item instanceof Dirt)
+        if (obj instanceof Dirt && this.item instanceof Dirt)
             return true;
-        else if (object instanceof Rock && this.item instanceof Rock)
+        else if (obj instanceof Rock && this.item instanceof Rock)
             return true;
-        else if (object instanceof TallGrass && this.item instanceof TallGrass)
+        else if (obj instanceof TallGrass && this.item instanceof TallGrass)
             return true;
-        else if (object instanceof Torch && this.item instanceof Torch)
+        else if (obj instanceof Torch && this.item instanceof Torch)
             return true;
-        else if (object instanceof Coal && this.item instanceof Coal)
+        else if (obj instanceof Meat && this.item instanceof Meat)
             return true;
-        else if (object instanceof Fiber && this.item instanceof Fiber)
+        else if (obj instanceof Axe && this.item instanceof Axe)
             return true;
-        else if (object instanceof Iron && this.item instanceof Iron)
+        else if (obj instanceof Vodka && this.item instanceof Vodka)
             return true;
-        else if (object instanceof Meat && this.item instanceof Meat)
+        else if (obj instanceof Bow && this.item instanceof Bow)
             return true;
-        else if (object instanceof Stone && this.item instanceof Stone)
+        else if (obj instanceof Pickaxe && this.item instanceof Pickaxe)
             return true;
-        else if (object instanceof Silex && this.item instanceof Silex)
+        else if (obj instanceof Sword && this.item instanceof Sword)
             return true;
-        else if (object instanceof Wood && this.item instanceof Wood)
+        else if (obj instanceof Arrow && this.item instanceof Arrow)
             return true;
-        else if (object instanceof Axe && this.item instanceof Axe)
-            return true;
-        else if (object instanceof Vodka && this.item instanceof Vodka)
-            return true;
-        else if (object instanceof Bow && this.item instanceof Bow)
-            return true;
-        else if (object instanceof Pickaxe && this.item instanceof Pickaxe)
-            return true;
-        else if (object instanceof Sword && this.item instanceof Sword)
-            return true;
-        else if (object instanceof Arrow && this.item instanceof Arrow)
-            return true;
-        else if (object instanceof Sword && this.item instanceof Sword)
-            return true;
-        else return false;
+        else if (obj instanceof Item) {
+            if (Item.isCoal(obj) && Item.isCoal(this.item))
+                return true;
+            else if (Item.isFiber(obj) && Item.isFiber(this.item))
+                return true;
+            else if (Item.isIron(obj) && Item.isIron(this.item))
+                return true;
+            else if (Item.isStone(obj) && Item.isStone(this.item))
+                return true;
+            else if (Item.isSilex(obj) && Item.isSilex(this.item))
+                return true;
+            else if (Item.isWood(obj) && Item.isWood(this.item))
+                return true;
+            else return false;
+        } else return false;
     }
 
     public IntegerProperty nbItemsProperty() { return this.nbItems; }

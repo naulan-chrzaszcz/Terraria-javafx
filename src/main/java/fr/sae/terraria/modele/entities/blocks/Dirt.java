@@ -2,10 +2,12 @@ package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 
@@ -20,7 +22,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
 
     private final double xOrigin;
     private final double yOrigin;
-    private int typeOfFloor;
+    private TileSet typeOfFloor;
 
 
     public Dirt(Environment environment, int x, int y)
@@ -48,7 +50,7 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
 
             int yIndexTile = (int) (getY()/environment.heightTile);
             int xIndexTile = (int) (getX()/environment.widthTile);
-            this.environment.getTileMaps().setTile(TileMaps.SKY, yIndexTile, xIndexTile);
+            this.environment.getTileMaps().setTile(TileSet.SKY.ordinal(), yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
             this.environment.getBlocks().remove(this);
         }
@@ -69,13 +71,13 @@ public class Dirt extends Block implements StowableObjectType, CollideObjectType
         if (!Objects.isNull(player.getStackSelected()))
             inventory.get().get(inventory.getPosCursor()).remove();
 
-        this.environment.getTileMaps().setTile(TileMaps.DIRT, y, x);
+        this.environment.getTileMaps().setTile(TileSet.DIRT.ordinal(), y, x);
         this.environment.getEntities().add(entity);
         this.environment.getBlocks().add((Dirt) entity);
     }
 
 
-    public int getTypeOfFloor() { return this.typeOfFloor; }
+    public TileSet getTypeOfFloor() { return this.typeOfFloor; }
 
-    public void setTypeOfFloor(int type) { this.typeOfFloor = type; }
+    public void setTypeOfFloor(TileSet type) { this.typeOfFloor = type; }
 }

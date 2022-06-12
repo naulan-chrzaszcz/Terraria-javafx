@@ -59,6 +59,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
 
     @Override public void move()
     {
+        TileMaps tileMaps = this.environment.getTileMaps();
         this.setX(this.x.get() + this.getOffsetMoveX() * this.velocity);
 
         if (this.isIDLEonY() && this.isMoving()) {
@@ -66,7 +67,7 @@ public class Rabbit extends EntityMovable implements CollideObjectType, Reproduc
             int yProbablyVoid = (int) (getY() / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
-            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid + 2) == TileMaps.SKY) {
+            if (tileMaps.isSkyTile(xProbablyVoid, yProbablyVoid+2)) {
                 this.offset[0] = (-1) * this.getOffsetMoveX();
             } else {
                 boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;

@@ -2,7 +2,7 @@ package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
-import fr.sae.terraria.modele.entities.items.Wood;
+import fr.sae.terraria.modele.entities.items.Item;
 
 
 public class Tree extends Block implements SpawnableObjectType
@@ -26,7 +26,7 @@ public class Tree extends Block implements SpawnableObjectType
     @Override public void breaks()
     {
         // Environment.playSound("sound/grassyStep.wav", false);
-        this.environment.getPlayer().pickup(new Wood());
+        this.environment.getPlayer().pickup(Item.WOOD);
         this.environment.getEntities().remove(this);
         this.environment.getTrees().remove(this);
     }

@@ -10,7 +10,6 @@ module fr.sae.terraria
     exports fr.sae.terraria;
     opens fr.sae.terraria.controller to javafx.fxml;
     exports fr.sae.terraria.modele;
-    opens fr.sae.terraria.modele to javafx.fxml;
     exports fr.sae.terraria.modele.entities;
     opens fr.sae.terraria.modele.entities to javafx.fxml;
     exports fr.sae.terraria.modele.entities.entity;
@@ -19,4 +18,5 @@ module fr.sae.terraria
     opens fr.sae.terraria.modele.entities.player to javafx.fxml;
     exports fr.sae.terraria.modele.entities.player.inventory;
     opens fr.sae.terraria.modele.entities.player.inventory to javafx.fxml;
+    opens fr.sae.terraria.modele to javafx.fxml, javafx.graphics;
 }

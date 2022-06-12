@@ -131,11 +131,12 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     public void placeBlock(int xBlock, int yBlock)
     {
+        TileMaps tileMaps = this.environment.getTileMaps();
         boolean haveAnItemOnHand = !Objects.isNull(this.getStackSelected());
-        boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
+        boolean goodPlace = tileMaps.isSkyTile(xBlock, yBlock);
 
         if (haveAnItemOnHand && goodPlace) {
-            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected() instanceof ConsumableObjectType))
+            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected().getItem() instanceof ConsumableObjectType))
                 return;
 
             if (this.getStackSelected().getItem() instanceof PlaceableObjectType)

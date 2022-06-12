@@ -33,7 +33,7 @@ public class ItemSelectedView
     private final Image coalItemImg;
     private final Image fibreItemImg;
     private final Image ironItemImg;
-    private final Image pierreItemImg;
+    private final Image rockItemImg;
     private final Image silexItemImg;
     private final Image meatItemImg;
     private final Image woodItemImg;
@@ -57,12 +57,12 @@ public class ItemSelectedView
         this.itemSelectedImgView = new ImageView();
         this.vodkaItemImg = View.loadAnImage("loots/vodka.png",widthItem,heightItem);
         this.dirtItemImg = View.loadAnImage("tiles/floor-top.png", widthItem, heightItem);
-        this.stoneItemImg = View.loadAnImage("tiles/rock-fill.png", widthItem, heightItem);
+        this.rockItemImg = View.loadAnImage("tiles/rock-fill.png", widthItem, heightItem);
         this.torchItemImg = View.loadAnImage("tiles/torch.png", widthItem, heightItem);
         this.coalItemImg = View.loadAnImage("loots/coal.png", widthItem, heightItem);
         this.fibreItemImg = View.loadAnImage("loots/fiber.png", widthItem, heightItem);
         this.ironItemImg = View.loadAnImage("loots/iron.png", widthItem, heightItem);
-        this.pierreItemImg = View.loadAnImage("loots/pierre.png", widthItem, heightItem);
+        this.stoneItemImg = View.loadAnImage("loots/pierre.png", widthItem, heightItem);
         this.silexItemImg = View.loadAnImage("loots/silex.png", widthItem, heightItem);
         this.meatItemImg = View.loadAnImage("loots/meat.png", widthItem, heightItem);
         this.woodItemImg = View.loadAnImage("loots/wood.png", widthItem, heightItem);
@@ -85,27 +85,15 @@ public class ItemSelectedView
                 if (item instanceof Dirt)
                     this.itemSelectedImgView.setImage(this.dirtItemImg);
                 else if (item instanceof Rock)
-                    this.itemSelectedImgView.setImage(this.stoneItemImg);
+                    this.itemSelectedImgView.setImage(this.rockItemImg);
                 else if (item instanceof TallGrass)
                     this.itemSelectedImgView.setImage(null);
                 else if (item instanceof Torch)
                     this.itemSelectedImgView.setImage(this.torchItemImg);
-                else if (item instanceof Coal)
-                    this.itemSelectedImgView.setImage(this.coalItemImg);
-                else if (item instanceof Fiber)
-                    this.itemSelectedImgView.setImage(this.fibreItemImg);
-                else if (item instanceof Iron)
-                    this.itemSelectedImgView.setImage(this.ironItemImg);
                 else if (item instanceof Meat)
                     this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Vodka)
                     this.itemSelectedImgView.setImage(this.vodkaItemImg);
-                else if (item instanceof Stone)
-                    this.itemSelectedImgView.setImage(this.pierreItemImg);
-                else if (item instanceof Silex)
-                    this.itemSelectedImgView.setImage(this.silexItemImg);
-                else if (item instanceof Wood)
-                    this.itemSelectedImgView.setImage(this.woodItemImg);
                 else if (item instanceof Axe)
                     this.itemSelectedImgView.setImage(null);
                 else if (item instanceof Bow)
@@ -116,6 +104,20 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.swordItemImg);
                 else if (item instanceof Arrow)
                     this.itemSelectedImgView.setImage(null);
+                else if (item instanceof Item) {
+                    if (Item.isCoal(item))
+                        this.itemSelectedImgView.setImage(this.coalItemImg);
+                    else if (Item.isFiber(item))
+                        this.itemSelectedImgView.setImage(this.fibreItemImg);
+                    else if (Item.isIron(item))
+                        this.itemSelectedImgView.setImage(this.ironItemImg);
+                    else if (Item.isStone(item))
+                        this.itemSelectedImgView.setImage(this.stoneItemImg);
+                    else if (Item.isSilex(item))
+                        this.itemSelectedImgView.setImage(this.silexItemImg);
+                    else if (Item.isWood(item))
+                        this.itemSelectedImgView.setImage(this.woodItemImg);
+                }
             }
         });
 

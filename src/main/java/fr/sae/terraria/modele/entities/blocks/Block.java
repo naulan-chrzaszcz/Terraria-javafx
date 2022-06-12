@@ -41,4 +41,6 @@ public abstract class Block extends Entity implements BreakableObjectType
     }
 
     @Override public abstract void updates();
+
+    public static boolean isDirt(Object obj) { return obj instanceof Dirt; }
 }

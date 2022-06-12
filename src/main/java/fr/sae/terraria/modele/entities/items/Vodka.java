@@ -2,6 +2,7 @@ package fr.sae.terraria.modele.entities.items;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 
@@ -11,7 +12,7 @@ import fr.sae.terraria.modele.entities.player.inventory.Inventory;
  * <h2><u>Description:</u></h2>
  * <p>Se drop lorsque le joueur casse des hautes herbes et une fois bu, l'écran sera troublé</p>
  */
-public class Vodka extends Item implements ConsumableObjectType
+public class Vodka implements ConsumableObjectType, StowableObjectType
 {
     public static final int DRUNK_EFFECT_TIME = 600;
     public static final double DROP_RATE = .1;

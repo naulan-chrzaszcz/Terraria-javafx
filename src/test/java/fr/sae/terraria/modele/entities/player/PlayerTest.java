@@ -2,9 +2,9 @@ package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.items.Coal;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.geometry.Rectangle2D;
@@ -162,9 +162,9 @@ public class PlayerTest
         TileMaps tileMaps = environment.getTileMaps();
         player.pickup(new Dirt(environment, 1, 1));
 
-        assertEquals(tileMaps.getTile(0, 0), TileMaps.SKY);
+        assertEquals(tileMaps.getTile(0, 0), TileSet.SKY.ordinal());
         player.placeBlock(0, 0);
-        assertEquals(tileMaps.getTile(0, 0), TileMaps.DIRT);
+        assertEquals(tileMaps.getTile(0, 0), TileSet.DIRT.ordinal());
 
         assertNull(player.getStackSelected());
     }
