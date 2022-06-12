@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerTest
 {
     private static Environment environment;
+    private static Player player;
 
 
     public PlayerTest() { super(); }
@@ -26,13 +27,13 @@ public class PlayerTest
     @BeforeAll public static void init()
     {
         environment = new Environment(1., 1.);
+        player = environment.getPlayer();
     }
 
     @Test public final void moveTest()
     {
         double previousPosX;
 
-        Player player = environment.getPlayer();
         previousPosX = player.getX();
         player.moveRight();
         player.move();
@@ -58,7 +59,6 @@ public class PlayerTest
 
     @Test public final void hitTest()
     {
-        Player player = environment.getPlayer();
         double previousPv = player.getPv();
         player.hit();
 
@@ -68,7 +68,6 @@ public class PlayerTest
 
     @Test public final void spawnTest()
     {
-        Player player = environment.getPlayer();
         int spawnLocX = 100;
         int spawnLocY = 100;
 
@@ -86,14 +85,29 @@ public class PlayerTest
 
     @Test public final void worldLimitTest()
     {
+        player.setX(2*TileMaps.TILE_DEFAULT_SIZE);
+        player.moveLeft();
+        player.worldLimit();
 
+        assertTrue(player.isMovingLeft());
+
+        player.setX(-TileMaps.TILE_DEFAULT_SIZE);
+        player.moveLeft();
+        player.worldLimit();
+
+        assertTrue(player.isIDLEonX());
+
+        player.setX(environment.getTileMaps().getWidth()*TileMaps.TILE_DEFAULT_SIZE + TileMaps.TILE_DEFAULT_SIZE);
+        player.moveRight();
+        player.worldLimit();
+
+        assertTrue(player.isIDLEonX());
     }
 
-    @Test public final void interactWithBlockTest()     // TODO: Le nom est probablement mal choisie
+    @Test public final void interactWithBlockTest()     // TODO: Le nom est probablement mal choisie dans player
     {
         Rectangle2D blockSelected;
         double beforePv;
-        Player player = environment.getPlayer();
 
         Dirt dirt = new Dirt(environment, 1, 1);
         dirt.setRect(1, 1);
@@ -118,7 +132,6 @@ public class PlayerTest
 
     @Test public final void placeBlockTest()
     {
-        Player player = environment.getPlayer();
         TileMaps tileMaps = environment.getTileMaps();
         player.pickup(new Dirt(environment, 1, 1));
 
@@ -131,7 +144,6 @@ public class PlayerTest
 
     @Test public final void drunkTest()
     {
-        Player player = environment.getPlayer();
         player.pickup(new Vodka(environment));
 
         assertFalse(player.drunkProperty().get(),
@@ -143,7 +155,6 @@ public class PlayerTest
 
     @Test public final void pickupTest()
     {
-        Player player = environment.getPlayer();
         player.getInventory().posCursorProperty().set(0);
 
 
