@@ -59,4 +59,22 @@ public class PlayerTest
         assertEquals(previousPv - 1, player.getPv(),
                 "Vérifie s'il y a bien subit un dégât");
     }
+
+    @Test public final void spawnTest()
+    {
+        Player player = environment.getPlayer();
+        int spawnLocX = 100;
+        int spawnLocY = 100;
+
+        player.spawn(spawnLocX, spawnLocY);
+
+        assertEquals(player.getX(), spawnLocX,
+                "Regarde si la localisation en X est correcte");
+        assertEquals(player.getY(), spawnLocY,
+                "Regarde si la localisation en X est correcte");
+        assertEquals(player.getGravity().xInit, spawnLocX,
+                "Regarde si la localisation au niveau de la gestion de la gravité, en X est correcte");
+        assertEquals(player.getGravity().yInit, spawnLocY,
+                "Regarde si la localisation au niveau de la gestion de la gravité, en X est correcte");
+    }
 }
