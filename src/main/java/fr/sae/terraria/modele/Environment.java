@@ -145,7 +145,7 @@ public class Environment
             boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
-                for (int i = 0; i < 10; i++) // Génère par jour, 3 arbres
+                for (int i = 0; i < 15; i++) // Génère par jour, 3 arbres
                     GenerateEntity.treeRandomly(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbitRandomly(this);

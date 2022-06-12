@@ -25,7 +25,7 @@ import static fr.sae.terraria.modele.entities.blocks.TallGrass.WHEN_SPAWN_A_TALL
  */
 public class GenerateEntity
 {
-    private static final int TREE_SPAWN_RATE = 2500;
+    private static final double TREE_SPAWN_RATE = .1;
     public static final int MAX_SPAWN_RABBIT = 100;
     public static final int MAX_SPAWN_SLIME = 100;
     private static final Random random = new Random();
