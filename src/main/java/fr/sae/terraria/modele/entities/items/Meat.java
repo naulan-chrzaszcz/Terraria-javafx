@@ -21,11 +21,7 @@ public class Meat extends Item implements ConsumableObjectType
     {
         Player player = environment.getPlayer();
 
-        if (player.getPv() < player.getPvMax()) {
-            Inventory inventory = player.getInventory();
-
+        if (player.getPv() < player.getPvMax())
             player.setPv(player.getPv() + 1);
-            inventory.get().get(inventory.getPosCursor()).remove();
-        }
     }
 }

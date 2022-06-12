@@ -63,13 +63,17 @@ public class Inventory
             if (nbStacksInventory == 0) {
                 Stack stack = new Stack();
                 stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue.intValue() < oldValue.intValue()) {
+                        Inventory inventory = player.getInventory();
+                        inventory.get().get(inventory.getPosCursor()).remove();
+                    }
+
                     if (newValue.intValue() <= 0) {
                         this.value.remove(stack);
                         this.player.setStackSelected(null);
                     }
                 });
                 stack.setItem(item);
-                stack.add();
                 this.value.add(stack);
                 this.player.setStackSelected(stack);
             } else {
@@ -93,7 +97,6 @@ public class Inventory
                     }
                 });
                 stack.setItem(item);
-                stack.add();
                 this.value.add(stack);
                 this.player.setStackSelected(stack);
             }

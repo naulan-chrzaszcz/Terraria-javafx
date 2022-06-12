@@ -76,13 +76,16 @@ public class View
     public static Image loadAnImage(final String path, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
         Image img = View.foundImage(path);
-        double width = img.getWidth();
-        double height = img.getHeight();
-        img.cancel();
+        if (!Objects.isNull(img)) {
+            double width = img.getWidth();
+            double height = img.getHeight();
+            img.cancel();
 
-        double widthScaled = width*scaleMultiplicatorWidth;
-        double heightScaled = height*scaleMultiplicatorHeight;
-        return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
+            double widthScaled = width*scaleMultiplicatorWidth;
+            double heightScaled = height*scaleMultiplicatorHeight;
+            return new Image(img.getUrl(), widthScaled, heightScaled, false, false, false);
+        }
+        return null;
     }
 
     public static ImageView createImageView(final Entity entity, final Image img)
