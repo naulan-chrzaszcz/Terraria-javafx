@@ -1,9 +1,13 @@
-module fr.sae.terraria {
+module fr.sae.terraria
+{
+    requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;
     requires java.desktop;
 
+    opens fr.sae.terraria to javafx.graphics;
+    exports fr.sae.terraria;
     opens fr.sae.terraria.controller to javafx.fxml;
     exports fr.sae.terraria.modele;
     opens fr.sae.terraria.modele to javafx.fxml;
