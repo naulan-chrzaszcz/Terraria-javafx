@@ -40,6 +40,7 @@ public class Animation
 
 
     public double getFrame() { return this.frame.get(); }
+    public double getEndFrame() { return this.endFrame; }
     public DoubleProperty getFrameProperty() { return this.frame; }
 
     /** Spécifie à quelle frame l'animation sur le Sprite Sheet doit s'arrêter */

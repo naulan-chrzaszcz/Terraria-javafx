@@ -51,7 +51,11 @@ public abstract class EntityView
             this.entity.getAnimation().setEndFrame(newEndFrame);
         });
 
-        this.entity.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> this.animation(newFrame.intValue()));
+        this.entity.getAnimation().getFrameProperty().addListener((obs, oldFrame, newFrame) -> {
+            if(newFrame.intValue() >= this.entity.getAnimation().getEndFrame())
+                this.animation(oldFrame.intValue());
+            else this.animation(newFrame.intValue());
+        });
     }
 
     /** Affiche l'entité à l'écran et démarre l'animation */
