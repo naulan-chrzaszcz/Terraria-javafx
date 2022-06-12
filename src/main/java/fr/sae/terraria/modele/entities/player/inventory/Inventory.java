@@ -49,7 +49,7 @@ public class Inventory
         });
     }
 
-    private int nbStacksIntoInventory() { return this.value.size(); }
+    public int nbStacksIntoInventory() { return this.value.size(); }
 
     /**
      * Place des objets de type rangeable dans l'inventaire.
@@ -91,6 +91,11 @@ public class Inventory
                 // Si tous les stacks present sont pleins ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
                 Stack stack = new Stack();
                 stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue.intValue() < oldValue.intValue()) {
+                        Inventory inventory = player.getInventory();
+                        inventory.get().get(inventory.getPosCursor()).remove();
+                    }
+
                     if (newValue.intValue() <= 0) {
                         this.value.remove(stack);
                         this.player.setStackSelected(null);
@@ -149,6 +154,7 @@ public class Inventory
     public IntegerProperty posCursorProperty() { return this.posCursor; }
 
 
+    public Stack getStack() { return this.value.get(this.getPosCursor()); }
     public int getPosCursor() { return this.posCursor.get(); }
     public ObservableList<Stack> get() { return this.value; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }

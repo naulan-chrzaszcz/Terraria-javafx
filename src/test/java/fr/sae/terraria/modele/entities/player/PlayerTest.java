@@ -8,10 +8,8 @@ import fr.sae.terraria.modele.entities.items.Coal;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.geometry.Rectangle2D;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
-
-import java.awt.*;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
