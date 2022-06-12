@@ -54,7 +54,36 @@ public class PlayerTest
 
     @Test public final void collideTest()
     {
+        /*
+        // Le TOP et le BOTTOM est un pet complex à tester dans un JUnit
+        Dirt dirtLeft = new Dirt(environment, 1, 1);
+        dirtLeft.setRect(1, 1);
+        environment.getEntities().add(dirtLeft);
+        Dirt dirtRight = new Dirt(environment, 5, 1);
+        dirtRight.setRect(1, 1);
+        environment.getEntities().add(dirtRight);
+        player.setRect(1, 1);
+        player.setVelocity(0);
+        player.setY(1);
 
+        player.setX(3);
+        player.moveLeft();
+        player.collide();
+
+        assertTrue(player.isMovingLeft());
+
+        player.setX(1);
+        player.moveLeft();
+        player.collide();
+
+        assertTrue(player.isIDLEonX());
+
+        player.setX(5);
+        player.moveRight();
+        player.collide();
+
+        assertTrue(player.isIDLEonX());
+         */
     }
 
     @Test public final void hitTest()
