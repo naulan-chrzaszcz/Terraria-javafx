@@ -2,12 +2,16 @@ package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.items.Coal;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
+import javafx.geometry.Rectangle2D;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeAll;
+
+import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -85,9 +89,31 @@ public class PlayerTest
 
     }
 
-    @Test public final void interactWithBlockTest()
+    @Test public final void interactWithBlockTest()     // TODO: Le nom est probablement mal choisie
     {
+        Rectangle2D blockSelected;
+        double beforePv;
+        Player player = environment.getPlayer();
 
+        Dirt dirt = new Dirt(environment, 1, 1);
+        dirt.setRect(1, 1);
+        environment.getEntities().add(dirt);
+        blockSelected = new Rectangle2D(1, 1, 1, 1);
+
+        beforePv = dirt.getPv();
+        player.interactWithBlock(blockSelected);
+        assertEquals(beforePv - 1, dirt.getPv());
+        environment.getEntities().remove(dirt);
+
+
+        Rabbit rabbit = new Rabbit(environment, 10, 10);
+        rabbit.setRect(1, 1);
+        environment.getEntities().add(rabbit);
+        blockSelected = new Rectangle2D(10, 10, 1, 1);
+
+        beforePv = rabbit.getPv();
+        player.interactWithBlock(blockSelected);
+        assertEquals(beforePv - 1, rabbit.getPv());
     }
 
     @Test public final void placeBlockTest()
