@@ -102,4 +102,33 @@ public class PlayerTest
         ((Vodka) player.getStackSelected().getItem()).consumes();
         assertTrue(player.drunkProperty().get());
     }
+
+    @Test public final void pickupTest()
+    {
+        Player player = environment.getPlayer();
+        player.getInventory().posCursorProperty().set(0);
+
+
+        // Test avec de la viande
+        player.pickup(new Meat(environment));
+        assertTrue(player.getStackSelected().getItem() instanceof Meat,
+                "Verifie si le stack est bien de la viande");
+        assertEquals(player.getStackSelected().getNbItems(), 1,
+                "Verifie s'il y a bien 1 objet dans le stack");
+        ((Meat) player.getStackSelected().getItem()).consumes();
+        player.getStackSelected().remove();
+
+        assertNull(player.getStackSelected());
+
+
+        // Test avec du charbon
+        player.pickup(new Coal());
+        assertTrue(player.getStackSelected().getItem() instanceof Coal,
+                "Verifie si le stack est bien du charbon");
+        assertEquals(player.getStackSelected().getNbItems(), 1,
+                "Verifie s'il y a bien 1 objet dans le stack");
+        player.getStackSelected().remove();
+
+        assertNull(player.getStackSelected());
+    }
 }
