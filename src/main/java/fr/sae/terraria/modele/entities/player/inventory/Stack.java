@@ -9,10 +9,7 @@ import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
-import fr.sae.terraria.modele.entities.tools.Axe;
-import fr.sae.terraria.modele.entities.tools.Bow;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
@@ -42,41 +39,46 @@ public class Stack
     {
         if (obj instanceof Dirt && this.item instanceof Dirt)
             return true;
-        else if (obj instanceof Rock && this.item instanceof Rock)
+        if (obj instanceof Rock && this.item instanceof Rock)
             return true;
-        else if (obj instanceof TallGrass && this.item instanceof TallGrass)
+        if (obj instanceof TallGrass && this.item instanceof TallGrass)
             return true;
-        else if (obj instanceof Torch && this.item instanceof Torch)
+        if (obj instanceof Torch && this.item instanceof Torch)
             return true;
-        else if (obj instanceof Meat && this.item instanceof Meat)
+        if (obj instanceof Meat && this.item instanceof Meat)
             return true;
-        else if (obj instanceof Axe && this.item instanceof Axe)
+        if (obj instanceof Vodka && this.item instanceof Vodka)
             return true;
-        else if (obj instanceof Vodka && this.item instanceof Vodka)
-            return true;
-        else if (obj instanceof Bow && this.item instanceof Bow)
-            return true;
-        else if (obj instanceof Pickaxe && this.item instanceof Pickaxe)
-            return true;
-        else if (obj instanceof Sword && this.item instanceof Sword)
-            return true;
-        else if (obj instanceof Arrow && this.item instanceof Arrow)
-            return true;
-        else if (obj instanceof Item) {
+
+        if (obj instanceof Tool && this.item instanceof Tool) {
+            if (Tool.isAxe(((Tool) obj).getTypeOfTool()) && Tool.isAxe(((Tool) this.item).getTypeOfTool()))
+                return true;
+            if (Tool.isBow(((Tool) obj).getTypeOfTool()) && Tool.isBow(((Tool) this.item).getTypeOfTool()))
+                return true;
+            if (Tool.isPickaxe(((Tool) obj).getTypeOfTool()) && Tool.isPickaxe(((Tool) this.item).getTypeOfTool()))
+                return true;
+            if (Tool.isSword(((Tool) obj).getTypeOfTool()) && Tool.isSword(((Tool) this.item).getTypeOfTool()))
+                return true;
+            if (Tool.isArrow(((Tool) obj).getTypeOfTool()) && Tool.isArrow(((Tool) this.item).getTypeOfTool()))
+                return true;
+        }
+
+        if (obj instanceof Item && this.item instanceof Item) {
             if (Item.isCoal(obj) && Item.isCoal(this.item))
                 return true;
-            else if (Item.isFiber(obj) && Item.isFiber(this.item))
+            if (Item.isFiber(obj) && Item.isFiber(this.item))
                 return true;
-            else if (Item.isIron(obj) && Item.isIron(this.item))
+            if (Item.isIron(obj) && Item.isIron(this.item))
                 return true;
-            else if (Item.isStone(obj) && Item.isStone(this.item))
+            if (Item.isStone(obj) && Item.isStone(this.item))
                 return true;
-            else if (Item.isSilex(obj) && Item.isSilex(this.item))
+            if (Item.isSilex(obj) && Item.isSilex(this.item))
                 return true;
-            else if (Item.isWood(obj) && Item.isWood(this.item))
+            if (Item.isWood(obj) && Item.isWood(this.item))
                 return true;
-            else return false;
-        } else return false;
+        }
+
+        return false;
     }
 
     public IntegerProperty nbItemsProperty() { return this.nbItems; }

@@ -13,10 +13,7 @@ import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.Axe;
-import fr.sae.terraria.modele.entities.tools.Bow;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
@@ -114,19 +111,20 @@ public class InventoryView
                         view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Meat)
                         view.setImage(View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Axe)
-                        view.setImage(null);    // TODO
-                    else if (item instanceof Bow)
-                        view.setImage(null);    // TODO
-                    else if (item instanceof Pickaxe)
-                        view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Sword)
-                        view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
                         view.setImage(null);    // TODO
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
-                    else if (item instanceof Item) {
+                    else if (item instanceof Tool) {
+                        if (Tool.isAxe(((Tool) item).getTypeOfTool()))
+                            view.setImage(null);    // TODO
+                        else if (Tool.isBow(((Tool) item).getTypeOfTool()))
+                            view.setImage(null);    // TODO
+                        else if (Tool.isPickaxe(((Tool) item).getTypeOfTool()))
+                            view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Tool.isSword(((Tool) item).getTypeOfTool()))
+                            view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
+                    } else if (item instanceof Item) {
                         if (Item.isCoal(item))
                             view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Item.isFiber(item))

@@ -9,7 +9,6 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
 import fr.sae.terraria.modele.entities.tools.Tool;
 
 import java.util.Objects;
@@ -63,11 +62,10 @@ public class Rock extends Block implements StowableObjectType, CollideObjectType
 
         // Peu importe l'outil qu'utilise le joueur, si c'est un outil, il perdra de la durabilité, mais le bloc ne peut que se casser avec une pioche
         Stack stack = player.getStackSelected();
-        if (!Objects.isNull(stack)) {
-            if (stack.getItem() instanceof Pickaxe)
+        if (!Objects.isNull(stack) && stack.getItem() instanceof Tool) {
+            if (Tool.isPickaxe(((Tool) stack.getItem()).getTypeOfTool()))
                 this.setPv(this.getPv() - 1);
-            if (stack.getItem() instanceof Tool)
-                ((Tool) stack.getItem()).use();
+            ((Tool) stack.getItem()).use();
         }
     }
 

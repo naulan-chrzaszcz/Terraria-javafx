@@ -12,10 +12,7 @@ import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.Axe;
-import fr.sae.terraria.modele.entities.tools.Bow;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
@@ -96,17 +93,18 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Vodka)
                     this.itemSelectedImgView.setImage(this.vodkaItemImg);
-                else if (item instanceof Axe)
-                    this.itemSelectedImgView.setImage(null);
-                else if (item instanceof Bow)
-                    this.itemSelectedImgView.setImage(null);
-                else if (item instanceof Pickaxe)
-                    this.itemSelectedImgView.setImage(this.pickaxeItemImg);
-                else if (item instanceof Sword)
-                    this.itemSelectedImgView.setImage(this.swordItemImg);
                 else if (item instanceof Arrow)
                     this.itemSelectedImgView.setImage(null);
-                else if (item instanceof Item) {
+                else if (item instanceof Tool) {
+                    if (Tool.isAxe(((Tool) item).getTypeOfTool()))
+                        this.itemSelectedImgView.setImage(null);
+                    else if (Tool.isBow(((Tool) item).getTypeOfTool()))
+                        this.itemSelectedImgView.setImage(null);
+                    else if (Tool.isPickaxe(((Tool) item).getTypeOfTool()))
+                        this.itemSelectedImgView.setImage(this.pickaxeItemImg);
+                    else if (Tool.isSword(((Tool) item).getTypeOfTool()))
+                        this.itemSelectedImgView.setImage(this.swordItemImg);
+                } else if (item instanceof Item) {
                     if (Item.isCoal(item))
                         this.itemSelectedImgView.setImage(this.coalItemImg);
                     else if (Item.isFiber(item))

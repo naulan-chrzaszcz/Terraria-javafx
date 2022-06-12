@@ -12,9 +12,9 @@ import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import fr.sae.terraria.modele.entities.tools.Tool;
+import fr.sae.terraria.modele.entities.tools.ToolSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -125,9 +125,9 @@ public class Environment
             if (!caught[0]) {
                 this.player.pickup(new Torch(this));
                 this.player.pickup(new Meat(this));
-                this.player.pickup(new Pickaxe());
+                this.player.pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
                 this.player.pickup(new Vodka(this));
-                this.player.pickup(new Sword(Tool.CRAFTED_WITH_WOOD));
+                this.player.pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));
 
                 caught[0] = true;
             }
