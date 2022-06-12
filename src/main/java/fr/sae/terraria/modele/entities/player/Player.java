@@ -85,16 +85,21 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         }
     }
 
-    @Override public void hit() { }
+    @Override public void hit()
+    {
+        this.setPv(this.getPv() - 1);
+    }
 
     @Override public void spawn(int x, int y)
     {
         this.setX(x);
         this.setY(y);
 
-        Image image = View.loadAnImage("sprites/player/player_idle.png", environment.scaleMultiplicatorWidth, environment.scaleMultiplicatorHeight);
-        this.setRect((int) image.getWidth(), (int) image.getHeight());
-        image.cancel();
+        Image img = View.loadAnImage("sprites/player/player_idle.png", environment.scaleMultiplicatorWidth, environment.scaleMultiplicatorHeight);
+        if (!Objects.isNull(img)) {
+            this.setRect((int) img.getWidth(), (int) img.getHeight());
+            img.cancel();
+        } else this.setRect(10, 10);
 
         this.getGravity().setXInit(x);
         this.getGravity().setYInit(y);

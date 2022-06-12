@@ -33,7 +33,7 @@ public class Stack
     {
         super();
 
-        this.nbItems = new SimpleIntegerProperty(0);
+        this.nbItems = new SimpleIntegerProperty(1);
     }
 
     public boolean isSameItem(StowableObjectType object)
