@@ -77,4 +77,29 @@ public class PlayerTest
         assertEquals(player.getGravity().yInit, spawnLocY,
                 "Regarde si la localisation au niveau de la gestion de la gravité, en X est correcte");
     }
+
+    @Test public final void worldLimitTest()
+    {
+
+    }
+
+    @Test public final void interactWithBlockTest()
+    {
+
+    }
+
+    @Test public final void placeBlockTest()
+    {
+
+    }
+
+    @Test public final void drunkTest()
+    {
+        Player player = environment.getPlayer();
+        player.pickup(new Vodka(environment));
+
+        assertFalse(player.drunkProperty().get());
+        ((Vodka) player.getStackSelected().getItem()).consumes();
+        assertTrue(player.drunkProperty().get());
+    }
 }
