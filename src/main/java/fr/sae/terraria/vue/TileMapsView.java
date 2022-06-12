@@ -124,7 +124,7 @@ public class TileMapsView
                         blockView.setImage(this.dirtImg);
                     else if (((Dirt) block).getTypeOfFloor() == 0)
                         blockView.setImage(this.floorTopImg);
-                } else if (block instanceof Stone) {
+                } else if (block instanceof Rock) {
                     blockView.setImage(this.stoneImg);
                 } else if (block instanceof TallGrass) {
                     blockView.setImage(this.tallGrassImg);
@@ -287,11 +287,11 @@ public class TileMapsView
             for (int x = 0 ; x < tiles.getWidth() ; x++)
                 switch (tiles.getTile(x, y)) {
                     case TileMaps.STONE:
-                        Stone stoneEntity = new Stone(this.environment, x*this.tileWidth, y*this.tileHeight);
-                        stoneEntity.setRect(this.tileWidth, this.tileHeight);
+                        Rock rockEntity = new Rock(this.environment, x*this.tileWidth, y*this.tileHeight);
+                        rockEntity.setRect(this.tileWidth, this.tileHeight);
 
-                        this.environment.getEntities().add(stoneEntity);
-                        this.environment.getBlocks().add(stoneEntity);
+                        this.environment.getEntities().add(rockEntity);
+                        this.environment.getBlocks().add(rockEntity);
                         break;
                     case TileMaps.DIRT:
                         Dirt dirtSprite = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);

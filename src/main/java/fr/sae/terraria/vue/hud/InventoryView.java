@@ -4,7 +4,7 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Rock;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
@@ -104,7 +104,7 @@ public class InventoryView
 
                     if (item instanceof Dirt)
                         view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Stone)
+                    else if (item instanceof Rock)
                         view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof TallGrass)
                         view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
@@ -118,7 +118,7 @@ public class InventoryView
                         view.setImage(View.loadAnImage("loots/iron.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Meat)
                         view.setImage(View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Pierre)
+                    else if (item instanceof Stone)
                         view.setImage(View.loadAnImage("loots/pierre.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Silex)
                         view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));

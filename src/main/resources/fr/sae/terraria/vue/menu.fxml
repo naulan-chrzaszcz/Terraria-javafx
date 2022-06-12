@@ -85,6 +85,15 @@
                                 <Text text="1 Bâton | 2 Minerais de fer"/>
                             </HBox>
                             <Separator layoutY="158.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexique4"
+                                  layoutY="163.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="1 Roche" textAlignment="CENTER"/>
+                                <Text text="3 pierres"/>
+                            </HBox>
+                            <Separator layoutY="213.0" prefHeight="5.0" prefWidth="625.0"/>
                         </Pane>
                     </ScrollPane>
                 </center>

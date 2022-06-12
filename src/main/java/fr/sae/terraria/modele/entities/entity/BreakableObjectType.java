@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities.entity;
 
 
+import fr.sae.terraria.modele.entities.blocks.Rock;
+
 /**
  * <h1>Breakable Object Type</h1>
  * <h2>Interface utile à un objet qui hérite d'Entity</h2>
@@ -20,7 +22,7 @@ public interface BreakableObjectType
      *
      * @see fr.sae.terraria.modele.entities.blocks.Dirt
      * @see fr.sae.terraria.modele.entities.blocks.TallGrass
-     * @see fr.sae.terraria.modele.entities.blocks.Stone
+     * @see Rock
      */
     void breaks();
 }

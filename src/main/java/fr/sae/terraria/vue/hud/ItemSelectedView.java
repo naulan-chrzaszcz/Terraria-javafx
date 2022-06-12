@@ -3,7 +3,7 @@ package fr.sae.terraria.vue.hud;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Rock;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
@@ -84,7 +84,7 @@ public class ItemSelectedView
 
                 if (item instanceof Dirt)
                     this.itemSelectedImgView.setImage(this.dirtItemImg);
-                else if (item instanceof Stone)
+                else if (item instanceof Rock)
                     this.itemSelectedImgView.setImage(this.stoneItemImg);
                 else if (item instanceof TallGrass)
                     this.itemSelectedImgView.setImage(null);
@@ -100,7 +100,7 @@ public class ItemSelectedView
                     this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Vodka)
                     this.itemSelectedImgView.setImage(this.vodkaItemImg);
-                else if (item instanceof Pierre)
+                else if (item instanceof Stone)
                     this.itemSelectedImgView.setImage(this.pierreItemImg);
                 else if (item instanceof Silex)
                     this.itemSelectedImgView.setImage(this.silexItemImg);

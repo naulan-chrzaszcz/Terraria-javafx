@@ -6,6 +6,7 @@ import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Stone;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
@@ -15,7 +16,7 @@ import fr.sae.terraria.modele.entities.tools.Tool;
 import java.util.Objects;
 
 
-public class Stone extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
+public class Rock extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
     public static final int BREAK_RESISTANCE = 5;
 
@@ -25,7 +26,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
     private final double yOrigin;
 
 
-    public Stone(Environment environment, int x, int y)
+    public Rock(Environment environment, int x, int y)
     {
         super(x, y);
         this.environment = environment;
@@ -33,8 +34,10 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         this.xOrigin = x;
         this.yOrigin = y;
 
-        this.pv.set(Stone.BREAK_RESISTANCE);
+        this.pv.set(Rock.BREAK_RESISTANCE);
     }
+
+    public Rock(Environment environment) { this(environment, 0, 0); }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
 
@@ -48,7 +51,8 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         // Une fois le bloc cassé, de la pierre est ramassée et le bloc se supprime du Pane
         Player player = this.environment.getPlayer();
         if (this.getPv() <= 0) {
-            player.pickup(this);
+            for (int i = 0; i < 3; i++)
+                player.pickup(new Stone());
 
             int yIndexTile = (int) (getY()/this.environment.heightTile);
             int xIndexTile = (int) (getX()/this.environment.widthTile);
@@ -73,7 +77,7 @@ public class Stone extends Block implements StowableObjectType, CollideObjectTyp
         int widthTile = this.environment.widthTile;
         int heightTile = this.environment.heightTile;
 
-        Entity entity = new Stone(this.environment, x*widthTile, y*heightTile);
+        Entity entity = new Rock(this.environment, x*widthTile, y*heightTile);
         entity.setRect(widthTile, heightTile);
 
         Player player = this.environment.getPlayer();

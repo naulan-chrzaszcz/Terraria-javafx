@@ -88,6 +88,7 @@ public class Terraria extends Application
             } else {
                 if (!Objects.isNull(gameController.player)) {
                     menuController.player = gameController.player;
+                    menuController.environment = gameController.environment;
                     menuController.loop.play();
                     gameController.environment.getLoop().stop();
                 }

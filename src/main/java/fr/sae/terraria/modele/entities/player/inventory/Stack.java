@@ -2,7 +2,7 @@ package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
+import fr.sae.terraria.modele.entities.blocks.Rock;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
@@ -40,7 +40,7 @@ public class Stack
     {
         if (object instanceof Dirt && this.item instanceof Dirt)
             return true;
-        else if (object instanceof Stone && this.item instanceof Stone)
+        else if (object instanceof Rock && this.item instanceof Rock)
             return true;
         else if (object instanceof TallGrass && this.item instanceof TallGrass)
             return true;
@@ -54,7 +54,7 @@ public class Stack
             return true;
         else if (object instanceof Meat && this.item instanceof Meat)
             return true;
-        else if (object instanceof Pierre && this.item instanceof Pierre)
+        else if (object instanceof Stone && this.item instanceof Stone)
             return true;
         else if (object instanceof Silex && this.item instanceof Silex)
             return true;

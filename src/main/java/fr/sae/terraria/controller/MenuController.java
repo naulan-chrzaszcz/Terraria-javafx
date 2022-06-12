@@ -1,10 +1,15 @@
 package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.entities.blocks.Rock;
+import fr.sae.terraria.modele.entities.items.Stone;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
@@ -23,9 +28,11 @@ public class MenuController implements Initializable
     @FXML public Pane displayInventory;
     @FXML public Pane displayLexique;
     @FXML public HBox HBoxText;
+    @FXML public HBox lexique4;
 
     public Timeline loop;
     private Stage stage;
+    public Environment environment = null;
     public Player player = null;
     public double scaleMultiplicatorWidth;
     public double scaleMultiplicatorHeight;
@@ -47,11 +54,30 @@ public class MenuController implements Initializable
 
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             if (!Objects.isNull(this.player)) {
-                System.out.println(this.player.getInventory());
+                // System.out.println(this.player.getInventory());
             }
         }));
 
         this.loop.getKeyFrames().add(keyFrame);
         this.loop.play();
+
+        // Craft de la roche à partir de 3 pierres
+        this.lexique4.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED")) {
+                System.out.println("click");
+
+                int i = this.player.getInventory().get().size()-1;
+                while (i > 0 && !(this.player.getInventory().get().get(i).getItem() instanceof Stone) && this.player.getInventory().get().get(i).getNbItems() > 2)
+                    i--;
+
+                Stack stack = this.player.getInventory().get().get(i);
+                System.out.println(stack.getItem());
+                if (stack.getItem() instanceof Stone) {
+                    for (int j = 0; j < 3; j++)
+                        stack.remove();
+                    this.player.pickup(new Rock(this.environment));
+                }
+            }
+        });
     }
 }
