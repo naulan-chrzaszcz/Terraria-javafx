@@ -49,6 +49,25 @@ public class Inventory
         });
     }
 
+    private void createStack(StowableObjectType item)
+    {
+        Stack stack = new Stack();
+        stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() < oldValue.intValue()) {
+                Inventory inventory = player.getInventory();
+                inventory.get().get(inventory.getPosCursor()).remove();
+            }
+
+            if (newValue.intValue() <= 0) {
+                this.value.remove(stack);
+                this.player.setStackSelected(null);
+            }
+        });
+        stack.setItem(item);
+        this.value.add(stack);
+        this.player.setStackSelected(stack);
+    }
+
     public int nbStacksIntoInventory() { return this.value.size(); }
 
     /**
@@ -61,21 +80,7 @@ public class Inventory
 
         if (nbStacksInventory < NB_BOXES_MAX) {
             if (nbStacksInventory == 0) {
-                Stack stack = new Stack();
-                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue.intValue() < oldValue.intValue()) {
-                        Inventory inventory = player.getInventory();
-                        inventory.get().get(inventory.getPosCursor()).remove();
-                    }
-
-                    if (newValue.intValue() <= 0) {
-                        this.value.remove(stack);
-                        this.player.setStackSelected(null);
-                    }
-                });
-                stack.setItem(item);
-                this.value.add(stack);
-                this.player.setStackSelected(stack);
+                this.createStack(item);
             } else {
                 for (Stack stack : this.value) {
                     int beforeSize = stack.getNbItems();
@@ -87,23 +92,8 @@ public class Inventory
                     if (beforeSize != afterSize)
                         return;
                 }
-
                 // Si tous les stacks present sont pleins ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
-                Stack stack = new Stack();
-                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue.intValue() < oldValue.intValue()) {
-                        Inventory inventory = player.getInventory();
-                        inventory.get().get(inventory.getPosCursor()).remove();
-                    }
-
-                    if (newValue.intValue() <= 0) {
-                        this.value.remove(stack);
-                        this.player.setStackSelected(null);
-                    }
-                });
-                stack.setItem(item);
-                this.value.add(stack);
-                this.player.setStackSelected(stack);
+                this.createStack(item);
             }
         }
     }
