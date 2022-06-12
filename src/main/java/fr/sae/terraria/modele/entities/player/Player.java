@@ -26,7 +26,6 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;
 
-    private final ObjectProperty objectWasPickup;
     private final SimpleBooleanProperty drunk;
 
     private final Inventory inventory;
@@ -43,9 +42,6 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.mouseInput = new EnumMap<>(MouseButton.class);
-
-        this.objectWasPickup = new SimpleObjectProperty(null);
-        this.objectWasPickup.addListener((obs, oldObject, newObject) -> this.inventory.put((StowableObjectType) newObject));
     }
 
     @Override public void updates()
@@ -162,7 +158,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         });
     }
 
-    public void pickup(StowableObjectType pickupObject) { this.objectWasPickup.set(pickupObject); }
+    public void pickup(StowableObjectType pickupObject) { this.inventory.put(pickupObject); }
 
     public SimpleBooleanProperty drunkProperty() { return drunk; }
 
