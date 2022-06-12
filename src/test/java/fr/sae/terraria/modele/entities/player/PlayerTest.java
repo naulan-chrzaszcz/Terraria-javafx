@@ -43,4 +43,20 @@ public class PlayerTest
         assertEquals(previousPosX - player.getVelocity(), player.getX(),
                 "Test: déplacement vers la gauche");
     }
+
+
+    @Test public final void collideTest()
+    {
+
+    }
+
+    @Test public final void hitTest()
+    {
+        Player player = environment.getPlayer();
+        double previousPv = player.getPv();
+        player.hit();
+
+        assertEquals(previousPv - 1, player.getPv(),
+                "Vérifie s'il y a bien subit un dégât");
+    }
 }
