@@ -19,6 +19,7 @@ import java.util.Objects;
 public class Rock extends Block implements StowableObjectType, CollideObjectType, PlaceableObjectType
 {
     public static final int BREAK_RESISTANCE = 5;
+    public static final int STONE_LOOTS = 3;
 
     private final Environment environment;
 

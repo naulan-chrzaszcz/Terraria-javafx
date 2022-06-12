@@ -64,16 +64,13 @@ public class MenuController implements Initializable
         // Craft de la roche à partir de 3 pierres
         this.lexique4.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED")) {
-                System.out.println("click");
-
                 int i = this.player.getInventory().get().size()-1;
-                while (i > 0 && !(this.player.getInventory().get().get(i).getItem() instanceof Stone) && this.player.getInventory().get().get(i).getNbItems() > 2)
+                while (i > 0 && !(this.player.getInventory().get().get(i).getItem() instanceof Stone) && this.player.getInventory().get().get(i).getNbItems() >= Rock.STONE_LOOTS)
                     i--;
 
                 Stack stack = this.player.getInventory().get().get(i);
-                System.out.println(stack.getItem());
                 if (stack.getItem() instanceof Stone) {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < Rock.STONE_LOOTS; j++)
                         stack.remove();
                     this.player.pickup(new Rock(this.environment));
                 }
