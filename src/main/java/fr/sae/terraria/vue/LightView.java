@@ -3,7 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
@@ -57,8 +57,8 @@ public class LightView {
         this.initTorchListener(env.getTorches());
     }
 
-    private void initTorchListener(ObservableList<Torch> torches) {
-        torches.addListener((ListChangeListener<? super Torch>) c -> {
+    private void initTorchListener(ObservableList<Block> torches) {
+        torches.addListener((ListChangeListener<? super Block>) c -> {
             while(c.next()){
                 this.filterPane.getChildren().clear();
                 addTochLights();

@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.player.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

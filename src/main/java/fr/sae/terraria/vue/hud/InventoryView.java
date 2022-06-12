@@ -4,9 +4,7 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.Rock;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -101,21 +99,22 @@ public class InventoryView
                     Stack stack = c.getAddedSubList().get(0);
                     StowableObjectType item = stack.getItem();
 
-                    if (Block.isDirt(item))
-                        view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Rock)
-                        view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof TallGrass)
-                        view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Torch)
-                        view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Meat)
+                    if (item instanceof Meat)
                         view.setImage(View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
                         view.setImage(null);    // TODO
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
-                    else if (item instanceof Tool) {
+                    else if (item instanceof Block) {
+                        if (Block.isDirt((Block) item))
+                            view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isRock((Block) item))
+                            view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isTallGrass((Block) item))
+                            view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isTorch((Block) item))
+                            view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
+                    } else if (item instanceof Tool) {
                         if (Tool.isAxe(((Tool) item).getTypeOfTool()))
                             view.setImage(null);    // TODO
                         else if (Tool.isBow(((Tool) item).getTypeOfTool()))

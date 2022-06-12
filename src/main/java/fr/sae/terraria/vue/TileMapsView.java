@@ -5,7 +5,10 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
-import fr.sae.terraria.modele.entities.blocks.*;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
+import fr.sae.terraria.modele.entities.blocks.TallGrass;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.vue.entities.RabbitView;
 import fr.sae.terraria.vue.entities.SlimeView;
 import javafx.collections.ListChangeListener;
@@ -114,22 +117,20 @@ public class TileMapsView
                 Block block = c.getAddedSubList().get(0);
 
                 blockView.setImage(null);
-                if (block instanceof Dirt) {
-                    Dirt dirt = (Dirt) block;
-                    if (TileSet.isFloorTopTile(dirt.getTypeOfFloor()))
-                        blockView.setImage(this.floorTopImg);
-                    else if (TileSet.isFloorLeftTile(dirt.getTypeOfFloor()))
-                        blockView.setImage(this.floorLeftImg);
-                    else if (TileSet.isFloorRightTile(dirt.getTypeOfFloor()))
-                        blockView.setImage(this.floorRightImg);
-                    else if (TileSet.isDirtTile(dirt.getTypeOfFloor()))
-                        blockView.setImage(this.dirtImg);
-                } else if (block instanceof Rock) {
+                if (Block.isDirt(block)) {
+                    blockView.setImage(this.dirtImg);
+                } else if (Block.isFloorTop(block)) {
+                    blockView.setImage(this.floorTopImg);
+                } else if (Block.isFloorLeft(block)) {
+                    blockView.setImage(this.floorLeftImg);
+                } else if (Block.isFloorRight(block)) {
+                    blockView.setImage(this.floorRightImg);
+                } else if (Block.isRock(block)) {
                     blockView.setImage(this.stoneImg);
-                } else if (block instanceof TallGrass) {
+                } else if (Block.isTallGrass(block)) {
                     blockView.setImage(this.tallGrassImg);
                     ((TallGrass) block).getTallGrassGrowthProperty().addListener((observable, oldValue, newValue) -> blockView.setViewport(new Rectangle2D(0, ((int) ((this.tallGrassImg.getHeight() / (TallGrass.GROWTH_TALL_GRASS_STEP) * newValue.intValue()) - tallGrassImg.getHeight())), this.tallGrassImg.getWidth(), this.tallGrassImg.getHeight())));
-                } else if (block instanceof Torch) {
+                } else if (Block.isTorch(block)) {
                     blockView.setImage(this.torchImg);
                 }
 
@@ -203,7 +204,7 @@ public class TileMapsView
      *  @param c Cet argument est present car on passe cette fonction en tant que reference (this::updatesRabbitsView),
      *          l'argument est là pour obtenir les informations concernant les modifications dans liste <code>List<Block> rabbits;</code>
      */
-    private void updatesTreeView(ListChangeListener.Change<? extends Tree> c)
+    private void updatesTreeView(ListChangeListener.Change<? extends Block> c)
     {
         while (c.next()) {
             if (c.wasAdded()) {
@@ -255,7 +256,7 @@ public class TileMapsView
                 trunkFootView.setViewport(viewportTrunkFoot);
                 group.getChildren().add(trunkFootView);
 
-                Tree tree = c.getAddedSubList().get(0);
+                Tree tree = (Tree) c.getAddedSubList().get(0);
                 for (int i = 0; i < group.getChildren().size(); i++) {
                     ImageView treeView = (ImageView) group.getChildren().get(i);
 
@@ -281,27 +282,34 @@ public class TileMapsView
     public void displayMaps(TileMaps tiles)
     {
         for (int y = 0; y < tiles.getHeight() ; y++)
-            for (int x = 0 ; x < tiles.getWidth() ; x++)
+            for (int x = 0 ; x < tiles.getWidth() ; x++) {
+                int xBlock = x * this.tileWidth;
+                int yBlock = y * this.tileHeight;
+
                 if (tiles.isRockTile(x, y)) {
-                    Rock rockEntity = new Rock(this.environment, x*this.tileWidth, y*this.tileHeight);
+                    Block rockEntity = new Block(BlockSet.ROCK, this.environment, xBlock, yBlock);
                     rockEntity.setRect(this.tileWidth, this.tileHeight);
 
                     this.environment.getEntities().add(rockEntity);
                     this.environment.getBlocks().add(rockEntity);
                 } else if (tiles.isDirtTile(x, y)) {
-                    Dirt dirtSprite = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
-                    dirtSprite.setTypeOfFloor(TileSet.DIRT);
+                    Block dirtSprite = new Block(BlockSet.DIRT, this.environment, xBlock, yBlock);
                     dirtSprite.setRect(this.tileWidth, this.tileHeight);
 
                     this.environment.getEntities().add(dirtSprite);
                     this.environment.getBlocks().add(dirtSprite);
                 } else if (tiles.isFloorTopTile(x, y) || tiles.isFloorLeftTile(x, y) || tiles.isFloorRightTile(x, y)) {
-                    Dirt floorEntity = new Dirt(this.environment, x*this.tileWidth, y*this.tileHeight);
-                    floorEntity.setTypeOfFloor((tiles.isFloorTopTile(x, y)) ? TileSet.FLOOR_TOP : (tiles.isFloorRightTile(x, y)) ? TileSet.FLOOR_RIGHT : TileSet.FLOOR_LEFT);
+                    Block floorEntity = null;
+                    if (tiles.isFloorTopTile(x, y))
+                        floorEntity = new Block(BlockSet.FLOOR_TOP, this.environment, xBlock, yBlock);
+                    else if (tiles.isFloorLeftTile(x, y))
+                        floorEntity = new Block(BlockSet.FLOOR_LEFT, this.environment, xBlock, yBlock);
+                    else floorEntity = new Block(BlockSet.FLOOR_RIGHT, this.environment, xBlock, yBlock);
                     floorEntity.setRect(this.tileWidth, this.tileHeight);
 
                     this.environment.getEntities().add(floorEntity);
                     this.environment.getBlocks().add(floorEntity);
                 }
+            }
     }
 }

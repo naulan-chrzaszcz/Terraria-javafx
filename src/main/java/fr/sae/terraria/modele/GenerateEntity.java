@@ -2,6 +2,8 @@ package fr.sae.terraria.modele;
 
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -17,7 +19,6 @@ import static fr.sae.terraria.modele.entities.Slime.SLIME_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.Slime.WHEN_SPAWN_A_SLIME;
 import static fr.sae.terraria.modele.entities.blocks.TallGrass.TALL_GRASS_SPAWN_RATE;
 import static fr.sae.terraria.modele.entities.blocks.TallGrass.WHEN_SPAWN_A_TALL_GRASS;
-import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
 
 
 /**
@@ -26,6 +27,7 @@ import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
  */
 public class GenerateEntity
 {
+    private static final int TREE_SPAWN_RATE = 2500;
     public static final int MAX_SPAWN_RABBIT = 100;
     public static final int MAX_SPAWN_SLIME = 100;
     private static final Random random = new Random();

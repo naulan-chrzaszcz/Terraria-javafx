@@ -4,7 +4,6 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.Rabbit;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.geometry.Rectangle2D;

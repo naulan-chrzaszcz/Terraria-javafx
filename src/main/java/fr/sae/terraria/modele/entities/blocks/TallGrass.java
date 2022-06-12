@@ -5,8 +5,6 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
-import fr.sae.terraria.modele.entities.items.Item;
-import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -28,9 +26,9 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
     private final Environment environment;
 
 
-    public TallGrass(Environment environment, int x, int y)
+    public TallGrass(final Environment environment, int x, int y)
     {
-        super(x, y);
+        super(BlockSet.TALL_GRASS, environment, x, y);
         this.environment = environment;
 
         this.tallGrassGrowth = new SimpleDoubleProperty(0);
@@ -43,22 +41,6 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
         // L'animation de pousse
         if (((int) (tallGrassGrowth.get())) < TallGrass.GROWTH_TALL_GRASS_STEP)
             tallGrassGrowth.set(tallGrassGrowth.get() + TallGrass.GROWTH_SPEED);
-    }
-
-    /** Joue un son et donne au joueur entre 1 et 3 fibres */
-    @Override public void breaks()
-    {
-        Environment.playSound("sound/cut.wav", false);
-
-        for (int loot = (int) (Math.random()*3)+1; loot < LOOTS_FIBRE_MAX; loot++)
-            this.environment.getPlayer().pickup(Item.FIBER);
-
-        boolean mustDropVodka = Math.random() < Vodka.DROP_RATE;
-        if (mustDropVodka)
-            this.environment.getPlayer().pickup(new Vodka(environment));
-
-        this.environment.getEntities().remove(this);
-        this.environment.getBlocks().remove(this);
     }
 
     /** Reproduit des hautes herbes à gauche et à droite de celle parente */

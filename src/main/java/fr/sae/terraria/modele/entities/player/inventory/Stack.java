@@ -1,10 +1,7 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
-import fr.sae.terraria.modele.entities.Arrow;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Rock;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -37,18 +34,21 @@ public class Stack
 
     public boolean isSameItem(StowableObjectType obj)
     {
-        if (obj instanceof Dirt && this.item instanceof Dirt)
-            return true;
-        if (obj instanceof Rock && this.item instanceof Rock)
-            return true;
-        if (obj instanceof TallGrass && this.item instanceof TallGrass)
-            return true;
-        if (obj instanceof Torch && this.item instanceof Torch)
-            return true;
         if (obj instanceof Meat && this.item instanceof Meat)
             return true;
         if (obj instanceof Vodka && this.item instanceof Vodka)
             return true;
+
+        if (obj instanceof Block && this.item instanceof Block) {
+            if (Block.isDirt((Block) obj) && Block.isDirt((Block) this.item))
+                return true;
+            if (Block.isRock((Block) obj) && Block.isRock((Block) this.item))
+                return true;
+            if (Block.isTallGrass((Block) obj) && Block.isTallGrass((Block) this.item))
+                return true;
+            if (Block.isTorch((Block) obj) && Block.isTorch((Block) this.item))
+                return true;
+        }
 
         if (obj instanceof Tool && this.item instanceof Tool) {
             if (Tool.isAxe(((Tool) obj).getTypeOfTool()) && Tool.isAxe(((Tool) this.item).getTypeOfTool()))

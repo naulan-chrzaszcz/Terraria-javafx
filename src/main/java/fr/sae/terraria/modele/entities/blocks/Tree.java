@@ -13,13 +13,13 @@ public class Tree extends Block implements SpawnableObjectType
     private final Environment environment;
 
 
-    public Tree(Environment environment, int x, int y)
+    public Tree(final Environment environment, int x, int y)
     {
-        super(x, y);
+        super(BlockSet.TREE, environment, x, y);
         this.environment = environment;
     }
 
-    public Tree(Environment environment) { this(environment, 0, 0); }
+    public Tree(final Environment environment) { this(environment, 0, 0); }
 
     @Override public void updates() { /* TODO document why this method is empty */ }
 

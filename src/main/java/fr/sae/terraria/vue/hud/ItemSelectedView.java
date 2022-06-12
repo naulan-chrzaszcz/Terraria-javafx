@@ -2,10 +2,9 @@ package fr.sae.terraria.vue.hud;
 
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Rock;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Torch;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -81,21 +80,26 @@ public class ItemSelectedView
             if (!Objects.isNull(player.getStackSelected())) {
                 StowableObjectType item = player.getStackSelected().getItem();
 
-                if (item instanceof Dirt)
-                    this.itemSelectedImgView.setImage(this.dirtItemImg);
-                else if (item instanceof Rock)
-                    this.itemSelectedImgView.setImage(this.rockItemImg);
-                else if (item instanceof TallGrass)
-                    this.itemSelectedImgView.setImage(null);
-                else if (item instanceof Torch)
-                    this.itemSelectedImgView.setImage(this.torchItemImg);
-                else if (item instanceof Meat)
+                if (item instanceof Meat)
                     this.itemSelectedImgView.setImage(this.meatItemImg);
                 else if (item instanceof Vodka)
                     this.itemSelectedImgView.setImage(this.vodkaItemImg);
                 else if (item instanceof Arrow)
                     this.itemSelectedImgView.setImage(null);
-                else if (item instanceof Tool) {
+
+                if (item instanceof Block)
+                {
+                    if (Block.isDirt((Block) item))
+                        this.itemSelectedImgView.setImage(this.dirtItemImg);
+                    else if (Block.isRock((Block) item))
+                        this.itemSelectedImgView.setImage(this.rockItemImg);
+                    else if (Block.isTallGrass((Block) item))
+                        this.itemSelectedImgView.setImage(null);
+                    else if (Block.isTorch((Block) item))
+                        this.itemSelectedImgView.setImage(this.torchItemImg);
+                }
+
+                if (item instanceof Tool) {
                     if (Tool.isAxe(((Tool) item).getTypeOfTool()))
                         this.itemSelectedImgView.setImage(null);
                     else if (Tool.isBow(((Tool) item).getTypeOfTool()))
@@ -104,7 +108,9 @@ public class ItemSelectedView
                         this.itemSelectedImgView.setImage(this.pickaxeItemImg);
                     else if (Tool.isSword(((Tool) item).getTypeOfTool()))
                         this.itemSelectedImgView.setImage(this.swordItemImg);
-                } else if (item instanceof Item) {
+                }
+
+                if (item instanceof Item) {
                     if (Item.isCoal(item))
                         this.itemSelectedImgView.setImage(this.coalItemImg);
                     else if (Item.isFiber(item))

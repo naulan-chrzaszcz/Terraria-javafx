@@ -1,8 +1,6 @@
 package fr.sae.terraria.modele.entities.entity;
 
 
-import fr.sae.terraria.modele.entities.blocks.Rock;
-
 /**
  * <h1>Placeable Object Type</h1>
  * <h2>Interface utile sur les objets qui héritent de block</h2>
