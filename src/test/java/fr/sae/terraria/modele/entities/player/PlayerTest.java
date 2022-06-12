@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities.player;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.TileMaps;
+import fr.sae.terraria.modele.entities.blocks.Dirt;
 import fr.sae.terraria.modele.entities.items.Coal;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
@@ -90,7 +92,15 @@ public class PlayerTest
 
     @Test public final void placeBlockTest()
     {
+        Player player = environment.getPlayer();
+        TileMaps tileMaps = environment.getTileMaps();
+        player.pickup(new Dirt(environment, 1, 1));
 
+        assertEquals(tileMaps.getTile(0, 0), TileMaps.SKY);
+        player.placeBlock(0, 0);
+        assertEquals(tileMaps.getTile(0, 0), TileMaps.DIRT);
+
+        assertNull(player.getStackSelected());
     }
 
     @Test public final void drunkTest()
@@ -98,9 +108,11 @@ public class PlayerTest
         Player player = environment.getPlayer();
         player.pickup(new Vodka(environment));
 
-        assertFalse(player.drunkProperty().get());
+        assertFalse(player.drunkProperty().get(),
+                "Vérifie si il n'est pas bourré");
         ((Vodka) player.getStackSelected().getItem()).consumes();
-        assertTrue(player.drunkProperty().get());
+        assertTrue(player.drunkProperty().get(),
+                "Verife si il est bourré");
     }
 
     @Test public final void pickupTest()
