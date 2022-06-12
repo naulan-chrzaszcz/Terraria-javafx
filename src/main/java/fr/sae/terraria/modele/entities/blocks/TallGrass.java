@@ -5,8 +5,6 @@ import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
-import fr.sae.terraria.modele.entities.items.Fiber;
-import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -28,9 +26,9 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
     private final Environment environment;
 
 
-    public TallGrass(Environment environment, int x, int y)
+    public TallGrass(final Environment environment, int x, int y)
     {
-        super(x, y);
+        super(BlockSet.TALL_GRASS, environment, x, y);
         this.environment = environment;
 
         this.tallGrassGrowth = new SimpleDoubleProperty(0);
@@ -45,22 +43,6 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             tallGrassGrowth.set(tallGrassGrowth.get() + TallGrass.GROWTH_SPEED);
     }
 
-    /** Joue un son et donne au joueur entre 1 et 3 fibres */
-    @Override public void breaks()
-    {
-        Environment.playSound("sound/cut.wav", false);
-
-        for (int loot = (int) (Math.random()*3)+1; loot < LOOTS_FIBRE_MAX; loot++)
-            this.environment.getPlayer().pickup(new Fiber());
-
-        boolean mustDropVodka = Math.random() < Vodka.DROP_RATE;
-        if (mustDropVodka)
-            this.environment.getPlayer().pickup(new Vodka(environment));
-
-        this.environment.getEntities().remove(this);
-        this.environment.getBlocks().remove(this);
-    }
-
     /** Reproduit des hautes herbes à gauche et à droite de celle parente */
     @Override public List<Entity> reproduction(Environment environment)
     {
@@ -68,11 +50,12 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
 
         boolean tallGrassMustReproduce = environment.getTicks()%TallGrass.REPRODUCTION_RATE == 0;
         if (tallGrassMustReproduce) {
+            final TileMaps tileMaps = environment.getTileMaps();
             List<Entity> entities = environment.getEntities();
             int heightTile = environment.heightTile;
             int widthTile = environment.widthTile;
-            int widthMaps = environment.getTileMaps().getWidth();
-            int heightMaps = environment.getTileMaps().getHeight();
+            int widthMaps = tileMaps.getWidth();
+            int heightMaps = tileMaps.getHeight();
 
             int x = -1;
             int y = (int) (getY()/heightTile)+1;
@@ -98,13 +81,13 @@ public class TallGrass extends Block implements ReproductiveObjectType, Spawnabl
             // La place sur la carte
             boolean isntOutTheMap = (x >= 0 && x < widthMaps) && (y >= 0 && y < heightMaps);
             if (isntOutTheMap) {
-                boolean dontHaveTile = environment.getTileMaps().getTile(x, y) != TileMaps.SKY;
+                boolean dontHaveTile = !tileMaps.isSkyTile(x, y);
 
                 if (dontHaveTile) {
                     int xTallGrassChildren = (int) ((left == 0) ? (getX() - widthTile) : (getX() + widthTile));
                     int yTallGrassChildren = (int) getY();
 
-                    TallGrass tallGrassChildren = new TallGrass(this.environment, xTallGrassChildren, yTallGrassChildren);
+                    TallGrass tallGrassChildren = new TallGrass(environment, xTallGrassChildren, yTallGrassChildren);
                     tallGrassChildren.setRect(widthTile, heightTile);
                     children.add(tallGrassChildren);
                 }

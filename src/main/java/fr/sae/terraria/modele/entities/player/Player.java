@@ -6,9 +6,7 @@ import fr.sae.terraria.modele.entities.entity.*;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -26,7 +24,6 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;
 
-    private final ObjectProperty objectWasPickup;
     private final SimpleBooleanProperty drunk;
 
     private final Inventory inventory;
@@ -43,9 +40,6 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
         this.mouseInput = new EnumMap<>(MouseButton.class);
-
-        this.objectWasPickup = new SimpleObjectProperty(null);
-        this.objectWasPickup.addListener((obs, oldObject, newObject) -> this.inventory.put((StowableObjectType) newObject));
     }
 
     @Override public void updates()
@@ -131,11 +125,12 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     public void placeBlock(int xBlock, int yBlock)
     {
+        TileMaps tileMaps = this.environment.getTileMaps();
         boolean haveAnItemOnHand = !Objects.isNull(this.getStackSelected());
-        boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
+        boolean goodPlace = tileMaps.isSkyTile(xBlock, yBlock);
 
         if (haveAnItemOnHand && goodPlace) {
-            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected() instanceof ConsumableObjectType))
+            if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected().getItem() instanceof ConsumableObjectType))
                 return;
 
             if (this.getStackSelected().getItem() instanceof PlaceableObjectType)
@@ -161,7 +156,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         });
     }
 
-    public void pickup(StowableObjectType pickupObject) { this.objectWasPickup.set(pickupObject); }
+    public void pickup(StowableObjectType pickupObject) { this.inventory.put(pickupObject); }
 
     public SimpleBooleanProperty drunkProperty() { return drunk; }
 

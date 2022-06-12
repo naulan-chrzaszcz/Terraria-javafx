@@ -3,7 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
@@ -11,6 +11,7 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+
 
 public class LightView {
     private static final int CIRCLE_RAY = 3;
@@ -56,8 +57,8 @@ public class LightView {
         this.initTorchListener(env.getTorches());
     }
 
-    private void initTorchListener(ObservableList<Torch> torches) {
-        torches.addListener((ListChangeListener<? super Torch>) c -> {
+    private void initTorchListener(ObservableList<Block> torches) {
+        torches.addListener((ListChangeListener<? super Block>) c -> {
             while(c.next()){
                 this.filterPane.getChildren().clear();
                 addTochLights();
@@ -103,7 +104,7 @@ public class LightView {
             column = 0;
 
             while (column < this.tileMaps.getWidth() && !found && !wrongLine) {
-                if (this.tileMaps.getTile(column, line) != TileMaps.STONE)
+                if (!this.tileMaps.isRockTile(column, line))
                     wrongLine = true;
                 else if (column == this.tileMaps.getWidth() - 1)
                     found = true;
@@ -132,8 +133,8 @@ public class LightView {
         this.actualTunnel.setFill(NIGHT_COLOR);
 
         this.actualAir.opacityProperty().bind(this.clock.opacityNightFilterProperty());
-        this.actualFade.setOpacity(0.8);
-        this.actualTunnel.setOpacity(0.8);
+        this.actualFade.setOpacity(.8);
+        this.actualTunnel.setOpacity(.8);
     }
 
     private void addTochLights()

@@ -4,7 +4,7 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -12,9 +12,9 @@ import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import fr.sae.terraria.modele.entities.tools.Tool;
+import fr.sae.terraria.modele.entities.tools.ToolSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -42,7 +42,7 @@ public class Environment
     private final ObservableList<Rabbit> rabbits;
     private final ObservableList<Slime> slimes;
     // Permet d'update facilement les lumières des torches sur le filtre
-    private final ObservableList<Torch> torches;
+    private final ObservableList<Block> torches;
 
     private final TileMaps tileMaps;
     private final Player player;
@@ -123,11 +123,11 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             // TODO TEST
             if (!caught[0]) {
-                this.player.pickup(new Torch(this));
+                this.player.pickup(new Block(BlockSet.TORCH, this));
                 this.player.pickup(new Meat(this));
-                this.player.pickup(new Pickaxe());
+                this.player.pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
                 this.player.pickup(new Vodka(this));
-                this.player.pickup(new Sword(Tool.CRAFTED_WITH_WOOD));
+                this.player.pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));
 
                 caught[0] = true;
             }
@@ -145,7 +145,7 @@ public class Environment
             boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
-                for (int i = 0; i < Tree.TREE_CLUSTER; i++) // Génère par jour, 3 arbres
+                for (int i = 0; i < 15; i++) // Génère par jour, 3 arbres
                     GenerateEntity.treeRandomly(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbitRandomly(this);
@@ -193,7 +193,7 @@ public class Environment
     public ObservableList<Tree> getTrees() { return this.trees; }
     public ObservableList<Entity> getEntities() { return this.entities; }
     public ObservableList<Rabbit> getRabbits() { return this.rabbits; }
-    public ObservableList<Torch> getTorches() { return this.torches; }
+    public ObservableList<Block> getTorches() { return this.torches; }
     public ObservableList<Slime> getSlimes() { return this.slimes; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }

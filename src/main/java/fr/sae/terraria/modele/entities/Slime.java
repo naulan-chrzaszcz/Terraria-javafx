@@ -3,7 +3,7 @@ package fr.sae.terraria.modele.entities;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 
 import java.util.Map;
 import java.util.Objects;
@@ -84,9 +84,9 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
         Stack stack = this.environment.getPlayer().getStackSelected();
         if (!Objects.isNull(stack)) {
-            if (stack.getItem() instanceof Sword) {
-                Sword sword = (Sword) stack.getItem();
-                this.setPv(this.getPv() - (Sword.DEFAULT_DAMAGE*sword.getMaterial()));
+            if (Tool.isSword((Tool) stack.getItem())) {
+                Tool tool = (Tool) stack.getItem();
+                this.setPv(this.getPv() - tool.damage());
             }
         } else this.setPv(this.getPv() - .5);
     }

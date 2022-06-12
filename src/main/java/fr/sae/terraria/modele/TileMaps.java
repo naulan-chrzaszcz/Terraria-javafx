@@ -16,14 +16,7 @@ import java.io.FileReader;
  */
 public class TileMaps
 {
-    // Constantes
     public static final int TILE_DEFAULT_SIZE = 16;
-    public static final int SKY = 0;
-    public static final int STONE = 1;
-    public static final int DIRT = 2;
-    public static final int FLOOR_TOP = 3;
-    public static final int FLOOR_LEFT = 4;
-    public static final int FLOOR_RIGHT = 5;
 
     // Qui concerne la carte
     private int[][] maps;
@@ -92,6 +85,13 @@ public class TileMaps
             jsonReader.endObject();
         } catch (Exception e) { e.printStackTrace(); }
     }
+
+    public boolean isDirtTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.DIRT.ordinal(); }
+    public boolean isSkyTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.SKY.ordinal(); }
+    public boolean isRockTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.ROCK.ordinal(); }
+    public boolean isFloorTopTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.FLOOR_TOP.ordinal(); }
+    public boolean isFloorRightTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.FLOOR_RIGHT.ordinal(); }
+    public boolean isFloorLeftTile(double x, double y) { return this.getTile((int) x, (int) y) == TileSet.FLOOR_LEFT.ordinal(); }
 
 
     public int getHeight() { return this.maps.length; }
