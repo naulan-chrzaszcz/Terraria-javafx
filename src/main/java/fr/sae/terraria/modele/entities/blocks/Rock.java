@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;

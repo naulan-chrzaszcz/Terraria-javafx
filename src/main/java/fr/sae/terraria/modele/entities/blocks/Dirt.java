@@ -1,13 +1,11 @@
 package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.PlaceableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 
