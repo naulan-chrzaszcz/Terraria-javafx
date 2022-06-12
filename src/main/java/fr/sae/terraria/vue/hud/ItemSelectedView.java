@@ -3,8 +3,6 @@ package fr.sae.terraria.vue.hud;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.BlockSet;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -100,13 +98,13 @@ public class ItemSelectedView
                 }
 
                 if (item instanceof Tool) {
-                    if (Tool.isAxe(((Tool) item).getTypeOfTool()))
+                    if (Tool.isAxe((Tool) item))
                         this.itemSelectedImgView.setImage(null);
-                    else if (Tool.isBow(((Tool) item).getTypeOfTool()))
+                    else if (Tool.isBow((Tool) item))
                         this.itemSelectedImgView.setImage(null);
-                    else if (Tool.isPickaxe(((Tool) item).getTypeOfTool()))
+                    else if (Tool.isPickaxe((Tool) item))
                         this.itemSelectedImgView.setImage(this.pickaxeItemImg);
-                    else if (Tool.isSword(((Tool) item).getTypeOfTool()))
+                    else if (Tool.isSword((Tool) item))
                         this.itemSelectedImgView.setImage(this.swordItemImg);
                 }
 

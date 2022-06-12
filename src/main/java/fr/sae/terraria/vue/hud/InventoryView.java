@@ -4,7 +4,6 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -115,13 +114,13 @@ public class InventoryView
                         else if (Block.isTorch((Block) item))
                             view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
                     } else if (item instanceof Tool) {
-                        if (Tool.isAxe(((Tool) item).getTypeOfTool()))
+                        if (Tool.isAxe((Tool) item))
                             view.setImage(null);    // TODO
-                        else if (Tool.isBow(((Tool) item).getTypeOfTool()))
+                        else if (Tool.isBow((Tool) item))
                             view.setImage(null);    // TODO
-                        else if (Tool.isPickaxe(((Tool) item).getTypeOfTool()))
+                        else if (Tool.isPickaxe((Tool) item))
                             view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
-                        else if (Tool.isSword(((Tool) item).getTypeOfTool()))
+                        else if (Tool.isSword((Tool) item))
                             view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     } else if (item instanceof Item) {
                         if (Item.isCoal(item))

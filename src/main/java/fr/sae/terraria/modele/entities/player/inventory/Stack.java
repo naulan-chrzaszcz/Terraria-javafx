@@ -1,7 +1,6 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
@@ -51,15 +50,15 @@ public class Stack
         }
 
         if (obj instanceof Tool && this.item instanceof Tool) {
-            if (Tool.isAxe(((Tool) obj).getTypeOfTool()) && Tool.isAxe(((Tool) this.item).getTypeOfTool()))
+            if (Tool.isAxe((Tool) obj) && Tool.isAxe((Tool) this.item))
                 return true;
-            if (Tool.isBow(((Tool) obj).getTypeOfTool()) && Tool.isBow(((Tool) this.item).getTypeOfTool()))
+            if (Tool.isBow((Tool) obj) && Tool.isBow((Tool) this.item))
                 return true;
-            if (Tool.isPickaxe(((Tool) obj).getTypeOfTool()) && Tool.isPickaxe(((Tool) this.item).getTypeOfTool()))
+            if (Tool.isPickaxe((Tool) obj) && Tool.isPickaxe((Tool) this.item))
                 return true;
-            if (Tool.isSword(((Tool) obj).getTypeOfTool()) && Tool.isSword(((Tool) this.item).getTypeOfTool()))
+            if (Tool.isSword((Tool) obj) && Tool.isSword((Tool) this.item))
                 return true;
-            if (Tool.isArrow(((Tool) obj).getTypeOfTool()) && Tool.isArrow(((Tool) this.item).getTypeOfTool()))
+            if (Tool.isArrow((Tool) obj) && Tool.isArrow((Tool) this.item))
                 return true;
         }
 

@@ -11,6 +11,9 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
+import fr.sae.terraria.modele.entities.tools.Tool;
+import fr.sae.terraria.modele.entities.tools.ToolSet;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -112,7 +115,15 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             this.environment.getBlocks().remove(this);
         }
 
-        this.setPv(this.getPv() - 1);
+        if (isRock(this)) {
+            Stack item = this.environment.getPlayer().getStackSelected();
+            if (!Objects.isNull(item) && item.getItem() instanceof Tool) {
+                Tool tool = (Tool) item.getItem();
+                if (Tool.isPickaxe(tool))
+                    this.setPv(this.getPv() - 1);
+                tool.use();
+            }
+        } else this.setPv(this.getPv() - 1);
     }
 
     @Override public void place(final int x, final int y)
@@ -149,7 +160,6 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
     public static boolean isRock(final Block block) { return block.getTypeOfBlock() == BlockSet.ROCK; }
     public static boolean isTallGrass(final Block block) { return block.getTypeOfBlock() == BlockSet.TALL_GRASS; }
     public static boolean isTorch(final Block block) { return block.getTypeOfBlock() == BlockSet.TORCH; }
-
 
 
     public BlockSet getTypeOfBlock() { return this.typeOfBlock; }

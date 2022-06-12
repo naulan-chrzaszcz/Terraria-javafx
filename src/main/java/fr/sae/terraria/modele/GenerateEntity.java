@@ -2,8 +2,6 @@ package fr.sae.terraria.modele;
 
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
-import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.TallGrass;
 import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
@@ -80,12 +78,12 @@ public class GenerateEntity
     /** Range les positions du sol sur la ligne 'y' */
     private static List<Integer> findFloors(TileMaps tileMaps, int y)
     {
-        List<Integer> localisation = new ArrayList<>();
+        List<Integer> loc = new ArrayList<>();
         for (int x = 0; x < tileMaps.getWidth(); x++)
             if (tileMaps.isFloorTopTile(x, y) || tileMaps.isFloorRightTile(x, y) || tileMaps.isFloorLeftTile(x, y))
-                localisation.add(x);
+                loc.add(x);
 
-        return localisation;
+        return loc;
     }
 
     /** À un certain moment, grace au tick, il va générer des arbres +/- grand uniquement sur un sol */

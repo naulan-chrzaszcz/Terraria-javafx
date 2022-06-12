@@ -50,11 +50,11 @@ public class Tool implements StowableObjectType
         return Tool.DEFAULT_DAMAGE;
     }
 
-    public static boolean isAxe(ToolSet tool) { return tool == ToolSet.AXE; }
-    public static boolean isBow(ToolSet tool) { return tool == ToolSet.BOW; }
-    public static boolean isPickaxe(ToolSet tool) { return tool == ToolSet.PICKAXE; }
-    public static boolean isSword(ToolSet tool) { return tool == ToolSet.SWORD; }
-    public static boolean isArrow(ToolSet tool) { return tool == ToolSet.ARROW; }
+    public static boolean isAxe(Tool tool) { return tool.getTypeOfTool() == ToolSet.AXE; }
+    public static boolean isBow(Tool tool) { return tool.getTypeOfTool() == ToolSet.BOW; }
+    public static boolean isPickaxe(Tool tool) { return tool.getTypeOfTool() == ToolSet.PICKAXE; }
+    public static boolean isSword(Tool tool) { return tool.getTypeOfTool() == ToolSet.SWORD; }
+    public static boolean isArrow(Tool tool) { return tool.getTypeOfTool() == ToolSet.ARROW; }
 
 
     public ToolSet getTypeOfTool() { return this.tool; }
