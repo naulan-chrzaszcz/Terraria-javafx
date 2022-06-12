@@ -23,7 +23,7 @@ public abstract class Tool implements StowableObjectType
         this.durability = new SimpleIntegerProperty(durability);
     }
 
-    /** Use l'outil */
+    /** Utilise l'outil */
     public abstract void use();
 
     public static void DEFAULT_WEAR(final Tool tool)

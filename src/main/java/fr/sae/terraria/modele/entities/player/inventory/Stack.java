@@ -19,7 +19,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  * <h1>Stack</h1>
  * <h2>Objet de données lié à l'objet <code>Inventaire</code>.</h2>
  * <h3><u>Description:</u></h3>
- * Cette dataclass est la pour avoir l'information sur combien il y a t-il d'objet du même type sur une case de l'inventaire
+ * Cette dataclass est présente pour savoir combien d'objets du même type se trouvent sur une case d'inventaire
  */
 public class Stack
 {

@@ -36,7 +36,7 @@ public class Inventory
 
         this.posCursor = new SimpleIntegerProperty(0);
 
-        // Change l'item de la main du joueur
+        // Change l'item qui se trouve dans la main du joueur
         this.posCursorProperty().addListener((obs, oldV, newV) -> {
             boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
 

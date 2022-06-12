@@ -36,12 +36,12 @@ public class Environment
 {
     private final ObservableList<Tree> trees;
     private final ObservableList<Block> blocks;
-    // Permet update toutes les entités en une seule boucle.
+    // Permet d'update toutes les entités avec une seule boucle.
     private final ObservableList<Entity> entities;
-    // Range des entities en plus pour permettre facilement de savoir combien son t-il sur la carte pour limiter leur apparition
+    // Range des entitiés en plus pour avoir le nombre d'entités sur la carte et limiter leurs apparitions
     private final ObservableList<Rabbit> rabbits;
     private final ObservableList<Slime> slimes;
-    // Permet update facilement les lumières des torches sur le filtre
+    // Permet d'update facilement les lumières des torches sur le filtre
     private final ObservableList<Torch> torches;
 
     private final TileMaps tileMaps;
@@ -87,7 +87,7 @@ public class Environment
         this.player.setPv(4);
         this.player.spawn(5*widthTile, 3*heightTile);
 
-        // Détecte si le joueur n'est pas dans un bloc lorsque qu'il met un block au sol
+        // Détecte si le joueur n'est pas dans un bloc lorsqu'il met un block au sol
         this.entities.addListener((ListChangeListener<? super Entity>) c -> {
             while (c.next()) if (c.wasAdded()) {
                 Entity entity = c.getList().get(0);
@@ -150,7 +150,7 @@ public class Environment
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
                 GenerateEntity.rabbitRandomly(this);
                 GenerateEntity.tallGrassRandomly(this);
-            } else if (nightTime)    // Génère certaines entités uniquement pendant le soir
+            } else if (nightTime)    // Génère certaines entités uniquement pendant le soir et la nuit
                 GenerateEntity.slimeRandomly(this);
 
             // Updates toutes les entités

@@ -24,7 +24,7 @@ public class View
 
     /**
      * Cette classe lors de l'initialisation, crée et génére toutes les views du jeux
-     *  Contient des fonctions essentiels au chargement des images et des creations de vue
+     *  Contient des fonctions essentielles au chargement des images et des creations de vue
      */
     public View(final GameController gameController)
     {
@@ -55,7 +55,7 @@ public class View
         new MouseCursorView(displayHUD, displayCursorMouse, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
     }
 
-    /** Essaye de trouver et de charger l'image sinon renvoie null */
+    /** Essaye de trouver et de charger l'image, si elle n'est pas trouvée, retourne null */
     private static Image foundImage(final String path)
     {
         Image img = null;

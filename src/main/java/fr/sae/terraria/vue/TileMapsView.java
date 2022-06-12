@@ -57,7 +57,7 @@ public class TileMapsView
     /**
      * @param environment Avoir des infos relatives à son environment
      * @param displayTileMap Affiche la carte tuilée
-     * @param displayHostileBeings Affiche les êtres hostile (Animal, Joueur, ...)
+     * @param displayHostileBeings Affiche les entités mouvantes (Animal, Joueur, ...)
      */
     public TileMapsView(Environment environment,
                         Pane displayTileMap,
@@ -88,11 +88,11 @@ public class TileMapsView
         this.treeImg = View.loadAnImage("sprites/tree-sheet.png", scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         this.tallGrassImg = View.loadAnImage("tiles/tall-grass.png",tileWidth,tileHeight);
 
-        // Ajoute et supprime les elements de l'écran qui concerne les blocks
+        // Ajoute et supprime les elements de l'écran qui concernent les blocks
         this.environment.getBlocks().addListener((ListChangeListener<? super Block>) this::updatesBlocksView);
-        // Ajoute et supprime les elements de l'écran qui concerne les lapins
+        // Ajoute et supprime les elements de l'écran qui concernent les lapins
         this.environment.getRabbits().addListener((ListChangeListener<? super Rabbit>) this::updatesRabbitView);
-        // Ajoute et supprime les elements de l'écran qui concerne les slimes
+        // Ajoute et supprime les elements de l'écran qui concernent les slimes
         this.environment.getSlimes().addListener((ListChangeListener<? super Slime>) this::updatesSlimeView);
         // Ajoute et supprime un groupe d'élèments de l'écran qui concerne les arbres
         this.environment.getTrees().addListener((ListChangeListener<? super Tree>) this::updatesTreeView);
@@ -277,10 +277,10 @@ public class TileMapsView
 
     }
 
-    /** Affiche une erreur au cas où si un developer a fait une erreur lors de la saisie d'un tile sur le fichier .json */
+    /** Affiche une erreur si un developer a fait une erreur lors de la saisie d'un tile dans le fichier .json */
     private void errorTile(final int tile) { if (tile != TileMaps.SKY) System.out.println("Le tile '" + tile + "' n'est pas reconnu."); }
 
-    /** Decompose la carte pour afficher un à un les tiles à l'écran */
+    /** Decompose la carte pour afficher une à une les tiles à l'écran */
     public void displayMaps(TileMaps tiles)
     {
         for (int y = 0; y < tiles.getHeight() ; y++)

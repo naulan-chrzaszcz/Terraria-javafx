@@ -77,7 +77,7 @@ public class Terraria extends Application
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> timePressedKey[0] = 1);
         stage.sizeToScene();
 
-        // Sync les changements du joueur entre les contrôleurs.
+        // Synchronise les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
             if (switchScene.get()) {
                 if (!Objects.isNull(menuController.player)) {

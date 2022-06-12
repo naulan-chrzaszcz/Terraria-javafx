@@ -20,7 +20,7 @@ public class MouseCursorView
 
     /**
      * Un rectangle rouge qui suit la souris
-     *   Permet de savoir où nous cliquons sur l'écran plus précisément sur quel tile
+     *   Permet de savoir où le joueur clique sur l'écran plus précisément sur quel tile
      *
      * @param display L'afficheur qui se gère du HUD
      * @param scaleMultiplicatorWidth Scaling en largeur

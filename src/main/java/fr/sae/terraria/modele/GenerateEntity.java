@@ -22,7 +22,7 @@ import static fr.sae.terraria.modele.entities.blocks.Tree.TREE_SPAWN_RATE;
 
 /**
  * <h1>Generate Entity</h1>
- * <h2>Une classe qui permet de génère aléatoirement des entités</h2>
+ * <h2>Une classe qui permet de générer aléatoirement des entités</h2>
  */
 public class GenerateEntity
 {
@@ -34,11 +34,11 @@ public class GenerateEntity
     public GenerateEntity() { super(); }
 
     /**
-     * Génère une entité selon de quand il spawn et du pourcent de change qu'il spawn réellement.
+     * Génère une entité selon le momnt ou il est sensé apparaitre et son pourcentage de chances d'apparaitre.
      *
      * @param e L'entité concernée
      * @param whenSpawn Le nombre qui determine quand il doit spawn sur la carte
-     * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit qu'on souhaite le placer
+     * @param spawnRate Le pourcentage de chance qu'il spawn réellement à l'endroit où l'on souhaite le placer
      */
     private static void generateAnEntity(Environment environment, SpawnableObjectType e, int whenSpawn, double spawnRate)
     {
@@ -101,7 +101,7 @@ public class GenerateEntity
             generateAnEntity(environment, new Rabbit(environment), WHEN_SPAWN_A_RABBIT, RABBIT_SPAWN_RATE);
     }
 
-    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des lapins sur un sol  */
+    /** À un certain moment, grace au tick et à l'horloge du jeu, il va générer des slimes sur un sol  */
     public static void slimeRandomly(Environment environment)
     {
         if (environment.getSlimes().size() < MAX_SPAWN_SLIME)

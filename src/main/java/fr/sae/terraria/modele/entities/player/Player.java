@@ -138,7 +138,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         }
     }
 
-    /** Lie les inputs au clavier à une ou des actions. */
+    /** Lie les inputs du clavier à une ou des actions. */
     public void eventInput()
     {
         this.inventory.eventInput();
