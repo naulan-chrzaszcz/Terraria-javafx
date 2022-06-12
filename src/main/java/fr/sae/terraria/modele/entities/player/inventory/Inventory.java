@@ -49,7 +49,7 @@ public class Inventory
         });
     }
 
-    private int nbStacksIntoInventory() { return this.value.size(); }
+    public int nbStacksIntoInventory() { return this.value.size(); }
 
     /**
      * Place des objets de type rangeable dans l'inventaire.
