@@ -4,6 +4,9 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.TileSet;
 import fr.sae.terraria.modele.entities.Rabbit;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
+import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import javafx.geometry.Rectangle2D;
@@ -135,15 +138,15 @@ public class PlayerTest
         Rectangle2D blockSelected;
         double beforePv;
 
-        Dirt dirt = new Dirt(environment, 1, 1);
-        dirt.setRect(1, 1);
-        environment.getEntities().add(dirt);
+        Block block = new Block(BlockSet.DIRT, environment, 1, 1);
+        block.setRect(1, 1);
+        environment.getEntities().add(block);
         blockSelected = new Rectangle2D(1, 1, 1, 1);
 
-        beforePv = dirt.getPv();
+        beforePv = block.getPv();
         player.interactWithBlock(blockSelected);
-        assertEquals(beforePv - 1, dirt.getPv());
-        environment.getEntities().remove(dirt);
+        assertEquals(beforePv - 1, block.getPv());
+        environment.getEntities().remove(block);
 
 
         Rabbit rabbit = new Rabbit(environment, 10, 10);
@@ -159,7 +162,7 @@ public class PlayerTest
     @Test public final void placeBlockTest()
     {
         TileMaps tileMaps = environment.getTileMaps();
-        player.pickup(new Dirt(environment, 1, 1));
+        player.pickup(new Block(BlockSet.DIRT, environment));
 
         assertEquals(tileMaps.getTile(0, 0), TileSet.SKY.ordinal());
         player.placeBlock(0, 0);
@@ -197,8 +200,8 @@ public class PlayerTest
 
 
         // Test avec du charbon
-        player.pickup(new Coal());
-        assertTrue(player.getStackSelected().getItem() instanceof Coal,
+        player.pickup(Item.COAL);
+        assertTrue(Item.isCoal(player.getStackSelected().getItem()),
                 "Verifie si le stack est bien du charbon");
         assertEquals(player.getStackSelected().getNbItems(), 1,
                 "Verifie s'il y a bien 1 objet dans le stack");
