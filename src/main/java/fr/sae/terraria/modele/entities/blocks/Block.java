@@ -13,7 +13,6 @@ import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.Tool;
-import fr.sae.terraria.modele.entities.tools.ToolSet;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;

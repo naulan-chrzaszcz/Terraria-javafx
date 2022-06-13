@@ -1,6 +1,8 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.player.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,11 +26,11 @@ public class InventoryTest
     @Test public final void nbStacksIntoInventoryTest()
     {
         for (int i = 0; i < Stack.MAX; i++)
-            inventory.put(new Dirt(environment, 1, 1));
+            inventory.put(new Block(BlockSet.DIRT, environment));
         assertEquals(2, inventory.nbStacksIntoInventory());
 
         for (int i = 0; i < Stack.MAX; i++)
-            inventory.put(new Dirt(environment, 1, 1));
+            inventory.put(new Block(BlockSet.DIRT, environment));
         assertEquals(3, inventory.nbStacksIntoInventory());
     }
 
@@ -36,7 +38,7 @@ public class InventoryTest
     {
         inventory.posCursorProperty().set(0);
         for (int i = 0; i < Stack.MAX; i++)
-            inventory.put(new Dirt(environment, 1, 1));
+            inventory.put(new Block(BlockSet.DIRT, environment));
         assertEquals(Stack.MAX, inventory.getStack().getNbItems());
     }
 }
