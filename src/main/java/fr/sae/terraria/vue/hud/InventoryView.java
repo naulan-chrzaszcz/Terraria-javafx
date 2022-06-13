@@ -138,8 +138,7 @@ public class InventoryView
                     }
 
                     // Actualise le nombre d'item à l'écran
-                    this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
-                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue())));
+                    this.texts.get(c.getTo()-1).textProperty().bind(c.getAddedSubList().get(0).nbItemsProperty().asString());
 
                     if (!Objects.isNull(view.getImage())) {
                         view.setX((this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth)) + ((boxeInventoryWidth/2) - (itemInventoryWidth/2)));
@@ -156,6 +155,14 @@ public class InventoryView
 
                     for (int i = c.getTo(); i < itemsView.size(); i++)
                         this.itemsView.get(i).setX(this.itemsView.get(i).getX() - boxeInventoryWidth);
+
+                    for (int i = 0; i < inventory.get().size(); i ++){
+                        this.texts.get(inventory.get().size()).textProperty().unbind();
+                        this.texts.get(i).textProperty().bind(inventory.get().get(i).nbItemsProperty().asString());
+                    }
+                    this.texts.get(inventory.get().size()).textProperty().unbind();
+                    this.texts.get(inventory.get().size()).setText("0");
+
                 }
             }
         });

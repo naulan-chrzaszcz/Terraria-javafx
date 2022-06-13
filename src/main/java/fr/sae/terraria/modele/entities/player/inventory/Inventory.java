@@ -41,10 +41,7 @@ public class Inventory
             boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
 
             if (isntOutOfInventoryBar) {
-                Stack stack = null;
-                if (this.getPosCursor() < this.get().size())
-                    stack = this.get().get(this.getPosCursor());
-                this.player.setStackSelected(stack);
+                refreshStack();
             }
         });
     }
@@ -139,6 +136,13 @@ public class Inventory
         });
 
         this.scroll = 0;
+    }
+
+    private void refreshStack() {
+        Stack stack = null;
+        if (this.getPosCursor() < this.get().size())
+            stack = this.get().get(this.getPosCursor());
+        this.player.setStackSelected(stack);
     }
 
     public IntegerProperty posCursorProperty() { return this.posCursor; }
