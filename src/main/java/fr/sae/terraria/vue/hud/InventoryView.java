@@ -105,7 +105,7 @@ public class InventoryView
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
                     else if (item instanceof Block) {
-                        if (Block.isDirt((Block) item))
+                        if (Block.isFloorTop((Block) item))
                             view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Block.isRock((Block) item))
                             view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));

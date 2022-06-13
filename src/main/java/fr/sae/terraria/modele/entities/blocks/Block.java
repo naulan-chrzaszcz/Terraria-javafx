@@ -26,7 +26,7 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
     public static final int DEFAULT_RESISTANCE = 2;
 
     private final Environment environment;
-    private final BlockSet typeOfBlock;
+    private BlockSet typeOfBlock;
 
     private final double xOrigin;
     private final double yOrigin;
@@ -72,10 +72,8 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
     {
         Player player = this.environment.getPlayer();
 
-        if (this.typeOfBlock == BlockSet.FLOOR_TOP || this.typeOfBlock == BlockSet.FLOOR_LEFT || this.typeOfBlock == BlockSet.FLOOR_RIGHT) {
+        if (this.typeOfBlock == BlockSet.FLOOR_TOP || this.typeOfBlock == BlockSet.FLOOR_LEFT || this.typeOfBlock == BlockSet.FLOOR_RIGHT || this.typeOfBlock == BlockSet.DIRT) {
             player.pickup(new Block(BlockSet.FLOOR_TOP, this.environment));
-        } else if (this.typeOfBlock == BlockSet.DIRT) {
-            player.pickup(new Block(BlockSet.DIRT, this.environment, 0, 0));
         } else if (this.typeOfBlock == BlockSet.ROCK) {
             for (int loot = 0; loot < Block.ROCK_NB_LOOTS; loot++)
                 player.pickup(Item.STONE);
@@ -131,13 +129,12 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         int widthTile = this.environment.widthTile;
         int heightTile = this.environment.heightTile;
 
-        Block block = new Block(this.typeOfBlock, this.environment, x*widthTile, y*heightTile);
-        block.setRect(widthTile, heightTile);
-
         Player player = this.environment.getPlayer();
         Inventory inventory = player.getInventory();
         if (!Objects.isNull(player.getStackSelected()))
             inventory.get().get(inventory.getPosCursor()).remove();
+        Block block = new Block(BlockSet.FLOOR_TOP, this.environment, x*widthTile, y*heightTile);
+        block.setRect(widthTile, heightTile);
 
         TileSet tile = TileSet.getTileSet(this.typeOfBlock);
         if (!Objects.isNull(tile))
