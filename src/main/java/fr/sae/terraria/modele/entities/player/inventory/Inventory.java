@@ -40,24 +40,23 @@ public class Inventory
         this.posCursorProperty().addListener((obs, oldV, newV) -> {
             boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
 
-            if (isntOutOfInventoryBar) {
-                Stack stack = null;
-                if (this.getPosCursor() < this.get().size())
-                    stack = this.get().get(this.getPosCursor());
-                this.player.setStackSelected(stack);
-            }
+            if (isntOutOfInventoryBar)
+                refreshStack();
         });
+    }
+
+    private void refreshStack()
+    {
+        Stack stack = null;
+        if (this.getPosCursor() < this.get().size())
+            stack = this.get().get(this.getPosCursor());
+        this.player.setStackSelected(stack);
     }
 
     private void createStack(StowableObjectType item)
     {
         Stack stack = new Stack();
         stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() < oldValue.intValue()) {
-                Inventory inventory = player.getInventory();
-                inventory.get().get(inventory.getPosCursor()).remove();
-            }
-
             if (newValue.intValue() <= 0) {
                 this.value.remove(stack);
                 this.player.setStackSelected(null);
@@ -140,7 +139,6 @@ public class Inventory
 
         this.scroll = 0;
     }
-
     public IntegerProperty posCursorProperty() { return this.posCursor; }
 
 

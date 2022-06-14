@@ -41,6 +41,12 @@ public class Stack
         if (obj instanceof Block && this.item instanceof Block) {
             if (Block.isDirt((Block) obj) && Block.isDirt((Block) this.item))
                 return true;
+            if (Block.isFloorTop((Block) obj) && Block.isFloorTop((Block) this.item))
+                return true;
+            if (Block.isFloorLeft((Block) obj) && Block.isFloorLeft((Block) this.item))
+                return true;
+            if (Block.isFloorRight((Block) obj) && Block.isFloorRight((Block) this.item))
+                return true;
             if (Block.isRock((Block) obj) && Block.isRock((Block) this.item))
                 return true;
             if (Block.isTallGrass((Block) obj) && Block.isTallGrass((Block) this.item))

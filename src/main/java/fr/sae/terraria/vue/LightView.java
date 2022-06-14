@@ -25,7 +25,6 @@ public class LightView {
     private static int widthMap;
     private static int tileSize;
 
-
     private final Environment environment;
     private final TileMaps tileMaps;
     private final Circle torchLight;
@@ -61,7 +60,7 @@ public class LightView {
         torches.addListener((ListChangeListener<? super Block>) c -> {
             while(c.next()){
                 this.filterPane.getChildren().clear();
-                addTochLights();
+                addTorchLights();
                 if (c.wasRemoved()){
                     resetShapes();
 
@@ -137,7 +136,7 @@ public class LightView {
         this.actualTunnel.setOpacity(.8);
     }
 
-    private void addTochLights()
+    private void addTorchLights()
     {
         for (int i = 0; i < this.environment.getTorches().size() ; i ++){
             Circle torchLight = new Circle(tileSize*CIRCLE_RAY);

@@ -104,8 +104,9 @@ public class InventoryView
                         view.setImage(null);    // TODO
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
-                    else if (item instanceof Block) {
-                        if (Block.isDirt((Block) item))
+
+                    if (item instanceof Block) {
+                        if (Block.isFloorTop((Block) item))
                             view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Block.isRock((Block) item))
                             view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
@@ -113,7 +114,9 @@ public class InventoryView
                             view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Block.isTorch((Block) item))
                             view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
-                    } else if (item instanceof Tool) {
+                    }
+
+                    if (item instanceof Tool) {
                         if (Tool.isAxe((Tool) item))
                             view.setImage(null);    // TODO
                         else if (Tool.isBow((Tool) item))
@@ -122,7 +125,9 @@ public class InventoryView
                             view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Tool.isSword((Tool) item))
                             view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
-                    } else if (item instanceof Item) {
+                    }
+
+                    if (item instanceof Item) {
                         if (Item.isCoal(item))
                             view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Item.isFiber(item))
@@ -138,8 +143,7 @@ public class InventoryView
                     }
 
                     // Actualise le nombre d'item à l'écran
-                    this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
-                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue())));
+                    this.texts.get(c.getTo()-1).textProperty().bind(c.getAddedSubList().get(0).nbItemsProperty().asString());
 
                     if (!Objects.isNull(view.getImage())) {
                         view.setX((this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth)) + ((boxeInventoryWidth/2) - (itemInventoryWidth/2)));
@@ -156,6 +160,14 @@ public class InventoryView
 
                     for (int i = c.getTo(); i < itemsView.size(); i++)
                         this.itemsView.get(i).setX(this.itemsView.get(i).getX() - boxeInventoryWidth);
+
+                    for (int i = 0; i < inventory.get().size(); i ++){
+                        this.texts.get(inventory.get().size()).textProperty().unbind();
+                        this.texts.get(i).textProperty().bind(inventory.get().get(i).nbItemsProperty().asString());
+                    }
+                    this.texts.get(inventory.get().size()).textProperty().unbind();
+                    this.texts.get(inventory.get().size()).setText("0");
+
                 }
             }
         });
