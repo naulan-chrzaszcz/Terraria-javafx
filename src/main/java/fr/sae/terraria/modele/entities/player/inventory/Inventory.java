@@ -65,7 +65,6 @@ public class Inventory
         });
         stack.setItem(item);
         this.value.add(stack);
-        this.player.setStackSelected(stack);
     }
 
     public int nbStacksIntoInventory() { return this.value.size(); }
