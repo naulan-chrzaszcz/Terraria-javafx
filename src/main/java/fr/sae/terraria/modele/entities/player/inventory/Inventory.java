@@ -45,7 +45,7 @@ public class Inventory
         });
     }
 
-    private void refreshStack()
+    public void refreshStack()
     {
         Stack stack = null;
         if (this.getPosCursor() < this.get().size())
