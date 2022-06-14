@@ -8,10 +8,13 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.Tool;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -40,9 +43,12 @@ public class ItemSelectedView
 
     private final Pane display;
 
+    private final Player player;
+
 
     public ItemSelectedView(Pane display, Player player, double scaleMultiplicatorWidth, double scaleMultiplicatorHeight)
     {
+        this.player = player;
         this.display = display;
 
         int widthTile = (int) (scaleMultiplicatorWidth * TileMaps.TILE_DEFAULT_SIZE);
@@ -67,23 +73,34 @@ public class ItemSelectedView
 
         // Reset
         player.getInventory().get().addListener((ListChangeListener<? super Stack>) c -> {
-            while (c.next()) {
-                if (c.wasRemoved())
-                    this.itemSelectedImgView.setImage(null);
-            }
+            while (c.next())
+                refreshView();
         });
 
         player.getInventory().posCursorProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
-            this.itemSelectedImgView.setImage(null);
-            if (!Objects.isNull(player.getStackSelected())) {
-                StowableObjectType item = player.getStackSelected().getItem();
+            refreshView();
+        });
 
-                if (item instanceof Meat)
-                    this.itemSelectedImgView.setImage(this.meatItemImg);
-                else if (item instanceof Vodka)
-                    this.itemSelectedImgView.setImage(this.vodkaItemImg);
-                else if (item instanceof Arrow)
-                    this.itemSelectedImgView.setImage(null);
+        display.addEventFilter(MouseEvent.MOUSE_MOVED, mouse -> {
+            itemSelectedImgView.setX(mouse.getX());
+            itemSelectedImgView.setY(mouse.getY());
+        });
+    }
+
+    private void refreshView(){
+        ObservableList<Stack> inventory = this.player.getInventory().get();
+        int posCursor = this.player.getInventory().getPosCursor();
+
+        this.itemSelectedImgView.setImage(null);
+        if (posCursor < inventory.size() && posCursor >= 0) {
+            StowableObjectType item = inventory.get(posCursor).getItem();
+
+            if (item instanceof Meat)
+                this.itemSelectedImgView.setImage(this.meatItemImg);
+            else if (item instanceof Vodka)
+                this.itemSelectedImgView.setImage(this.vodkaItemImg);
+            else if (item instanceof Arrow)
+                this.itemSelectedImgView.setImage(null);
 
                 if (item instanceof Block)
                 {
@@ -97,38 +114,32 @@ public class ItemSelectedView
                         this.itemSelectedImgView.setImage(this.torchItemImg);
                 }
 
-                if (item instanceof Tool) {
-                    if (Tool.isAxe((Tool) item))
-                        this.itemSelectedImgView.setImage(null);
-                    else if (Tool.isBow((Tool) item))
-                        this.itemSelectedImgView.setImage(null);
-                    else if (Tool.isPickaxe((Tool) item))
-                        this.itemSelectedImgView.setImage(this.pickaxeItemImg);
-                    else if (Tool.isSword((Tool) item))
-                        this.itemSelectedImgView.setImage(this.swordItemImg);
-                }
-
-                if (item instanceof Item) {
-                    if (Item.isCoal(item))
-                        this.itemSelectedImgView.setImage(this.coalItemImg);
-                    else if (Item.isFiber(item))
-                        this.itemSelectedImgView.setImage(this.fibreItemImg);
-                    else if (Item.isIron(item))
-                        this.itemSelectedImgView.setImage(this.ironItemImg);
-                    else if (Item.isStone(item))
-                        this.itemSelectedImgView.setImage(this.stoneItemImg);
-                    else if (Item.isSilex(item))
-                        this.itemSelectedImgView.setImage(this.silexItemImg);
-                    else if (Item.isWood(item))
-                        this.itemSelectedImgView.setImage(this.woodItemImg);
-                }
+            if (item instanceof Tool) {
+                if (Tool.isAxe((Tool) item))
+                    this.itemSelectedImgView.setImage(null);
+                else if (Tool.isBow((Tool) item))
+                    this.itemSelectedImgView.setImage(null);
+                else if (Tool.isPickaxe((Tool) item))
+                    this.itemSelectedImgView.setImage(this.pickaxeItemImg);
+                else if (Tool.isSword((Tool) item))
+                    this.itemSelectedImgView.setImage(this.swordItemImg);
             }
-        });
 
-        display.addEventFilter(MouseEvent.MOUSE_MOVED, mouse -> {
-            itemSelectedImgView.setX(mouse.getX());
-            itemSelectedImgView.setY(mouse.getY());
-        });
+            if (item instanceof Item) {
+                if (Item.isCoal(item))
+                    this.itemSelectedImgView.setImage(this.coalItemImg);
+                else if (Item.isFiber(item))
+                    this.itemSelectedImgView.setImage(this.fibreItemImg);
+                else if (Item.isIron(item))
+                    this.itemSelectedImgView.setImage(this.ironItemImg);
+                else if (Item.isStone(item))
+                    this.itemSelectedImgView.setImage(this.stoneItemImg);
+                else if (Item.isSilex(item))
+                    this.itemSelectedImgView.setImage(this.silexItemImg);
+                else if (Item.isWood(item))
+                    this.itemSelectedImgView.setImage(this.woodItemImg);
+            }
+        }
     }
 
     public void display() { display.getChildren().add(itemSelectedImgView); }
