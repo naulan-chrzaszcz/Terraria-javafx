@@ -110,6 +110,8 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             this.environment.getTileMaps().setTile(TileSet.SKY.ordinal(), yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
             this.environment.getBlocks().remove(this);
+            if (Block.isTorch(this))
+                this.environment.getTorches().remove(this);
         }
 
         if (isRock(this)) {

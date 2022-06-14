@@ -25,7 +25,6 @@ public class LightView {
     private static int widthMap;
     private static int tileSize;
 
-
     private final Environment environment;
     private final TileMaps tileMaps;
     private final Circle torchLight;
