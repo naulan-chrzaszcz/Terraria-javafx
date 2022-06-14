@@ -154,7 +154,6 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             this.environment.getTrees().add((Tree) block);
         if (Block.isTorch(this))
             this.environment.getTorches().add(block);
-
     }
 
     public static boolean isFloorTop(final Block block) { return block.getTypeOfBlock() == BlockSet.FLOOR_TOP; }
