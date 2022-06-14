@@ -36,7 +36,7 @@ public class InventoryTest
 
     @Test public final void nbItemsIntoStackTest()
     {
-        inventory.posCursorProperty().set(0);
+        inventory.cursorProperty().set(0);
         for (int i = 0; i < Stack.MAX; i++)
             inventory.put(new Block(BlockSet.DIRT, environment));
         assertEquals(Stack.MAX, inventory.getStack().getNbItems());

@@ -77,7 +77,7 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             for (int loot = 0; loot < Block.ROCK_NB_LOOTS; loot++)
                 player.pickup(Item.STONE);
         } else if (Block.isTallGrass(this)) {
-            for (int loot = (int) (Math.random()*3)+1; loot < TallGrass.LOOTS_FIBRE_MAX; loot++)
+            for (int loot = (int) (Math.random()*3)+1; loot <= TallGrass.LOOTS_FIBRE_MAX; loot++)
                 player.pickup(Item.FIBER);
 
             boolean mustDropVodka = Math.random() < Vodka.DROP_RATE;

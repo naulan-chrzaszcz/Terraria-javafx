@@ -5,7 +5,6 @@ import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 
@@ -38,7 +37,7 @@ public class Inventory
         this.posCursor = new SimpleIntegerProperty(0);
 
         // Change l'item qui se trouve dans la main du joueur
-        this.posCursorProperty().addListener((obs, oldPos, newPos) -> {
+        this.cursorProperty().addListener((obs, oldPos, newPos) -> {
             boolean isntOutOfInventoryBar = newPos.intValue() >= 0 && newPos.intValue() < nbElementOnOneLineOfInventory;
 
             if (isntOutOfInventoryBar)
@@ -65,7 +64,6 @@ public class Inventory
         });
         stack.setItem(item);
         this.value.add(stack);
-        this.player.setStackSelected(stack);
     }
 
     public int nbStacksIntoInventory() { return this.value.size(); }
@@ -141,7 +139,7 @@ public class Inventory
 
         this.scroll = 0;
     }
-    public IntegerProperty posCursorProperty() { return this.posCursor; }
+    public IntegerProperty cursorProperty() { return this.posCursor; }
 
 
     public Stack getStack() { return this.value.get(this.getPosCursor()); }
