@@ -16,6 +16,7 @@ public class Craft {
     private Environment environment;
     public Craft(Inventory inventory, Environment environment) {
         this.inventory = inventory;
+        this.environment = environment;
     }
 
     public boolean possibleToCreateTool(int id) {
@@ -79,6 +80,18 @@ public class Craft {
 
     public void createTool(int id) {
         int quantityNeeded = 0;
+        if (id == 1)
+            inventory.getPlayer().pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
+        else if (id == 3)
+            inventory.getPlayer().pickup(new Tool(ToolSet.PICKAXE, MaterialSet.WOOD));
+        else if (id == 4)
+            inventory.getPlayer().pickup(new Tool(ToolSet.AXE, MaterialSet.IRON));
+        else if (id == 6)
+            inventory.getPlayer().pickup(new Tool(ToolSet.AXE, MaterialSet.WOOD));
+        else if (id == 7)
+            inventory.getPlayer().pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));
+        else if(id == 9)
+            inventory.getPlayer().pickup(new Tool(ToolSet.SWORD, MaterialSet.WOOD));
         if (id == 10)
             inventory.getPlayer().pickup(new Block(BlockSet.ROCK, this.environment));
 
@@ -99,7 +112,7 @@ public class Craft {
                         quantityNeeded = 2;
                     }
                 }
-                if (id % 3 == 1) {
+                if (id % 3 == 0) {
                     if (Item.isWood(this.inventory.get().get(i).getItem())) {
                         this.inventory.get().get(i).removeQuantity(quantityNeeded);
                     }
@@ -109,7 +122,7 @@ public class Craft {
                         this.inventory.get().get(i).removeQuantity(quantityNeeded);
                     }
                 }
-                if (id % 3 == 0) {
+                if (id % 3 == 1) {
                     if (Item.isIron(this.inventory.get().get(i).getItem())) {
                         this.inventory.get().get(i).removeQuantity(quantityNeeded);
                     }
