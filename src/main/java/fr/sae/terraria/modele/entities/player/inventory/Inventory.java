@@ -148,6 +148,7 @@ public class Inventory
     public int getPosCursor() { return this.posCursor.get(); }
     public ObservableList<Stack> get() { return this.value; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
+    public Player getPlayer() { return player; }
 
     public void setScroll(int newScroll) { this.scroll = newScroll; }
 }

@@ -21,6 +21,7 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class MenuController implements Initializable
@@ -29,7 +30,18 @@ public class MenuController implements Initializable
     @FXML public Pane displayInventory;
     @FXML public Pane displayLexique;
     @FXML public HBox HBoxText;
-    @FXML public HBox lexique4;
+    @FXML public HBox lexiconStone;
+    @FXML public HBox lexiconPickaxe1;
+    @FXML public HBox lexiconPickaxe2;
+    @FXML public HBox lexiconPickaxe3;
+    @FXML public HBox lexiconAxe1;
+    @FXML public HBox lexiconAxe2;
+    @FXML public HBox lexiconAxe3;
+    @FXML public HBox lexiconSword1;
+    @FXML public HBox lexiconSword2;
+    @FXML public HBox lexiconSword3;
+
+
 
     public Timeline loop;
     private Stage stage;
@@ -63,17 +75,11 @@ public class MenuController implements Initializable
         this.loop.play();
 
         // Craft de la roche à partir de 3 pierres
-        this.lexique4.addEventFilter(Event.ANY, ev -> {
+        this.lexiconStone.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED")) {
                 int i = this.player.getInventory().get().size()-1;
-                while (i > 0 && !(this.player.getInventory().get().get(i).getItem().equals(Item.STONE)) && this.player.getInventory().get().get(i).getNbItems() >= Block.ROCK_NB_LOOTS)
-                    i--;
-
-                Stack stack = this.player.getInventory().get().get(i);
-                if (stack.getItem() instanceof Item && stack.getItem().equals(Item.STONE)) {
-                    for (int j = 0; j < Block.ROCK_NB_LOOTS; j++)
-                        stack.remove();
-                    this.player.pickup(new Block(BlockSet.ROCK, this.environment));
+                if (player.getCraft().possibleToCreateTool(10)) {
+                    player.getCraft().createTool(10);
                 }
             }
         });

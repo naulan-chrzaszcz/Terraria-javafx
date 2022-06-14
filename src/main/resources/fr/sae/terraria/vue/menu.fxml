@@ -59,40 +59,102 @@
                               prefHeight="900.0"
                               prefWidth="640.0">
                             <HBox id="notAvailable"
-                                  fx:id="lexique1"
+                                  fx:id="lexiconPickaxe1"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Pioche en fer" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
                             </HBox>
-                            <Separator layoutY="50.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="75.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexique2"
+                                  fx:id="lexiconPickaxe2"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Pioche en pierre" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 pierre" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="150.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconPickaxe3"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Pioche en bois" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="225.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconAxe1"
                                   layoutY="55.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Hache en fer" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
                             </HBox>
-                            <Separator layoutY="103.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="300.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexique3"
+                                  fx:id="lexiconAxe2"
+                                  layoutY="55.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Hache en pierre" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 pierre" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="375.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconAxe3"
+                                  layoutY="55.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Hache en bois" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
+                            </HBox>
+                            <Separator layoutY="450.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconSword1"
                                   layoutY="108.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Epée en fer" textAlignment="CENTER"/>
                                 <Text text="1 Bâton | 2 Minerais de fer"/>
                             </HBox>
-                            <Separator layoutY="158.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="525.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexique4"
+                                  fx:id="lexiconSword2"
+                                  layoutY="108.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Epée en pierre" textAlignment="CENTER"/>
+                                <Text text="1 Bâton | 2 pierre"/>
+                            </HBox>
+                            <Separator layoutY="600.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconSword3"
+                                  layoutY="108.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Epée en bois" textAlignment="CENTER"/>
+                                <Text text="1 Bâton | 2 bois"/>
+                            </HBox>
+                            <Separator layoutY="675.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable"
+                                  fx:id="lexiconStone"
                                   layoutY="163.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="1 Roche" textAlignment="CENTER"/>
                                 <Text text="3 pierres"/>
                             </HBox>
-                            <Separator layoutY="213.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="750.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <!--<HBox id="notAvailable"
+                                  fx:id="lexiconBow"
+                                  layoutY="163.0"
+                                  prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="arc" textAlignment="CENTER"/>
+                                <Text text="3 Bâton | 3 fibres"/>
+                            </HBox>
+                            <Separator layoutY="825.0" prefHeight="5.0" prefWidth="625.0"/>
+                            -->
                         </Pane>
                     </ScrollPane>
                 </center>

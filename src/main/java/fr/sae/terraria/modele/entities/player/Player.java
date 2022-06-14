@@ -3,6 +3,7 @@ package fr.sae.terraria.modele.entities.player;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.player.inventory.Craft;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;
@@ -28,6 +29,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     private final Inventory inventory;
     private Stack stackSelected;
+    private Craft craft;
 
 
     public Player(final Environment environment)
@@ -36,6 +38,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
         this.drunk = new SimpleBooleanProperty(false);
         this.inventory = new Inventory(this);
+        this.craft = new Craft(this.inventory, environment);
 
         this.animation = new Animation();
         this.keysInput = new EnumMap<>(KeyCode.class);
@@ -166,6 +169,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
     public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
+    public Craft getCraft() { return craft; }
 
     public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
 }

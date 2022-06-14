@@ -91,6 +91,7 @@ public class Stack
     public boolean isFull() { return this.getNbItems() >= Stack.MAX; }
     public void add() { if (this.getNbItems() < Stack.MAX) this.nbItems.set(this.getNbItems() + 1); }
     public void remove() { if (this.getNbItems() > 0) this.nbItems.set(this.getNbItems() - 1); }
+    public void removeQuantity(int quantity) { if (this.getNbItems() >= quantity) this.nbItems.set(this.getNbItems() - quantity);}
 
     @Override public String toString(){
         if (item instanceof Block)
