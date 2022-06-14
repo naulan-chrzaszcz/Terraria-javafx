@@ -123,6 +123,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
                 ((BreakableObjectType) entity).breaks();
             if (entity instanceof CollapsibleObjectType)
                 ((CollapsibleObjectType) entity).hit();
+            this.inventory.refreshStack();
         }
     }
 
