@@ -115,7 +115,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
             i++;
         }
 
-        if (i <= this.environment.getEntities().size() && entity.getRect().collideRect(rectangle)) {
+        if (entity.getRect().collideRect(rectangle)) {
             if (entity instanceof BreakableObjectType)
                 ((BreakableObjectType) entity).breaks();
             if (entity instanceof CollapsibleObjectType)
