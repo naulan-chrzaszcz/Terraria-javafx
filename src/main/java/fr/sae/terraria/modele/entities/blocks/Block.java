@@ -109,9 +109,12 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             int xIndexTile = (int) (getX()/environment.widthTile);
             this.environment.getTileMaps().setTile(TileSet.SKY.ordinal(), yIndexTile, xIndexTile);
             this.environment.getEntities().remove(this);
+
             this.environment.getBlocks().remove(this);
             if (Block.isTorch(this))
                 this.environment.getTorches().remove(this);
+            if (Block.isTree(this))
+                this.environment.getTrees().remove(this);
         }
 
         if (isRock(this)) {
@@ -162,6 +165,7 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
     public static boolean isRock(final Block block) { return block.getTypeOfBlock() == BlockSet.ROCK; }
     public static boolean isTallGrass(final Block block) { return block.getTypeOfBlock() == BlockSet.TALL_GRASS; }
     public static boolean isTorch(final Block block) { return block.getTypeOfBlock() == BlockSet.TORCH; }
+    public static boolean isTree(final Block block) { return block.getTypeOfBlock() == BlockSet.TREE; }
 
 
     public BlockSet getTypeOfBlock() { return this.typeOfBlock; }
