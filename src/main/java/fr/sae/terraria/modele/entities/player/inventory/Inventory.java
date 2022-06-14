@@ -93,7 +93,8 @@ public class Inventory
                         return;
                 }
                 // Si tous les stacks present sont pleins ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
-                this.createStack(item);
+                if (this.value.size() < 9)
+                    this.createStack(item);
             }
         }
     }
