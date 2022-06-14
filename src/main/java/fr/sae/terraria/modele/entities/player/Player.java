@@ -115,7 +115,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
             i++;
         }
 
-        if (i <= this.environment.getEntities().size() && entity.getRect().collideRect(rectangle)) {
+        if (entity.getRect().collideRect(rectangle)) {
             if (entity instanceof BreakableObjectType)
                 ((BreakableObjectType) entity).breaks();
             if (entity instanceof CollapsibleObjectType)
@@ -128,9 +128,9 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
         TileMaps tileMaps = this.environment.getTileMaps();
         boolean haveAnItemOnHand = !Objects.isNull(this.getStackSelected());
         boolean goodPlace = tileMaps.isSkyTile(xBlock, yBlock);
-        System.out.println(getStackSelected().getItem());
 
         if (haveAnItemOnHand && goodPlace) {
+            this.inventory.refreshStack();
             if (!(this.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.getStackSelected().getItem() instanceof ConsumableObjectType))
                 return;
 

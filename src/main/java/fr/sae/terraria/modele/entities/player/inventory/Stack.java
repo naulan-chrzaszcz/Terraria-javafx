@@ -92,6 +92,12 @@ public class Stack
     public void add() { if (this.getNbItems() < Stack.MAX) this.nbItems.set(this.getNbItems() + 1); }
     public void remove() { if (this.getNbItems() > 0) this.nbItems.set(this.getNbItems() - 1); }
 
+    @Override public String toString(){
+        if (item instanceof Block)
+            return String.valueOf(((Block) item).getTypeOfBlock());
+        return item.toString();
+    }
+
 
     public int getNbItems() { return this.nbItems.get(); }
     public StowableObjectType getItem() { return this.item; }

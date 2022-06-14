@@ -87,7 +87,7 @@ public class ItemSelectedView
 
                 if (item instanceof Block)
                 {
-                    if (Block.isDirt((Block) item))
+                    if (Block.isFloorTop((Block) item))
                         this.itemSelectedImgView.setImage(this.dirtItemImg);
                     else if (Block.isRock((Block) item))
                         this.itemSelectedImgView.setImage(this.rockItemImg);

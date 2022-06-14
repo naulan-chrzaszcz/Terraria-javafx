@@ -23,10 +23,9 @@ import java.util.Objects;
 public class Block extends Entity implements BreakableObjectType, PlaceableObjectType, StowableObjectType
 {
     public static final int ROCK_NB_LOOTS = 3;
-    public static final int DEFAULT_RESISTANCE = 2;
 
     private final Environment environment;
-    private BlockSet typeOfBlock;
+    private final BlockSet typeOfBlock;
 
     private final double xOrigin;
     private final double yOrigin;
@@ -41,7 +40,7 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         this.xOrigin = x;
         this.yOrigin = y;
 
-        this.pv.set(Block.DEFAULT_RESISTANCE);
+        this.pv.set(typeOfBlock.getDurability());
     }
 
     public Block(final BlockSet typeOfBlock, final Environment environment) { this(typeOfBlock, environment, 0, 0); }
@@ -72,21 +71,21 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
     {
         Player player = this.environment.getPlayer();
 
-        if (this.typeOfBlock == BlockSet.FLOOR_TOP || this.typeOfBlock == BlockSet.FLOOR_LEFT || this.typeOfBlock == BlockSet.FLOOR_RIGHT || this.typeOfBlock == BlockSet.DIRT) {
+        if (Block.isFloorTop(this) || Block.isFloorLeft(this) || Block.isFloorRight(this) || Block.isDirt(this)) {
             player.pickup(new Block(BlockSet.FLOOR_TOP, this.environment));
-        } else if (this.typeOfBlock == BlockSet.ROCK) {
+        } else if (Block.isRock(this)) {
             for (int loot = 0; loot < Block.ROCK_NB_LOOTS; loot++)
                 player.pickup(Item.STONE);
-        } else if (this.typeOfBlock == BlockSet.TALL_GRASS) {
+        } else if (Block.isTallGrass(this)) {
             for (int loot = (int) (Math.random()*3)+1; loot < TallGrass.LOOTS_FIBRE_MAX; loot++)
                 player.pickup(Item.FIBER);
 
             boolean mustDropVodka = Math.random() < Vodka.DROP_RATE;
             if (mustDropVodka)
                 player.pickup(new Vodka(this.environment));
-        } else if (this.typeOfBlock == BlockSet.TORCH) {
+        } else if (Block.isTorch(this)) {
             player.pickup(new Block(BlockSet.TORCH, this.environment));
-        } else if (this.typeOfBlock == BlockSet.TREE) {
+        } else if (Block.isTree(this)) {
             player.pickup(new Block(BlockSet.TREE, this.environment));
         }
     }
@@ -95,9 +94,9 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
 
     @Override public void breaks()
     {
-        if (this.typeOfBlock == BlockSet.ROCK)
+        if (Block.isRock(this))
             Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
-        else if (this.typeOfBlock == BlockSet.TALL_GRASS)
+        else if (Block.isTallGrass(this))
             Environment.playSound("sound/cut.wav", false);
         else Environment.playSound("sound/grassyStep.wav", false);
         this.breakAnimation();
@@ -108,8 +107,8 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
             int yIndexTile = (int) (getY()/environment.heightTile);
             int xIndexTile = (int) (getX()/environment.widthTile);
             this.environment.getTileMaps().setTile(TileSet.SKY.ordinal(), yIndexTile, xIndexTile);
-            this.environment.getEntities().remove(this);
 
+            this.environment.getEntities().remove(this);
             this.environment.getBlocks().remove(this);
             if (Block.isTorch(this))
                 this.environment.getTorches().remove(this);
@@ -117,7 +116,7 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
                 this.environment.getTrees().remove(this);
         }
 
-        if (isRock(this)) {
+        if (Block.isRock(this)) {
             Stack item = this.environment.getPlayer().getStackSelected();
             if (!Objects.isNull(item) && item.getItem() instanceof Tool) {
                 Tool tool = (Tool) item.getItem();
@@ -148,14 +147,13 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         TileSet tile = TileSet.getTileSet(this.typeOfBlock);
         if (!Objects.isNull(tile))
             this.environment.getTileMaps().setTile(tile.ordinal(), y, x);
+
         this.environment.getEntities().add(block);
         this.environment.getBlocks().add(block);
-
-        if (this.typeOfBlock == BlockSet.TREE)
+        if (Block.isTree(this))
             this.environment.getTrees().add((Tree) block);
-        if (this.typeOfBlock == BlockSet.TORCH)
+        if (Block.isTorch(this))
             this.environment.getTorches().add(block);
-
     }
 
     public static boolean isFloorTop(final Block block) { return block.getTypeOfBlock() == BlockSet.FLOOR_TOP; }
