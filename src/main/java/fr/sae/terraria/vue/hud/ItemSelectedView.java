@@ -8,19 +8,15 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
-import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.Tool;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-
-import java.util.Objects;
 
 
 public class ItemSelectedView
@@ -77,7 +73,7 @@ public class ItemSelectedView
                 refreshView();
         });
 
-        player.getInventory().posCursorProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
+        player.getInventory().cursorProperty().addListener((obs, oldItemSelected, newItemSelected) -> {
             refreshView();
         });
 

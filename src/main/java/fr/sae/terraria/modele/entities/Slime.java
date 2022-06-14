@@ -84,7 +84,7 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
         Stack stack = this.environment.getPlayer().getStackSelected();
         if (!Objects.isNull(stack)) {
-            if (Tool.isSword((Tool) stack.getItem())) {
+            if (stack.getItem() instanceof Tool && Tool.isSword((Tool) stack.getItem())) {
                 Tool tool = (Tool) stack.getItem();
                 this.setPv(this.getPv() - tool.damage());
             }

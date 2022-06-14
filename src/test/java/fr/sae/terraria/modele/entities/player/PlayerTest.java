@@ -184,7 +184,7 @@ public class PlayerTest
 
     @Test public final void pickupTest()
     {
-        player.getInventory().posCursorProperty().set(0);
+        player.getInventory().cursorProperty().set(0);
 
 
         // Test avec de la viande
