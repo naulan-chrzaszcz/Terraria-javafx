@@ -57,11 +57,6 @@ public class Inventory
     {
         Stack stack = new Stack();
         stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.intValue() < oldValue.intValue()) {
-                Inventory inventory = player.getInventory();
-                inventory.get().get(inventory.getPosCursor()).remove();
-            }
-
             if (newValue.intValue() <= 0) {
                 this.value.remove(stack);
                 this.player.setStackSelected(null);

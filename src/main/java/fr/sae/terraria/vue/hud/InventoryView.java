@@ -104,7 +104,8 @@ public class InventoryView
                         view.setImage(null);    // TODO
                     else if (item instanceof Vodka)
                         view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
-                    else if (item instanceof Block) {
+
+                    if (item instanceof Block) {
                         if (Block.isFloorTop((Block) item))
                             view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Block.isRock((Block) item))
@@ -113,7 +114,9 @@ public class InventoryView
                             view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Block.isTorch((Block) item))
                             view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
-                    } else if (item instanceof Tool) {
+                    }
+
+                    if (item instanceof Tool) {
                         if (Tool.isAxe((Tool) item))
                             view.setImage(null);    // TODO
                         else if (Tool.isBow((Tool) item))
@@ -122,7 +125,9 @@ public class InventoryView
                             view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Tool.isSword((Tool) item))
                             view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
-                    } else if (item instanceof Item) {
+                    }
+
+                    if (item instanceof Item) {
                         if (Item.isCoal(item))
                             view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Item.isFiber(item))

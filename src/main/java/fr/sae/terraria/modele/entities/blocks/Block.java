@@ -133,7 +133,11 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         Inventory inventory = player.getInventory();
         if (!Objects.isNull(player.getStackSelected()))
             inventory.get().get(inventory.getPosCursor()).remove();
-        Block block = new Block(BlockSet.FLOOR_TOP, this.environment, x*widthTile, y*heightTile);
+
+        Block block;
+        if (Block.isDirt(this) || Block.isFloorTop(this) || Block.isFloorLeft(this) || Block.isFloorRight(this))
+            block = new Block(BlockSet.FLOOR_TOP, this.environment, x*widthTile, y*heightTile);
+        else block = new Block(this.typeOfBlock, this.environment, x*widthTile, y*heightTile);
         block.setRect(widthTile, heightTile);
 
         TileSet tile = TileSet.getTileSet(this.typeOfBlock);
