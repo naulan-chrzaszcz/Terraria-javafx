@@ -29,7 +29,8 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
     public Slime(Environment environment) { this(environment, 0, 0); }
 
-    @Override public void updates() {
+    @Override public void updates()
+    {
         if (this.isIDLEonY() && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
@@ -55,7 +56,8 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
         this.animation.loop();
     }
 
-    @Override public void collide() {
+    @Override public void collide()
+    {
         Map<String, Boolean> whereCollide = super.collide(this.environment);
 
         if (!whereCollide.isEmpty())

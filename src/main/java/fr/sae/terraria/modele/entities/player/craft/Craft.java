@@ -1,29 +1,24 @@
-package fr.sae.terraria.modele.entities.player.inventory;
+package fr.sae.terraria.modele.entities.player.craft;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.BlockSet;
-import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.items.Item;
 
-import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.craft.recipes.RockRecipe;
+import fr.sae.terraria.modele.entities.player.inventory.Inventory;
+import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.*;
 
-import java.util.Objects;
 
-public class Craft {
-    private Inventory inventory;
-    private Environment environment;
-    public Craft(Inventory inventory, Environment environment) {
-        this.inventory = inventory;
-        this.environment = environment;
-    }
+public class Craft
+{
 
     public boolean possibleToCreateTool(int id) {
         boolean firstGood = false;
         boolean secundGood = false;
         int quantityNeeded = 0;
-        for (int i = 0; i < this.inventory.NB_BOXES_MAX; i++) {
+        for (int i = 0; i < Inventory.NB_BOXES_MAX; i++) {
             if (id <= 9) {
                 if (id <= 6) {
                     quantityNeeded = 2;
@@ -93,7 +88,7 @@ public class Craft {
         else if(id == 9)
             inventory.getPlayer().pickup(new Tool(ToolSet.SWORD, MaterialSet.WOOD));
         if (id == 10)
-            inventory.getPlayer().pickup(new Block(BlockSet.ROCK, this.environment));
+            inventory.getPlayer().pickup(new Block(BlockSet.ROCK, null));
 
         for (int i = 0; i < this.inventory.nbStacksIntoInventory(); i++) {
             if (id <= 9) {
@@ -143,5 +138,30 @@ public class Craft {
             }
 
         }
+    }
+
+
+    public static Block rock(final Environment environment)
+    {
+        Inventory inventory = environment.getPlayer().getInventory();
+
+        for (int i = 0; i < inventory.get().size(); i++) {
+            Stack stack = inventory.get().get(i);
+            if (Item.isStone(stack.getItem()) && stack.removeQuantity(RockRecipe.NB_STONES))
+                return new Block(BlockSet.ROCK, environment);
+        }
+        return null;
+    }
+
+    public static Block pickaxe(final Environment environment, final MaterialSet material)
+    {
+        Inventory inventory = environment.getPlayer().getInventory();
+
+        for (int i = 0; i < inventory.get().size(); i++) {
+            Stack stack = inventory.get().get(i);
+
+
+        }
+        return null;
     }
 }
