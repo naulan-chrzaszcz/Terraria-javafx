@@ -32,7 +32,6 @@ public class PickaxeRecipe
 
                 i++;
             } while (i < inventory.get().size() && (!haveEnoughForPickaxeHead || !haveEnoughForPickaxeHandler));
-
             return (haveEnoughForPickaxeHead && haveEnoughForPickaxeHandler) ? ingredient : null;
         }
     }
@@ -59,7 +58,6 @@ public class PickaxeRecipe
 
                 i++;
             } while (i < inventory.get().size() && (!haveEnoughForPickaxeHead || !haveEnoughForPickaxeHandler));
-
             return (haveEnoughForPickaxeHead && haveEnoughForPickaxeHandler) ? ingredient : null;
         }
     }

@@ -46,5 +46,9 @@ public class MenuController implements Initializable
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
         });
+        this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+        });
     }
 }

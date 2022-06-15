@@ -12,7 +12,7 @@ public class IngredientSet
     {
         if (ingredient.get().length == 1)
             ingredient.get()[0] = stack;
-        else ingredient.get()[ingredient.nbStacks()] = stack;
+        else ingredient.get()[ingredient.nbStacks()-1] = stack;
 
         return true;
     }

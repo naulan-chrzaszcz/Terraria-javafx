@@ -46,7 +46,7 @@ public class Craft
             pickaxeIngredients = PickaxeRecipe.IronRecipe.apply(inventory);
 
         if (!Objects.isNull(pickaxeIngredients)) for (int i = 0; i < pickaxeIngredients.get().length; i++) {
-            Stack stack = (Stack) pickaxeIngredients.get()[i].getItem();
+            Stack stack = pickaxeIngredients.get()[i];
 
             if (Item.isStick(stack.getItem()))
                 stack.removeQuantity(PickaxeRecipe.NB_STICKS);
