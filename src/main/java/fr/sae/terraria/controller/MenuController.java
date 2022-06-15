@@ -8,6 +8,7 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.craft.Craft;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -79,6 +80,21 @@ public class MenuController implements Initializable
         this.recipeRock.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 player.pickup(Craft.rock(this.environment));
+        });
+
+        this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+        });
+
+        this.recipeStonePickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
+        });
+
+        this.recipeIronPickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
         });
     }
 }

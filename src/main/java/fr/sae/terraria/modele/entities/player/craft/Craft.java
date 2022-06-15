@@ -23,23 +23,41 @@ public class Craft
     {
         Inventory inventory = environment.getPlayer().getInventory();
 
-        for (int i = 0; i < inventory.get().size(); i++) {
-            Stack stack = inventory.get().get(i);
-            if (Item.isStone(stack.getItem()) && stack.removeQuantity(RockRecipe.NB_STONES))
-                return new Block(BlockSet.ROCK, environment);
+        Ingredient rockIngredients = RockRecipe.apply(inventory);
+        if (!Objects.isNull(rockIngredients)) {
+            Stack stack = rockIngredients.get()[0];
+            stack.removeQuantity(RockRecipe.NB_STONES);
         }
-        return null;
+
+        return (!Objects.isNull(rockIngredients)) ? new Block(BlockSet.ROCK, environment) : null;
     }
 
     public static Tool pickaxe(final Environment environment, final MaterialSet material)
     {
         Inventory inventory = environment.getPlayer().getInventory();
-        Ingredient pickaxeIngredients = PickaxeRecipe.WOOD_RECIPE.apply(inventory);
-        if (!Objects.isNull(pickaxeIngredients)){
-            ((Stack)pickaxeIngredients.get()[0].getItem()).removeQuantity(PickaxeRecipe.WOOD_RECIPE.NB_WOODS);
-            ((Stack)pickaxeIngredients.get()[1].getItem()).removeQuantity(PickaxeRecipe.WOOD_RECIPE.NB_STICKS);
-            return new Tool(ToolSet.PICKAXE, MaterialSet.IRON);
+
+        Ingredient pickaxeIngredients = null;
+        if (MaterialSet.isWood(material))
+            pickaxeIngredients = PickaxeRecipe.WOOD_RECIPE.apply(inventory);
+        else if (MaterialSet.isStone(material))
+            pickaxeIngredients = PickaxeRecipe.STONE_RECIPE.apply(inventory);
+        else if (MaterialSet.isIron(material))
+            pickaxeIngredients = PickaxeRecipe.IRON_RECIPE.apply(inventory);
+
+        if (!Objects.isNull(pickaxeIngredients)) for (int i = 0; i < pickaxeIngredients.get().length; i++) {
+            Stack stack = (Stack) pickaxeIngredients.get()[i].getItem();
+
+            if (Item.isStick(stack.getItem()))
+                stack.removeQuantity(PickaxeRecipe.NB_STICKS);
+
+            if (MaterialSet.isWood(material) && Item.isWood(stack.getItem()))
+                stack.removeQuantity(PickaxeRecipe.WOOD_RECIPE.NB_WOODS);
+            else if (MaterialSet.isStone(material) && Item.isStone(stack.getItem()))
+                stack.removeQuantity(PickaxeRecipe.STONE_RECIPE.NB_STONES);
+            else if (MaterialSet.isIron(material) && Item.isIron(stack.getItem()))
+                stack.removeQuantity(PickaxeRecipe.IRON_RECIPE.NB_IRONS);
         }
-        return null;
+
+        return (!Objects.isNull(pickaxeIngredients)) ? new Tool(ToolSet.PICKAXE, material) : null;
     }
 }
