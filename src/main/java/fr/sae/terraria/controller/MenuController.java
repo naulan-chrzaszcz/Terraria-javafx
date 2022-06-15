@@ -31,65 +31,32 @@ public class MenuController implements Initializable
     @FXML public HBox recipeWoodPickaxe;
     @FXML public HBox recipeStonePickaxe;
     @FXML public HBox recipeIronPickaxe;
-    @FXML public HBox lexiconAxe1;
-    @FXML public HBox recipeStoneAxe;
-    @FXML public HBox lexiconAxe3;
-    @FXML public HBox lexiconSword1;
-    @FXML public HBox lexiconSword2;
-    @FXML public HBox lexiconSword3;
 
-
-
-    public Timeline loop;
-    private Stage stage;
     public Environment environment = null;
     public Player player = null;
-    public double scaleMultiplicatorWidth;
-    public double scaleMultiplicatorHeight;
 
-
-    public MenuController(final Stage stage)
-    {
-        super();
-        this.stage = stage;
-    }
 
     @Override public void initialize(URL location, ResourceBundle resources)
     {
-        this.scaleMultiplicatorWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-        this.scaleMultiplicatorHeight = ((this.root.getPrefHeight()-this.HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-
-        this.loop = new Timeline();
-        this.loop.setCycleCount(Animation.INDEFINITE);
-
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            if (!Objects.isNull(this.player)) {
-                // System.out.println(this.player.getInventory());
-            }
-        }));
-
-        this.loop.getKeyFrames().add(keyFrame);
-        this.loop.play();
-
         // Craft de la roche à partir de 3 pierres
         this.recipeRock.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
-                player.pickup(Craft.rock(this.environment));
+                this.player.pickup(Craft.rock(this.environment));
         });
 
         this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
-                player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
         });
 
         this.recipeStonePickaxe.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
-                player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
         });
 
         this.recipeIronPickaxe.addEventFilter(Event.ANY, ev -> {
             if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
-                player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
         });
     }
 }

@@ -47,7 +47,7 @@ public class Terraria extends Application
     public void start(Stage stage) throws IOException
     {
         GameController gameController = new GameController(stage);
-        MenuController menuController = new MenuController(stage);
+        MenuController menuController = new MenuController();
 
         FXMLLoader fxmlLoader = this.loadFXML("vue/game.fxml");
         fxmlLoader.setController(gameController);
