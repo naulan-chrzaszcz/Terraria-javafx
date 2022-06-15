@@ -88,17 +88,16 @@ public class Environment
         this.player.spawn(5*widthTile, 3*heightTile);
 
         // Détecte si le joueur n'est pas dans un bloc lorsqu'il met un block au sol
-        this.entities.addListener((ListChangeListener<? super Entity>) c -> {
+        this.blocks.addListener((ListChangeListener<? super Block>) c -> {
             while (c.next()) if (c.wasAdded()) {
-                Entity entity = c.getList().get(0);
-
-                if (!Objects.isNull(entity.getRect())) {
+                Block block = c.getAddedSubList().get(0);
+                if (!Objects.isNull(block.getRect())) {
                     // Si on le pose sur le joueur
-                    boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
-
-                    if (entity instanceof CollideObjectType && isIntoABlock) {
+                    boolean isIntoABlock = player.getRect().collideRect(block.getRect());
+                    boolean isCollideBlock = Block.isDirt(block) || Block.isRock(block) || Block.isFloorLeft(block) || Block.isFloorRight(block) || Block.isFloorTop(block);
+                    if (isCollideBlock && isIntoABlock) {
                         // Place le joueur au-dessus du block posé.
-                        player.setY(entity.getY() - player.getRect().getHeight());
+                        player.setY(block.getY() - player.getRect().getHeight());
                         player.getGravity().yInit = player.getY();
                         player.getGravity().xInit = player.getX();
                     }

@@ -3,7 +3,6 @@ package fr.sae.terraria.modele.entities.player;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
-import fr.sae.terraria.modele.entities.player.craft.Craft;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;

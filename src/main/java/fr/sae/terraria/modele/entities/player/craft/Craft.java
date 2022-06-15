@@ -4,13 +4,14 @@ import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.items.Item;
-
 import fr.sae.terraria.modele.entities.player.craft.recipes.Ingredient;
 import fr.sae.terraria.modele.entities.player.craft.recipes.PickaxeRecipe;
 import fr.sae.terraria.modele.entities.player.craft.recipes.RockRecipe;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.*;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
+import fr.sae.terraria.modele.entities.tools.Tool;
+import fr.sae.terraria.modele.entities.tools.ToolSet;
 
 import java.util.Objects;
 
