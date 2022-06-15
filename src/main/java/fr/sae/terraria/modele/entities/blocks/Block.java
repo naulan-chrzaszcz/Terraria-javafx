@@ -86,19 +86,28 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         } else if (Block.isTorch(this)) {
             player.pickup(new Block(BlockSet.TORCH, this.environment));
         } else if (Block.isTree(this)) {
-            player.pickup(new Block(BlockSet.TREE, this.environment));
+            player.pickup(Item.WOOD);
+            for (int i = 0; i < Tree.STICKS_DROP; i++)
+                player.pickup(Item.STICK);
         }
+    }
+
+    private void playSound()
+    {
+        if (Block.isRock(this))
+            Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
+        else if (Block.isTallGrass(this))
+            Environment.playSound("sound/cut.wav", false);
+        else if (Block.isTree(this))
+            Environment.playSound("sound/treeHit.wav", false);
+        else Environment.playSound("sound/grassyStep.wav", false);
     }
 
     @Override public void updates() { }
 
     @Override public void breaks()
     {
-        if (Block.isRock(this))
-            Environment.playSound("sound/brick" + ((int) (Math.random()*2)+1) + ".wav", false);
-        else if (Block.isTallGrass(this))
-            Environment.playSound("sound/cut.wav", false);
-        else Environment.playSound("sound/grassyStep.wav", false);
+        this.playSound();
         this.breakAnimation();
 
         if (this.getPv() <= 0) {

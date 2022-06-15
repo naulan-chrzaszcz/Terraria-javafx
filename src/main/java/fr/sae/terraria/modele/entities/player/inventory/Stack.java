@@ -81,6 +81,8 @@ public class Stack
                 return true;
             if (Item.isWood(obj) && Item.isWood(this.item))
                 return true;
+            if (Item.isStick(obj) && Item.isStick(this.item))
+                return true;
         }
 
         return false;

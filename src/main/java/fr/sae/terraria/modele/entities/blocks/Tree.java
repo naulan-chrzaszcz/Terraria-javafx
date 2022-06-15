@@ -2,13 +2,13 @@ package fr.sae.terraria.modele.entities.blocks;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.SpawnableObjectType;
-import fr.sae.terraria.modele.entities.items.Item;
 
 
 public class Tree extends Block implements SpawnableObjectType
 {
     public static final double TREE_SPAWN_RATE = .2;
     public static final double TREE_CLUSTER = 10;
+    public static final int STICKS_DROP = 3;
 
     private final Environment environment;
 
@@ -20,16 +20,6 @@ public class Tree extends Block implements SpawnableObjectType
     }
 
     public Tree(final Environment environment) { this(environment, 0, 0); }
-
-    @Override public void updates() { /* TODO document why this method is empty */ }
-
-    @Override public void breaks()
-    {
-        // Environment.playSound("sound/grassyStep.wav", false);
-        this.environment.getPlayer().pickup(Item.WOOD);
-        this.environment.getEntities().remove(this);
-        this.environment.getTrees().remove(this);
-    }
 
     @Override public void spawn(int x, int y)
     {

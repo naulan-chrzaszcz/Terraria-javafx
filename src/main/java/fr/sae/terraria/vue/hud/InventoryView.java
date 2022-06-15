@@ -73,7 +73,8 @@ public class InventoryView
     /**
      * Applique une bordure de couleur noire autour de la barre d'inventaire
      */
-    private Rectangle setFrameInventoryBar() {
+    private Rectangle setFrameInventoryBar()
+    {
         frameInventoryBar.setWidth(inventoryBarImg.getWidth() + (2 * scaleMultiplicatorWidth));
         frameInventoryBar.setHeight(inventoryBarImg.getHeight() + (2 * scaleMultiplicatorHeight));
         frameInventoryBar.setX(inventoryBarImgView.getX() - scaleMultiplicatorWidth);
@@ -140,6 +141,8 @@ public class InventoryView
                             view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));
                         else if (Item.isWood(item))
                             view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isStick(item))
+                            view.setImage(View.loadAnImage("loots/stick.png", itemInventoryWidth, itemInventoryHeight));
                     }
 
                     // Actualise le nombre d'item à l'écran
