@@ -7,11 +7,10 @@ import fr.sae.terraria.modele.entities.player.inventory.Stack;
 public class PickaxeRecipe
 {
     private static final int NB_INGREDIENTS = 2;
-
     public static final int NB_STICKS = 2;
 
 
-    public static final class WOOD_RECIPE
+    public static final class WoodRecipe
     {
         public static final int NB_WOODS = 3;
 
@@ -34,11 +33,11 @@ public class PickaxeRecipe
                 i++;
             } while (i < inventory.get().size() && (!haveEnoughForPickaxeHead || !haveEnoughForPickaxeHandler));
 
-            return (i == ingredient.get().length) ? ingredient : null;
+            return (haveEnoughForPickaxeHead && haveEnoughForPickaxeHandler) ? ingredient : null;
         }
     }
 
-    public static final class STONE_RECIPE
+    public static final class StoneRecipe
     {
         public static final int NB_STONES = 3;
 
@@ -61,11 +60,11 @@ public class PickaxeRecipe
                 i++;
             } while (i < inventory.get().size() && (!haveEnoughForPickaxeHead || !haveEnoughForPickaxeHandler));
 
-            return (i == ingredient.get().length) ? ingredient : null;
+            return (haveEnoughForPickaxeHead && haveEnoughForPickaxeHandler) ? ingredient : null;
         }
     }
 
-    public static final class IRON_RECIPE
+    public static final class IronRecipe
     {
         public static final int NB_IRONS = 3;
 
@@ -88,7 +87,7 @@ public class PickaxeRecipe
                 i++;
             } while (i < inventory.get().size() && (!haveEnoughForPickaxeHead || !haveEnoughForPickaxeHandler));
 
-            return (i == ingredient.get().length) ? ingredient : null;
+            return (haveEnoughForPickaxeHead && haveEnoughForPickaxeHandler) ? ingredient : null;
         }
     }
 }
