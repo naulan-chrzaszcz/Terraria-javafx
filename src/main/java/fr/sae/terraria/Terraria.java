@@ -82,25 +82,21 @@ public class Terraria extends Application
             if (switchScene.get()) {
                 if (!Objects.isNull(menuController.player)) {
                     gameController.player = menuController.player;
-                    menuController.loop.stop();
                     gameController.environment.getLoop().play();
                 }
             } else {
                 if (!Objects.isNull(gameController.player)) {
                     menuController.player = gameController.player;
                     menuController.environment = gameController.environment;
-                    menuController.loop.play();
                     gameController.environment.getLoop().stop();
                 }
             }
         }));
         stage.widthProperty().addListener((obs, oldV, newV) -> {
             gameController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
-            menuController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
         });
         stage.heightProperty().addListener((obs, oldV, newV) -> {
             gameController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-            menuController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
         });
 
         stage.show();
