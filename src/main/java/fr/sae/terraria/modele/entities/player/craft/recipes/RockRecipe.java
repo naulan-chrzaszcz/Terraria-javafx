@@ -18,7 +18,7 @@ public class RockRecipe
         int i = 0;
         do {
             Stack stack = inventory.get().get(i);
-            haveEnoughStone = IngredientSet.stones(ingredient, stack, NB_STONES);
+            haveEnoughStone = IngredientSet.stones(ingredient, stack, RockRecipe.NB_STONES);
 
             i++;
         } while (i < inventory.get().size() && !haveEnoughStone);
