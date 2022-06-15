@@ -3,7 +3,6 @@ package fr.sae.terraria.modele.entities.player.craft.recipes;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.MaterialSet;
 
 
 public class PickaxeRecipe
@@ -12,19 +11,29 @@ public class PickaxeRecipe
     {
         public static final int NB_WOODS = 3;
         public static final int NB_STICKS = 2;
+        private static final int NB_INGREDIENTS = 2;
 
-        public static boolean apply(final Inventory inventory)
+
+        public static Ingredient apply(final Inventory inventory)
         {
+            int i = 0;
+            Ingredient ingredient =  new Ingredient(NB_INGREDIENTS);
             boolean haveEnoughForPickaxeHead = false;
             boolean haveEnoughForPickaxeHandler = false;
 
-            for (int i = 0; i < inventory.get().size(); i++) {
-                Stack stack = inventory.get().get(i);
-                if (Item.isWood(stack.getItem()) && stack.haveEnoughQuantity(NB_WOODS))
+           for(Stack stack : inventory.get()){
+                if (Item.isWood(stack.getItem()) && stack.haveEnoughQuantity(NB_WOODS) && !haveEnoughForPickaxeHead) {
                     haveEnoughForPickaxeHead = true;
-                if (Item.isStick(stack.getItem()) && stack.haveEnoughQuantity(NB_STICKS))
+                    ingredient.get()[0] = stack;
+                    i++;
+                }
+                if (Item.isStick(stack.getItem()) && stack.haveEnoughQuantity(NB_STICKS) && !haveEnoughForPickaxeHandler) {
                     haveEnoughForPickaxeHandler = true;
+                    ingredient.get()[1] = stack;
+                    i++;
+                }
             }
+            return (i == ingredient.get().length) ? ingredient : null;
         }
     }
 
