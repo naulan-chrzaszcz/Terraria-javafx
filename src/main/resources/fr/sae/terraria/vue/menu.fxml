@@ -1,150 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
-<BorderPane fx:id="root"
-            maxHeight="-Infinity" maxWidth="-Infinity"
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/11"
             xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
-        <URL value="@./menu.css" />
+        <URL value="@./menu.css"/>
     </stylesheets>
 
 
     <top>
-        <HBox id="textArea"
-              fx:id="HBoxText"
-              prefHeight="25.0" prefWidth="1280"
-              BorderPane.alignment="CENTER">
-            <Text id="text"
-                  text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago"/>
+        <HBox id="textArea" fx:id="HBoxText" prefHeight="25.0" prefWidth="1280" BorderPane.alignment="CENTER">
+            <Text id="text" text="Groupe: BOUCHE Antoine, CHRZASZCZ Naulan, NARCISO Tiago"/>
         </HBox>
     </top>
 
     <center>
-        <SplitPane dividerPositions="0.5"
-                   prefHeight="160.0"
-                   prefWidth="200.0"
-                   BorderPane.alignment="CENTER">
-            <BorderPane prefHeight="200.0"
-                        prefWidth="640.0">
+        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane prefHeight="200.0" prefWidth="640.0">
                 <top>
-                    <HBox fx:id="HBoxTitle"
-                          prefHeight="25.0"
-                          prefWidth="640.0"
-                          BorderPane.alignment="CENTER">
-                        <Text fx:id="TextHBoxTitle"
-                              strokeType="OUTSIDE"
-                              strokeWidth="0.0"
-                              text="Lexique"
-                              textAlignment="CENTER"
+                    <HBox fx:id="HBoxTitle" prefHeight="25.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+                        <Text fx:id="TextHBoxTitle" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0"
+                              text="Lexique des constructions" textAlignment="CENTER" underline="true"
                               wrappingWidth="632.470703125">
                             <font>
-                                <Font size="16.0"/>
+                                <Font size="20.0"/>
                             </font>
                         </Text>
                     </HBox>
                 </top>
 
                 <center>
-                    <ScrollPane prefHeight="200.0"
-                                prefWidth="640.0"
-                                BorderPane.alignment="CENTER">
-                        <Pane fx:id="displayLexique"
-                              prefHeight="900.0"
-                              prefWidth="640.0">
-                            <HBox id="notAvailable"
-                                  fx:id="recipeWoodPickaxe"
-                                  prefHeight="50.0"
+                    <ScrollPane prefHeight="200.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+                        <Pane fx:id="displayLexique" prefHeight="900.0" prefWidth="640.0">
+                            <HBox id="notAvailable" fx:id="recipeWoodPickaxe" layoutY="240.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Pioche en bois" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="150.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="recipeStonePickaxe"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="recipeStonePickaxe" layoutY="314.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Pioche en pierre" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 pierre" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="75.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="recipeIronPickaxe"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="recipeIronPickaxe" layoutY="387.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Pioche en fer" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="225.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="lexiconAxe1"
-                                  layoutY="55.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="recipeWoodAxe" layoutY="14.0" prefHeight="50.0"
                                   prefWidth="625.0">
-                                <Text text="Hache en fer" textAlignment="CENTER"/>
-                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
+                                <Text text="Hache en bois" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="300.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="recipeStoneAxe"
-                                  layoutY="110.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="recipeStoneAxe" layoutY="90.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Hache en pierre" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 pierre" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="375.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="lexiconAxe3"
-                                  layoutY="165.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="recipeIronAxe" layoutY="167.0" prefHeight="50.0"
                                   prefWidth="625.0">
-                                <Text text="Hache en bois" textAlignment="CENTER"/>
-                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
+                                <Text text="Hache en fer" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="450.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="lexiconSword1"
-                                  layoutY="108.0"
-                                  prefHeight="50.0"
-                                  prefWidth="625.0">
-                                <Text text="Epée en fer" textAlignment="CENTER"/>
-                                <Text text="1 Bâton | 2 Minerais de fer"/>
-                            </HBox>
                             <Separator layoutY="525.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="lexiconSword2"
-                                  layoutY="108.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="lexiconSword2" layoutY="537.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Epée en pierre" textAlignment="CENTER"/>
                                 <Text text="1 Bâton | 2 pierre"/>
                             </HBox>
                             <Separator layoutY="600.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="lexiconSword3"
-                                  layoutY="108.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="lexiconSword3" layoutY="465.0" prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Epée en bois" textAlignment="CENTER"/>
                                 <Text text="1 Bâton | 2 bois"/>
                             </HBox>
                             <Separator layoutY="675.0" prefHeight="5.0" prefWidth="625.0"/>
-                            <HBox id="notAvailable"
-                                  fx:id="recipeRock"
-                                  layoutY="163.0"
-                                  prefHeight="50.0"
+                            <HBox id="notAvailable" fx:id="lexiconSword1" layoutY="613.0" prefHeight="50.0"
                                   prefWidth="625.0">
-                                <Text text="1 Roche" textAlignment="CENTER"/>
-                                <Text text="3 pierres"/>
+                                <Text text="Epée en fer" textAlignment="CENTER"/>
+                                <Text text="1 Bâton | 2 Minerais de fer"/>
                             </HBox>
-                            <Separator layoutY="750.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <HBox id="notAvailable" fx:id="recipeRock" layoutY="678.0" prefHeight="50.0"
+                                  prefWidth="625.0">
+                                <Text text="Roche" textAlignment="CENTER"/>
+                                <Text text="3 Pierres"/>
+                            </HBox>
                             <!--<HBox id="notAvailable"
                                   fx:id="lexiconBow"
                                   layoutY="163.0"
@@ -160,16 +118,10 @@
                 </center>
             </BorderPane>
 
-            <BorderPane prefHeight="200.0"
-                        prefWidth="640.0">
+            <BorderPane prefHeight="200.0" prefWidth="640.0">
                 <top>
-                    <HBox prefHeight="25.0"
-                          prefWidth="640.0"
-                          BorderPane.alignment="CENTER">
-                        <Text strokeType="OUTSIDE"
-                              strokeWidth="0.0"
-                              text="Inventaire"
-                              textAlignment="CENTER"
+                    <HBox prefHeight="25.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inventaire du joueur" textAlignment="CENTER"
                               wrappingWidth="640">
                             <font>
                                 <Font size="16.0"/>
@@ -179,10 +131,7 @@
                 </top>
 
                 <center>
-                    <Pane fx:id="displayInventory"
-                          prefHeight="200.0"
-                          prefWidth="640.0"
-                          BorderPane.alignment="CENTER"/>
+                    <Pane fx:id="displayInventory" prefHeight="200.0" prefWidth="640.0" BorderPane.alignment="CENTER"/>
                 </center>
             </BorderPane>
         </SplitPane>

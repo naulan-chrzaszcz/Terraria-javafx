@@ -2,12 +2,8 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.BlockSet;
-import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.craft.Craft;
-import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -23,7 +19,6 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.locks.ReentrantLock;
 
 
 public class MenuController implements Initializable
