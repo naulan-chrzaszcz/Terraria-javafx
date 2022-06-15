@@ -89,9 +89,18 @@ public class Stack
     public IntegerProperty nbItemsProperty() { return this.nbItems; }
 
     public boolean isFull() { return this.getNbItems() >= Stack.MAX; }
+    public boolean haveEnoughQuantity(int quantity) { return this.getNbItems() >= quantity; }
     public void add() { if (this.getNbItems() < Stack.MAX) this.nbItems.set(this.getNbItems() + 1); }
     public void remove() { if (this.getNbItems() > 0) this.nbItems.set(this.getNbItems() - 1); }
-    public void removeQuantity(int quantity) { if (this.getNbItems() >= quantity) this.nbItems.set(this.getNbItems() - quantity);}
+
+    public boolean removeQuantity(int quantity)
+    {
+        if (this.getNbItems() >= quantity) {
+            this.nbItems.set(this.getNbItems() - quantity);
+            return true;
+        }
+        return false;
+    }
 
     @Override public String toString(){
         if (item instanceof Block)

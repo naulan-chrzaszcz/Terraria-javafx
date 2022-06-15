@@ -10,7 +10,8 @@ public enum Item implements StowableObjectType
     IRON,
     SILEX,
     STONE,
-    WOOD;
+    WOOD,
+    STICKS;
 
 
     public static boolean isCoal(StowableObjectType obj) { return obj == Item.COAL; }
@@ -19,4 +20,5 @@ public enum Item implements StowableObjectType
     public static boolean isStone(StowableObjectType obj) { return obj == Item.STONE; }
     public static boolean isSilex(StowableObjectType obj) { return obj == Item.SILEX; }
     public static boolean isWood(StowableObjectType obj) { return obj == Item.WOOD; }
+    public static boolean isStick(StowableObjectType obj) { return obj == Item.STICKS; }
 }

@@ -59,27 +59,27 @@
                               prefHeight="900.0"
                               prefWidth="640.0">
                             <HBox id="notAvailable"
-                                  fx:id="lexiconPickaxe1"
+                                  fx:id="recipeWoodPickaxe"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
-                                <Text text="Pioche en fer" textAlignment="CENTER"/>
-                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
+                                <Text text="Pioche en bois" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
                             </HBox>
-                            <Separator layoutY="75.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="150.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexiconPickaxe2"
+                                  fx:id="recipeStonePickaxe"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Pioche en pierre" textAlignment="CENTER"/>
                                 <Text text="2 Bâtons | 3 pierre" textAlignment="CENTER"/>
                             </HBox>
-                            <Separator layoutY="150.0" prefHeight="5.0" prefWidth="625.0"/>
+                            <Separator layoutY="75.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexiconPickaxe3"
+                                  fx:id="recipeIronPickaxe"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
-                                <Text text="Pioche en bois" textAlignment="CENTER"/>
-                                <Text text="2 Bâtons | 3 bois" textAlignment="CENTER"/>
+                                <Text text="Pioche en fer" textAlignment="CENTER"/>
+                                <Text text="2 Bâtons | 3 Minerais de fer" textAlignment="CENTER"/>
                             </HBox>
                             <Separator layoutY="225.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
@@ -92,8 +92,8 @@
                             </HBox>
                             <Separator layoutY="300.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexiconAxe2"
-                                  layoutY="55.0"
+                                  fx:id="recipeStoneAxe"
+                                  layoutY="110.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Hache en pierre" textAlignment="CENTER"/>
@@ -102,7 +102,7 @@
                             <Separator layoutY="375.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
                                   fx:id="lexiconAxe3"
-                                  layoutY="55.0"
+                                  layoutY="165.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">
                                 <Text text="Hache en bois" textAlignment="CENTER"/>
@@ -137,7 +137,7 @@
                             </HBox>
                             <Separator layoutY="675.0" prefHeight="5.0" prefWidth="625.0"/>
                             <HBox id="notAvailable"
-                                  fx:id="lexiconStone"
+                                  fx:id="recipeRock"
                                   layoutY="163.0"
                                   prefHeight="50.0"
                                   prefWidth="625.0">

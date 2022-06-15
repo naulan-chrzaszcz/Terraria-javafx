@@ -6,7 +6,9 @@ import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
+import fr.sae.terraria.modele.entities.player.craft.Craft;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -30,12 +32,12 @@ public class MenuController implements Initializable
     @FXML public Pane displayInventory;
     @FXML public Pane displayLexique;
     @FXML public HBox HBoxText;
-    @FXML public HBox lexiconStone;
-    @FXML public HBox lexiconPickaxe1;
-    @FXML public HBox lexiconPickaxe2;
-    @FXML public HBox lexiconPickaxe3;
+    @FXML public HBox recipeRock;
+    @FXML public HBox recipeWoodPickaxe;
+    @FXML public HBox recipeStonePickaxe;
+    @FXML public HBox recipeIronPickaxe;
     @FXML public HBox lexiconAxe1;
-    @FXML public HBox lexiconAxe2;
+    @FXML public HBox recipeStoneAxe;
     @FXML public HBox lexiconAxe3;
     @FXML public HBox lexiconSword1;
     @FXML public HBox lexiconSword2;
@@ -75,13 +77,24 @@ public class MenuController implements Initializable
         this.loop.play();
 
         // Craft de la roche à partir de 3 pierres
-        this.lexiconStone.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED")) {
-                int i = this.player.getInventory().get().size()-1;
-                if (player.getCraft().possibleToCreateTool(10)) {
-                    player.getCraft().createTool(10);
-                }
-            }
+        this.recipeRock.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.rock(this.environment));
+        });
+
+        this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+        });
+
+        this.recipeStonePickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
+        });
+
+        this.recipeIronPickaxe.addEventFilter(Event.ANY, ev -> {
+            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
         });
     }
 }

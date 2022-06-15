@@ -19,4 +19,6 @@ module fr.sae.terraria
     exports fr.sae.terraria.modele.entities.player.inventory;
     opens fr.sae.terraria.modele.entities.player.inventory to javafx.fxml;
     opens fr.sae.terraria.modele to javafx.fxml, javafx.graphics;
+    exports fr.sae.terraria.modele.entities.player.craft;
+    opens fr.sae.terraria.modele.entities.player.craft to javafx.fxml;
 }
