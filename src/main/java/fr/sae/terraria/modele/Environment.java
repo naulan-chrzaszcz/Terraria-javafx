@@ -6,7 +6,6 @@ import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.Tree;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
 import fr.sae.terraria.modele.entities.items.Meat;

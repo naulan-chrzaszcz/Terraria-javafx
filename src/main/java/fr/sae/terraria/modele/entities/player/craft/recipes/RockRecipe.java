@@ -13,7 +13,7 @@ public class RockRecipe
     public static Ingredient apply(final Inventory inventory)
     {
         Ingredient ingredient = new Ingredient(RockRecipe.NB_INGREDIENTS);
-        boolean haveEnoughStone ;
+        boolean haveEnoughStone;
 
         int i = 0;
         do {

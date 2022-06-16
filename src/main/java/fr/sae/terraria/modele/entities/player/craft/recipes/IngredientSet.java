@@ -40,4 +40,10 @@ public class IngredientSet
         boolean haveEnoughIrons = Item.isIron(stack.getItem()) && stack.haveEnoughQuantity(nbStones);
         return haveEnoughIrons && IngredientSet.putStackIntoIngredientsList(ingredient, stack);
     }
+
+    public static boolean coals(final Ingredient ingredient, final Stack stack, final int nbCoals)
+    {
+        boolean haveEnoughCoals = Item.isCoal(stack.getItem()) && stack.haveEnoughQuantity(nbCoals);
+        return haveEnoughCoals && IngredientSet.putStackIntoIngredientsList(ingredient, stack);
+    }
 }
