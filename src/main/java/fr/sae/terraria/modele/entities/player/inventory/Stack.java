@@ -104,7 +104,8 @@ public class Stack
         return false;
     }
 
-    @Override public String toString(){
+    @Override public String toString()
+    {
         if (item instanceof Block)
             return String.valueOf(((Block) item).getTypeOfBlock());
         return item.toString();
