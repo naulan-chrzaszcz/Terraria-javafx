@@ -76,6 +76,11 @@ public class Block extends Entity implements BreakableObjectType, PlaceableObjec
         } else if (Block.isRock(this)) {
             for (int loot = 0; loot < Block.ROCK_NB_LOOTS; loot++)
                 player.pickup(Item.STONE);
+
+            if (Math.random() > .5)
+                player.pickup(Item.COAL);
+            if (Math.random() < .05)
+                player.pickup(Item.IRON);
         } else if (Block.isTallGrass(this)) {
             for (int loot = (int) (Math.random()*3)+1; loot <= TallGrass.LOOTS_FIBRE_MAX; loot++)
                 player.pickup(Item.FIBER);
