@@ -121,8 +121,6 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             // TODO TEST
             if (!caught[0]) {
-                this.player.pickup(new Block(BlockSet.TORCH, this));
-                this.player.pickup(new Meat(this));
                 this.player.pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
                 this.player.pickup(new Vodka(this));
                 this.player.pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));

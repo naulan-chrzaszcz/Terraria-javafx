@@ -25,6 +25,7 @@ public class TorchRecipe
                 haveEnoughCoal = IngredientSet.coals(ingredient, stack, TorchRecipe.NB_COALS);
             if (!haveEnoughSticks)
                 haveEnoughSticks = IngredientSet.sticks(ingredient, stack, TorchRecipe.NB_COALS);
+            i++;
         } while (i < inventory.get().size() && (!haveEnoughCoal || !haveEnoughSticks));
 
         return (haveEnoughCoal && haveEnoughSticks) ? ingredient : null;
