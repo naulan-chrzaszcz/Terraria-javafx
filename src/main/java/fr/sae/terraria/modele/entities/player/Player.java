@@ -23,6 +23,8 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;
+    private Boolean hit;
+    private int invicibilityFrame;
 
     private final SimpleBooleanProperty drunk;
 
@@ -33,7 +35,8 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     public Player(final Environment environment)
     {
         super(environment, 0, 0);
-
+        this.invicibilityFrame = 0;
+        this.hit = false;
         this.drunk = new SimpleBooleanProperty(false);
         this.inventory = new Inventory(this);
 
@@ -167,6 +170,10 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
     public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
+    public Boolean getHit() { return hit; }
+    public void setHit(Boolean hit) { this.hit = hit; }
+    public int getInvicibilityFrame() { return invicibilityFrame; }
+    public void setInvicibilityFrame(int ticks2) { this.invicibilityFrame = ticks2; }
 
     public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
 }

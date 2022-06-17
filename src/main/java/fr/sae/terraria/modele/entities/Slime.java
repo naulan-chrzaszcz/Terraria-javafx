@@ -13,6 +13,7 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 {
     public static final int WHEN_SPAWN_A_SLIME = 2_500;
     public static final double SLIME_SPAWN_RATE = .2;
+    public static final int TIME_BEFORE_HITTING_AGAIN_THE_PLAYER = 100;
 
 
     public Slime(Environment environment, int x, int y)
@@ -63,6 +64,14 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
         if (!whereCollide.isEmpty())
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
                 this.idleOnX();
+            if (environment.getPlayer().getRect().collideRect(this.getRect()) && !environment.getPlayer().getHit()){
+                environment.getPlayer().setHit(true);
+                environment.getPlayer().setPv(environment.getPlayer().getPv() -1 );
+                environment.getPlayer().setInvicibilityFrame(this.environment.getTicks());
+            }
+            if (environment.getPlayer().getHit() &&  this.environment.getTicks() - environment.getPlayer().getInvicibilityFrame() == TIME_BEFORE_HITTING_AGAIN_THE_PLAYER){
+                environment.getPlayer().setHit(false);
+            }
     }
 
     @Override public void move()
