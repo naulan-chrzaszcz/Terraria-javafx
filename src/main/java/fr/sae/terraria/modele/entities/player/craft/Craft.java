@@ -7,6 +7,7 @@ import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.craft.recipes.Ingredient;
 import fr.sae.terraria.modele.entities.player.craft.recipes.PickaxeRecipe;
 import fr.sae.terraria.modele.entities.player.craft.recipes.RockRecipe;
+import fr.sae.terraria.modele.entities.player.craft.recipes.TorchRecipe;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.MaterialSet;
@@ -31,6 +32,23 @@ public class Craft
         }
 
         return (!Objects.isNull(rockIngredients)) ? new Block(BlockSet.ROCK, environment) : null;
+    }
+
+    public static Block torch(final Environment environment)
+    {
+        Inventory inventory = environment.getPlayer().getInventory();
+
+        Ingredient torchIngredients = TorchRecipe.apply(inventory);
+        if (!Objects.isNull(torchIngredients)) for (int i = 0; i < torchIngredients.get().length; i++) {
+            Stack stack = torchIngredients.get()[i];
+
+            if (Item.isStick(stack.getItem()))
+                stack.removeQuantity(TorchRecipe.NB_STICKS);
+            if (Item.isCoal(stack.getItem()))
+                stack.removeQuantity(TorchRecipe.NB_COALS);
+        }
+
+        return (!Objects.isNull(torchIngredients)) ? new Block(BlockSet.TORCH, environment) : null;
     }
 
     public static Tool pickaxe(final Environment environment, final MaterialSet material)

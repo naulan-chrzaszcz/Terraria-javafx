@@ -16,9 +16,19 @@ import java.util.ResourceBundle;
 public class MenuController implements Initializable
 {
     @FXML public HBox recipeRock;
+    @FXML public HBox recipeTorch;
+
     @FXML public HBox recipeWoodPickaxe;
     @FXML public HBox recipeStonePickaxe;
     @FXML public HBox recipeIronPickaxe;
+
+    @FXML public HBox recipeWoodAxe;
+    @FXML public HBox recipeStoneAxe;
+    @FXML public HBox recipeIronAxe;
+
+    @FXML public HBox recipeWoodSword;
+    @FXML public HBox recipeStoneSword;
+    @FXML public HBox recipeIronSword;
 
     public Environment environment = null;
     public Player player = null;
@@ -27,28 +37,59 @@ public class MenuController implements Initializable
     @Override public void initialize(URL location, ResourceBundle resources)
     {
         // Craft de la roche à partir de 3 pierres
-        this.recipeRock.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+        this.recipeRock.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 this.player.pickup(Craft.rock(this.environment));
         });
 
-        this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+        this.recipeTorch.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.torch(this.environment));
+        });
+
+
+        // LES PIOCHES
+        this.recipeWoodPickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
         });
 
-        this.recipeStonePickaxe.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+        this.recipeStonePickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
         });
 
-        this.recipeIronPickaxe.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+        this.recipeIronPickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
                 this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
         });
-        this.recipeWoodPickaxe.addEventFilter(Event.ANY, ev -> {
-            if (ev.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
-                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+
+
+        // LES HACHES
+        this.recipeWoodAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeStoneAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeIronAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+
+        // LES EPEES
+        this.recipeWoodSword.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeStoneSword.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeIronSword.addEventFilter(Event.ANY, event -> {
+
         });
     }
 }

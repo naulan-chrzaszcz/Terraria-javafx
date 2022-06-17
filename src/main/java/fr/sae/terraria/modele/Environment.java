@@ -4,12 +4,9 @@ import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
 import fr.sae.terraria.modele.entities.blocks.Block;
-import fr.sae.terraria.modele.entities.blocks.BlockSet;
 import fr.sae.terraria.modele.entities.blocks.Tree;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
-import fr.sae.terraria.modele.entities.items.Meat;
 import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.tools.MaterialSet;
@@ -122,8 +119,6 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             // TODO TEST
             if (!caught[0]) {
-                this.player.pickup(new Block(BlockSet.TORCH, this));
-                this.player.pickup(new Meat(this));
                 this.player.pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
                 this.player.pickup(new Vodka(this));
                 this.player.pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));
@@ -180,7 +175,7 @@ public class Environment
         } catch (Exception e) { e.printStackTrace(); }
 
         if (!Objects.isNull(clip)) {
-            clip.loop((loop) ? Clip.LOOP_CONTINUOUSLY : 0);
+            clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
             clip.start();
         }
 
