@@ -45,9 +45,15 @@ public class HealthBarView
 
         // Modifie le cœur selon la vie du joueur
         player.pvProperty().addListener((obs, oldPv, newPv) -> {
-            if (oldPv.intValue() >= 0) {
-                ImageView healthView = healths[oldPv.intValue()-1];
+            ImageView healthView;
+            if (newPv.intValue() > oldPv.intValue()) {
+                healthView = healths[newPv.intValue()-1];
+                Rectangle2D viewPort = new Rectangle2D((healthView.getImage().getWidth()/3)*2, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
+                healthView.setViewport(viewPort);
+            }
 
+            if (newPv.intValue() < oldPv.intValue()) {
+                healthView = healths[oldPv.intValue()-1];
                 Rectangle2D viewPort = new Rectangle2D((healthView.getImage().getWidth()/3)*0, 0, (healthView.getImage().getWidth()/3), healthView.getImage().getHeight());
                 healthView.setViewport(viewPort);
             }

@@ -68,7 +68,7 @@ public abstract class Entity
 
     public Animation getAnimation() { return this.animation; }
     public Rect getRect() { return this.rect; }
-    public double getPvMax() { return this.pv.get(); }
+    public double getPvMax() { return this.pvMax; }
     public double getPv() { return this.pv.get(); }
     public double getX() { return this.x.get(); }
     public double getY() { return this.y.get(); }

@@ -85,7 +85,8 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     @Override public void hit()
     {
-        this.setPv(this.getPv() - 1);
+        this.pv.set(this.getPv() - 1);
+        this.hit = true;
     }
 
     @Override public void spawn(int x, int y)
@@ -171,10 +172,10 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
     public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
-    public Boolean getHit() { return hit; }
-    public void setHit(Boolean hit) { this.hit = hit; }
+    public boolean getHit() { return this.hit; }
     public int getInvicibilityFrame() { return invicibilityFrame; }
-    public void setInvicibilityFrame(int ticks2) { this.invicibilityFrame = ticks2; }
 
     public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
+    public void setHit(boolean b) { this.hit = b; }
+    public void setInvicibilityFrame(int ticks2) { this.invicibilityFrame = ticks2; }
 }

@@ -99,7 +99,9 @@ public class Terraria extends Application
             gameController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
         });
         gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) ->{
-
+            if (newV.longValue() == 0){
+                stage.close();
+            }
         });
 
         stage.show();
