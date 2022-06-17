@@ -36,20 +36,37 @@ public class Inventory
 
         this.posCursor = new SimpleIntegerProperty(0);
 
-        // Change l'item de la main du joueur
-        this.posCursorProperty().addListener((obs, oldV, newV) -> {
-            boolean isntOutOfInventoryBar = newV.intValue() >= 0 && newV.intValue() < nbElementOnOneLineOfInventory;
+        // Change l'item qui se trouve dans la main du joueur
+        this.cursorProperty().addListener((obs, oldPos, newPos) -> {
+            boolean isntOutOfInventoryBar = newPos.intValue() >= 0 && newPos.intValue() < nbElementOnOneLineOfInventory;
 
-            if (isntOutOfInventoryBar) {
-                Stack stack = null;
-                if (this.getPosCursor() < this.get().size())
-                    stack = this.get().get(this.getPosCursor());
-                this.player.setStackSelected(stack);
-            }
+            if (isntOutOfInventoryBar)
+                refreshStack();
         });
     }
 
-    private int nbStacksIntoInventory() { return this.value.size(); }
+    public void refreshStack()
+    {
+        Stack stack = null;
+        if (this.getPosCursor() < this.get().size())
+            stack = this.get().get(this.getPosCursor());
+        this.player.setStackSelected(stack);
+    }
+
+    private void createStack(StowableObjectType item)
+    {
+        Stack stack = new Stack();
+        stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.intValue() <= 0) {
+                this.value.remove(stack);
+                this.player.setStackSelected(null);
+            }
+        });
+        stack.setItem(item);
+        this.value.add(stack);
+    }
+
+    public int nbStacksIntoInventory() { return this.value.size(); }
 
     /**
      * Place des objets de type rangeable dans l'inventaire.
@@ -61,17 +78,7 @@ public class Inventory
 
         if (nbStacksInventory < NB_BOXES_MAX) {
             if (nbStacksInventory == 0) {
-                Stack stack = new Stack();
-                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue.intValue() <= 0) {
-                        this.value.remove(stack);
-                        this.player.setStackSelected(null);
-                    }
-                });
-                stack.setItem(item);
-                stack.add();
-                this.value.add(stack);
-                this.player.setStackSelected(stack);
+                this.createStack(item);
             } else {
                 for (Stack stack : this.value) {
                     int beforeSize = stack.getNbItems();
@@ -83,19 +90,9 @@ public class Inventory
                     if (beforeSize != afterSize)
                         return;
                 }
-
                 // Si tous les stacks present sont pleins ou aucune ne correspond à l'objet qui à étais pris, il crée un nouveau stack
-                Stack stack = new Stack();
-                stack.nbItemsProperty().addListener((observable, oldValue, newValue) -> {
-                    if (newValue.intValue() <= 0) {
-                        this.value.remove(stack);
-                        this.player.setStackSelected(null);
-                    }
-                });
-                stack.setItem(item);
-                stack.add();
-                this.value.add(stack);
-                this.player.setStackSelected(stack);
+                if (this.value.size() < (Inventory.NB_BOXES_MAX / Inventory.NB_LINES))
+                    this.createStack(item);
             }
         }
     }
@@ -142,13 +139,14 @@ public class Inventory
 
         this.scroll = 0;
     }
+    public IntegerProperty cursorProperty() { return this.posCursor; }
 
-    public IntegerProperty posCursorProperty() { return this.posCursor; }
 
-
+    public Stack getStack() { return this.value.get(this.getPosCursor()); }
     public int getPosCursor() { return this.posCursor.get(); }
     public ObservableList<Stack> get() { return this.value; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
+    public Player getPlayer() { return player; }
 
     public void setScroll(int newScroll) { this.scroll = newScroll; }
 }

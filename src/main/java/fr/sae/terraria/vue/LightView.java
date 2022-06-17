@@ -3,8 +3,7 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.modele.Clock;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.blocks.Torch;
-import javafx.beans.property.SimpleDoubleProperty;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
@@ -12,6 +11,7 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+
 
 public class LightView {
     private static final int CIRCLE_RAY = 3;
@@ -25,8 +25,6 @@ public class LightView {
     private static int widthMap;
     private static int tileSize;
 
-    private final SimpleDoubleProperty opacityNightAir;
-    private final SimpleDoubleProperty opacityNightFade;
     private final Environment environment;
     private final TileMaps tileMaps;
     private final Circle torchLight;
@@ -47,25 +45,22 @@ public class LightView {
         widthMap = (int) (env.scaleMultiplicatorWidth*TileMaps.TILE_DEFAULT_SIZE*tileMaps.getWidth());
         delimitationDirtStone = fullStoneArea();
 
-        this.opacityNightAir = new SimpleDoubleProperty(.0);
-        this.opacityNightFade = new SimpleDoubleProperty(.8143);
 
         this.torchLight = new Circle(this.tileSize*CIRCLE_RAY);
 
         this.resetShapes();
         this.addEffects();
 
-        this.clock.minutesProperty().addListener(((obs, oldV, newV) -> updateOpacity()));
 
         this.filterPane.getChildren().addAll(this.actualTunnel, this.actualFade, this.actualAir);
-        this.initTochListener(env.getTorches());
+        this.initTorchListener(env.getTorches());
     }
 
-    private void initTochListener(ObservableList<Torch> torches) {
-        torches.addListener((ListChangeListener<? super Torch>) c -> {
+    private void initTorchListener(ObservableList<Block> torches) {
+        torches.addListener((ListChangeListener<? super Block>) c -> {
             while(c.next()){
                 this.filterPane.getChildren().clear();
-                addTochLights();
+                addTorchLights();
                 if (c.wasRemoved()){
                     resetShapes();
 
@@ -96,14 +91,6 @@ public class LightView {
             }});
     }
 
-    private void updateOpacity()
-    {
-        if (this.clock.getMinutes() > Clock.MINUTES_IN_A_DAY/2)
-            this.opacityNightAir.set(((this.clock.getMinutes()*(2. /* Compensation temps */))/Clock.MINUTES_IN_A_DAY) - (1.1 /* Décallage */));
-        else this.opacityNightAir.set(((Clock.MINUTES_IN_A_DAY - (this.clock.getMinutes()*(4. /* Compensation temps */)))/Clock.MINUTES_IN_A_DAY) - (.1 /* Décallage */));
-    }
-
-
     private int fullStoneArea()
     {
         int line = 0;
@@ -116,7 +103,7 @@ public class LightView {
             column = 0;
 
             while (column < this.tileMaps.getWidth() && !found && !wrongLine) {
-                if (this.tileMaps.getTile(column, line) != TileMaps.STONE)
+                if (!this.tileMaps.isRockTile(column, line))
                     wrongLine = true;
                 else if (column == this.tileMaps.getWidth() - 1)
                     found = true;
@@ -135,6 +122,7 @@ public class LightView {
 
         this.actualTunnel.setLayoutY(tileSize*(delimitationDirtStone+1));
         this.actualFade.setLayoutY(this.actualTunnel.getLayoutY()-tileSize);
+
     }
 
     private void addEffects()
@@ -143,12 +131,12 @@ public class LightView {
         this.actualAir.setFill(NIGHT_COLOR);
         this.actualTunnel.setFill(NIGHT_COLOR);
 
-        this.actualTunnel.opacityProperty().bind(this.opacityNightFade);
-        this.actualFade.opacityProperty().bind(this.opacityNightFade);
-        this.actualAir.opacityProperty().bind(this.opacityNightAir);
+        this.actualAir.opacityProperty().bind(this.clock.opacityNightFilterProperty());
+        this.actualFade.setOpacity(.8);
+        this.actualTunnel.setOpacity(.8);
     }
 
-    private void addTochLights()
+    private void addTorchLights()
     {
         for (int i = 0; i < this.environment.getTorches().size() ; i ++){
             Circle torchLight = new Circle(tileSize*CIRCLE_RAY);

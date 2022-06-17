@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class Terraria extends Application
 {
-    // Constants
+    // Constantes
     public static final String SRC_PATH = "src/main/resources/fr/sae/terraria/";
     public static final double TARGET_FPS = .017;
     public static final int DISPLAY_RENDERING_WIDTH = 465;
@@ -47,7 +47,7 @@ public class Terraria extends Application
     public void start(Stage stage) throws IOException
     {
         GameController gameController = new GameController(stage);
-        MenuController menuController = new MenuController(stage);
+        MenuController menuController = new MenuController();
 
         FXMLLoader fxmlLoader = this.loadFXML("vue/game.fxml");
         fxmlLoader.setController(gameController);
@@ -77,29 +77,31 @@ public class Terraria extends Application
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> timePressedKey[0] = 1);
         stage.sizeToScene();
 
-        // Sync les changements du joueur entre les contrôleurs.
+        // Synchronise les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
             if (switchScene.get()) {
                 if (!Objects.isNull(menuController.player)) {
                     gameController.player = menuController.player;
-                    menuController.loop.stop();
                     gameController.environment.getLoop().play();
                 }
             } else {
                 if (!Objects.isNull(gameController.player)) {
                     menuController.player = gameController.player;
-                    menuController.loop.play();
+                    menuController.environment = gameController.environment;
                     gameController.environment.getLoop().stop();
                 }
             }
         }));
         stage.widthProperty().addListener((obs, oldV, newV) -> {
             gameController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
-            menuController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
         });
         stage.heightProperty().addListener((obs, oldV, newV) -> {
             gameController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-            menuController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+        });
+        gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) ->{
+            if (newV.longValue() == 0){
+                stage.close();
+            }
         });
 
         stage.show();

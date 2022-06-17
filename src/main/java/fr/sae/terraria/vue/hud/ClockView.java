@@ -29,7 +29,7 @@ public class ClockView
         this.clockCursorImg = View.loadAnImage("clock-cursor.png",scaleMultiplicatorWidth,scaleMultiplicatorHeight);
     }
 
-    /** Affiche une horloge à aiguille visuelle à l'écran. */
+    /** Affiche une horloge à aiguille à l'écran. */
     private void displayClock(Image inventoryBarImg, double inventoryBarX, double inventoryBarY)
     {
         ImageView clockCursorView = new ImageView(clockCursorImg);

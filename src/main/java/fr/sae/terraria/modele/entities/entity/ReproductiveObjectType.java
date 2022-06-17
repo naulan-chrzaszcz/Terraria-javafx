@@ -9,7 +9,7 @@ import java.util.List;
  * <h1>Reproduction Object Type</h1>
  * <h2>Interface utile à un objet qui hérite d'Entity</h2>
  * <h3><u>Description:</u></h3>
- * <p>Il permet de savoir si l'entité qui implementer cette interface est une entité qui peut se reproduire entre eux.</p>
+ * <p>Il permet de savoir si l'entité qui implémente cette interface est une entité qui peut se reproduire ou non</p>
  *
  * @see fr.sae.terraria.modele.entities.Rabbit
  * @see fr.sae.terraria.modele.entities.blocks.TallGrass

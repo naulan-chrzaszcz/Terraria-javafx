@@ -3,7 +3,6 @@ package fr.sae.terraria.vue;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.binding.Bindings;
 import javafx.scene.layout.StackPane;
@@ -39,7 +38,7 @@ public class Camera
         this.clip.xProperty().bind(
                 Bindings.createDoubleBinding(
                         () -> clampRange(player.getX() - this.clip.getWidth()/2, minScrollWidthCamera, maxScrollWidthCamera),
-                        player.getXProperty(), paneHadCamera.widthProperty()
+                        player.xProperty(), paneHadCamera.widthProperty()
                 )
         );
 
@@ -47,10 +46,10 @@ public class Camera
         double midHeightCamera = (this.clip.getHeight()/2);
         double[] centerPlayerOnYIntoCamera = new double[1];
         double[] gap = new double[1];
-        player.getYProperty().addListener((obs, oldX, newX) -> {
+        player.yProperty().addListener((obs, oldX, newX) -> {
             // Suit le joueur
             centerPlayerOnYIntoCamera[0] = player.getY() - midHeightCamera;
-            if (player.offset[1] == Entity.IS_JUMPING) {
+            if (player.isJumping()) {
                 gap[0] = player.getGravity().yInit - player.getY();
                 centerPlayerOnYIntoCamera[0] = player.getGravity().yInit - midHeightCamera;
                 if (player.getGravity().timer > player.getGravity().flightTime*2 /* Légère bidouille */)
@@ -58,7 +57,7 @@ public class Camera
             }
 
             // Décale "proprement" la caméra vers le haut
-            if (player.offset[1] == Entity.IDLE && gap[0] > 0) {
+            if (player.isIDLEonY() && gap[0] > 0) {
                 gap[0] /= 2;
                 centerPlayerOnYIntoCamera[0] = (player.getY() + gap[0]) - midHeightCamera;
             }
@@ -68,7 +67,7 @@ public class Camera
         this.clip.yProperty().bind(
                 Bindings.createDoubleBinding(
                         () -> clampRange(centerPlayerOnYIntoCamera[0], minScrollHeightCamera, maxScrollHeightCamera),
-                        player.getYProperty(), paneHadCamera.heightProperty()
+                        player.yProperty(), paneHadCamera.heightProperty()
                 )
         );
 

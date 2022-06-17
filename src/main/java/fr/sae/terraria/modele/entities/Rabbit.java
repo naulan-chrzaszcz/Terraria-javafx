@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 
-public class Rabbit extends Entity implements CollideObjectType, ReproductiveObjectType, MovableObjectType, CollapsibleObjectType, SpawnableObjectType
+public class Rabbit extends EntityMovable implements CollideObjectType, ReproductiveObjectType, CollapsibleObjectType, SpawnableObjectType
 {
     public static final int WHEN_SPAWN_A_RABBIT = 2_500;
     public static final double RABBIT_SPAWN_RATE = .2;
@@ -21,14 +21,12 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
     public static final double LUCK_OF_JUMPING = .5;
     public static final int JUMP_FREQUENCY = 50;
 
-    private final Environment environment;
     private final Animation animation;
 
 
     public Rabbit(final Environment environment, int x, int y)
     {
-        super(x, y);
-        this.environment = environment;
+        super(environment, x, y);
 
         this.setPv(3);
         this.animation = new Animation();
@@ -41,7 +39,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
     @Override public void updates()
     {
-        if (this.offset[1] == Entity.IDLE && !this.air) {
+        if (this.isIDLEonY() && !this.air) {
             this.gravity.xInit = this.x.get();
             this.gravity.yInit = this.y.get();
             this.gravity.vInit = this.velocity;
@@ -61,15 +59,16 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
     @Override public void move()
     {
-        this.setX(this.x.get() + this.offset[0] * this.velocity);
+        TileMaps tileMaps = this.environment.getTileMaps();
+        this.setX(this.x.get() + this.getOffsetMoveX() * this.velocity);
 
-        if (this.offset[1] == Entity.IDLE && this.offset[0] != Entity.IDLE) {
-            int xProbablyVoid = (int) ((getX()+((this.offset[0] == Entity.IS_MOVING_LEFT) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
+        if (this.isIDLEonY() && this.isMoving()) {
+            int xProbablyVoid = (int) ((getX()+((this.isMovingLeft()) ? 0 : this.environment.widthTile)) / this.environment.widthTile);
             int yProbablyVoid = (int) (getY() / environment.heightTile);
 
             // Si du vide risque d'y avoir lors de son déplacement
-            if (environment.getTileMaps().getTile(xProbablyVoid, yProbablyVoid + 2) == TileMaps.SKY) {
-                this.offset[0] = (-1) * this.offset[0];
+            if (tileMaps.isSkyTile(xProbablyVoid, yProbablyVoid+2)) {
+                this.offset[0] = (-1) * this.getOffsetMoveX();
             } else {
                 boolean mustJump = this.environment.getTicks() % Rabbit.JUMP_FREQUENCY == 0;
                 if (mustJump) {
@@ -99,7 +98,7 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
 
         if (!whereCollide.isEmpty()) {
             if (whereCollide.get("left").equals(Boolean.TRUE) || whereCollide.get("right").equals(Boolean.TRUE))
-                this.offset[0] = (-1) * this.offset[0];
+                this.offset[0] = (-1) * this.getOffsetMoveX();
         }
     }
 
@@ -125,23 +124,15 @@ public class Rabbit extends Entity implements CollideObjectType, ReproductiveObj
         this.getGravity().setXInit(x);
         this.getGravity().setYInit(y);
         this.setRect(environment.widthTile, environment.heightTile);
+
         this.environment.getEntities().add(0, this);
-        this.environment.getRabbits().add(0, this);
+        this.environment.getRabbits().add(this);
     }
 
-    /** Modifie l'offset qui permet de le déplacer vers la droite */
-    @Override public void moveRight() { super.moveRight(); }
-    /** Modifie l'offset qui permet de le déplacer vers la gauche */
-    @Override public void moveLeft() { super.moveLeft(); }
-    /** Modifie l'offset qui permet de le faire sauter */
-    @Override public void jump() { super.jump(); }
-    /** Modifie l'offset qui permet de tomber */
-    @Override public void fall() { super.fall(); }
-
-    @Override public void worldLimit()
+    public void worldLimit()
     {
         if (super.worldLimit(this.environment))
-            this.offset[0] = (-1) * this.offset[0];
+            this.offset[0] = (-1) * this.getOffsetMoveX();
     }
 
 

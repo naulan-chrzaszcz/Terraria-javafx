@@ -3,13 +3,15 @@ package fr.sae.terraria.modele;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.Rabbit;
 import fr.sae.terraria.modele.entities.Slime;
-import fr.sae.terraria.modele.entities.blocks.Torch;
-import fr.sae.terraria.modele.entities.entity.CollideObjectType;
+import fr.sae.terraria.modele.entities.blocks.Block;
+import fr.sae.terraria.modele.entities.blocks.Tree;
 import fr.sae.terraria.modele.entities.entity.Entity;
 import fr.sae.terraria.modele.entities.entity.ReproductiveObjectType;
-import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.Player;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
+import fr.sae.terraria.modele.entities.tools.Tool;
+import fr.sae.terraria.modele.entities.tools.ToolSet;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,13 +31,15 @@ import java.util.Objects;
 
 public class Environment
 {
-    // Permet d'update toutes les entités en une seule boucle.
+    private final ObservableList<Tree> trees;
+    private final ObservableList<Block> blocks;
+    // Permet d'update toutes les entités avec une seule boucle.
     private final ObservableList<Entity> entities;
-    // Range des entities en plus pour permettre facilement de savoir combien son t-il sur la carte pour limiter leur apparition
+    // Range des entitiés en plus pour avoir le nombre d'entités sur la carte et limiter leurs apparitions
     private final ObservableList<Rabbit> rabbits;
     private final ObservableList<Slime> slimes;
-    // Permet update facilement les lumières des torches sur le filtre
-    private final ObservableList<Torch> torches;
+    // Permet d'update facilement les lumières des torches sur le filtre
+    private final ObservableList<Block> torches;
 
     private final TileMaps tileMaps;
     private final Player player;
@@ -71,24 +75,26 @@ public class Environment
         this.rabbits = FXCollections.observableArrayList();
         this.slimes = FXCollections.observableArrayList();
         this.torches = FXCollections.observableArrayList();
+        this.blocks = FXCollections.observableArrayList();
+        this.trees = FXCollections.observableArrayList();
 
+        // Fait apparaitre le joueur.
         this.player = new Player(this);
         this.player.setVelocity(5);
         this.player.setPv(4);
         this.player.spawn(5*widthTile, 3*heightTile);
 
-        // Détecte si le joueur n'est pas dans un bloc lorsque qu'il met un block au sol
-        this.entities.addListener((ListChangeListener<? super Entity>) c -> {
+        // Détecte si le joueur n'est pas dans un bloc lorsqu'il met un block au sol
+        this.blocks.addListener((ListChangeListener<? super Block>) c -> {
             while (c.next()) if (c.wasAdded()) {
-                Entity entity = c.getList().get(0);
-
-                if (!Objects.isNull(entity.getRect())) {
+                Block block = c.getAddedSubList().get(0);
+                if (!Objects.isNull(block.getRect())) {
                     // Si on le pose sur le joueur
-                    boolean isIntoABlock = player.getRect().collideRect(entity.getRect());
-
-                    if (entity instanceof CollideObjectType && isIntoABlock) {
+                    boolean isIntoABlock = player.getRect().collideRect(block.getRect());
+                    boolean isCollideBlock = Block.isDirt(block) || Block.isRock(block) || Block.isFloorLeft(block) || Block.isFloorRight(block) || Block.isFloorTop(block);
+                    if (isCollideBlock && isIntoABlock) {
                         // Place le joueur au-dessus du block posé.
-                        player.setY(entity.getY() - player.getRect().getHeight());
+                        player.setY(block.getY() - player.getRect().getHeight());
                         player.getGravity().yInit = player.getY();
                         player.getGravity().xInit = player.getX();
                     }
@@ -113,18 +119,19 @@ public class Environment
         KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
             // TODO TEST
             if (!caught[0]) {
-                Torch torch = new Torch(this, 0, 0);
-                this.player.pickup(torch);
-                Meat meat = new Meat(this);
-                this.player.pickup(meat);
+                this.player.pickup(new Tool(ToolSet.PICKAXE, MaterialSet.IRON));
+                this.player.pickup(new Vodka(this));
+                this.player.pickup(new Tool(ToolSet.SWORD, MaterialSet.IRON));
 
-                this.player.pickup(new Pickaxe());
                 caught[0] = true;
             }
 
             // Ajoute les entités ReproductiveObjectType
-            for (Entity entity : entitiesAtAdded)
-                this.entities.add(0, entity);
+            for (Entity entity : entitiesAtAdded) {
+                this.entities.add(entity);
+                if (entity instanceof Block)
+                    this.blocks.add((Block) entity);
+            }
             entitiesAtAdded.clear();
 
             // Génère aléatoirement des entités
@@ -132,13 +139,13 @@ public class Environment
             boolean nightTime = this.clock.getMinutes() > (Clock.MINUTES_IN_A_DAY)/2;
             boolean weHaveChangedDay = this.previousDays != this.clock.getDays();
             if (weHaveChangedDay)
-                for (int i = 0; i < 3; i++) // Génère par jour, 3 arbres
-                    GenerateEntity.tree(this);
+                for (int i = 0; i < 15; i++) // Génère par jour, 3 arbres
+                    GenerateEntity.treeRandomly(this);
             if (dayTime) {  // Génère certaines entités uniquement pendant le jour
-                GenerateEntity.rabbit(this);
-                GenerateEntity.tallGrass(this);
-            } else if (nightTime)    // Génère certaines entités uniquement pendant le soir
-                GenerateEntity.slime(this);
+                GenerateEntity.rabbitRandomly(this);
+                GenerateEntity.tallGrassRandomly(this);
+            } else if (nightTime)    // Génère certaines entités uniquement pendant le soir et la nuit
+                GenerateEntity.slimeRandomly(this);
 
             // Updates toutes les entités
             for (Entity entity : this.entities) {
@@ -168,7 +175,7 @@ public class Environment
         } catch (Exception e) { e.printStackTrace(); }
 
         if (!Objects.isNull(clip)) {
-            clip.loop((loop) ? Clip.LOOP_CONTINUOUSLY : 0);
+            clip.loop(loop ? Clip.LOOP_CONTINUOUSLY : 0);
             clip.start();
         }
 
@@ -176,10 +183,12 @@ public class Environment
     }
 
 
+    public ObservableList<Block> getBlocks() { return this.blocks; }
+    public ObservableList<Tree> getTrees() { return this.trees; }
     public ObservableList<Entity> getEntities() { return this.entities; }
-    public ObservableList<Rabbit> getRabbits() { return rabbits; }
-    public ObservableList<Torch> getTorches() { return torches; }
-    public ObservableList<Slime> getSlimes() { return slimes; }
+    public ObservableList<Rabbit> getRabbits() { return this.rabbits; }
+    public ObservableList<Block> getTorches() { return this.torches; }
+    public ObservableList<Slime> getSlimes() { return this.slimes; }
     public TileMaps getTileMaps() { return this.tileMaps; }
     public Player getPlayer() { return this.player; }
     public Clock getGameClock() { return this.clock; }

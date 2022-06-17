@@ -3,18 +3,14 @@ package fr.sae.terraria.vue.hud;
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.Arrow;
-import fr.sae.terraria.modele.entities.blocks.Dirt;
-import fr.sae.terraria.modele.entities.blocks.Stone;
-import fr.sae.terraria.modele.entities.blocks.TallGrass;
-import fr.sae.terraria.modele.entities.blocks.Torch;
+import fr.sae.terraria.modele.entities.blocks.Block;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
-import fr.sae.terraria.modele.entities.items.*;
+import fr.sae.terraria.modele.entities.items.Item;
+import fr.sae.terraria.modele.entities.items.Meat;
+import fr.sae.terraria.modele.entities.items.Vodka;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
-import fr.sae.terraria.modele.entities.tools.Axe;
-import fr.sae.terraria.modele.entities.tools.Bow;
-import fr.sae.terraria.modele.entities.tools.Pickaxe;
-import fr.sae.terraria.modele.entities.tools.Sword;
+import fr.sae.terraria.modele.entities.tools.Tool;
 import fr.sae.terraria.vue.View;
 import javafx.collections.ListChangeListener;
 import javafx.scene.image.Image;
@@ -77,7 +73,8 @@ public class InventoryView
     /**
      * Applique une bordure de couleur noire autour de la barre d'inventaire
      */
-    private Rectangle setFrameInventoryBar() {
+    private Rectangle setFrameInventoryBar()
+    {
         frameInventoryBar.setWidth(inventoryBarImg.getWidth() + (2 * scaleMultiplicatorWidth));
         frameInventoryBar.setHeight(inventoryBarImg.getHeight() + (2 * scaleMultiplicatorHeight));
         frameInventoryBar.setX(inventoryBarImgView.getX() - scaleMultiplicatorWidth);
@@ -102,46 +99,58 @@ public class InventoryView
                     Stack stack = c.getAddedSubList().get(0);
                     StowableObjectType item = stack.getItem();
 
-                    if (item instanceof Dirt)
-                        view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Stone)
-                        view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof TallGrass)
-                        view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Torch)
-                        view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Coal)
-                        view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Fiber)
-                        view.setImage(View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Iron)
-                        view.setImage(View.loadAnImage("loots/iron.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Meat)
+                    if (item instanceof Meat)
                         view.setImage(View.loadAnImage("loots/meat.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Pierre)
-                        view.setImage(View.loadAnImage("loots/pierre.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Silex)
-                        view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Wood)
-                        view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Axe)
-                        view.setImage(null);    // TODO
-                    else if (item instanceof Bow)
-                        view.setImage(null);    // TODO
-                    else if (item instanceof Pickaxe)
-                        view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
-                    else if (item instanceof Sword)
-                        view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
                     else if (item instanceof Arrow)
                         view.setImage(null);    // TODO
+                    else if (item instanceof Vodka)
+                        view.setImage(View.loadAnImage("loots/vodka.png", itemInventoryWidth,itemInventoryHeight));
+
+                    if (item instanceof Block) {
+                        if (Block.isFloorTop((Block) item))
+                            view.setImage(View.loadAnImage("tiles/floor-top.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isRock((Block) item))
+                            view.setImage(View.loadAnImage("tiles/rock-fill.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isTallGrass((Block) item))
+                            view.setImage(View.loadAnImage("tiles/tall-grass.png.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Block.isTorch((Block) item))
+                            view.setImage(View.loadAnImage("tiles/torch.png", itemInventoryWidth, itemInventoryHeight));
+                    }
+
+                    if (item instanceof Tool) {
+                        if (Tool.isAxe((Tool) item))
+                            view.setImage(null);    // TODO
+                        else if (Tool.isBow((Tool) item))
+                            view.setImage(null);    // TODO
+                        else if (Tool.isPickaxe((Tool) item))
+                            view.setImage(View.loadAnImage("tools/pickaxe.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Tool.isSword((Tool) item))
+                            view.setImage(View.loadAnImage("tools/sword.png", itemInventoryWidth, itemInventoryHeight));
+                    }
+
+                    if (item instanceof Item) {
+                        if (Item.isCoal(item))
+                            view.setImage(View.loadAnImage("loots/coal.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isFiber(item))
+                            view.setImage(View.loadAnImage("loots/fiber.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isIron(item))
+                            view.setImage(View.loadAnImage("loots/iron.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isStone(item))
+                            view.setImage(View.loadAnImage("loots/pierre.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isSilex(item))
+                            view.setImage(View.loadAnImage("loots/silex.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isWood(item))
+                            view.setImage(View.loadAnImage("loots/wood.png", itemInventoryWidth, itemInventoryHeight));
+                        else if (Item.isStick(item))
+                            view.setImage(View.loadAnImage("loots/stick.png", itemInventoryWidth, itemInventoryHeight));
+                    }
 
                     // Actualise le nombre d'item à l'écran
-                    this.texts.get(c.getTo()-1).setText(String.valueOf(stack.getNbItems()));
-                    stack.nbItemsProperty().addListener((obs, oldV, newV) -> this.texts.get(c.getTo()-1).setText(String.valueOf(newV.intValue())));
+                    this.texts.get(c.getTo()-1).textProperty().bind(c.getAddedSubList().get(0).nbItemsProperty().asString());
 
                     if (!Objects.isNull(view.getImage())) {
-                        view.setX(this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth));
-                        view.setY(this.inventoryBarImgView.getY());
+                        view.setX((this.inventoryBarImgView.getX() + ((c.getTo()-1) * boxeInventoryWidth)) + ((boxeInventoryWidth/2) - (itemInventoryWidth/2)));
+                        view.setY(this.inventoryBarImgView.getY() + ((boxeInventoryWidth/2) - (itemInventoryHeight/2)));
 
                         this.itemsView.add(view);
                         this.display.getChildren().add(view);
@@ -154,6 +163,14 @@ public class InventoryView
 
                     for (int i = c.getTo(); i < itemsView.size(); i++)
                         this.itemsView.get(i).setX(this.itemsView.get(i).getX() - boxeInventoryWidth);
+
+                    for (int i = 0; i < inventory.get().size(); i ++){
+                        this.texts.get(inventory.get().size()).textProperty().unbind();
+                        this.texts.get(i).textProperty().bind(inventory.get().get(i).nbItemsProperty().asString());
+                    }
+                    this.texts.get(inventory.get().size()).textProperty().unbind();
+                    this.texts.get(inventory.get().size()).setText("0");
+
                 }
             }
         });
@@ -178,7 +195,7 @@ public class InventoryView
     {
         this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth()) / 2 - scaleMultiplicatorWidth));
         this.cursorImgView.setY(((windowHeight - inventoryBarImg.getHeight()) - tileHeight) - scaleMultiplicatorHeight);
-        this.inventory.posCursorProperty().addListener((obs, oldV, newV) -> this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth()) / 2 + ((inventoryBarImg.getWidth() / 9) * newV.intValue() - scaleMultiplicatorWidth))));
+        this.inventory.cursorProperty().addListener((obs, oldV, newV) -> this.cursorImgView.setX(((windowWidth - inventoryBarImg.getWidth()) / 2 + ((inventoryBarImg.getWidth() / 9) * newV.intValue() - scaleMultiplicatorWidth))));
 
         this.display.getChildren().add(cursorImgView);
     }

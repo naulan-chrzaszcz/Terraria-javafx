@@ -2,8 +2,9 @@ package fr.sae.terraria.controller;
 
 import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.Environment;
+import fr.sae.terraria.modele.GenerateEntity;
 import fr.sae.terraria.modele.TileMaps;
-import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.vue.Camera;
@@ -20,7 +21,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -86,6 +86,9 @@ public class GameController implements Initializable
                 this.environment.getGameClock().setMinutes(1_000);
             if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.J))
                 this.environment.getGameClock().setMinutes(400);
+            // Fait apparaitre un slime
+            if (key.isShiftDown() && key.isControlDown() && key.getCode().equals(KeyCode.P))
+                GenerateEntity.slime(this.environment);
 
             key.consume();
         });
@@ -98,6 +101,35 @@ public class GameController implements Initializable
 
         stage.addEventFilter(MouseEvent.MOUSE_CLICKED, mouse -> {
             this.player.getMouseInput().put(mouse.getButton(), true);
+
+            final double scaleMultiplicativeWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
+            final double scaleMultiplicativeHeight = ((this.root.getPrefHeight()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+            final int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeWidth);
+            final int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeHeight);
+            // La position correcte sur le Pane
+            double mouseX = mouse.getSceneX()+((Rectangle) this.displayTiledMap.getParent().getClip()).getX();
+            double mouseY = (mouse.getSceneY()-this.title.getPrefHeight())+((Rectangle) this.displayTiledMap.getParent().getClip()).getY();
+            // Le bloc où la souris à clickée
+            int xBlock = (int) (mouseX/tileWidth);
+            int yBlock = (int) (mouseY/tileHeight);
+            Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);
+            // La position du joueur
+            int xPlayer = (int) ((this.player.getX()+(tileWidth/2))/tileWidth);
+            int yPlayer = (int) ((this.player.getY()+(tileHeight/2))/tileHeight);
+            // La distance entre le bloc et le joueur
+            int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
+            int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
+
+            boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
+            if (this.player.getStackSelected() != null && this.player.getStackSelected().getItem() instanceof ConsumableObjectType) {
+                ((ConsumableObjectType) this.player.getStackSelected().getItem()).consumes();
+            } else if (isOneBlockDistance) {
+                if (mouse.getButton().equals(MouseButton.PRIMARY))
+                    this.player.interactWithBlock(rectangle);
+                if (mouse.getButton().equals(MouseButton.SECONDARY))
+                    this.player.placeBlock(xBlock, yBlock);
+            }
+
             mouse.consume();
         });
 
@@ -110,63 +142,5 @@ public class GameController implements Initializable
             inventory.setScroll((int) scroll.getDeltaY());
             scroll.consume();
         });
-
-        stage.addEventFilter(MouseEvent.MOUSE_CLICKED, click -> {
-            final double scaleMultiplicativeWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-            final double scaleMultiplicativeHeight = ((this.root.getPrefHeight()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-            final int tileWidth = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeWidth);
-            final int tileHeight = (int) (TileMaps.TILE_DEFAULT_SIZE * scaleMultiplicativeHeight);
-            // La position correcte sur le Pane
-            double mouseX = click.getSceneX()+((Rectangle) this.displayTiledMap.getParent().getClip()).getX();
-            double mouseY = (click.getSceneY()-this.title.getPrefHeight())+((Rectangle) this.displayTiledMap.getParent().getClip()).getY();
-            // Le bloc où la souris à clicker
-            int xBlock = (int) (mouseX/tileWidth);
-            int yBlock = (int) (mouseY/tileHeight);
-            Rectangle2D rectangle = new Rectangle2D(mouseX, mouseY, scaleMultiplicativeWidth, scaleMultiplicativeHeight);
-            // La position du joueur
-            int xPlayer = (int) ((this.player.getX()+(tileWidth/2))/tileWidth);
-            int yPlayer = (int) ((this.player.getY()+(tileHeight/2))/tileHeight);
-            // La distance entre le bloc et le joueur
-            int distanceBetweenBlockPlayerAxisX = Math.abs(xPlayer - xBlock);
-            int distanceBetweenBlockPlayerAxisY = Math.abs(yPlayer - yBlock);
-
-            boolean isOneBlockDistance = distanceBetweenBlockPlayerAxisY >= 0 && distanceBetweenBlockPlayerAxisY <= Player.BREAK_BLOCK_DISTANCE && distanceBetweenBlockPlayerAxisX >= 0 && distanceBetweenBlockPlayerAxisX <= Player.BREAK_BLOCK_DISTANCE;
-            if (this.player.getStackSelected() instanceof EatableObjectType) {
-                ((EatableObjectType) this.player.getStackSelected()).eat();
-            } else if (isOneBlockDistance) {
-                if (click.getButton().equals(MouseButton.PRIMARY))
-                    this.breakBlock(rectangle);
-                if (click.getButton().equals(MouseButton.SECONDARY))
-                    this.placeBlock(xBlock, yBlock);
-            }
-        });
-    }
-
-    private void breakBlock(final Rectangle2D rectangle)
-    {
-        // Commence a cherché l'entité ciblée
-        for (Entity entity : this.environment.getEntities()) if (entity.getRect().collideRect(rectangle)) {
-            if (entity instanceof BreakableObjectType)
-                ((BreakableObjectType) entity).breaks();
-            if (entity instanceof CollapsibleObjectType)    // TODO TEMP, à déplacer
-                ((CollapsibleObjectType) entity).hit();
-
-            // Quand tous c'est bien déroulés, aprés avoir trouvé l'entité et l'objet sur l'écran, il arrête de chercher d'autre entité d'où le break
-            break;
-        }
-    }
-
-    private void placeBlock(int xBlock, int yBlock)
-    {
-        boolean haveAnItemOnHand = !Objects.isNull(this.player.getStackSelected());
-        boolean goodPlace = this.environment.getTileMaps().getTile(xBlock, yBlock) == TileMaps.SKY;
-
-        if (haveAnItemOnHand && goodPlace) {
-            if (!(this.player.getStackSelected().getItem() instanceof PlaceableObjectType) && !(this.player.getStackSelected() instanceof EatableObjectType))
-                return;
-
-            if (this.player.getStackSelected().getItem() instanceof PlaceableObjectType)
-                ((PlaceableObjectType) this.player.getStackSelected().getItem()).place(xBlock, yBlock);
-        }
     }
 }

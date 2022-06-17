@@ -1,12 +1,13 @@
 package fr.sae.terraria.modele.entities.items;
 
 import fr.sae.terraria.modele.Environment;
-import fr.sae.terraria.modele.entities.entity.EatableObjectType;
+import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
+import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 
 
-public class Meat extends Item implements EatableObjectType
+public class Meat implements ConsumableObjectType, StowableObjectType
 {
     private final Environment environment;
 
@@ -17,15 +18,15 @@ public class Meat extends Item implements EatableObjectType
         this.environment = environment;
     }
 
-    @Override public void eat()
+    @Override public void consumes()
     {
-        Player player = environment.getPlayer();
+        Environment.playSound("sound/eat.wav", false);
 
-        if (player.getPv() < player.getPvMax()) {
-            Inventory inventory = player.getInventory();
-
+        Player player = this.environment.getPlayer();
+        if (player.getPv() < player.getPvMax())
             player.setPv(player.getPv() + 1);
-            inventory.get().get(inventory.getPosCursor()).remove();
-        }
+
+        Inventory inventory = player.getInventory();
+        inventory.get().get(inventory.getPosCursor()).remove();
     }
 }

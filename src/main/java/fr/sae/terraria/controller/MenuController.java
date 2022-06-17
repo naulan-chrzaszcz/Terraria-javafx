@@ -1,57 +1,95 @@
 package fr.sae.terraria.controller;
 
-import fr.sae.terraria.Terraria;
+import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.player.Player;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import fr.sae.terraria.modele.entities.player.craft.Craft;
+import fr.sae.terraria.modele.entities.tools.MaterialSet;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
 public class MenuController implements Initializable
 {
-    @FXML public Pane root;
-    @FXML public Pane displayInventory;
-    @FXML public Pane displayLexique;
-    @FXML public HBox HBoxText;
+    @FXML public HBox recipeRock;
+    @FXML public HBox recipeTorch;
 
-    public Timeline loop;
-    private Stage stage;
+    @FXML public HBox recipeWoodPickaxe;
+    @FXML public HBox recipeStonePickaxe;
+    @FXML public HBox recipeIronPickaxe;
+
+    @FXML public HBox recipeWoodAxe;
+    @FXML public HBox recipeStoneAxe;
+    @FXML public HBox recipeIronAxe;
+
+    @FXML public HBox recipeWoodSword;
+    @FXML public HBox recipeStoneSword;
+    @FXML public HBox recipeIronSword;
+
+    public Environment environment = null;
     public Player player = null;
-    public double scaleMultiplicatorWidth;
-    public double scaleMultiplicatorHeight;
 
-
-    public MenuController(final Stage stage)
-    {
-        super();
-        this.stage = stage;
-    }
 
     @Override public void initialize(URL location, ResourceBundle resources)
     {
-        this.scaleMultiplicatorWidth = (this.root.getPrefWidth() / Terraria.DISPLAY_RENDERING_WIDTH);
-        this.scaleMultiplicatorHeight = ((this.root.getPrefHeight()-this.HBoxText.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
+        // Craft de la roche à partir de 3 pierres
+        this.recipeRock.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.rock(this.environment));
+        });
 
-        this.loop = new Timeline();
-        this.loop.setCycleCount(Animation.INDEFINITE);
+        this.recipeTorch.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.torch(this.environment));
+        });
 
-        KeyFrame keyFrame = new KeyFrame(Duration.seconds(Terraria.TARGET_FPS), (ev -> {
-            if (!Objects.isNull(this.player)) {
-                System.out.println(this.player.getInventory());
-            }
-        }));
 
-        this.loop.getKeyFrames().add(keyFrame);
-        this.loop.play();
+        // LES PIOCHES
+        this.recipeWoodPickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.WOOD));
+        });
+
+        this.recipeStonePickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.STONE));
+        });
+
+        this.recipeIronPickaxe.addEventFilter(Event.ANY, event -> {
+            if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
+                this.player.pickup(Craft.pickaxe(this.environment, MaterialSet.IRON));
+        });
+
+
+        // LES HACHES
+        this.recipeWoodAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeStoneAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeIronAxe.addEventFilter(Event.ANY, event -> {
+
+        });
+
+
+        // LES EPEES
+        this.recipeWoodSword.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeStoneSword.addEventFilter(Event.ANY, event -> {
+
+        });
+
+        this.recipeIronSword.addEventFilter(Event.ANY, event -> {
+
+        });
     }
 }
