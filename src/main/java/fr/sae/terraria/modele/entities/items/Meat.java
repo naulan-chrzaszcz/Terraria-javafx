@@ -19,8 +19,9 @@ public class Meat implements ConsumableObjectType, StowableObjectType
 
     @Override public void consumes()
     {
-        Player player = environment.getPlayer();
+        Environment.playSound("sound/eat.wav", false);
 
+        Player player = environment.getPlayer();
         if (player.getPv() < player.getPvMax())
             player.setPv(player.getPv() + 1);
     }

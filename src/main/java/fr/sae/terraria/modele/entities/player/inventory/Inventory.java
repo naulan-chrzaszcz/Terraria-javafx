@@ -1,10 +1,12 @@
 package fr.sae.terraria.modele.entities.player.inventory;
 
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
+import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.Player;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.input.KeyCode;
 

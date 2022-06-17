@@ -28,6 +28,8 @@ public class Vodka implements ConsumableObjectType, StowableObjectType
 
     @Override public void consumes()
     {
+        Environment.playSound("sound/eat.wav", false);
+
         Player player = environment.getPlayer();
         Inventory inventory = player.getInventory();
         inventory.get().get(inventory.getPosCursor()).remove();
