@@ -2,6 +2,7 @@ package fr.sae.terraria.modele.entities;
 
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.entities.entity.*;
+import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.modele.entities.tools.Tool;
 
@@ -13,7 +14,6 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 {
     public static final int WHEN_SPAWN_A_SLIME = 2_500;
     public static final double SLIME_SPAWN_RATE = .2;
-    public static final int TIME_BEFORE_HITTING_AGAIN_THE_PLAYER = 100;
 
 
     public Slime(Environment environment, int x, int y)
@@ -67,10 +67,10 @@ public class Slime extends EntityMovable implements CollideObjectType, Collapsib
 
             if (environment.getPlayer().getRect().collideRect(this.getRect()) && !environment.getPlayer().getHit()){
                 environment.getPlayer().hit();
-                environment.getPlayer().setInvicibilityFrame(this.environment.getTicks());
+                environment.getPlayer().setInvisibilityFrame(this.environment.getTicks());
             }
 
-            if (environment.getPlayer().getHit() &&  this.environment.getTicks() - environment.getPlayer().getInvicibilityFrame() == TIME_BEFORE_HITTING_AGAIN_THE_PLAYER)
+            if (environment.getPlayer().getHit() &&  this.environment.getTicks() - environment.getPlayer().getInvisibilityFrame() == Player.TIME_BEFORE_HITTING_AGAIN_THE_PLAYER)
                 environment.getPlayer().setHit(false);
     }
 

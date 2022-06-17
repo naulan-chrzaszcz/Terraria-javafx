@@ -5,7 +5,6 @@ import fr.sae.terraria.modele.entities.entity.ConsumableObjectType;
 import fr.sae.terraria.modele.entities.entity.StowableObjectType;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
-import fr.sae.terraria.modele.entities.player.inventory.Stack;
 
 
 public class Meat implements ConsumableObjectType, StowableObjectType

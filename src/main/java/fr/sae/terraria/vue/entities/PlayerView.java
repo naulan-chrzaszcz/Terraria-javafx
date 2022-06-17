@@ -1,9 +1,13 @@
 package fr.sae.terraria.vue.entities;
 
+import fr.sae.terraria.Terraria;
 import fr.sae.terraria.modele.entities.player.Player;
 import fr.sae.terraria.vue.View;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 
 public class PlayerView extends EntityView
@@ -27,6 +31,22 @@ public class PlayerView extends EntityView
 
         this.widthPlayer = (int) this.playerIdleImg.getWidth();
         this.heightPlayer = (int) this.playerIdleImg.getHeight();
+
+        boolean[] visible = new boolean[] {true};
+        player.hitProperty().addListener((obs, oldBool, newBool) -> {
+            if (newBool.booleanValue()) {
+                Timeline timeLine = new Timeline();
+                timeLine.setCycleCount(8);
+
+                KeyFrame key = new KeyFrame(Duration.seconds((Player.TIME_BEFORE_HITTING_AGAIN_THE_PLAYER * Terraria.TARGET_FPS)/8), b -> {
+                    visible[0] = !visible[0];
+                    this.imgView.setVisible(visible[0]);
+                });
+
+                timeLine.getKeyFrames().add(key);
+                timeLine.play();
+            }
+        });
     }
 
     @Override protected void animation(int frame)

@@ -3,10 +3,10 @@ package fr.sae.terraria.modele.entities.player;
 import fr.sae.terraria.modele.Environment;
 import fr.sae.terraria.modele.TileMaps;
 import fr.sae.terraria.modele.entities.entity.*;
-import fr.sae.terraria.modele.entities.items.Item;
 import fr.sae.terraria.modele.entities.player.inventory.Inventory;
 import fr.sae.terraria.modele.entities.player.inventory.Stack;
 import fr.sae.terraria.vue.View;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
@@ -20,24 +20,26 @@ import java.util.Objects;
 
 public class Player extends EntityMovable implements CollideObjectType, CollapsibleObjectType, SpawnableObjectType
 {
+    public static final int TIME_BEFORE_HITTING_AGAIN_THE_PLAYER = 100;
     public static final int BREAK_BLOCK_DISTANCE = 1;
 
     private final EnumMap<KeyCode, Boolean> keysInput;
     private final EnumMap<MouseButton, Boolean> mouseInput;
-    private Boolean hit;
-    private int invicibilityFrame;
 
-    private final SimpleBooleanProperty drunk;
+    private final BooleanProperty drunk;
+    private final BooleanProperty hit;
 
     private final Inventory inventory;
     private Stack stackSelected;
+
+    private int invisibilityFrame;
 
 
     public Player(final Environment environment)
     {
         super(environment, 0, 0);
-        this.invicibilityFrame = 0;
-        this.hit = false;
+        this.invisibilityFrame = 0;
+        this.hit = new SimpleBooleanProperty(false);
         this.drunk = new SimpleBooleanProperty(false);
         this.inventory = new Inventory(this);
 
@@ -86,7 +88,7 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
     @Override public void hit()
     {
         this.pv.set(this.getPv() - 1);
-        this.hit = true;
+        this.hit.set(true);
     }
 
     @Override public void spawn(int x, int y)
@@ -165,17 +167,18 @@ public class Player extends EntityMovable implements CollideObjectType, Collapsi
 
     public void pickup(StowableObjectType pickupObj) { if (!Objects.isNull(pickupObj)) this.inventory.put(pickupObj); }
 
-    public SimpleBooleanProperty drunkProperty() { return drunk; }
+    public BooleanProperty drunkProperty() { return this.drunk; }
+    public BooleanProperty hitProperty() { return this.hit; }
 
 
     public Map<MouseButton, Boolean> getMouseInput() { return this.mouseInput; }
     public Map<KeyCode, Boolean> getKeysInput() { return this.keysInput; }
     public Stack getStackSelected() { return this.stackSelected; }
     public Inventory getInventory() { return this.inventory; }
-    public boolean getHit() { return this.hit; }
-    public int getInvicibilityFrame() { return invicibilityFrame; }
+    public boolean getHit() { return this.hit.get(); }
+    public int getInvisibilityFrame() { return invisibilityFrame; }
 
     public void setStackSelected(Stack stackSelected) { this.stackSelected = stackSelected; }
-    public void setHit(boolean b) { this.hit = b; }
-    public void setInvicibilityFrame(int ticks2) { this.invicibilityFrame = ticks2; }
+    public void setHit(boolean b) { this.hit.set(b); }
+    public void setInvisibilityFrame(int ticks2) { this.invisibilityFrame = ticks2; }
 }
