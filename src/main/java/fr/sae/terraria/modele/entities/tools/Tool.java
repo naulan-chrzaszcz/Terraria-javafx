@@ -24,7 +24,8 @@ public class Tool implements StowableObjectType
         super();
         this.tool = tool;
         this.material = material;
-        this.durability = new SimpleIntegerProperty(Tool.DEFAULT_DURABILITY);
+
+        this.durability = new SimpleIntegerProperty((int) (Tool.DEFAULT_DURABILITY*material.getDurabilityMultiplicator()));
     }
 
     /** Utilise l'outil */
