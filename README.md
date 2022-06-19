@@ -12,8 +12,8 @@
 - [Concus avec](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#concus-avec)
 - [Wiki (document utilisateur)](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#wiki-document-utilisateur)
 - [Comment le lancer ?](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#comment-le-lancer-)
-- [Sprites sheets]()
-- [Audios]()
+- [Sprites sheets](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#sprites-sheets)
+- [Audios](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#audio)
 
 ### Developpeurs sur le projet:
 - <code><img style="width: 35px; height: 35px" src="https://avatars.githubusercontent.com/u/67024770?v=4"/></code> [CHRZASZCZ Naulan](https://github.com/NaulaN)
