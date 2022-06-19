@@ -7,11 +7,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class Tool implements StowableObjectType
 {
-    public static final double CRAFTED_WITH_WOOD = 1.;
-    public static final double CRAFTED_WITH_IRON = 1.5;
-
     public static final int DEFAULT_DURABILITY = 100;
-    public static final int DEFAULT_DAMAGE = 1;
+    public static final int DEFAULT_DAMAGE = 2;
 
     private final IntegerProperty durability;
 
@@ -24,7 +21,8 @@ public class Tool implements StowableObjectType
         super();
         this.tool = tool;
         this.material = material;
-        this.durability = new SimpleIntegerProperty(Tool.DEFAULT_DURABILITY);
+
+        this.durability = new SimpleIntegerProperty((int) (Tool.DEFAULT_DURABILITY*material.getDurabilityMultiplicator()));
     }
 
     /** Utilise l'outil */
@@ -36,18 +34,9 @@ public class Tool implements StowableObjectType
 
     public double damage()
     {
-        if (this.tool == ToolSet.SWORD) {
-            if (this.material == MaterialSet.WOOD)
-                return Tool.DEFAULT_DAMAGE * Tool.CRAFTED_WITH_WOOD;
-            else if (this.material == MaterialSet.IRON)
-                return Tool.DEFAULT_DAMAGE * Tool.CRAFTED_WITH_IRON;
-        } else {
-            if (this.material == MaterialSet.WOOD)
-                return Tool.DEFAULT_DAMAGE * (Tool.CRAFTED_WITH_WOOD/2);
-            else if (this.material == MaterialSet.IRON)
-                return Tool.DEFAULT_DAMAGE * (Tool.CRAFTED_WITH_IRON/2);
-        }
-        return Tool.DEFAULT_DAMAGE;
+        if (Tool.isSword(this))
+            return Tool.DEFAULT_DAMAGE * this.material.getDurabilityMultiplicator();
+        return Tool.DEFAULT_DAMAGE * (this.material.getDurabilityMultiplicator()/2);
     }
 
     public static boolean isAxe(Tool tool) { return tool.getTypeOfTool() == ToolSet.AXE; }
