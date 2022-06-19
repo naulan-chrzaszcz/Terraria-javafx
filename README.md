@@ -6,7 +6,7 @@
 ---
 
 ## Sommaire:
-- [Developpeurs sur le projet]()
+- [Developpeurs sur le projet](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/README.md#developpeurs-sur-le-projet)
 - [Progression]()
 - [Qu'est-ce que c'est ce projet ?]()
 - [Concus avec]()
