@@ -19,6 +19,10 @@ import java.net.URL;
 import java.util.Objects;
 
 
+/**
+ * <a href="https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur">Document utilisateur</a>
+ * <a href="https://github.com/NaulaN/SAE-Terraria-Like">Repo Github</a>
+ */
 public class Terraria extends Application
 {
     // Constantes
@@ -28,6 +32,7 @@ public class Terraria extends Application
     public static final int DISPLAY_RENDERING_HEIGHT = 256;
 
     private final String titleWindow = "Terraria-Like";
+    private final boolean resizable = false;
     private final int widthWindow = 1280;
     private final int heightWindow = 720;
 
@@ -59,14 +64,17 @@ public class Terraria extends Application
         Scene menu = new Scene(fxmlLoader.load(), this.widthWindow, this.heightWindow);
 
         stage.setTitle(this.titleWindow);
-        stage.setResizable(false);
+        stage.setResizable(this.resizable);
 
         BooleanProperty switchScene = new SimpleBooleanProperty();
         // Change de scènes suivant les valeurs boolean
         switchScene.addListener((obs, oldB, newB) -> stage.setScene(newB.equals(Boolean.TRUE) ? game : menu));
 
         stage.setScene(game);
-        int[] timePressedKey = new int[1];  // Permet que le menu ne clignote pas et reste afficher même si le bouton 'M' est encore enfoncer.
+        stage.sizeToScene();
+
+        // Permet que le menu ne clignote pas et reste afficher même si le bouton 'M' est encore enfoncer.
+        int[] timePressedKey = new int[] {1};
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.M && timePressedKey[0] <= 1)
                 switchScene.set(!switchScene.get());
@@ -75,7 +83,6 @@ public class Terraria extends Application
             key.consume();
         });
         stage.addEventFilter(KeyEvent.KEY_RELEASED, key -> timePressedKey[0] = 1);
-        stage.sizeToScene();
 
         // Synchronise les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
@@ -92,17 +99,14 @@ public class Terraria extends Application
                 }
             }
         }));
-        stage.widthProperty().addListener((obs, oldV, newV) -> {
-            gameController.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH);
-        });
-        stage.heightProperty().addListener((obs, oldV, newV) -> {
-            gameController.scaleMultiplicatorHeight = ((newV.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT);
-        });
+        // Quand le joueur meurt, le jeux ce met à l'arrêt
         gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) ->{
-            if (newV.longValue() == 0){
+            if (newV.intValue() == 0)
                 stage.close();
-            }
         });
+
+        stage.widthProperty().addListener((obs, oldWidth, newWidth) -> gameController.scaleMultiplicatorWidth = (newWidth.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
+        stage.heightProperty().addListener((obs, oldHeight, newHeight) -> gameController.scaleMultiplicatorHeight = ((newHeight.intValue()-gameController.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
 
         stage.show();
     }
