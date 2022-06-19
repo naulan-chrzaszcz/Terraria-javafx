@@ -1,7 +1,7 @@
 # SAE | Terraria Like
 ![spag](https://forthebadge.com/images/badges/contains-tasty-spaghetti-code.svg) ![Java](https://forthebadge.com/images/badges/made-with-java.svg) ![coffee](https://forthebadge.com/images/badges/powered-by-coffee.svg)
 
-IUT de Montreuil Paris8 | BUT Informatique en 1er année.
+*IUT de Montreuil Paris8 | BUT Informatique en 1er année.*
 
 ---
 
@@ -20,12 +20,14 @@ IUT de Montreuil Paris8 | BUT Informatique en 1er année.
 ### Qu'est-ce que c'est ce projet ?
 Ce projet est la SAE de fin d'année de notre premiere année de formation en BUT Informatique à l'IUT de Montreuil, nous devons réalisé un jeu vidéo qui reprend ou s'inspire du jeu Terraria. Nous avons +/- 1 Mois sous 4 Sprint à faire ce jeu.
 
+Pour crée ce jeux, nous avions crée un [cachier d'initialisation](https://github.com/NaulaN/SAE-Terraria-Like/blob/master/Cahier_d'initialisation.pdf) pour avoir une base sur notre projet.
+
 ### Concus avec:
 - JavaFX - Rendu graphique
 - Java 11
 
 ### Wikis (Document utilisateur):
-Un document utilisateur est disponible ici -> [wiki](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
+Un document utilisateur est disponible [ici](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
 
 ### Comment le lancer ?
 Malheuresement, il n'y a pas de `.jar` pour pouvoir executé facilement le jeu.
