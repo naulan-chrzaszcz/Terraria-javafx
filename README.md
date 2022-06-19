@@ -26,8 +26,8 @@ Pour crée ce jeux, nous avions crée un [cachier d'initialisation](https://gith
 - JavaFX - Rendu graphique
 - Java 11
 
-### Wikis (Document utilisateur):
-Un document utilisateur est disponible [ici](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
+### Wiki (document utilisateur):
+Un wiki (document utilisateur) est disponible [**ici**](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
 
 ### Comment le lancer ?
 Malheuresement, il n'y a pas de `.jar` pour pouvoir executé facilement le jeu.
