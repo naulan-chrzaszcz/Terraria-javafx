@@ -24,6 +24,9 @@ Ce projet est la SAE de fin d'année de notre premiere année de formation en BU
 - JavaFX - Rendu graphique
 - Java 11
 
+### Wikis (Document utilisateur):
+Un document utilisateur est disponible ici -> [wiki](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
+
 ### Comment le lancer ?
 Malheuresement, il n'y a pas de `.jar` pour pouvoir executé facilement le jeu.
 
