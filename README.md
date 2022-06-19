@@ -17,6 +17,8 @@
 - [X] [Sprint n°3](https://github.com/NaulaN/SAE-Terraria-Like/releases/tag/Sprint_n%C2%B03)
 - [X] [Sprint n°4](https://github.com/NaulaN/SAE-Terraria-Like/releases/tag/Sprint_n%C2%B04)
 
+Suivre la progression [**ici**](https://github.com/users/NaulaN/projects/2)
+
 ### Qu'est-ce que c'est ce projet ?
 Ce projet est la SAE de fin d'année de notre premiere année de formation en BUT Informatique à l'IUT de Montreuil, nous devons réalisé un jeu vidéo qui reprend ou s'inspire du jeu Terraria. Nous avons +/- 1 Mois sous 4 Sprint à faire ce jeu.
 
