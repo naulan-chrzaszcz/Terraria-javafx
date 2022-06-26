@@ -42,7 +42,22 @@ Pour crée ce jeux, nous avions crée un [cachier d'initialisation](https://gith
 Un wiki (document utilisateur) est disponible [**ici**](https://github.com/NaulaN/SAE-Terraria-Like/wiki/Document-utilisateur)
 
 ### Comment le lancer ?
-Malheuresement, il n'y a pas de `.jar` pour pouvoir executé facilement le jeu.
+Pour lancer sur votre machine le fichier en `.jar`, il vous faudra une JDK qui possède la librairie Java FX.
+Je mentionne une ici, mais il existe probablement bien d'autre sur la toile:
+
+**Windows**
+- Azul: https://www.azul.com/downloads/?version=java-18-sts&os=windows&architecture=x86-64-bit&package=jdk-fx
+
+**Linux**
+- Azul: https://www.azul.com/downloads/?version=java-18-sts&os=linux&architecture=x86-64-bit&package=jdk-fx
+
+Ensuite que la JDK est télécharger sur votre machine et installer, vous pouvez vous rendre sur le dossier où se trouve `terraria-like_vX.X` et faire un simple
+double clics sur le fichier
+
+Sinon vous pouvez le lancer grâce à `cmd` la console de Windows ou `bash` la console de Linux
+```bash
+java -jar terraria-like_vX.X
+```
 
 ### Sprites sheets:
 - Certaines proviennent de [Stardew Valley](https://www.stardewvalley.net/) comme pour les items, ...
