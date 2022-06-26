@@ -31,7 +31,7 @@ public class Clock
                 this.days.setValue(getDays()+1);
                 this.minutes.setValue(0);
             } else this.minutes.setValue(getMinutes()+1);
-            updateOpacity();
+            this.updateOpacity();
         }
     }
 

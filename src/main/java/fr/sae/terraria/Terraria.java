@@ -8,8 +8,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -66,9 +71,9 @@ public class Terraria extends Application
         stage.setTitle(this.titleWindow);
         stage.setResizable(this.resizable);
 
-        BooleanProperty switchScene = new SimpleBooleanProperty();
+        BooleanProperty openMenu = new SimpleBooleanProperty();
         // Change de scènes suivant les valeurs boolean
-        switchScene.addListener((obs, oldB, newB) -> stage.setScene(newB.equals(Boolean.TRUE) ? game : menu));
+        openMenu.addListener((obs, oldB, newB) -> stage.setScene(newB.equals(Boolean.TRUE) ? game : menu));
 
         stage.setScene(game);
         stage.sizeToScene();
@@ -77,7 +82,7 @@ public class Terraria extends Application
         int[] timePressedKey = new int[] {1};
         stage.addEventFilter(KeyEvent.KEY_PRESSED, key -> {
             if (key.getCode() == KeyCode.M && timePressedKey[0] <= 1)
-                switchScene.set(!switchScene.get());
+                openMenu.set(!openMenu.get());
 
             timePressedKey[0]++;
             key.consume();
@@ -86,7 +91,7 @@ public class Terraria extends Application
 
         // Synchronise les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
-            if (switchScene.get()) {
+            if (openMenu.get()) {
                 if (!Objects.isNull(menuController.player)) {
                     gameController.player = menuController.player;
                     gameController.environment.getLoop().play();
@@ -96,11 +101,13 @@ public class Terraria extends Application
                     menuController.player = gameController.player;
                     menuController.environment = gameController.environment;
                     gameController.environment.getLoop().stop();
+                    menuController.background.setImage(game.snapshot(null));
                 }
             }
         }));
-        // Quand le joueur meurt, le jeux ce met à l'arrêt
-        gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) ->{
+
+        // Quand le joueur meurt, le jeu ce met à l'arrêt
+        gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) -> {
             if (newV.intValue() == 0)
                 stage.close();
         });

@@ -10,7 +10,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity"
+<BorderPane fx:id="root"
+            maxHeight="-Infinity" maxWidth="-Infinity"
             minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="720" prefWidth="1280"
             xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
@@ -26,8 +27,8 @@
     </top>
 
     <center>
-        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <BorderPane prefHeight="200.0" prefWidth="640.0">
+        <SplitPane fx:id="split" dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane fx:id="lexiques" prefHeight="200.0" prefWidth="640.0">
                 <top>
                     <HBox fx:id="HBoxTitle" prefHeight="25.0" prefWidth="640.0" BorderPane.alignment="CENTER">
                         <Text fx:id="TextHBoxTitle" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Lexique des constructions" textAlignment="CENTER" underline="true" wrappingWidth="632.470703125">
@@ -39,7 +40,7 @@
                 </top>
 
                 <center>
-                    <ScrollPane prefHeight="200.0" prefWidth="640.0" BorderPane.alignment="CENTER">
+                    <Pane fx:id="recipesList" prefHeight="200.0" prefWidth="640.0" BorderPane.alignment="CENTER">
                         <Pane fx:id="displayLexique" prefHeight="900.0" prefWidth="640.0">
                             <HBox id="notAvailable" fx:id="recipeWoodPickaxe" layoutY="179.0" prefHeight="50.0" prefWidth="625.0">
                                 <Text text="PIOCHE EN BOIS " textAlignment="CENTER" underline="true" />
@@ -95,11 +96,11 @@
                                <Text text="-- 1 Bâton | 1 Charbon" />
                              </HBox>
                         </Pane>
-                    </ScrollPane>
+                    </Pane>
                 </center>
             </BorderPane>
 
-            <BorderPane prefHeight="200.0" prefWidth="640.0">
+            <BorderPane fx:id="inventory" prefHeight="200.0" prefWidth="640.0">
                 <top>
                     <HBox prefHeight="25.0" prefWidth="640.0" BorderPane.alignment="CENTER">
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inventaire du joueur" textAlignment="CENTER" underline="true" wrappingWidth="640">

@@ -7,14 +7,27 @@ import fr.sae.terraria.modele.entities.tools.MaterialSet;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.SplitPane;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
+import java.awt.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
 public class MenuController implements Initializable
 {
+    @FXML public BorderPane root;
+    @FXML public SplitPane split;
+    @FXML public BorderPane lexiques;
+    @FXML public BorderPane inventory;
+    @FXML public Pane recipesList;
+
     @FXML public HBox recipeRock;
     @FXML public HBox recipeTorch;
 
@@ -30,12 +43,21 @@ public class MenuController implements Initializable
     @FXML public HBox recipeStoneSword;
     @FXML public HBox recipeIronSword;
 
+    public ImageView background = new ImageView();
     public Environment environment = null;
     public Player player = null;
 
 
     @Override public void initialize(URL location, ResourceBundle resources)
     {
+        this.root.setBackground(Background.EMPTY);
+        this.split.setBackground(Background.EMPTY);
+        this.lexiques.setBackground(Background.EMPTY);
+        this.inventory.setBackground(Background.EMPTY);
+        this.recipesList.setBackground(Background.EMPTY);
+        this.background.setEffect(new GaussianBlur(15));
+        this.root.getChildren().add(0, this.background);
+
         // Craft de la roche à partir de 3 pierres
         this.recipeRock.addEventFilter(Event.ANY, event -> {
             if (event.getEventType().getName().equalsIgnoreCase("MOUSE_PRESSED"))
