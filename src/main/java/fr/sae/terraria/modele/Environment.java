@@ -23,6 +23,7 @@ import javafx.util.Duration;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class Environment
         this.heightTile = (int) (scaleMultiplicatorHeight * TileMaps.TILE_DEFAULT_SIZE);
 
         this.tileMaps = new TileMaps();
-        this.tileMaps.load(Terraria.SRC_PATH + "maps/map_0.json");
+        this.tileMaps.load( "maps/map_0.json");
 
         this.clock = new Clock();
         this.previousDays = -1;
@@ -170,7 +171,7 @@ public class Environment
         Clip clip = null;
         try {
             clip = AudioSystem.getClip();
-            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File(Terraria.SRC_PATH + path).toURI().toURL());
+            AudioInputStream inputStream = AudioSystem.getAudioInputStream(new BufferedInputStream(Terraria.class.getResourceAsStream(path)));
             clip.open(inputStream);
         } catch (Exception e) { e.printStackTrace(); }
 

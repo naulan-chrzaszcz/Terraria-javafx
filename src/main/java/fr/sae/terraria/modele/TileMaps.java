@@ -1,8 +1,13 @@
 package fr.sae.terraria.modele;
 
 import com.google.gson.stream.JsonReader;
+import fr.sae.terraria.Terraria;
 
-import java.io.FileReader;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Objects;
 
 
 /**
@@ -38,8 +43,9 @@ public class TileMaps
         int i = 0;
         int j = 0;
 
-        try (FileReader fileReader = new FileReader(path);
-             JsonReader jsonReader = new JsonReader(fileReader))
+        InputStream test = Terraria.class.getResourceAsStream(path);
+        Reader testR = new InputStreamReader(test);
+        try (JsonReader jsonReader = new JsonReader(testR))
         {
             jsonReader.beginObject();
             // Déduit la taille de la carte.
@@ -61,9 +67,9 @@ public class TileMaps
             jsonReader.endObject();
         } catch (Exception e) { e.printStackTrace(); }
 
-
-        try (FileReader fileReader = new FileReader(path);
-             JsonReader jsonReader = new JsonReader(fileReader))
+        test = Terraria.class.getResourceAsStream(path);
+        testR = new InputStreamReader(test);
+        try (JsonReader jsonReader = new JsonReader(testR))
         {
             this.maps = new int[this.h][this.w];
             // Ecrit la carte dans la mémoire.
