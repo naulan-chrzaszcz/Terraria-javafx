@@ -92,24 +92,24 @@ public class Terraria extends Application
         // Synchronise les changements du joueur entre les contrôleurs.
         stage.sceneProperty().addListener(((obs, oldScene, newScene) -> {
             if (openMenu.get()) {
-                if (!Objects.isNull(menuController.player)) {
-                    gameController.player = menuController.player;
-                    gameController.environment.getLoop().play();
+                if (!Objects.isNull(menuController.getPlayer())) {
+                    gameController.transferPlayer(menuController.getPlayer());
+                    gameController.getEnvironment().getLoop().play();
                 }
             } else {
-                if (!Objects.isNull(gameController.player)) {
-                    menuController.player = gameController.player;
-                    menuController.environment = gameController.environment;
-                    gameController.environment.getLoop().stop();
+                if (!Objects.isNull(gameController.getPlayer())) {
+                    menuController.transferPlayer(gameController.getPlayer());
+                    menuController.transferEnvironment(gameController.getEnvironment());
+                    gameController.getEnvironment().getLoop().stop();
                     menuController.background.setImage(game.snapshot(null));
                 }
             }
         }));
 
         // Quand le joueur meurt, le jeu ce met à l'arrêt
-        gameController.environment.getPlayer().pvProperty().addListener((obs, oldV, newV) -> {
+        gameController.getEnvironment().getPlayer().pvProperty().addListener((obs, oldV, newV) -> {
             if (newV.intValue() == 0)
-                stage.close();
+                stage.close();      // TODO Mettre un ecran de fin avec deux options
         });
 
         stage.widthProperty().addListener((obs, oldWidth, newWidth) -> gameController.scaleMultiplicatorWidth = (newWidth.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));

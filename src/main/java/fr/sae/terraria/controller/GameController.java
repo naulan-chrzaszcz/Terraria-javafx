@@ -37,8 +37,8 @@ public class GameController implements Initializable
 
     public final Stage primaryStage;
 
-    public Environment environment;
-    public Player player = null;
+    private Environment environment;
+    private Player player;
 
     // TODO plutot mettre un DoubleProperty a c'est deux variables
     public double scaleMultiplicatorWidth = .0;    // Permet de scale correctement une image selon la largeur de l'écran
@@ -49,6 +49,8 @@ public class GameController implements Initializable
     {
         super();
         this.primaryStage = primaryStage;
+        this.environment = null;
+        this.player = null;
 
         primaryStage.widthProperty().addListener((obs, oldV, newV) -> this.scaleMultiplicatorWidth = (newV.intValue() / Terraria.DISPLAY_RENDERING_WIDTH));
         primaryStage.heightProperty().addListener((obs, oldV, newV) -> this.scaleMultiplicatorHeight = ((newV.intValue()-this.title.getPrefHeight()) / Terraria.DISPLAY_RENDERING_HEIGHT));
@@ -143,4 +145,11 @@ public class GameController implements Initializable
             scroll.consume();
         });
     }
+
+    public void transferEnvironment(Environment environmentOnOtherController) { this.environment = environmentOnOtherController; }
+    public void transferPlayer(Player playerOnOtherController) { this.player = playerOnOtherController; }
+
+
+    public Environment getEnvironment() { return this.environment; }
+    public Player getPlayer() { return this.player; }
 }

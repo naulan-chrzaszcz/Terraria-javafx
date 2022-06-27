@@ -19,7 +19,6 @@ import java.util.Objects;
 
 public class View
 {
-    private Environment environment;
 
 
     /**
@@ -30,23 +29,24 @@ public class View
     {
         super();
 
-        this.environment = gameController.environment;
+        final Environment environment = gameController.getEnvironment();
         final Pane displayTiledMap = gameController.displayTiledMap;
         final Pane displayHostileBeings = gameController.displayHostileBeings;
         final Pane displayHUD = gameController.displayHUD;
         final Pane displayCursorMouse = gameController.displayCursorMouse;
         final Pane filter = gameController.filter;
+
         double scaleMultiplicatorWidth = gameController.scaleMultiplicatorWidth;
         double scaleMultiplicatorHeight = gameController.scaleMultiplicatorHeight;
 
         TileMapsView tileMapsView = new TileMapsView(environment, displayTiledMap, displayHostileBeings, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         tileMapsView.displayMaps(environment.getTileMaps());
 
-        Player player = this.environment.getPlayer();
+        Player player = environment.getPlayer();
         PlayerView playerView = new PlayerView(player, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
         playerView.display(displayHostileBeings);
 
-        LightView lightView = new LightView(environment.getGameClock(),filter,environment);
+        LightView lightView = new LightView(environment.getGameClock(),filter, environment);
         DrunkView drunkView = new DrunkView(environment,gameController.paneHadCamera);
 
         HUDView HUDView = new HUDView(environment.getPlayer(), environment.getGameClock(), displayHUD, scaleMultiplicatorWidth, scaleMultiplicatorHeight);
@@ -64,7 +64,7 @@ public class View
             if (Objects.isNull(pathImg))
                 pathImg = new File(Terraria.SRC_PATH + path).toURI().toURL();
             img = new Image(pathImg.toString());
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {}
 
         return img;
     }

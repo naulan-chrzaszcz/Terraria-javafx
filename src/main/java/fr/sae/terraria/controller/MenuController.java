@@ -43,10 +43,17 @@ public class MenuController implements Initializable
     @FXML public HBox recipeStoneSword;
     @FXML public HBox recipeIronSword;
 
-    public ImageView background = new ImageView();
-    public Environment environment = null;
-    public Player player = null;
+    private Environment environment;
+    private Player player;
+    public ImageView background;
 
+
+    public MenuController()
+    {
+        this.background = new ImageView();
+        this.environment = null;
+        this.player = null;
+    }
 
     @Override public void initialize(URL location, ResourceBundle resources)
     {
@@ -114,4 +121,12 @@ public class MenuController implements Initializable
 
         });
     }
+
+
+    public void transferEnvironment(Environment environmentOnOtherController) { this.environment = environmentOnOtherController; }
+    public void transferPlayer(Player playerOnOtherController) { this.player = playerOnOtherController; }
+
+
+    public Environment getEnvironment() { return this.environment; }
+    public Player getPlayer() { return this.player; }
 }
